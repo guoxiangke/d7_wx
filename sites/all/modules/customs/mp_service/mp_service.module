@@ -71,6 +71,7 @@ function wx_response($name, $wx_mp_id = 'gh_a1f2569abd7f') {
 }
 
 function mp_service_response($service_uid = 172, $wx_mp_id = 'gh_b945c807e7ec') {
+  $debug = FALSE;
   module_load_include('inc', 'mp_service', 'mp_service_adv');
   module_load_include('inc', 'mp_service', 'mp_service_fun');
   $mp_services_config = variable_get('mp_service_'.$service_uid, NULL);
@@ -83,13 +84,12 @@ function mp_service_response($service_uid = 172, $wx_mp_id = 'gh_b945c807e7ec') 
     'account'=>$mp_services_config['account'],
     'password'=>$mp_services_config['password'],
   );
-  if($service_uid = 8)
-  // watchdog('options', '<pre>'.print_r($options,TRUE), array(), WATCHDOG_NOTICE, 'link');
+  if($debug)  watchdog('options', '<pre>'.print_r($options,TRUE), array(), WATCHDOG_NOTICE, 'link');
   $wechatObj = new Wechat($options);
   $weObj = $wechatObj;
   $wechatObj->valid(); //注意, 应用验证通过后,可将此句注释掉, 但会降低网站安全性
   $type = $wechatObj->getRev()->getRevType();
-  $wechat_user_info = mp_service_update_user_info($wechatObj,$mp_services_config['account'],$mp_services_config['password'],$service_uid);
+  // $wechat_user_info = mp_service_update_user_info($wechatObj,$mp_services_config['account'],$mp_services_config['password'],$service_uid);
   $notice = "-----永不止息-----\n-----需要有你-----
 【tg】施恩座前*new*
 【m】每日箴言*new*
@@ -249,6 +249,7 @@ function mp_service_response($service_uid = 172, $wx_mp_id = 'gh_b945c807e7ec') 
       }
       if($keyword == 'mama') {
           $musicurl ='http://fm77.u.qiniudn.com/xiaomin/mama20140503.mp3';
+          $musicurl ='http://fm77.u.qiniudn.com/2015/mama_20150507_225808.mp3';          
           $desc = "公众号:永不止息";
           $hgmusicurl = $musicurl;
           $wechatObj->music('小敏诗歌分享：我有一个好妈妈', $desc, $musicurl, $hgmusicurl)->reply();
@@ -306,6 +307,29 @@ function mp_service_response($service_uid = 172, $wx_mp_id = 'gh_b945c807e7ec') 
           $wechatObj->music('挥别婚姻十大谎言'.$hy_id, $desc, $musicurl, $hgmusicurl)->reply();
           exit;
       }
+      if ($check_keyword == '妈妈') {
+          // $reply = _mp_node_create($keyword);
+            //201+您想说的话
+              if(strlen($keyword) < 10 ) {
+                $contentStr = $check_keyword."内容不能少于10字！";
+              }else{
+                $mp_service_records = mp_service_get_record($FromUserName);
+                if($mp_service_records['last_cmd'] == $check_keyword) {
+                  $contentStr = "每人只需发布一条信息，请明天再来吧！\n回复【31】听听广播吧！";
+                }else{
+                  mp_service_update_cmd($check_keyword,$FromUserName,$service_uid);
+                  $wechat_user_info = mp_service_get_user_info($wechatObj,$mp_services_config['account'],$mp_services_config['password'],$service_uid);
+                  $comment = wx_comment('26',$keyword,$wechat_user_info);
+                  $idd = $comment->cid - 2482 - 963 ;
+                  $contentStr ="谢谢惠顾[抱拳]\n恭喜您是第【".$idd."】位发送者![调皮]\n敬请期待下次活动吧！[呲牙]";
+                  if($idd=='7'||$idd=='77'||$idd=='777'||$idd=='7777'||$idd=='77777'){
+                    $contentStr ="中奖啦！[呲牙]恭喜您是第".$idd."位发送者,领奖密码：".$comment->cid."!\n[微笑]把您的姓名手机地址邮编发送给小永吧！！[调皮]\n小永个人微信:\n 649294139\n".$notice;
+                  }
+                }
+              }
+              # code...
+          $wechatObj->text($contentStr)->reply();
+      }
       if ($check_keyword == '领书') {
           // $reply = _mp_node_create($keyword);
             //201+您想说的话
@@ -319,7 +343,7 @@ function mp_service_response($service_uid = 172, $wx_mp_id = 'gh_b945c807e7ec') 
                   mp_service_update_cmd($check_keyword,$FromUserName,$service_uid);
                   $wechat_user_info = mp_service_get_user_info($wechatObj,$mp_services_config['account'],$mp_services_config['password'],$service_uid);
                   $comment = wx_comment('14',$keyword,$wechat_user_info);
-                  $idd = $comment->cid - 2482 ;
+                  $idd = $comment->cid - 2482 - 961 ;
                   if($idd=='7'||$idd=='77'||$idd=='777'){
                     $contentStr ="中奖啦！[呲牙]恭喜您是第".$idd."位发送者,领奖密码：".$comment->cid."!\n[微笑]把您的姓名手机地址邮编发送给小永吧！！[调皮]\n小永个人微信:\n 649294139\n".$notice;
                   }
@@ -342,7 +366,7 @@ function mp_service_response($service_uid = 172, $wx_mp_id = 'gh_b945c807e7ec') 
                   mp_service_update_cmd($check_keyword,$FromUserName,$service_uid);
                   $wechat_user_info = mp_service_get_user_info($wechatObj,$mp_services_config['account'],$mp_services_config['password'],$service_uid);
                   wx_comment('520',$keyword,$wechat_user_info);
-                  $contentStr ="[微笑]".$check_keyword."信息已收到![调皮]\n->http://t.cn/RvHK735 \n如需帮助，请添加小永微信:\n 649294139\n".$notice;
+                  $contentStr ="[微笑]".$check_keyword."信息已收到![调皮]\n->http://t.cn/RvHK735 \n如需帮助，请搜素添加微信公众号：永不止息，然后找到服务号联系我们\n".$notice;
                 }
               }
               # code...
@@ -507,9 +531,63 @@ $menu['32'] = '【bv】灵命日粮
           $hgmusicurl = $musicurl;
           $wechatObj->music($for_husband[$keyword]['title'], $desc, $musicurl, $hgmusicurl)->reply();
           break;
-        case '0':     
-          $contentStr = "-----永不止息-----\n免费获取每日图文?\n请点此关注love_yongbuzhixi\n-----需要有你-----\n永不止息是http://www.yongbuzhixi.com 旗下的微信公众帐号，开设婚恋号和服务号两个帐号，基本功能一致。该网站是@bluesky_still透过对当前教会单身肢体需求的看见，业余时间开发的针对主内肢体婚恋社交网站，通过简洁的关系建立渠道，熟人的推荐，舆论监督与指导，为肢体提供一个便捷互相了解、信实互动的社交平台。\n2014永不止息，全面改版，为满足更多主内肢体的需求，开设微信问答、微信联盟、微信大屏幕等板块。策划执行中~-----永不止息-----\n听广播、与主内佳人交通？\n点此关注官方主帐号\n-----需要有你-----\n【31】【32】微信听广播\n";
-            
+        case '0': 
+        case '110':
+        case '9010':
+          //单图文 标题15字 摘要60字
+          //多图文 1标题16字 2标题15字 
+          $img = array(
+              'Title'=> '▼永不止息-部分广播目录(v01版)▼',
+              'Description'=>'你良友的啥关系？',
+              'PicUrl'=>'http://www.yongbuzhixi.com/sites/all/themes/love/family_1.png',
+              'Url'=>''
+            );
+          $news[] = $img;
+          $img = array(
+              'Title'=> "【bv】灵命日粮
+【gv】生活无国界
+【bc】书香原地（周间）
+【se】炼爱季节（周间）
+【up】亲情不断电（周间）
+【hg】欢乐卡洽碰
+【cc】空中辅导
+【im】i关怀心磁场
+【yu】绝妙当家
+【365】恩典365
+【400】圣经广播网\n",//▌◤▲▼如何推荐给好友？
+              'PicUrl'=>'',
+              'Url'=>'http://ly.yongbuzhixi.com'
+            );
+            $news[] = $img;
+          $img = array(
+              'Title'=> '玩转永不止息,良友一起来！',
+              'Description'=>'永不止息时光机，会员尊贵待遇！',
+              'PicUrl'=>'http://mmsns.qpic.cn/mmsns/0fV5QBhibUJh4BDj8puTVpBPibdMnlp7YYX5ibib87W7KACey1qpTmN0Rw/0.jpg',
+              'Url'=>'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5ODQ4NjU4MA==&appmsgid=10000352&itemidx=1&sign=f99612d4cfd626d8649dbe6a59faff75#wechat_redirect'
+            );
+          // $news[] = $img;
+          $img = array(
+              'Title'=> "▶微信问答板块(暂时开放)\n ●广播指令为纯数字，请勿带【】号",
+              'PicUrl'=>'',
+              'Url'=>'http://www.yongbuzhixi.com/questions'
+            );
+            $news[] = $img; 
+          $img = array(
+              'Title'=> "▶微信灵修网站(暂缓开放)\n ●注意流量30M流量可以听30天【523】",
+              'PicUrl'=>'',
+              'Url'=>'http://www.yongbuzhixi.com'
+            );
+            $news[] = $img;
+          // $img = array(
+          //   'Title'=>'用手机，登录【永不止息】^_^',
+          //   'Description'=>'单图文 标题15字 摘要60字',
+          //   'PicUrl'=>'http://www.yongbuzhixi.com/sites/default/files/pictures/picture-172-1356487827.jpg',
+          //   'Url'=>'http://www.yongbuzhixi.com'
+          // );
+          //单图文 标题15字 摘要60字
+          //多图文 1标题16字 2标题15字
+          
+          $wechatObj->news($news)->reply(); return;
           break;
         case '00':     
           $contentStr = $notice;//."\n此期间,可访问指令为\n【52】今日广播\n【523】在天父怀中";//广播指令为纯数字，请勿带*号。号和中括号\n【1】玩法介绍\n【2】发布相片/心情\n【3】查看活跃用户\n【4】每日灵修广播\n
@@ -633,55 +711,6 @@ $menu['32'] = '【bv】灵命日粮
         case 'n':
           $contentStr =  "谢谢反馈！";
           break;
-        case '110':
-        case '9010':
-          $img = array(
-              'Title'=> '▼永不止息-部分广播目录(v01版)▼',
-              'Description'=>'你良友的啥关系？',
-              'PicUrl'=>'http://www.yongbuzhixi.com/sites/all/themes/love/family_1.png',
-              'Url'=>'http://www.yongbuzhixi.com/about'
-            );
-          $news[] = $img;
-          
-
-          $img = array(
-              'Title'=> "【520】喜乐的心\n【521】荒漠甘泉乐侣\n【522】静夜亮光\n【523】在天父怀中\n【525】真道分解\n【526】祷告良辰*new*\n【527】每周一歌*new*\n",//▌◤▲▼如何推荐给好友？http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5ODQ4NjU4MA==&appmsgid=10000220&itemidx=2&sign=62a8888bdb56bc268f255c020e024434
-              'PicUrl'=>'',//http://www.yongbuzhixi.com/sites/all/themes/love/family_2.png
-              'Url'=>'http://stream.liangyou.net/program/1njci4-3b2p08'//http://www.wxhow.com/wxapi/?WX_GH=gh_ebdb3a74fdf6&plugin=bible&action=biblecenter&urlidx=lyradio-nissigz&WX_GH_USER=ojC2PjnIwbEjowjfo20uhwsNRfvY
-            );
-            $news[] = $img;
-          $img = array(
-              'Title'=> '玩转永不止息,良友一起来！',
-              'Description'=>'永不止息时光机，会员尊贵待遇！',
-              'PicUrl'=>'http://mmsns.qpic.cn/mmsns/0fV5QBhibUJh4BDj8puTVpBPibdMnlp7YYX5ibib87W7KACey1qpTmN0Rw/0.jpg',
-              'Url'=>'http://mp.weixin.qq.com/mp/appmsg/show?__biz=MjM5ODQ4NjU4MA==&appmsgid=10000352&itemidx=1&sign=f99612d4cfd626d8649dbe6a59faff75#wechat_redirect'
-            );
-          // $news[] = $img;
-          $img = array(
-              'Title'=> "▶微信问答板块(暂时开放)\n ●广播指令为纯数字，请勿带【】号",
-              'PicUrl'=>'',
-              'Url'=>'http://www.yongbuzhixi.com/questions'
-            );
-            $news[] = $img; 
-          $img = array(
-              'Title'=> "▶微信灵修网站(暂缓开放)\n ●注意流量30M流量可以听30天【523】",
-              'PicUrl'=>'',
-              'Url'=>'http://www.yongbuzhixi.com'
-            );
-            $news[] = $img;
-          // $img = array(
-          //   'Title'=>'用手机，登录【永不止息】^_^',
-          //   'Description'=>'单图文 标题15字 摘要60字',
-          //   'PicUrl'=>'http://www.yongbuzhixi.com/sites/default/files/pictures/picture-172-1356487827.jpg',
-          //   'Url'=>'http://www.yongbuzhixi.com'
-          // );
-          //单图文 标题15字 摘要60字
-          //多图文 1标题16字 2标题15字
-          
-          $wechatObj->news($news)->reply(); return;
-          break;
-          //单图文 标题15字 摘要60字
-          //多图文 1标题16字 2标题15字
  
         case '5010':
           // $title = '灵命日粮';
@@ -842,7 +871,7 @@ $menu['32'] = '【bv】灵命日粮
                   mp_service_update_cmd('11',$FromUserName,$service_uid);
                   $wechat_user_info = mp_service_get_user_info($wechatObj,$mp_services_config['account'],$mp_services_config['password'],$service_uid);
                   wx_comment('1200',$keyword,$wechat_user_info);
-                  $contentStr ="如需帮助，请添加小永微信:649294139\n[微笑]反馈已收到![调皮]\n".$notice;
+                  $contentStr ="如需帮助，请搜素添加微信公众号：永不止息，然后找到服务号联系我们\n[微笑]反馈已收到![调皮]\n".$notice;
                 }
               }
               # code...
@@ -918,7 +947,7 @@ $menu['32'] = '【bv】灵命日粮
               $wechatObj->setFuncFlag(TRUE);
               $wechat_user_info = mp_service_get_user_info($wechatObj,$mp_services_config['account'],$mp_services_config['password'],$service_uid);
               wx_comment('1156',$keyword,$wechat_user_info);
-              $contentStr = "您发的指令，暂无内容，反馈已发给小永!\n如需帮助，请添加小永微信: 649294139\n回复【0】进入主菜单\n回复【32】进入良友广播\n回复【11+问题】获得帮助\n回复【110】推荐给好友？\n".$notice;
+              $contentStr = "您发的指令，暂无内容，反馈已发给小永!\n如需帮助，请搜素添加微信公众号：永不止息，然后找到服务号联系我们\n回复【0】进入主菜单\n".$notice;
               // <a href='weixin://contacts/profile/yongbuzhixi_love'>649294139</a>
             }
           break;
