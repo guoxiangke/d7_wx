@@ -87,7 +87,7 @@ function mp_service_response($service_uid = 172, $wx_mp_id = 'gh_b945c807e7ec') 
   // watchdog('options', '<pre>'.print_r($options,TRUE), array(), WATCHDOG_NOTICE, 'link');
   $wechatObj = new Wechat($options);
   $weObj = $wechatObj;
-  // $wechatObj->valid(); //注意, 应用验证通过后,可将此句注释掉, 但会降低网站安全性
+  $wechatObj->valid(); //注意, 应用验证通过后,可将此句注释掉, 但会降低网站安全性
   $type = $wechatObj->getRev()->getRevType();
   $wechat_user_info = mp_service_update_user_info($wechatObj,$mp_services_config['account'],$mp_services_config['password'],$service_uid);
   $notice = "-----永不止息-----\n-----需要有你-----
