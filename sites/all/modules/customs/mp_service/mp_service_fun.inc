@@ -117,113 +117,113 @@ function _mp_get_mp_node($type = 'grace365', $counts = 1) {
 
 
 function _mp_provide($keyword) {
-  // switch ($keyword) {
+  switch ($keyword) {
     
-  //       case '1224':
-  //         $title = '耶稣全貌';
-  //         $desc = '序言-公众号:永不止息，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-00.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122501':
-  //         $title = '耶稣全貌-第一章 道成肉身';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-01.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122502':
-  //         $title = '耶稣全貌-第二章 圣婴降生';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-02.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122503':
-  //         $title = '耶稣全貌-第三章 预备道路';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-03.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122504':
-  //         $title = '耶稣全貌--第四章 传道之始';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-04.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122505':
-  //         $title = '耶稣全貌--第五章 知难而进';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-05.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122506':
-  //         $title = '耶稣全貌--第六章 登山宝训';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-06.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122507':
-  //         $title = '耶稣全貌--第七章  是非分明';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-07.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122508':
-  //         $title = '耶稣全貌--第八章  命令风浪';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-08.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122509':
-  //         $title = '耶稣全貌--第九章  五饼二鱼';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-09.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122510':
-  //         $title = '耶稣全貌--第十章  荣耀显现';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-10.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122511':
-  //         $title = '耶稣全貌--第11章';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-11.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '122512':
-  //         $title = '耶稣全貌--第12章';
-  //         $desc = '公众号:永不止息 ，每日更新';
-  //         $musicurl = 'http://s3.amazonaws.com/ysqm/ch-12.mp3';
-  //         $hgmusicurl = $musicurl;
-  //         $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
-  //         break;
-  //       case '1225':
-  //             $img = array(
-  //                 'Title'=> '良友串流广播【试听】',
-  //                 'Description'=>'点击查看全文收听！回复【11+您的建议反馈内容】，回复1225给love_yongbuzhixi获取本消息！永不止息，需要有你！',
-  //                 'PicUrl'=>'http://farm2.staticflickr.com/1275/4700591844_7010757842_b.jpg',
-  //                 'Url'=>'http://stream.liangyou.net/channel/65837e3587'
-  //               );
-  //               $news[] = $img; 
-  //           $wechatObj->news($news)->reply();
-  //            break;
-  //   default:
-  //     # code...
-  //     break;
-  // }
+        case '1224':
+          $title = '耶稣全貌';
+          $desc = '序言-公众号:永不止息，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-00.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122501':
+          $title = '耶稣全貌-第一章 道成肉身';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-01.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122502':
+          $title = '耶稣全貌-第二章 圣婴降生';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-02.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122503':
+          $title = '耶稣全貌-第三章 预备道路';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-03.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122504':
+          $title = '耶稣全貌--第四章 传道之始';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-04.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122505':
+          $title = '耶稣全貌--第五章 知难而进';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-05.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122506':
+          $title = '耶稣全貌--第六章 登山宝训';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-06.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122507':
+          $title = '耶稣全貌--第七章  是非分明';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-07.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122508':
+          $title = '耶稣全貌--第八章  命令风浪';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-08.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122509':
+          $title = '耶稣全貌--第九章  五饼二鱼';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-09.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122510':
+          $title = '耶稣全貌--第十章  荣耀显现';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-10.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122511':
+          $title = '耶稣全貌--第11章';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-11.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '122512':
+          $title = '耶稣全貌--第12章';
+          $desc = '公众号:永不止息 ，每日更新';
+          $musicurl = 'http://www.ysqm.org/stream/ch-12.mp3';
+          $hgmusicurl = $musicurl;
+          $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
+          break;
+        case '1225':
+              $img = array(
+                  'Title'=> '良友串流广播【试听】',
+                  'Description'=>'点击查看全文收听！回复【11+您的建议反馈内容】，回复1225给love_yongbuzhixi获取本消息！永不止息，需要有你！',
+                  'PicUrl'=>'http://farm2.staticflickr.com/1275/4700591844_7010757842_b.jpg',
+                  'Url'=>'http://stream.liangyou.net/channel/65837e3587'
+                );
+                $news[] = $img; 
+            $wechatObj->news($news)->reply();
+             break;
+    default:
+      # code...
+      break;
+  }
   
         // case '114':
         // case '40':

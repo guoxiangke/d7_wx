@@ -166,7 +166,7 @@ function mp_service_update_7101() {
 }
 function mp_service_update_7102() {
   // Check because D6 installs may already have added this.
-  if (!db_field_exists('mp_service', 'mp_service')) {
+  if (!db_field_exists('mp_service', 'nickname')) {
     $new_field = array(
         'description' => 'nickname',
         'type' => 'varchar',
