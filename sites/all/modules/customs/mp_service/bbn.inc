@@ -4,7 +4,7 @@ function bbn_audio_list(){
 	$bbn['401'] = array(
 		'code'				=>	'C0SER',
 		'keyword'			=>	401,
-		'day'					=>	0,//1-7
+		'day'					=>	0,
 		'url'				=>	'http://bbnradio.org.edgesuite.net/BBNOnDemand/chinese/C0SER.m4a',
 		'title'				=>	'中信之声',
 		'description'	=>	'打开心锁，尽情倾诉，对你的日常生活必定带来很多的帮助和启发',
