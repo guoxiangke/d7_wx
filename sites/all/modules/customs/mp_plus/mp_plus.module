@@ -1,9 +1,0 @@
-<?php
-	/**
-	 * check use is recorded!!!
-	 */
-	function mp_plus_is_fack_id($fake_id) {
-	  $fake_id = db_query('SELECT fake_id FROM {mp_message_contact_info} WHERE fake_id = :fake_id', array(':fake_id' => $fake_id))->fetchField();
-	  return $fake_id;
-	}
-?>
