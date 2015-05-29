@@ -7,7 +7,7 @@ function mp_service_menu() {
     'title' => '公众号',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('mp_service_settings_form'),
-    'access arguments' => array('plugin wechat'),
+    'access arguments' => array('use mp service'),
     'file' => 'mp_service.admin.inc',
     'type' => MENU_LOCAL_TASK,
   );

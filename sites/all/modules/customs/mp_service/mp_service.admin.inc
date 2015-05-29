@@ -35,8 +35,8 @@ function mp_service_settings_form(){
   );
   $form['config']['config_appaes'] = array(
     '#type' => 'textfield',
-    '#title' => t('AppSecret'),
-    '#description' => t('Account AppSecret'),
+    '#title' => t('EncodingAESKey'),
+    '#description' => t('Account EncodingAESKey'),
     '#default_value' => variable_get('mp_config_appaes_'.$user->uid, ""),
     '#required' => true,
   );

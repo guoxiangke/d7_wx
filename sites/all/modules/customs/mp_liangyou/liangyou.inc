@@ -135,7 +135,7 @@ function ly_get_menu(){
   // $menu .= '<br/>【'.$key.'】'.$audio['name'];
   // }
   // dvm($menu);
-  return '▶圣经广播网节目单
+  return '▶节目单
   ----------------------------------------------
   【mp】这一刻，清心
   【tg】施恩座前

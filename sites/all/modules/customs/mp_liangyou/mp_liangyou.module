@@ -19,6 +19,10 @@ function mp_liangyou_rescources_info(){
     'name' => '523',
     'desc' =>	'在天父怀中【523】',
   );
+	$rescources[] = array(
+    'name' => '400',
+    'desc' =>	'圣经广播网【400】',
+  );
   return $rescources;
 }
 
@@ -151,6 +155,36 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				),
 			);
 	  }
+
+
+
+    //圣经广播网 400-435
+    if(isset($enabled_resources['400']) && $enabled_resources['400'])
+    if(is_numeric($keyword) && ($keyword>=400 && $keyword<=435) ) {
+    	require_once('bbn.inc');
+		 	if($keyword == '400'){
+				$resources['key_'.$keyword]= array(
+					'type'	=>	'text',
+					'obj'		=> array(
+						'text'	=> bbn_audio_menu(),
+					)
+				);
+		 	}else{
+	      $musicurl = bbn_url($keyword);
+	      $bbns = bbn_audio_list();
+	      $title = $bbns[$keyword]['title'];
+	      $desc = '点击►收听 公众号:永不止息 '.truncate_utf8($bbns[$keyword]['description'], 12, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
+		    $resources['key_'.$keyword]= array(
+					'type'	=>	'music',
+					'obj'		=> array(
+						'title'	=> $title,
+						'desc'	=>	$desc,
+						'musicurl'	=>	$musicurl,
+						'hgmusicurl'	=>	$musicurl,
+					),
+				);
+		 	}
+    }
 
 		// $resources['key_'.'1002']= array(
 		// 	'type'	=>	'news',
