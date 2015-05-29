@@ -1,0 +1,169 @@
+<?php
+/**
+ * hook_rescources_info
+ */
+function mp_liangyou_rescources_info(){
+	$rescources[] = array(
+    'name' => 'ly',
+    'desc' =>	'良友广播-知音站线路【ly】',
+  );
+	$rescources[] = array(
+    'name' => 'ly2',
+    'desc' =>	'良友广播-同行线路【600】',
+  );
+	$rescources[] = array(
+    'name' => '365',
+    'desc' =>	'恩典365【365】【366】',
+  );
+	$rescources[] = array(
+    'name' => '523',
+    'desc' =>	'在天父怀中【523】',
+  );
+  return $rescources;
+}
+
+/**
+ * hook_wxrescources
+ */
+function mp_liangyou_wxresources($resources, $account, $keyword){
+	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
+	// watchdog('mp_liangyoukeyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
+  $resources = &drupal_static(__FUNCTION__);
+  if(!isset($resources)){
+  	//ee bv se gv
+	  if(isset($enabled_resources['ly']) && $enabled_resources['ly']){
+		  require_once('liangyou.inc');
+		 	if($keyword == 'ly' || $keyword == '良友' ){
+				$resources['key_'.$keyword]= array(
+					'type'	=>	'text',
+					'obj'		=> array(
+						'text'	=> ly_get_menu(),
+					)
+				);
+				return $resources;
+		 	}
+		  $radios_list = liangyou_audio_list();
+		  $radios_keys = array_keys($radios_list);
+			// bc1
+		  $key = substr($keyword, 0,2); 
+		  if(in_array($key, $radios_keys)) {
+		    $offset = 0;
+		    if(strlen($keyword)>2) {
+		      $offset = substr($keyword, 2,1);
+		      if(!is_numeric($offset)) $offset = 0;
+		    }
+		    $string = date('ymd',time()-$offset*24*60*60); 
+		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
+		    $desc = '公众号:永不止息 更多节目请回复【ly】';
+		  	$resources['key_'.$keyword]= array(
+					'type'	=>	'music',
+					'obj'		=> array(
+						'title'	=> $radios_list[$key]['name'],
+						'desc'	=>	$desc,
+						'musicurl'	=>	$url,
+						'hgmusicurl'	=>	$url,
+					),
+				);
+			}
+	  }
+
+		// 600-652 stream ly
+	  if(isset($enabled_resources['ly2']) && $enabled_resources['ly2']){
+		  require_once('liangyou.inc');
+		 	if($keyword == 'ly2' || $keyword == '良友2'){
+				$resources['key_'.$keyword]= array(
+					'type'	=>	'text',
+					'obj'		=> array(
+						'text'	=> ly_stream_menu(),
+					)
+				);
+		 	}
+		  if(is_numeric($keyword) && ($keyword>=600 && $keyword<=652) ) {
+		    // $file_key = 'http://liangyou.yongbuzhixi.com/cron/cloud/'.date('Ymd').'.json'; 
+		    $file_key = 'http://aws.yilindeli.com/liangyou/cron/cloud/'.date('Ymd').'.json'; 
+		    $file = file_get_contents($file_key);
+		    $urls = json_decode($file,TRUE);
+		    if($keyword == 600){
+		     	$resources['key_'.$keyword] = array(
+						'type'	=>	'text',
+						'obj'		=> array(
+							'text'	=> ly_stream_menu(),
+						)
+					);
+		    }else{	    	
+			    $before_keyword = $keyword;
+			    $keyword = $keyword - 601;
+			    $title = str_replace($keyword, '', $urls[$keyword]['title']);
+			    $musicurl = $urls[$keyword]['url'].'?='.$urls[$keyword]['date'].'.mp3';
+			    $desc =  substr($urls[$keyword]['date'], 4).' '.truncate_utf8($urls[$keyword]['desc'], 16, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
+			    $resources['key_'.$before_keyword]= array(
+						'type'	=>	'music',
+						'obj'		=> array(
+							'title'	=> $title,
+							'desc'	=>	$desc,
+							'musicurl'	=>	$musicurl,
+							'hgmusicurl'	=>	$musicurl,
+						),
+					);
+		    }
+		  }
+	  }
+	  //523
+	  if(isset($enabled_resources['523']) && $enabled_resources['523'])
+	 	if($keyword == '523'){
+      $title = '在天父怀中';
+      $str = date('md');
+      //http://audio1.liangyou.net/files/media/ly_daily/2013Daily_130114.mp3
+      $musicurl = 'http://inhim.qiniudn.com/2013Daily_13'.$str.'.mp3';
+      $desc = "点击►收听 服务号:永不止息 每日更新 ".date('md');
+      $url = $musicurl;
+	    $resources['key_'.$keyword]= array(
+				'type'	=>	'music',
+				'obj'		=> array(
+					'title'	=> $title,
+					'desc'	=>	$desc,
+					'musicurl'	=>	$url,
+					'hgmusicurl'	=>	$url,
+				),
+			);
+	 	}
+
+	  //365||366
+	  $check_word = substr($keyword, 0,3);
+	  if(isset($enabled_resources['365']) && $enabled_resources['365'])
+	  if($check_word == '365' || $check_word == '366' ) {
+	    $str = date('md');
+	    if (strlen($keyword) ==7) {
+	      $str = substr($keyword, 3,5);//0430
+	      $month = (int) substr($str, 0,2);
+	    }
+	    $title = "恩典365";// '【'.$check_word.'】'.
+	    $year = ($check_word=='365')?'2013':'2014';
+	    $url = 'http://grace365.qiniudn.com/'.$year.'/'.$str.'.mp3';
+	    $desc = "点击►收听 服务号:永不止息 每日更新";
+	    $resources['key_'.$keyword]= array(
+				'type'	=>	'music',
+				'obj'		=> array(
+					'title'	=> $title,
+					'desc'	=>	$desc,
+					'musicurl'	=>	$url,
+					'hgmusicurl'	=>	$url,
+				),
+			);
+	  }
+
+		// $resources['key_'.'1002']= array(
+		// 	'type'	=>	'news',
+		// 	'obj'		=> array(
+		// 		'Title'	=> '1.独唱的日子',
+		// 		'Description'	=>	'莫非老师分享自己走过单身的心路历程',
+		// 		'PicUrl'	=>	'http://t.cn/RwCdKsq',
+		// 		'Url'	=>	'http://t.cn/RwCrj17',
+		// 		),
+		// 	);
+
+	}
+	// watchdog('ly', '<pre>'.print_r($resources,true), array(), WATCHDOG_NOTICE, 'link');
+	return $resources;
+}
+

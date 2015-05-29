@@ -1,0 +1,80 @@
+<?php
+/**
+ * hook_rescources_info
+ */
+function mp_ybzx_rescources_info(){
+	$rescources[] = array(
+    'name' => 'ybzx',
+    'desc' =>	'公众号-永不止息共享资源',
+  );
+  return $rescources;
+}
+/**
+ * Hook_wxresources
+ */
+
+		  	// $resources['key_'.$key]= array(
+					// 'type'	=>	'music',
+					// 'obj'		=> array(
+					// 	'title'	=> 'music1001',
+					// 	'desc'	=>	'desc1001',
+					// 	'musicurl'	=>	'http://url.mp3',
+					// 	'hgmusicurl'	=>	'http://url.mp3',
+					// 	),
+					// );
+
+				// $resources['key_'.'default_reply']= array(
+				// 	'type'	=>	'text',
+				// 	'obj'		=> array(
+				// 		'text'	=> 'Thanks for your message!',
+				// 	)
+				// );
+				
+				// $resources['key_'.'1002']= array(
+				// 	'type'	=>	'news',
+				// 	'obj'		=> array(
+				// 		'Title'	=> '1.独唱的日子',
+				// 		'Description'	=>	'莫非老师分享自己走过单身的心路历程',
+				// 		'PicUrl'	=>	'http://t.cn/RwCdKsq',
+				// 		'Url'	=>	'http://t.cn/RwCrj17',
+				// 		),
+				// 	);
+function mp_ybzx_wxresources($resources, $account, $keyword){
+	//TODO： get_all_articles!!!
+	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
+	watchdog('enabled_resources', '<pre>'.print_r($enabled_resources,true), array(), WATCHDOG_NOTICE, 'link');
+  $resources = &drupal_static(__FUNCTION__);
+  if(!isset($resources)){
+  	if(isset($enabled_resources['ybzx']) && $enabled_resources['ybzx']){  		
+			  require_once('ybzx_resources.php');
+		  	$get_ybzx_resources = get_ybzx_resources();
+		  	if(in_array($keyword, array_keys($get_ybzx_resources)))
+		  		$resources['key_'.$keyword]= array(
+					'type'	=>	'music',
+					'obj'		=>  $get_ybzx_resources[$keyword],
+					);
+  	}
+
+	}
+	// watchdog('22', '<pre>'.print_r($resources,true), array(), WATCHDOG_NOTICE, 'link');
+	return $resources;
+}
+
+
+/**
+ * Hook_wxservice_event_alter
+ */
+function mp_ybzx_wxservice_event_alter($weObj){
+
+	$event = $weObj->getRevEvent();
+  if(!$event){
+    break;
+  }
+  else if($event['event']=='subscribe'){
+    $weObj->text(variable_get("wechat_follow_message_".$account->uid, variable_get("wechat_default_message", 'Hi, WeChat!')));
+  }
+  else if($event['event']=='CLICK'){
+    $message = _wechat_menu_default_message($event);
+    $message && $weObj->text($message);
+  }
+}

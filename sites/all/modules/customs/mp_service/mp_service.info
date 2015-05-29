@@ -1,0 +1,3 @@
+name = mp service(Wechat Plus)
+description = Connect Drupal with Wechat.
+core = 7.x

@@ -1,0 +1,6 @@
+name = mp_liangyou
+description = mp resource of liangyou
+core = 7.x
+package = A-DEV
+
+dependencies[] = mp_service

@@ -1,0 +1,6 @@
+name = mp_ybzx
+description = mp resource of ybzx
+core = 7.x
+package = A-DEV
+
+dependencies[] = mp_service
