@@ -66,15 +66,4 @@ function mp_ybzx_wxresources($resources, $account, $keyword){
  */
 function mp_ybzx_wxservice_event_alter($weObj){
 
-	$event = $weObj->getRevEvent();
-  if(!$event){
-    break;
-  }
-  else if($event['event']=='subscribe'){
-    $weObj->text(variable_get("wechat_follow_message_".$account->uid, variable_get("wechat_default_message", 'Hi, WeChat!')));
-  }
-  else if($event['event']=='CLICK'){
-    $message = _wechat_menu_default_message($event);
-    $message && $weObj->text($message);
-  }
 }
