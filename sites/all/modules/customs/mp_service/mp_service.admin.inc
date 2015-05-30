@@ -162,49 +162,16 @@ function _wechat_menu_item($subval){
   return $subelement;
 }
 
-
-/**
- * drupal menu to wechat menu array
- */
-function _wechat_menu_arr(){
-  $menu_tree = menu_build_tree('wechat', array('max_depth'=>2));
-  $menu_arr = array();
-  $menu_arr['button'] = array();
-  foreach($menu_tree as $val){
-    if($val['link']['hidden']){
-      continue;
-    }
-    $element = array();
-    $element['name'] = $val['link']['link_title'];
-    $element['sub_button'] = array();
-    if(!empty($val['below'])){
-      foreach($val['below'] as $subval){
-        if($subval['link']['hidden']){
-          continue;
-        }
-        $element['sub_button'][] = _wechat_menu_item($subval);
-      }
-    }
-    if(empty($element['sub_button'])){
-      unset($element['sub_button']);
-      $element = _wechat_menu_item($val);
-    }
-    $menu_arr['button'][] = $element;
-  }
-  return $menu_arr;
-}
-
-
 /**
  * update wechat menu
  */
 function wechat_admin_update_menu_submit($form, &$form_state){
-  $menu_arr = _wechat_menu_arr();
+  $menu_arr = _mp_new_menu();
   if(empty($menu_arr['button'])){
     drupal_set_message('Empty WeChat Menu', 'error');
   }
   else{
-	  $weObj = _wechat_init_obj();
+	  $weObj = _mp_service_init_wechat($account);
     if($weObj->createMenu($menu_arr))
   	{
       drupal_set_message('Update menu success.');
@@ -216,3 +183,46 @@ function wechat_admin_update_menu_submit($form, &$form_state){
   return;
 }
 
+
+
+function _mp_new_menu(){
+  $bid = 18;  
+  $node = node_load($bid);
+  $mlid = $node->book['mlid'];//510
+  $query = db_select('menu_links', 'ml', array('fetch' => PDO::FETCH_ASSOC));
+  // $query->fields('ml');
+  // $query->addField('ml', 'link_title', 'title');
+  $query->addField('ml', 'link_path', 'path');
+  $query->addField('ml', 'depth', 'depth');
+  $query->addField('ml', 'mlid', 'mlid');
+  $query->addField('ml', 'plid', 'plid');
+  // $query->addField('ml', 'has_children', 'has_children');
+  $query->condition('ml.p1',$mlid);
+  $query->condition('ml.depth', 1, '!=');
+  $result = $query->execute()->fetchAll();
+
+  // dpm($result);
+  $mp_menu = array();
+  foreach ($result as $key => $item) {
+    $nid = str_replace('node/', '', $item['path']);
+    $node = node_load($nid);
+    if($item['depth'] == 2){
+      $mp_menu[$item['mlid']] = array(
+        'type' => $node->field_wechate_menu_type[LANGUAGE_NONE]['0']['value'],
+        'name' => $node->title,
+        'key' => $node->field_wechat_key_url[LANGUAGE_NONE]['0']['value'],
+      );
+    }       
+    if($item['depth'] == 3){
+      $mp_menu[$item['plid']]['sub_button'][]= array(
+        'type' => $node->field_wechate_menu_type[LANGUAGE_NONE]['0']['value'],
+        'name' => $node->title,
+        'key' => $node->field_wechat_key_url[LANGUAGE_NONE]['0']['value'],
+      );
+    }
+  }
+  $newmenu = array(
+    'button' => $mp_menu,
+  );
+      return $newmenu;   
+}

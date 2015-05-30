@@ -1,0 +1,60 @@
+<?php
+/**
+ * hook_rescources_info
+ */
+function mp_fm_rescources_info(){
+	$rescources[] = array(
+    'name' => 'lizhi',
+    'desc' =>	'荔枝FM音频资源【800】',
+  );
+	$rescources[] = array(
+    'name' => 'xmly',
+    'desc' =>	'喜马拉雅音频资源【800】',
+  );
+  $rescources[] = array(
+    'name' => 'estory',
+    'desc' => '英语故事屋【900】',
+  );
+  return $rescources;
+}
+/**
+ * Hook_wxresources
+ */
+function mp_fm_wxresources($resources, $account, $keyword){
+	//TODO： get_all_articles!!!
+	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
+	watchdog('enabled_resources', '<pre>'.print_r($enabled_resources,true), array(), WATCHDOG_NOTICE, 'link');
+  $resources = &drupal_static(__FUNCTION__);
+  if(!isset($resources)){
+  	if(isset($enabled_resources['ybzx']) && $enabled_resources['ybzx']){  		
+			  require_once('ybzx_resources.php');
+		  	$get_ybzx_resources = get_ybzx_resources();
+		  	if(in_array($keyword, array_keys($get_ybzx_resources)))
+		  		$resources['key_'.$keyword]= array(
+					'type'	=>	'music',
+					'obj'		=>  $get_ybzx_resources[$keyword],
+					);
+  	}
+
+	}
+	// watchdog('22', '<pre>'.print_r($resources,true), array(), WATCHDOG_NOTICE, 'link');
+	return $resources;
+}
+
+/**
+ * Hook_wxservice_event_alter
+ */
+function mp_ybzx_wxservice_event_alter($weObj){
+
+	$event = $weObj->getRevEvent();
+  if(!$event){
+    break;
+  }
+  else if($event['event']=='subscribe'){
+    $weObj->text(variable_get("wechat_follow_message_".$account->uid, variable_get("wechat_default_message", 'Hi, WeChat!')));
+  }
+  else if($event['event']=='CLICK'){
+    $message = _wechat_menu_default_message($event);
+    $message && $weObj->text($message);
+  }
+}

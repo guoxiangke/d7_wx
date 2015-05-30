@@ -6,7 +6,8 @@
 function mp_service_callback($account){
   $weObj = _mp_service_init_wechat($account);
   $weObj->valid();
-
+  // $menu = $weObj->getMenu();
+  // watchdog('menu', '<pre>'.print_r($menu,true), array(), WATCHDOG_NOTICE, 'link');
   // watchdog('wechat_plus_pages', '<pre>'.print_r($weObj->getRev(),true), array(), WATCHDOG_NOTICE, 'link');
 
   // TODO： history of wx msg.

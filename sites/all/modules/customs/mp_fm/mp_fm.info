@@ -1,0 +1,6 @@
+name = mp_fm
+description = mp resource of lizhi & xmly
+core = 7.x
+package = A-DEV
+
+dependencies[] = mp_service
