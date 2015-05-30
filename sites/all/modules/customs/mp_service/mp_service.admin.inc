@@ -222,8 +222,12 @@ function _mp_new_menu(){
       );
     }
   }
+  $new_menu = array();
+  foreach ($mp_menu as $key => $value) {
+    $new_menu[] = $value;
+  }
   $newmenu = array(
-    'button' => $mp_menu,
+    'button' => $new_menu,
   );
       return $newmenu;   
 }
