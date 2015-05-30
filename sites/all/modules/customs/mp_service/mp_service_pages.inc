@@ -51,14 +51,10 @@ function _mp_service_process_event($weObj,$account){
   // }
 	//add default behavior
   if($event['event']=='subscribe'){
-    $weObj->text(variable_get("wechat_follow_message_".$account->uid, variable_get("wechat_default_message", 'Thanks for your subscribe!')));
+    $weObj->text(variable_get("wechat_follow_message_".$account->uid, 'Thanks for your subscribe!'));
   }else{
-
-    $menu = $weObj->getMenu();
-    watchdog('menu', '<pre>'.print_r($menu,true), array(), WATCHDOG_NOTICE, 'link');
-
-    watchdog('event', $event['event'], array(), WATCHDOG_NOTICE, 'link');
-    watchdog('event', $event['key'], array(), WATCHDOG_NOTICE, 'link');
+    // $menu = $weObj->getMenu();
+    // watchdog('menu', '<pre>'.print_r($menu,true), array(), WATCHDOG_NOTICE, 'link');
   	mp_service_keyword_response($weObj,$event['key'],$account);
   }
 }
