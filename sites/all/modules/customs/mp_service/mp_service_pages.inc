@@ -44,15 +44,18 @@ function _mp_service_process_event($weObj,$account){
 	$event = $weObj->getRevEvent();
   if(!$event){
     break;
-  }else{
-    $message = _wechat_menu_default_message($event);
-    $message && $weObj->text($message);
   }
+  // else{
+  //   $message = _wechat_menu_default_message($event);
+  //   $message && $weObj->text($message);
+  // }
 	//add default behavior
   if($event['event']=='subscribe'){
     $weObj->text(variable_get("wechat_follow_message_".$account->uid, variable_get("wechat_default_message", 'Thanks for your subscribe!')));
   }else{
-  	mp_service_keyword_response($weObj,$event['event'],$account);
+    watchdog('event', $event['event'], array(), WATCHDOG_NOTICE, 'link');
+    watchdog('event', $event['key'], array(), WATCHDOG_NOTICE, 'link');
+  	mp_service_keyword_response($weObj,$event['key'],$account);
   }
 }
 

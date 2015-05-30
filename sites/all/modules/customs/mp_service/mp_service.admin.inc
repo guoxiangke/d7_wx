@@ -229,5 +229,5 @@ function _mp_new_menu(){
   $newmenu = array(
     'button' => $new_menu,
   );
-      return $newmenu;   
+  return $newmenu;   
 }
