@@ -171,7 +171,8 @@ function wechat_admin_update_menu_submit($form, &$form_state){
     drupal_set_message('Empty WeChat Menu', 'error');
   }
   else{
-	  $weObj = _mp_service_init_wechat($account);
+    global $user;
+	  $weObj = _mp_service_init_wechat($user);
     if($weObj->createMenu($menu_arr))
   	{
       drupal_set_message('Update menu success.');
