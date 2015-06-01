@@ -23,7 +23,6 @@ function mp_fm_rescources_info(){
 function mp_fm_wxresources($resources, $account, $keyword){
 	//TODO： get_all_articles!!!
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
-	watchdog('enabled_resources', '<pre>'.print_r($enabled_resources,true), array(), WATCHDOG_NOTICE, 'link');
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
   	if(isset($enabled_resources['ybzx']) && $enabled_resources['ybzx']){  		

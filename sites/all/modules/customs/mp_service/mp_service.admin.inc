@@ -40,6 +40,12 @@ function mp_service_settings_form(){
     '#default_value' => variable_get('mp_config_appaes_'.$user->uid, ""),
     '#required' => true,
   );
+  $form['config']['config_certified'] = array(
+    '#type' => 'checkbox',
+    '#title' => '已认证',
+    '#description' => t('Account certified'),
+    '#default_value' => variable_get('mp_config_certified_'.$user->uid, ""),    
+  );
   $form['config']['submit_config'] = array(
     '#type' => 'submit',
     '#value' => t('save'),
@@ -131,6 +137,7 @@ function wechat_admin_config_submit($form, &$form_state){
   variable_set('mp_config_appid_'.$user->uid, $form_state['values']['config_appid']);
   variable_set('mp_config_appsecret_'.$user->uid, $form_state['values']['config_appsecret']);
   variable_set('mp_config_appaes_'.$user->uid, $form_state['values']['config_appaes']);
+  variable_set('mp_config_certified_'.$user->uid, $form_state['values']['config_certified']); 
 
 }
 

@@ -61,6 +61,9 @@ function _mp_service_init_wechat($account){
  */
 	
 function mp_service_keyword_response($weObj,$keyword,$account) {
+  if (strlen($keyword) > 10 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
+    $weObj->transfer_customer_service()->reply();
+  }
   $wxresources = array();  //TODO： get all (enabled)resources/node of account.
   $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword);
 

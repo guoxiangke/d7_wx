@@ -23,6 +23,14 @@ function mp_liangyou_rescources_info(){
     'name' => '400',
     'desc' =>	'圣经广播网【400】',
   );
+	$rescources[] = array(
+    'name' => '1225',
+    'desc' =>	'耶稣全貌【1225】',
+  );
+	$rescources[] = array(
+    'name' => 'swty',
+    'desc' =>	'山外田园【世外桃源】【swty】[ty]',
+  );
   return $rescources;
 }
 
@@ -186,6 +194,51 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		 	}
     }
 
+ 		if(isset($enabled_resources['1225']) && $enabled_resources['1225']){
+	    //122501 http://www.ysqm.org/stream/ch-
+	    if(substr($keyword, 0,4) == '1225' && strlen($keyword) ==6 ) {
+	      require_once('ysqm.inc');
+	      $str = substr($keyword, 4,6);
+	      $str = str_pad($str%22,2,"0",STR_PAD_LEFT);
+	      $ysqm = get_ysqm();
+	      $musicurl = 'http://bibles.qiniudn.com/ysqm/ch-'.$str.'.mp3';
+	      $title = $ysqm[(int)$str];
+	      $desc = '公众号:永不止息 圣诞特辑《耶稣全貌》';
+	      $resources['key_'.$keyword]= array(
+					'type'	=>	'music',
+					'obj'		=> array(
+						'title'	=> $title,
+						'desc'	=>	$desc,
+						'musicurl'	=>	$musicurl,
+						'hgmusicurl'	=>	$musicurl,
+					),
+				);
+	    }
+	    //122501 http://www.ysqm.org/stream/ch-
+	    if($keyword == '1225') {
+	      $str = str_pad(date('d')%22,2,"0",STR_PAD_LEFT);
+	      require_once('ysqm.inc');
+	      $ysqm = get_ysqm();
+	      $title = $ysqm[(int)$str];
+	      $musicurl = 'http://bibles.qiniudn.com/ysqm/ch-'.$str.'.mp3';        
+	      $desc = '公众号:永不止息 《耶稣全貌》';
+	      $hgmusicurl = $musicurl;
+	      $resources['key_'.$keyword]= array(
+					'type'	=>	'music',
+					'obj'		=> array(
+						'title'	=> $title,
+						'desc'	=>	$desc,
+						'musicurl'	=>	$musicurl,
+						'hgmusicurl'	=>	$musicurl,
+					),
+				);
+	    }
+ 		}
+
+ 		if(isset($enabled_resources['swty']) && $enabled_resources['swty']){
+ 			require_once('swty.inc');
+ 			$resources = wx_swty_resource_response($keyword);
+ 		}
 		// $resources['key_'.'1002']= array(
 		// 	'type'	=>	'news',
 		// 	'obj'		=> array(
