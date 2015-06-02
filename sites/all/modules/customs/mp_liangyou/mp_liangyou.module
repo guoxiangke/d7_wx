@@ -29,7 +29,7 @@ function mp_liangyou_rescources_info(){
   );
 	$rescources[] = array(
     'name' => 'swty',
-    'desc' =>	'山外田园【世外桃源】【swty】[ty]',
+    'desc' =>	'【世外桃源】【swty】【ty】',
   );
   return $rescources;
 }
@@ -236,8 +236,10 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
  		}
 
  		if(isset($enabled_resources['swty']) && $enabled_resources['swty']){
- 			require_once('swty.inc');
- 			$resources = wx_swty_resource_response($keyword);
+ 			if(substr($keyword, 0,2) == 'ty' || substr($keyword, 0,4) == 'swty' || $keyword == '世外桃源') {
+	 			require_once('swty.inc');
+	 			$resources['key_'.$keyword] = wx_swty_resource_response($keyword);
+	 		}
  		}
 		// $resources['key_'.'1002']= array(
 		// 	'type'	=>	'news',

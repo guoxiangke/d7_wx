@@ -9,3 +9,4 @@ sites/all/modules/customs/wechat/
 sites/all/modules/customs/wechatdemo/
 *.txt
 *.md
+sftp-config.json

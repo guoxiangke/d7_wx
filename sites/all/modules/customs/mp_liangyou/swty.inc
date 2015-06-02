@@ -7,7 +7,7 @@
 function wx_swty_resource_response($keyword) {
 	watchdog('swty', $keyword, array(), WATCHDOG_NOTICE, 'link');
 	$offset = 0;
-	if(substr($keyword, 0,2) == 'ty' || substr($keyword, 0,4) == 'swty' || $keyword == '世外桃源') {
+	/////
 		if(strlen($keyword)>2) {
           $offset = substr($keyword, 2,1);
           if(!is_numeric($offset)) $offset = 0;
@@ -48,7 +48,7 @@ function wx_swty_resource_response($keyword) {
       $hgmusicurl = $musicurl;
       // $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();
       // exit;
-      $resources['key_'.$keyword]= array(
+      $resources= array(
 			'type'	=>	'music',
 			'obj'		=> array(
 				'title'	=> $title,
@@ -59,5 +59,5 @@ function wx_swty_resource_response($keyword) {
 		);
       watchdog('swty', '$resources<per>'.print_r($resources,true), array(), WATCHDOG_NOTICE, 'link');
     return $resources;
-	}
+  /////
 }
