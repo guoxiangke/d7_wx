@@ -47,16 +47,28 @@ function mp_ybzx_wxresources($resources, $account, $keyword){
   if(!isset($resources)){
   	if(isset($enabled_resources['ybzx']) && $enabled_resources['ybzx']){  		
 			  require_once('ybzx_resources.php');
-		  	$get_ybzx_resources = get_ybzx_resources();
-		  	if(in_array($keyword, array_keys($get_ybzx_resources)))
+		  	//10010
+		  	$check_keyword = substr($keyword, 0, 4);
+				$get_ybzx_resources = get_ybzx_resources();
+		  	if(in_array($check_keyword, array_keys($get_ybzx_resources))){
 		  		$resources['key_'.$keyword]= array(
 					'type'	=>	'music',
 					'obj'		=>  $get_ybzx_resources[$keyword],
 					);
-  	}
+					if (strlen($keyword) == 5) {
+				  	$news = get_ybzx_dstw();
+						$index = substr($keyword, 3, 1) - 1;
+						watchdog($keyword, $index, array(), WATCHDOG_NOTICE, 'link');
+						$resources['key_'.$keyword]= array(
+							'type'	=>	'news',
+							'obj'		=>  array($news[$index]),
+						);
+					}
 
+		  	}
+  	}
+  	
 	}
-	// watchdog('22', '<pre>'.print_r($resources,true), array(), WATCHDOG_NOTICE, 'link');
 	return $resources;
 }
 

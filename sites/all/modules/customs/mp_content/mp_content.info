@@ -1,0 +1,5 @@
+name = mp_content
+description = mp resource of drupal nodes
+core = 7.x
+package = A-DEV
+dependencies[] = mp_service

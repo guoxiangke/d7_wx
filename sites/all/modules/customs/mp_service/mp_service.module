@@ -81,7 +81,7 @@ function mp_service_keyword_response($weObj,$keyword,$account) {
       $weObj->text($wxresources[$keyword]['obj']['text']);
       break;    
     case 'news': 
-      $new = array($wxresources[$keyword]['obj']);      
+      $new = $wxresources[$keyword]['obj'];
       $weObj->news($new);
       break;
   }

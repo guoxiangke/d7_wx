@@ -5,55 +5,84 @@
 function mp_fm_rescources_info(){
 	$rescources[] = array(
     'name' => 'lizhi',
-    'desc' =>	'荔枝FM音频资源【800】',
+    'desc' =>	'delete！荔枝FM音频资源【700】',
   );
 	$rescources[] = array(
     'name' => 'xmly',
-    'desc' =>	'喜马拉雅音频资源【800】',
+    'desc' =>	'delete！喜马拉雅音频资源【800】',
   );
   $rescources[] = array(
     'name' => 'estory',
     'desc' => '英语故事屋【900】',
   );
+  $nodes = dale_get_mp_nodes('audio_resource', 100);
+  foreach ($nodes as $key => $node) {    
+    $rescources[] = array(
+      'name' => '700' . $node->nid,
+      'desc' => $node->title.'【700'. $node->nid .'】',
+    );
+  }
   return $rescources;
 }
 /**
  * Hook_wxresources
  */
 function mp_fm_wxresources($resources, $account, $keyword){
-	//TODO： get_all_articles!!!
+  // 70033
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
-  	if(isset($enabled_resources['ybzx']) && $enabled_resources['ybzx']){  		
-			  require_once('ybzx_resources.php');
-		  	$get_ybzx_resources = get_ybzx_resources();
-		  	if(in_array($keyword, array_keys($get_ybzx_resources)))
-		  		$resources['key_'.$keyword]= array(
-					'type'	=>	'music',
-					'obj'		=>  $get_ybzx_resources[$keyword],
-					);
+    $temp_key = substr($keyword, 0, 3);
+    if($temp_key != '700') return;
+  	if(isset($enabled_resources[$keyword]) && $enabled_resources[$keyword]){
+      $nid = substr($keyword, 3);
+      $node = node_load($nid);
+      $html = file_get_contents($node->field_link[LANGUAGE_NONE][0]['value']);//'http://www.ximalaya.com/22873240/album/348894'
+      preg_match('/sound_ids=".+/', $html,$matches);
+      $html = $matches[0];
+      $html = str_replace('sound_ids="', '', $html );
+      $html = str_replace('">', '', $html );
+      $sound_ids = explode(',', $html);
+      $sound_ids = array_reverse($sound_ids); 
+      $index = (date('z')-13) % count($sound_ids);
+      //每天2个！上午，下午
+      if (date('A') == 'PM') {
+        // $index++;
+      }
+      watchdog('mp_fm', $index, array(), WATCHDOG_NOTICE, 'link');
+      $sound_id = trim($sound_ids[$index]);
+      $json = file_get_contents('http://www.ximalaya.com/tracks/'.$sound_id.'.json');
+      $json = json_decode($json);
+      $desc = '公众号:永不止息 更多节目请回复【xmly】';
+      $resources['key_'.$keyword]= array(
+        'type'  =>  'music',
+        'obj'   => array(
+          'title' => $json->title,
+          'desc'  =>  $json->intro,
+          'musicurl'  =>  $json->play_path_32,
+          'hgmusicurl'  =>  $json->play_path_64,
+        ),
+      );
   	}
 
 	}
-	// watchdog('22', '<pre>'.print_r($resources,true), array(), WATCHDOG_NOTICE, 'link');
 	return $resources;
 }
 
 /**
  * Hook_wxservice_event_alter
  */
-function mp_ybzx_wxservice_event_alter($weObj){
+function mp_fm_wxservice_event_alter($weObj){
 
 	$event = $weObj->getRevEvent();
   if(!$event){
     break;
   }
   else if($event['event']=='subscribe'){
-    $weObj->text(variable_get("wechat_follow_message_".$account->uid, variable_get("wechat_default_message", 'Hi, WeChat!')));
+    // $weObj->text(variable_get("wechat_follow_message_".$account->uid, variable_get("wechat_default_message", 'Hi, WeChat!')));
   }
   else if($event['event']=='CLICK'){
-    $message = _wechat_menu_default_message($event);
-    $message && $weObj->text($message);
+    // $message = _wechat_menu_default_message($event);
+    // $message && $weObj->text($message);
   }
 }

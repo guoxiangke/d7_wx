@@ -57,7 +57,7 @@ function wx_swty_resource_response($keyword) {
 				'hgmusicurl'	=>	$musicurl,
 			),
 		);
-      watchdog('swty', '$resources<per>'.print_r($resources,true), array(), WATCHDOG_NOTICE, 'link');
+      // watchdog('swty', '$resources<per>'.print_r($resources,true), array(), WATCHDOG_NOTICE, 'link');
     return $resources;
   /////
 }
