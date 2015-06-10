@@ -91,7 +91,13 @@
      </div>
    </div>
 <?php endif; ?>
-
+<div id="wx-header" class="row-fluid ">
+    <div class="container">
+     <?php print render($wx_date); ?>&nbsp;&nbsp;
+     <?php print render($wx_term); ?>&nbsp;&nbsp;
+     <?php print l('永不止息','http://t.cn/RA1nOGY'); ?>
+   </div>
+</div>
 
 <div id="main" class="clearfix main" role="main">
   <div class="container">

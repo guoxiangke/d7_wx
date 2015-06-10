@@ -5,6 +5,7 @@ core = 7.x
 version = 1.0
 
 stylesheets[all][] = css/style.css
+stylesheets[all][] = css/media_query.css
 scripts[] = js/script.js
 
 regions[admin_shortcuts] = Admin Shortcuts (Authenticated Users Only)
