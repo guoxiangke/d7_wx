@@ -1,4 +1,0 @@
-name = BOS 
-description = BaiduBosStreamWrapper
-package = a-DEV
-files[] = bos_streams.inc

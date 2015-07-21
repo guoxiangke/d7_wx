@@ -5,11 +5,11 @@
 function mp_liangyou_rescources_info(){
 	$rescources[] = array(
     'name' => 'ly',
-    'desc' =>	'良友广播-知音站线路【ly】',
+    'desc' =>	'良友广播【ly】',
   );
 	$rescources[] = array(
     'name' => 'ly2',
-    'desc' =>	'良友广播-同行线路【600】',
+    'desc' =>	'良友广播【600】',
   );
 	$rescources[] = array(
     'name' => '365',
@@ -29,7 +29,7 @@ function mp_liangyou_rescources_info(){
   );
 	$rescources[] = array(
     'name' => 'swty',
-    'desc' =>	'【世外桃源】【swty】【ty】',
+    'desc' =>	'世外桃源【ty】',
   );
   return $rescources;
 }
@@ -64,9 +64,21 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		      $offset = substr($keyword, 2,1);
 		      if(!is_numeric($offset)) $offset = 0;
 		    }
+		    //se->bf
+		    if ($key=='se' && $offset == 0 && date('N')>5) {
+		    	$key = 'bf';
+		    }
+		    if ($key=='bf' && $offset == 0 && date('N')<=5) {
+		    	$keyword = '416';
+		    	return mp_bbn_response($keyword,$key);
+		    }
+		    //6,7播出的节目
+		    if ($radios_list[$key]['day']=='6' && $offset == 0 && date('N')<=5) {
+		    	$offset = date('N')%2+1;
+		    }
 		    $string = date('ymd',time()-$offset*24*60*60); 
-		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
 		    $desc = '公众号:永不止息 更多节目请回复【ly】';
+		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
 		  	$resources['key_'.$keyword]= array(
 					'type'	=>	'music',
 					'obj'		=> array(
@@ -86,7 +98,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				$resources['key_'.$keyword]= array(
 					'type'	=>	'text',
 					'obj'		=> array(
-						'text'	=> ly_stream_menu(),
+					'text'	=> ly_stream_menu(),
 					)
 				);
 		 	}
@@ -99,7 +111,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		     	$resources['key_'.$keyword] = array(
 						'type'	=>	'text',
 						'obj'		=> array(
-							'text'	=> ly_stream_menu(),
+						'text'	=> ly_stream_menu(),
 						)
 					);
 		    }else{	    	
@@ -111,10 +123,10 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			    $resources['key_'.$before_keyword]= array(
 						'type'	=>	'music',
 						'obj'		=> array(
-							'title'	=> $title,
-							'desc'	=>	$desc,
-							'musicurl'	=>	$musicurl,
-							'hgmusicurl'	=>	$musicurl,
+						'title'	=> $title,
+						'desc'	=>	$desc,
+						'musicurl'	=>	$musicurl,
+						'hgmusicurl'	=>	$musicurl,
 						),
 					);
 		    }
@@ -123,13 +135,13 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	  //523
 	  if(isset($enabled_resources['523']) && $enabled_resources['523'])
 	 	if($keyword == '523'){
-      $title = '在天父怀中';
-      $str = date('md');
-      //http://audio1.liangyou.net/files/media/ly_daily/2013Daily_130114.mp3
-      $musicurl = 'http://inhim.qiniudn.com/2013Daily_13'.$str.'.mp3';
-      $desc = "点击►收听 服务号:永不止息 每日更新 ".date('md');
-      $url = $musicurl;
-	    $resources['key_'.$keyword]= array(
+	      $title = '在天父怀中';
+	      $str = date('md');
+	      //http://audio1.liangyou.net/files/media/ly_daily/2013Daily_130114.mp3
+	      $musicurl = 'http://inhim.qiniudn.com/2013Daily_13'.$str.'.mp3';
+	      $desc = "点击►收听 服务号:永不止息 每日更新 ".date('md');
+	      $url = $musicurl;
+	      $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
 				'obj'		=> array(
 					'title'	=> $title,
@@ -169,29 +181,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
     //圣经广播网 400-435
     if(isset($enabled_resources['400']) && $enabled_resources['400'])
     if(is_numeric($keyword) && ($keyword>=400 && $keyword<=435) ) {
-    	require_once('bbn.inc');
-		 	if($keyword == '400'){
-				$resources['key_'.$keyword]= array(
-					'type'	=>	'text',
-					'obj'		=> array(
-						'text'	=> bbn_audio_menu(),
-					)
-				);
-		 	}else{
-	      $musicurl = bbn_url($keyword);
-	      $bbns = bbn_audio_list();
-	      $title = $bbns[$keyword]['title'];
-	      $desc = '点击►收听 公众号:永不止息 '.truncate_utf8($bbns[$keyword]['description'], 12, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
-		    $resources['key_'.$keyword]= array(
-					'type'	=>	'music',
-					'obj'		=> array(
-						'title'	=> $title,
-						'desc'	=>	$desc,
-						'musicurl'	=>	$musicurl,
-						'hgmusicurl'	=>	$musicurl,
-					),
-				);
-		 	}
+    	$resources = mp_bbn_response($keyword);
     }
 
  		if(isset($enabled_resources['1225']) && $enabled_resources['1225']){
@@ -241,18 +231,41 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	 			$resources['key_'.$keyword] = wx_swty_resource_response($keyword);
 	 		}
  		}
-		// $resources['key_'.'1002']= array(
-		// 	'type'	=>	'news',
-		// 	'obj'		=> array(
-		// 		'Title'	=> '1.独唱的日子',
-		// 		'Description'	=>	'莫非老师分享自己走过单身的心路历程',
-		// 		'PicUrl'	=>	'http://t.cn/RwCdKsq',
-		// 		'Url'	=>	'http://t.cn/RwCrj17',
-		// 		),
-		// 	);
 
 	}
-	// watchdog('ly', '<pre>'.print_r($resources,true), array(), WATCHDOG_NOTICE, 'link');
 	return $resources;
 }
 
+/**
+ * $change_keyword = return key!
+ */
+function mp_bbn_response($keyword,$change_keyword=NULL){
+	$resources = array();
+	if (!$change_keyword) {
+		$change_keyword = $keyword;
+	}
+	require_once('bbn.inc');
+ 	if($keyword == '400'){
+		$resources['key_'.$change_keyword]= array(
+			'type'	=>	'text',
+			'obj'		=> array(
+			'text'	=> bbn_audio_menu(),
+			)
+		);
+ 	}else{
+		$musicurl = bbn_url($keyword);
+		$bbns = bbn_audio_list();
+		$title = $bbns[$keyword]['title'];
+		$desc = '点击►收听 公众号:永不止息 '.truncate_utf8($bbns[$keyword]['description'], 12, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
+		$resources['key_'.$change_keyword]= array(
+			'type'	=>	'music',
+			'obj'		=> array(
+				'title'	=> $title,
+				'desc'	=>	$desc,
+				'musicurl'	=>	$musicurl,
+				'hgmusicurl'	=>	$musicurl,
+			),
+		);
+	}
+	return $resources;
+}

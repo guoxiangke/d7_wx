@@ -3,18 +3,6 @@
  * hook_rescources_info
  */
 function mp_fm_rescources_info(){
-	$rescources[] = array(
-    'name' => 'lizhi',
-    'desc' =>	'delete！荔枝FM音频资源【700】',
-  );
-	$rescources[] = array(
-    'name' => 'xmly',
-    'desc' =>	'delete！喜马拉雅音频资源【800】',
-  );
-  $rescources[] = array(
-    'name' => 'estory',
-    'desc' => '英语故事屋【900】',
-  );
   $nodes = dale_get_mp_nodes('audio_resource', 100);
   foreach ($nodes as $key => $node) {    
     $rescources[] = array(
@@ -37,35 +25,69 @@ function mp_fm_wxresources($resources, $account, $keyword){
   	if(isset($enabled_resources[$keyword]) && $enabled_resources[$keyword]){
       $nid = substr($keyword, 3);
       $node = node_load($nid);
-      $html = file_get_contents($node->field_link[LANGUAGE_NONE][0]['value']);//'http://www.ximalaya.com/22873240/album/348894'
-      preg_match('/sound_ids=".+/', $html,$matches);
-      $html = $matches[0];
-      $html = str_replace('sound_ids="', '', $html );
-      $html = str_replace('">', '', $html );
-      $sound_ids = explode(',', $html);
-      $sound_ids = array_reverse($sound_ids); 
-      $index = (date('z')-13) % count($sound_ids);
-      //每天2个！上午，下午
-      if (date('A') == 'PM') {
-        // $index++;
-      }
-      watchdog('mp_fm', $index, array(), WATCHDOG_NOTICE, 'link');
-      $sound_id = trim($sound_ids[$index]);
-      $json = file_get_contents('http://www.ximalaya.com/tracks/'.$sound_id.'.json');
-      $json = json_decode($json);
-      $desc = '公众号:永不止息 更多节目请回复【xmly】';
-      $resources['key_'.$keyword]= array(
-        'type'  =>  'music',
-        'obj'   => array(
-          'title' => $json->title,
-          'desc'  =>  $json->intro,
-          'musicurl'  =>  $json->play_path_32,
-          'hgmusicurl'  =>  $json->play_path_64,
-        ),
-      );
-  	}
 
-	}
+      if($node->field_audio_type[LANGUAGE_NONE][0]['value'] == 'xmly'){
+        $html = file_get_contents($node->field_link[LANGUAGE_NONE][0]['value']);//'http://www.ximalaya.com/22873240/album/348894'
+        preg_match('/sound_ids=".+/', $html,$matches);
+        $html = $matches[0];
+        $html = str_replace('sound_ids="', '', $html );
+        $html = str_replace('">', '', $html );
+        $sound_ids = explode(',', $html);
+        $sound_ids = array_reverse($sound_ids); 
+        
+        if ($keyword == '70037') {//今夜心未眠zhi港口之声
+          $index = count($sound_ids)-1;
+        }elseif ($keyword == '70033') {//I关怀zhi健康节目
+          $index = (date('z')-11) % count($sound_ids);
+        }else{
+          $index = (date('z')) % count($sound_ids); 
+        }
+
+        # code...
+        $offset = 0;
+        $donext = date('s')%2;
+        if ($donext) {
+          $index = (date('z')-$offset) % count($sound_ids);
+        }
+        $sound_id = trim($sound_ids[$index]);
+        $json = file_get_contents('http://www.ximalaya.com/tracks/'.$sound_id.'.json');
+        $json = json_decode($json);
+        $resources['key_'.$keyword]= array(
+          'type'  =>  'music',
+          'obj'   => array(
+            'title' => $json->title,
+            'desc'  =>  $json->intro,
+            'musicurl'  =>  $json->play_path_32,
+            'hgmusicurl'  =>  $json->play_path_64,
+          ),
+        );
+      }
+      //70034
+      if($node->field_audio_type[LANGUAGE_NONE][0]['value'] == 'lizhi'){
+        // $html = file_get_contents($node->field_link[LANGUAGE_NONE][0]['value']);        
+        //http://www.lizhi.fm/api/radio_audios?band=43136&s=0&l=365
+        $html = json_decode($node->body[LANGUAGE_NONE][0]['value']);
+        $sound_ids = array_reverse($html); 
+        $index = (date('z')-17) % count($sound_ids);
+        if (date('i') > 30) {
+          $index++;
+        }
+        $json = $sound_ids[$index];        
+        $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【xmly】';
+        watchdog($index, $keyword, array(), WATCHDOG_NOTICE, 'link');
+        $resources['key_'.$keyword]= array(
+          'type'  =>  'music',
+          'obj'   => array(
+            'title' => $json->name,
+            'desc'  =>  $desc,
+            'musicurl'  =>  $json->url,
+            'hgmusicurl'  =>  $json->url,
+          ),
+        );
+      }
+    }
+
+  }
 	return $resources;
 }
 

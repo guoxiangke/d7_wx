@@ -12,7 +12,7 @@ function liangyou_audio_list(){
 
       'cc' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcji-3b2p30', 'prefix'=>$prefix['32'],'name' =>'空中辅导'),
       'ir' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njchu-3b2ozo', 'name' =>'i-radio爱广播', 'prefix'=>$prefix['31'],'day'=>0),//0
-      'eg' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcjg-3b2p2w', 'name' =>'英语世界', 'prefix'=>$prefix['31'],'day'=>2),//2
+      // 'eg' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcjg-3b2p2w', 'name' =>'英语世界', 'prefix'=>$prefix['31'],'day'=>2),//2
       'gt' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj0-3b2p20', 'name' =>'恩典与真理', 'prefix'=>$prefix['31'],'day'=>0),//0
       'wa' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj3-3b2p26', 'name' =>'天路导向', 'prefix'=>$prefix['31'],'day'=>6),//6,7
       'cwa' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj2-3b2p24', 'name' =>'天路导向（粤）', 'prefix'=>$prefix['31'],'day'=>6),//6,7
@@ -44,42 +44,6 @@ function liangyou_audio_list(){
       'wpb' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcim-3b2p18', 'name' =>'圣乐天地', 'prefix'=>$prefix['32'],'day'=>6),
     );
   return $radios_list;
-}
-
-function liangyou_audio_respond($wechatObj,$keyword,$radios_list)
-{ //bc1
-      $temp_key = substr($keyword, 0,2);
-      if(in_array($temp_key, array_keys($radios_list))) {
-
-        $offset = 0;
-        if(strlen($keyword)>2) {
-          $offset = substr($keyword, 2,1);
-          if(!is_numeric($offset)) $offset = 0;
-          $keyword = substr($keyword, 0,2);
-        }
-  $prefix['31'] = 'http://liangyou2.nissigz.com:15200/';
-  $prefix['32'] = 'http://liangyou.nissigz.com:18100/';
-
-        $title = $radios_list[$keyword]['name'];//'英语世界';
-        $title = "【".$keyword."】".$title;
-        $string = date('ymd',time()-$offset*24*60*60); 
-        $url = $radios_list[$keyword]['prefix'].$keyword.'/'.$keyword.$string.'.mp3';
-        // watchdog('url', $radios_list[$keyword]['prefix'], array(), WATCHDOG_NOTICE, 'link'); 
-        $musicurl = $url;
-        // if(!remote_file_exists($musicurl)){
-        //   $wechatObj->text("对不起，小永发现".$title."还没准备好，请稍后再试[微笑]！")->reply();
-        //   return;
-        // }
-        $week_day = date('N', time());
-        $desc = "公众号:永不止息 ".date("n月d日-周").$week_day;
-        if($offset) {
-          $desc = "公众号:永不止息 历史节目-".$offset;
-        }      
-        $hgmusicurl = $musicurl;
-        $wechatObj->music($title, $desc, $musicurl, $hgmusicurl)->reply();exit;
-        exit;
-
-      }
 }
 
 function ly_get_download_urls($key = '',$offday = '0'){
@@ -146,7 +110,6 @@ function ly_get_menu(){
   【eg】英语世界
   【gt】恩典与真理
   【wa】天路导向
-  【cwa】天路导向（粤）
   【bg】普世佳音
   【yu】绝妙当家
   【gv】生活无国界
@@ -169,10 +132,11 @@ function ly_get_menu(){
   【be】真道分解
   【tr】彩虹桥
   【cw】齐来颂扬
-  【wpb】圣乐天地
   ----------------------------------------------
   永不止息，需要有你[抱拳][调皮]';
   // ---------Jesus Love You------------
+  // 【wpb】圣乐天地
+  // 【cwa】天路导向（粤）
 }
 
 

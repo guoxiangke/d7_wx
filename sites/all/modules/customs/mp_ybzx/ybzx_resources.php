@@ -56,6 +56,37 @@ function get_ybzx_resources(){
 			'title' => '单身老实说',
 			'desc'	=> $desc,			
 			),
+		//1011-1015 mike牧师2013 十渡单身营会 录音
+		'1011'=>array(
+			'type' => 'audio',
+			'musicurl'	=>'http://fm77.u.qiniudn.com/2013/10du/2013100201%E5%A6%82%E4%BD%95%E6%98%8E%E7%99%BD%E7%A5%9E%E7%9A%84%E6%97%A8%E6%84%8F%E4%B8%8E%E6%8B%A9%E5%81%B6%E6%9D%A1%E4%BB%B6.mp3',
+			'title' => '单身者的福音 1/5',
+			'desc'	=> '单身营会 介绍误区&安全感',				
+			),
+		'1012'=>array(
+			'type' => 'audio',
+			'musicurl'	=>'http://fm77.u.qiniudn.com/2013/10du/2013100301%E5%A6%82%E4%BD%95%E6%98%8E%E7%99%BD%E7%A5%9E%E7%9A%84%E6%97%A8%E6%84%8F%E4%B8%8E%E6%8B%A9%E5%81%B6%E6%9D%A1%E4%BB%B6.mp3',
+			'title' => '单身营会 2/5',
+			'desc'	=> '如何明白神的旨意与择偶条件1',
+			),
+		'1013'=>array(
+			'type' => 'audio',
+			'musicurl'	=>'http://fm77.u.qiniudn.com/2013/10du/2013100302%E5%A6%82%E4%BD%95%E6%98%8E%E7%99%BD%E7%A5%9E%E7%9A%84%E6%97%A8%E6%84%8F%E4%B8%8E%E6%8B%A9%E5%81%B6%E6%9D%A1%E4%BB%B6(1).MP3',
+			'title' => '单身营会 3/5',
+			'desc'	=> '如何明白神的旨意与择偶条件2',
+			),
+		'1014'=>array(
+			'type' => 'audio',
+			'musicurl'	=>'http://fm77.u.qiniudn.com/2013/10du/2013100302%E5%A6%82%E4%BD%95%E6%98%8E%E7%99%BD%E7%A5%9E%E7%9A%84%E6%97%A8%E6%84%8F%E4%B8%8E%E6%8B%A9%E5%81%B6%E6%9D%A1%E4%BB%B6.MP3',
+			'title' => '单身营会 4/5',
+			'desc'	=> '如何明白神的旨意与择偶条件3',
+			),
+		'1015'=>array(
+			'type' => 'audio',
+			'musicurl'	=>'http://fm77.u.qiniudn.com/2013/10du/2013100303%E5%A6%82%E4%BD%95%E6%98%8E%E7%99%BD%E7%A5%9E%E7%9A%84%E6%97%A8%E6%84%8F%E4%B8%8E%E6%8B%A9%E5%81%B6%E6%9D%A1%E4%BB%B6.MP3',
+			'title' => '单身营会 5/5',
+			'desc'	=> '如何明白神的旨意与择偶条件4',
+			),
 
 		);
 }

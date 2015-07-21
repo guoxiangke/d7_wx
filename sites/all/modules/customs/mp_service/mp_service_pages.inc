@@ -30,14 +30,25 @@ function mp_service_callback($account){
 }
 
 function _mp_service_process_text($weObj,$account){
-  //default behavior if not hook wxresources_alter!
-  if(!is_array($weObj->Message(''))){
-    $weObj->text(variable_get('wechat_default_message_'.$account->uid, "hello, I'm wechat"));
-  }
-  $keyword = $weObj->getRevContent();  
 	$keyword = trim($weObj->getRevContent());
+  $keyword = make_semiangle($keyword);
+  $keyword = str_replace('[', '', $keyword);
+  $keyword = str_replace(']', '', $keyword);
+  $keyword = str_replace("'", '', $keyword);
+  $keyword = str_replace('"', '', $keyword);
   $keyword = strtolower($keyword);
   mp_service_keyword_response($weObj,$keyword,$account);
+  //default behavior if not hook wxresources_alter!
+  if(!is_array($weObj->Message(''))){
+    $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
+    if($default_keyword){
+      mp_service_keyword_response($weObj,$default_keyword,$account);
+    }else{
+      $copyright = copyright($account);
+      $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！").$copyright);
+    }
+  }
+
 }
 
 function _mp_service_process_event($weObj,$account){	
@@ -51,11 +62,16 @@ function _mp_service_process_event($weObj,$account){
   // }
 	//add default behavior
   if($event['event']=='subscribe'){
-    $weObj->text(variable_get("wechat_follow_message_".$account->uid, 'Thanks for your subscribe!'));
+    $copyright = copyright($account);
+    $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！').$copyright);
   }else{
     // $menu = $weObj->getMenu();
-    // watchdog('menu', '<pre>'.print_r($menu,true), array(), WATCHDOG_NOTICE, 'link');
-  	mp_service_keyword_response($weObj,$event['key'],$account);
+    if (isset($event['key'])) {
+      mp_service_keyword_response($weObj,$event['key'],$account);
+    }else{
+      watchdog('error221222', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'link');
+
+    }
   }
 }
 
@@ -63,20 +79,19 @@ function _mp_service_process_event($weObj,$account){
  * ****** unstable *****
  * login user
  */
-function wechat_auth(){
+function wechat_auth($mp_account){
   global $user;
-  $weObj = _wechat_init_obj();
+  // $mp_uid = 8;
+  // $mp_account = user_load($mp_uid);
+  $weObj = _mp_service_init_wechat($mp_account);
   $state = isset($_GET['state']) ? $_GET['state'] : 0;
   $onerror = isset($_GET['onerror']) ? $_GET['onerror'] : '';
   $destination = isset($_GET['destination']) ? $_GET['destination'] : '';
   $code = isset($_GET['code']) ? $_GET['code'] : '';
-  // user has logined
-  if($user->uid){
-    drupal_goto($destination);
-  }
   
   // error
   if((!$state) || (!$code)){ // error
+    die('啊哦，出错啦，请告知小永微信：649294139!');
     drupal_goto($onerror);
   }
 
@@ -87,48 +102,61 @@ function wechat_auth(){
   // check if already connectted
   if($curuser = wechat_token_get_user($accessData['openid'])){
     _wechat_user_login($curuser->uid);
-	// todo update user info
+    // todo update user info
     drupal_goto($destination);
   }
-  
-  // auto register
-  $user_name = 'wechat_'.substr($accessData['openid'], 0, 15);
-  while(user_load_by_name($user_name)){
-    $user_name = $user_name.rand(0, 100);
-  }
-  $new_user = array(
-    'name' => $user_name,
-    'pass' => user_password(),
-    'mail' => $user_name.'@'.$_SERVER['SERVER_NAME'],
-    'init' => $user_name.'@'.$_SERVER['SERVER_NAME'],
-    'status' => 1,
-  );
-  // $account returns user object
-  $account = user_save(null, $new_user);
-  if(!$account){
-    drupal_goto($onerror);
-  }
-  _wechat_user_login($account->uid);
-  $wechat_user = array(
-  	'uid' => $user->uid,
-  	'openid' => $accessData['openid'],
-    'extend' => array(),
-  );
-  // also save user wechat information.
   if($state == 2){
-  	$user_info = $weObj->getOauthUserinfo($accessData['access_token'], $accessData['openid']);
-  	if(!empty($user_info)){
-  		module_invoke_all('wechat_userinfo', $user_info);
-  		$wechat_user['nickname'] = $user_info['nickname'];
-  		$wechat_user['sex'] = $user_info['sex'];
-  		$wechat_user['province'] = $user_info['province'];
-  		$wechat_user['city'] = $user_info['city'];
-  		$wechat_user['country'] = $user_info['country'];
-  		$wechat_user['headimgurl'] = $user_info['headimgurl'];
-  	}
-  }
-  if(!drupal_write_record('wechat_user', $wechat_user)){
-    drupal_goto($onerror);
+    ////create user begin// auto register
+
+    $user_info = $weObj->getOauthUserinfo($accessData['access_token'], $accessData['openid']);
+    // auto register
+
+    // user has logined
+    if($user->uid){
+      $user->init = $user_info['openid'].'@wechat.bind';
+      user_save($user);
+      drupal_set_message('绑定成功！', 'status', FALSE);
+      drupal_goto('user/'.$user->uid.'/wechat');
+    }
+    // $user_name = 'wechat_'.substr($accessData['openid'], 0, 15);
+    $user_name = $user_info['nickname'];
+    while(user_load_by_name($user_name)){
+      // $user_name = $user_name.rand(0, 100);
+      $user_name = $user_info['nickname'].'_'.rand(0, 100);
+    }
+    $response = drupal_http_request($user_info['headimgurl']);
+
+    if ($response->code == 200){
+      $file = file_save_data($response->data, 'public://users/'. $user_name.'.jpg');
+    }
+    $pass = date('Ymd');
+    $mail = $user_info['openid'].'@wechat.bind';
+    $new_user = array(
+      'name' => $user_name,
+      'pass' => $pass,//user_password()
+      'mail' => $mail,
+      'init' => $mail,
+      'picture'=> $file->fid,  
+      'status' => 1,
+      'data'  => $user_info,
+    );
+    // $account returns user object
+    $account = user_save(null, $new_user);
+    if(!$account){
+      drupal_set_message('账户创建失败！', 'error', FALSE);
+      drupal_goto($onerror);
+    }
+    drupal_set_message('恭喜您成功注册！请'.l('修改','user/'.$account->uid.'/edit').'您的邮箱和初始密码:'.$pass, 'status', FALSE);
+    _wechat_user_login($account->uid);
+
+    ////create user end  
+  
+   // also save user wechat information.
+    $wechat_user = array(
+      'uid' => $user->uid,
+      'openid' => $accessData['openid'],
+      'extend' => array(),
+    );
   }
 
   drupal_goto($destination);
@@ -163,4 +191,35 @@ function _wechat_menu_default_message($event){
     }
   }
   return '';
+}
+
+
+// 全角半角转． 
+function make_semiangle($str)    
+{    
+    $arr = array('０' => '0', '１' => '1', '２' => '2', '３' => '3', '４' => '4',    
+                 '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9',    
+                 'Ａ' => 'A', 'Ｂ' => 'B', 'Ｃ' => 'C', 'Ｄ' => 'D', 'Ｅ' => 'E',    
+                 'Ｆ' => 'F', 'Ｇ' => 'G', 'Ｈ' => 'H', 'Ｉ' => 'I', 'Ｊ' => 'J',    
+                 'Ｋ' => 'K', 'Ｌ' => 'L', 'Ｍ' => 'M', 'Ｎ' => 'N', 'Ｏ' => 'O',    
+                 'Ｐ' => 'P', 'Ｑ' => 'Q', 'Ｒ' => 'R', 'Ｓ' => 'S', 'Ｔ' => 'T',    
+                 'Ｕ' => 'U', 'Ｖ' => 'V', 'Ｗ' => 'W', 'Ｘ' => 'X', 'Ｙ' => 'Y',    
+                 'Ｚ' => 'Z', 'ａ' => 'a', 'ｂ' => 'b', 'ｃ' => 'c', 'ｄ' => 'd',    
+                 'ｅ' => 'e', 'ｆ' => 'f', 'ｇ' => 'g', 'ｈ' => 'h', 'ｉ' => 'i',    
+                 'ｊ' => 'j', 'ｋ' => 'k', 'ｌ' => 'l', 'ｍ' => 'm', 'ｎ' => 'n',    
+                 'ｏ' => 'o', 'ｐ' => 'p', 'ｑ' => 'q', 'ｒ' => 'r', 'ｓ' => 's',    
+                 'ｔ' => 't', 'ｕ' => 'u', 'ｖ' => 'v', 'ｗ' => 'w', 'ｘ' => 'x',    
+                 'ｙ' => 'y', 'ｚ' => 'z',    
+                 '（' => '(', '）' => ')', '〔' => '[', '〕' => ']', '【' => '[',    
+                 '】' => ']', '〖' => '[', '〗' => ']', '“' => '[', '”' => ']',    
+                 '‘' => '[', '’' => ']', '｛' => '{', '｝' => '}', '《' => '<',    
+                 '》' => '>',    
+                 '％' => '%', '＋' => '+', '—' => '-', '－' => '-', '～' => '-',    
+                 '：' => ':', '。' => '.', '、' => ',', '，' => '.', '、' => '.',    
+                 '；' => ',', '？' => '?', '！' => '!', '…' => '-', '‖' => '|',    
+                 '”' => '"', '’' => '`', '‘' => '`', '｜' => '|', '〃' => '"',    
+                 '　' => ' ','＄'=>'$','＠'=>'@','＃'=>'#','＾'=>'^','＆'=>'&','＊'=>'*', 
+                 '＂'=>'"'); 
+   
+    return strtr($str, $arr);    
 }

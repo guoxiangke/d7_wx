@@ -5,40 +5,13 @@
 function mp_ybzx_rescources_info(){
 	$rescources[] = array(
     'name' => 'ybzx',
-    'desc' =>	'公众号-永不止息共享资源',
+    'desc' =>	'永不止息共享资源【1001】',
   );
   return $rescources;
 }
 /**
  * Hook_wxresources
  */
-
-		  	// $resources['key_'.$key]= array(
-					// 'type'	=>	'music',
-					// 'obj'		=> array(
-					// 	'title'	=> 'music1001',
-					// 	'desc'	=>	'desc1001',
-					// 	'musicurl'	=>	'http://url.mp3',
-					// 	'hgmusicurl'	=>	'http://url.mp3',
-					// 	),
-					// );
-
-				// $resources['key_'.'default_reply']= array(
-				// 	'type'	=>	'text',
-				// 	'obj'		=> array(
-				// 		'text'	=> 'Thanks for your message!',
-				// 	)
-				// );
-				
-				// $resources['key_'.'1002']= array(
-				// 	'type'	=>	'news',
-				// 	'obj'		=> array(
-				// 		'Title'	=> '1.独唱的日子',
-				// 		'Description'	=>	'莫非老师分享自己走过单身的心路历程',
-				// 		'PicUrl'	=>	'http://t.cn/RwCdKsq',
-				// 		'Url'	=>	'http://t.cn/RwCrj17',
-				// 		),
-				// 	);
 function mp_ybzx_wxresources($resources, $account, $keyword){
 	//TODO： get_all_articles!!!
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());

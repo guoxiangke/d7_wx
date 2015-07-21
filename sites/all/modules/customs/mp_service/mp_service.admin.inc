@@ -8,90 +8,119 @@ function mp_service_settings_form(){
 	if(variable_get('mp_config_token_'.$user->uid, "")) $collapsed = TRUE;
   $form['config'] = array(
     '#type' => 'fieldset',
-    '#title' => t('WeChat Config'),
+    '#title' => '接入信息',
 	  '#collapsible' => TRUE,
 	  '#collapsed' => $collapsed,
   );
-  $form['config']['config_token'] = array(
+  $form['config']['config_appname'] = array(
     '#type' => 'textfield',
-    '#title' => t('WeChat Token'),
-    '#description' => t('WeChat Account Token'),
-    '#default_value' => variable_get('mp_config_token_'.$user->uid, ""),
+    '#title' => '公众号名称',
+    '#description' => '必须和公众平台一致',
+    '#default_value' => variable_get('mp_config_appname_'.$user->uid, "永不止息"),
     '#required' => true,
   );
+  $desc = '请登陆<a target="_blank" href="https://mp.weixin.qq.com">微信官方公众平台</a> -->开发者中心 -->启用服务器配置-->修改配置-->填写完后，再抄写到这里,提交后会得到URL地址。 URL（服务器地址）最后填写！';
+  if (variable_get('mp_config_appid_'.$user->uid, "")) {
+    $desc = ' URL（服务器地址）:'.url(NULL, array('absolute' => TRUE)) .'/mp_service/'.$user->uid;
+  }
   $form['config']['config_appid'] = array(
     '#type' => 'textfield',
-    '#title' => t('AppID'),
-    '#description' => t('Account APPID'),
+    '#title' => '开发者ID',
+    '#description' => $desc,
     '#default_value' => variable_get('mp_config_appid_'.$user->uid, ""),
     '#required' => true,
   );
   $form['config']['config_appsecret'] = array(
     '#type' => 'textfield',
-    '#title' => t('AppSecret'),
-    '#description' => t('Account AppSecret'),
+    '#title' => 'AppSecret(应用密钥)',
+    // '#description' => 'AppSecret(应用密钥)',
     '#default_value' => variable_get('mp_config_appsecret_'.$user->uid, ""),
+    '#required' => true,
+  );
+  $form['config']['config_token'] = array(
+    '#type' => 'textfield',
+    '#title' => t('WeChat Token'),
+    '#attributes' => array('placeholder'=>'您可以在微信官网随意配置后copy过来！'),
+    '#default_value' => variable_get('mp_config_token_'.$user->uid, ""),
     '#required' => true,
   );
   $form['config']['config_appaes'] = array(
     '#type' => 'textfield',
-    '#title' => t('EncodingAESKey'),
-    '#description' => t('Account EncodingAESKey'),
+    '#title' => 'EncodingAESKey(消息加解密密钥)',
+    // '#description' => t('Account EncodingAESKey'),
     '#default_value' => variable_get('mp_config_appaes_'.$user->uid, ""),
     '#required' => true,
   );
   $form['config']['config_certified'] = array(
     '#type' => 'checkbox',
     '#title' => '已认证',
-    '#description' => t('Account certified'),
+    '#description' => '(如果您的公众号已认证，请勾选)',
     '#default_value' => variable_get('mp_config_certified_'.$user->uid, ""),    
   );
+  // $form['config']['config_appmenuid'] = array(
+  //   '#type' => 'textfield',
+  //   '#title' => '菜单根termID',
+  //   '#description' => '隐藏字段,注册时自动创建并分配',
+  //   '#default_value' => variable_get('mp_config_appmenuid_'.$user->uid, ""),
+  //   '#required' => true,
+  // );
   $form['config']['submit_config'] = array(
     '#type' => 'submit',
-    '#value' => t('save'),
+    '#value' => t('Save'),
     '#submit' => array('wechat_admin_config_submit'),
   );
 
+  $update_menu = FALSE;
+  if(variable_get('mp_config_certified_'.$user->uid, "")) $update_menu = TRUE;
+  if ($update_menu) {    
+    $form['update_menu'] = array(
+      '#type' => 'fieldset',
+      '#title' => '更新菜单',
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+    );
+    $form['update_menu']['submit_menu'] = array(
+      '#type' => 'submit',
+      '#value' => '点击更新',
+      '#submit' => array('wechat_admin_update_menu_submit'),
+    );
+  }
 	$collapsed = FALSE;
 	if(variable_get('wechat_default_message_'.$user->uid, "")) $collapsed = TRUE;
   $form['default_message'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Auto reply'),
+    '#title' => '默认消息',
     '#collapsible' => TRUE,
     '#collapsed' => $collapsed,
   );
   $form['default_message']['default_message'] = array(
     '#type' => 'textarea',
-    '#title' => t('Auto reply message'),
-    '#description' => t('The WeChat module will send this message to user if no other Modules '),
-    '#default_value' => variable_get('wechat_default_message_'.$user->uid, "hello, I'm wechat"),
-    '#required' => true,
+    '#title' => '自动回复信息',
+    '#description' => '如果关键词无内容时，自动回复给用户的信息',
+    '#default_value' => variable_get('wechat_default_message_'.$user->uid, ""),
+    '#required' => false,
+    '#attributes' => array('placeholder'=>'您好，谢谢您的反馈！'),
   );
   $form['default_message']['follow_message'] = array(
     '#type' => 'textarea',
-    '#title' => t('Auto reply message after follow.'),
-    '#description' => '',
-    '#default_value' => variable_get('wechat_follow_message_'.$user->uid, "hello, I'm wechat"),
+    '#title' => '关注时自动回复信息',
+    '#description' => '如果不设置回复图文或其他信息',
+    '#default_value' => variable_get('wechat_follow_message_'.$user->uid, ""),
     '#required' => false,
+    '#attributes' => array('placeholder'=>'您好，欢迎关注我们！'),
+  );
+  $form['default_message']['config_default_re'] = array(
+    '#type' => 'textfield',
+    '#title' => '自动回复资源',
+    '#description' => '必须填写已开启的资源关键词，如【se】炼爱季节',
+    '#default_value' => variable_get('mp_config_default_re_'.$user->uid, ""),
+    '#attributes' => array('placeholder'=>'se'),
   );
   $form['default_message']['submit_message'] = array(
     '#type' => 'submit',
-    '#value' => t('Save Message'),
+    '#value' => t('Submit'),
     '#submit' => array('wechat_admin_default_message_submit'),
   );
-  $form['update_menu'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Update Wechat Menu'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
-  $form['update_menu']['submit_menu'] = array(
-    '#type' => 'submit',
-    '#value' => t('Update Menu'),
-    '#submit' => array('wechat_admin_update_menu_submit'),
-  );
-
-
   // Gather information from hook_libraries_info() in enabled modules.
   foreach (module_implements('rescources_info') as $module) {
     foreach (module_invoke($module, 'rescources_info') as $machine_name => $properties) {
@@ -109,6 +138,7 @@ function mp_service_settings_form(){
     '#options' => $options,
     '#default_value' => variable_get('wechat_resources_'.$user->uid, array()), 
     '#title' => '开启以下资源',
+    '#description' => '用户回复【 】内的关键字，会得到相应的内容。',
   );
   $form['rescources']['submit_rescources'] = array(
     '#type' => 'submit',
@@ -132,13 +162,16 @@ function wechat_admin_update_rescources_submit($form, &$form_state){
  * save wechat setting config
  */
 function wechat_admin_config_submit($form, &$form_state){
-	global $user;
+	global $user;  
+  variable_set('mp_config_appname_'.$user->uid, $form_state['values']['config_appname']);
+  // variable_set('mp_config_appmenuid_'.$user->uid, $form_state['values']['config_appmenuid']);
   variable_set('mp_config_token_'.$user->uid, $form_state['values']['config_token']);
   variable_set('mp_config_appid_'.$user->uid, $form_state['values']['config_appid']);
   variable_set('mp_config_appsecret_'.$user->uid, $form_state['values']['config_appsecret']);
   variable_set('mp_config_appaes_'.$user->uid, $form_state['values']['config_appaes']);
   variable_set('mp_config_certified_'.$user->uid, $form_state['values']['config_certified']); 
-
+  drupal_set_message('设置成功！您的URL（服务器地址）是：'.url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q=').'mp_service/'.$user->uid, 'error', FALSE);
+  drupal_set_message('请拷贝并粘贴到公众平台官网上，选择一种任意加密方式，点击提交！', 'warning', FALSE);
 }
 
 /**
@@ -148,6 +181,7 @@ function wechat_admin_default_message_submit($form, &$form_state){
 	global $user;
   variable_set('wechat_default_message_'.$user->uid, $form_state['values']['default_message']);
   variable_set('wechat_follow_message_'.$user->uid, $form_state['values']['follow_message']);
+  variable_set('mp_config_default_re_'.$user->uid, $form_state['values']['config_default_re']);
 }
 
 
@@ -173,7 +207,8 @@ function _wechat_menu_item($subval){
  * update wechat menu
  */
 function wechat_admin_update_menu_submit($form, &$form_state){
-  $menu_arr = _mp_new_menu();
+  global $user;
+  $menu_arr = _mp_new_menu($user);
   if(empty($menu_arr['button'])){
     drupal_set_message('Empty WeChat Menu', 'error');
   }
@@ -182,7 +217,7 @@ function wechat_admin_update_menu_submit($form, &$form_state){
 	  $weObj = _mp_service_init_wechat($user);
     if($weObj->createMenu($menu_arr))
   	{
-      drupal_set_message('Update menu success.');
+      drupal_set_message(t('Update menu success.'));
   	}
   	else{
   	  drupal_set_message($weObj->errMsg.'-'.$weObj->errCode, 'error');
@@ -193,7 +228,59 @@ function wechat_admin_update_menu_submit($form, &$form_state){
 
 
 
-function _mp_new_menu(){
+function _mp_new_menu($user){
+  $tid = variable_get('mp_config_appmenuid_'.$user->uid, "");
+  $first_depth_terms = taxonomy_get_tree(3,$tid,1);
+  $mp_menu = array();
+  foreach ($first_depth_terms as $key => $term) {
+    $term = taxonomy_term_load($term->tid);
+    $key = $term->field_wechat_menu_url[LANGUAGE_NONE]['0']['value'];
+    if (isset($term->field_wechat_menu_key[LANGUAGE_NONE]['0']['target_id'])) {
+      $key = 'node'. $term->field_wechat_menu_key[LANGUAGE_NONE]['0']['target_id'];
+    }
+    $mp_menu[$term->tid] = array(
+      'type' => $term->field_wechat_menu_type[LANGUAGE_NONE]['0']['value'],
+      'name' => $term->name,
+      'key' => $key,
+      'weight' => $term->weight,
+    );
+  }
+  $first_depth_terms = taxonomy_get_tree(3,$tid,2);
+  foreach ($first_depth_terms as $key => $terms) {
+    if ($terms->depth == 1) {
+      $term = taxonomy_term_load($terms->tid);
+      $key = $term->field_wechat_menu_url[LANGUAGE_NONE]['0']['value'];
+      if (isset($term->field_wechat_menu_key[LANGUAGE_NONE]['0']['target_id'])) {
+        $key = 'node'. $term->field_wechat_menu_key[LANGUAGE_NONE]['0']['target_id'];
+      }
+      $mp_menu[$terms->parents['0']]['sub_button'][]= array(
+        'type' => $term->field_wechat_menu_type[LANGUAGE_NONE]['0']['value'],
+        'name' => $term->name,
+        'key' => $key,
+      );
+    }
+  }
+  // ksort( $mp_menu);
+  $weight = array();
+  foreach ($mp_menu as $key => $row)
+  {
+      $weight[$key] = $row['weight'];
+  }
+  array_multisort($weight, SORT_ASC, $mp_menu);
+  // dpm( $mp_menu);
+
+
+  // $new_menu = array();
+  // foreach ($mp_menu as $key => $value) {
+  //   $new_menu[] = $value;
+  // }
+  $newmenu = array(
+    'button' => $mp_menu,
+  );
+  return $newmenu;   
+
+
+
   $bid = 18;  
   $node = node_load($bid);
   $mlid = $node->book['mlid'];//510
@@ -216,16 +303,16 @@ function _mp_new_menu(){
     $node = node_load($nid);
     if($item['depth'] == 2){
       $mp_menu[$item['mlid']] = array(
-        'type' => $node->field_wechate_menu_type[LANGUAGE_NONE]['0']['value'],
+        'type' => $node->field_wechat_menu_type[LANGUAGE_NONE]['0']['value'],
         'name' => $node->title,
         'key' => $node->field_wechat_key_url[LANGUAGE_NONE]['0']['value'],
       );
     }       
     if($item['depth'] == 3){
       $mp_menu[$item['plid']]['sub_button'][]= array(
-        'type' => $node->field_wechate_menu_type[LANGUAGE_NONE]['0']['value'],
+        'type' => $node->field_wechat_menu_type[LANGUAGE_NONE]['0']['value'],
         'name' => $node->title,
-        'key' => $node->field_wechat_key_url[LANGUAGE_NONE]['0']['value'],
+        'key' => $node->field_wechat_menu_url[LANGUAGE_NONE]['0']['value'],
       );
     }
   }
@@ -237,4 +324,43 @@ function _mp_new_menu(){
     'button' => $new_menu,
   );
   return $newmenu;   
+}
+
+
+
+function mp_service_bind_form(){
+  global $user;
+  $form['config'] = array(
+    '#type' => 'fieldset',
+    '#title' => '绑定信息',
+    '#collapsible' => TRUE,
+  );
+  $form['config']['config_openid'] = array(
+    '#type' => 'checkbox',
+    '#title' => '是否绑定',
+    '#description' => '请在【微信客户端】点击下面的按钮',
+    '#value' => strstr($user->init,'@wechat.bind')?1:0, 
+    '#attributes' =>array('disabled'=>'disabled'),   
+  );
+  $form['config']['submit_config'] = array(
+    '#type' => 'submit',
+    '#value' => (strstr($user->init,'@wechat.bind')?'取消':'').'绑定',
+    '#submit' => array('mp_service_bind_form_submit'),
+  );
+  drupal_set_message('test', 'status', FALSE);
+  return $form;
+}
+
+function mp_service_bind_form_submit($form, &$form_state){
+  global $user;
+  if ($form_state['values']['config_openid']==1) {
+    $user->init = 'unbindwechat';
+    user_save($user);
+    drupal_set_message('取消绑定成功！', 'status', FALSE);
+    drupal_goto('user/'.$user->uid.'/wechat');
+  }else{
+    drupal_goto('wechat/auth/userinfo');
+  }
+
+  // variable_set('mp_config_openid_8_'.$user->uid, $form_state['values']['config_token']);
 }

@@ -1,0 +1,26 @@
+<?php
+/**
+ * Implements hook_form_alter().
+ */
+function jcrop_fapi_user_avatar_form_alter(&$form, &$form_state, $form_id) {
+	if($form_id == 'user_profile_form' || $form_id == 'user_register_form') {
+		if(isset($form['picture']['picture_upload']['#type'])) {
+			$form['picture']['picture_upload']['#type'] = 'jcrop_image';
+			$libraries  = libraries_load('jcrop', $variant = NULL);
+		  libraries_load_files($libraries);
+		  array_unshift($form['#submit'], 'jcrop_user_avatar_form_submit');
+		}	  
+	}
+}
+
+/**
+ * Submit callback for user_profile_form
+ */
+function jcrop_user_avatar_form_submit($form, &$form_state) {
+  if(isset($form_state['values']['picture_upload']['fid'])) {
+		$fid = $form_state['values']['picture_upload']['fid'];	
+	  //Load the file via file.fid.
+	  $file = file_load($fid);
+	  $form_state['values']['picture_upload'] = $file;
+  } 
+}

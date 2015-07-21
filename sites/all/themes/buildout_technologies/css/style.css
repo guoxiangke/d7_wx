@@ -1,6 +1,6 @@
 /* THEME OPTIONS ************************** */
 
-@import url(//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic);
+/*@import url(//fonts.useso.com/css?family=Source+Sans+Pro:300,400,700,300italic);*/
 
 /* GLOBAL ********************************* */
 
@@ -106,17 +106,17 @@ ul.menu li {
 }
 
 #main-menu {
-	background: #009b76;
+	background: #7cbae5;
 }
 
 #main-nav ul.menu, .footer-menu ul.menu {
 	width: 100%;
-	border-right: 1px solid #33af91;
+	border-right: 1px solid #6fa7ce;
 	list-style: none;
 }
 #main-nav ul.menu > li, .footer-menu ul.menu > li {
 	width: 16.667%;
-	border-left: 1px solid #33af91;
+	border-left: 1px solid #6fa7ce;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -161,11 +161,11 @@ ul.menu li {
     text-align: center;
 }
 	.navbar .nav > li > a {
-		background: #009b76;
+		background: #7cbae5;
 	}
 .navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus, .navbar .nav > li > a:hover,
 .footer-menu ul.menu > li > a:hover, .footer-menu ul.menu > li.active > a {
-    background: #009b76;
+    background: #459ae9;
     box-shadow: none;
     color: #fff;
     font-weight: 700;
@@ -341,9 +341,45 @@ h1 :hover, h2 :hover, h3 :hover, h4 :hover, h5 :hover, h6 :hover {
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0;
+		background-color: #44b549;
+    background-image: -moz-linear-gradient(top,#44b549 0,#44b549 100%);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#44b549),to(#44b549));
+    background-image: -webkit-linear-gradient(top,#44b549 0,#44b549 100%);
+    background-image: -o-linear-gradient(top,#44b549 0,#44b549 100%);
+    background-image: linear-gradient(to bottom,#44b549 0,#44b549 100%);
+    border-color: #44b549;
+    color: #fff
+    
+	  display: inline-block;
+    overflow: visible;
+    padding: 0 22px;
+    height: 30px;
+    line-height: 30px;
+    *line-height: 28px;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    font-size: 14px;
+    border-width: 1px;
+    border-style: solid;
+    cursor: pointer
 }
 	.button a:hover, ul.links li a:hover, input.form-submit:hover {
 		background: #53284f;
+		 	background-color: #2f9833;
+	    background-image: -moz-linear-gradient(top,#2f9833 0,#2f9833 100%);
+	    background-image: -webkit-gradient(linear,0 0,0 100%,from(#2f9833),to(#2f9833));
+	    background-image: -webkit-linear-gradient(top,#2f9833 0,#2f9833 100%);
+	    background-image: -o-linear-gradient(top,#2f9833 0,#2f9833 100%);
+	    background-image: linear-gradient(to bottom,#2f9833 0,#2f9833 100%);
+	    border-color: #2f9833;
+	    box-shadow: none;
+	    -moz-box-shadow: none;
+	    -webkit-box-shadow: none;
+	    color: #fff
 	}
 
 .button {

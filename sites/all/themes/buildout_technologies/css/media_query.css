@@ -1,0 +1,211 @@
+/*==================================================
+=            Bootstrap 3 Media Queries             =
+==================================================*/
+
+/*==========  Mobile First Method  ==========*/
+
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+    
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+ 
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+	#wx-header {
+		display: none;
+	}
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+	#wx-header {
+		display: none;
+	}
+}
+
+
+/*==========  Non-Mobile First Method  ==========*/
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+	#header{
+		display: none;
+	}
+	#main-menu {
+		display: none;
+	  padding-bottom: 10px;
+	  padding-top: 0px;
+	}
+	.nav-collapse, .nav-collapse.collapse {
+	  height: 60px;
+	}
+	#main-nav ul.menu > li, .footer-menu ul.menu > li {
+	  width: 25%;
+	  float: left;
+	}
+	#main{
+		padding-top: 10px;
+	}
+	.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus, .navbar .nav > li > a:hover, .footer-menu ul.menu > li > a:hover, .footer-menu ul.menu > li.active > a{
+		margin-left: 2px;
+	}
+	#wx-header .container{
+		margin-left: 30px;
+		padding-top: 5px;
+	}
+	#thumbnav_controller_top{
+		display: none;
+	}
+	#sidebar-second{
+		display: none;
+	}
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (max-width : 480px) {
+
+}
+
+/* Custom, iPhone Retina */ 
+@media only screen and (max-width : 320px) {
+    
+}
+
+#edit-body-und-0-format,
+#edit-comment-body-und-0-format{
+	display: none;
+}
+
+input, textarea, .uneditable-input {
+  width: 60%;
+}
+#page-title {
+	font-size: 20px;
+}
+.header-bottom {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.front .title {
+   display: block; 
+}
+h2{
+	font-size: 20px;
+}
+
+ul.links>li.comment_forbidden{
+	display: none;
+}
+/*文章来源 赞*/
+.field-name-field-sourcex:before,.field-name-field-sourcex:after,
+.form-type-item:before,.form-type-item:after {
+    display: table;
+    line-height: 0;
+    content: ""
+}
+.field-name-field-sourcex:after,
+.form-type-item:after{
+    clear: both
+}
+.field-name-field-sourcex div,
+.form-type-item div,.form-type-item label{
+	float: left;
+}
+
+
+.node-type-article .prev-next-post .group a {
+  background: #e6e6e6;
+  display: block;
+  color: #4d4d4d;
+  border-bottom: 0;
+  padding: 10px;
+}
+.node-type-article .prev-next-post .group a:hover {
+  background: #53284f;
+  color: white; 
+}
+
+.view-display-id-block_1 .views-row {
+   margin-bottom: 0; 
+  padding:11px 0 10px 0;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.site-name a, .site-name a:hover { color: #00AEEF;}
+
+a:hover{
+	color: #00AEEF;
+}
+a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a{
+	color: #00AEEF;
+}
+#content-wrapper, #sidebar-second .region-sidebar-second {
+	background-color: #FFF;
+}
+blockquote{
+	border-left: 5px solid #44b549;
+}
+.node-type-article #thumbnav_controller_leftright{
+	display: none;
+}
+#header-bottom {
+	display: none;
+}
+#main {
+  padding-top: 10px;
+}
+
+
+.form-type-password-confirm .form-item label{
+	display: block;
+}
+.form-item-mail .description{
+	display: none;
+}
+
+.form-item-config-certified label,
+.form-item-config-certified div.description{
+	display: inline;
+}
+
+.page-admin-structure-taxonomy-wechat-menu #edit-reset-alphabetical ,
+.page-admin-structure-taxonomy-wechat-menu #block-system-help,
+.page-admin-structure-taxonomy-wechat-menu .tabledrag-toggle-weight-wrapper {
+	display: none;
+}
+.page-admin-structure-taxonomy-wechat-menu #edit-actions,
+.page-admin-structure-taxonomy-wechat-menu #content-head{
+	margin: 20px 0;	
+}
+
+.form-item-user-roles label,
+.form-item-field-user-sex-und label
+.form-item-field-audio-type-und label{
+	display: inline;
+}
+
+#block-block-1 {
+	font-size: 12px;
+  color: #999;
+}

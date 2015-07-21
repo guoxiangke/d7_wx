@@ -5,40 +5,90 @@
 function mp_content_rescources_info(){
 	$rescources[] = array(
     'name' => 'mp_contents',
-    'desc' =>	'本站图文资源【美文】',
+    'desc' =>	'云优秀图文【美文】',
   );
   $rescources[] = array(
-    'name' => 'mp_contents_lianai',
-    'desc' => '本站图文资源byterm【炼爱】',
+    'name' => 'mp_77',
+    'desc' => 'FM77【77】',
   );
+  // $rescources[] = array(
+  //   'name' => 'mp_contents_lianai',
+  //   'desc' => '本站图文资源byterm【炼爱】',
+  // );
   return $rescources;
 }
 /**
  * Hook_wxresources
  */
 function mp_content_wxresources($resources, $account, $keyword){
-  if($keyword !='美文') return;
+  $key = substr($keyword, 0,4); 
+  if($keyword !='美文' && $keyword !='77' && $key !='node') return;
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
-  	if(isset($enabled_resources['mp_contents']) && $enabled_resources['mp_contents']){  		
-        $nodes = dale_get_mp_nodes('article',3);
-        $news = array();
-        foreach ($nodes as $key => $node) {          
-          $img = array(
-              'Title'=> $node->title,
-              'Description'=> $node->title,
-              'PicUrl'=>'http://www.yongbuzhixi.com/sites/all/themes/love/family_1.png',
-              'Url'=> url('node/'.$node->nid, array('absolute' => TRUE)),
+    if ($keyword =='美文') {      
+      if(isset($enabled_resources['mp_contents']) && $enabled_resources['mp_contents']){      
+          $nodes = dale_get_mp_nodes('article',3);
+          $news = array();
+          foreach ($nodes as $key => $node) {          
+            $img = array(
+                'Title'=> $node->title,
+                'Description'=> $node->title,
+                'PicUrl'=>'http://www.yongbuzhixi.com/sites/all/themes/love/family_1.png',
+                'Url'=> url('node/'.$node->nid, array('absolute' => TRUE)),
+              );
+            $news[] = $img;
+          }
+          // if(in_array($keyword, array_keys($get_ybzx_resources)))
+            $resources['key_'.$keyword]= array(
+            'type'  =>  'news',
+            'obj'   =>  $news,
             );
-          $news[] = $img;
+      }
+    }
+    if ($keyword =='77') { 
+      if(isset($enabled_resources['mp_77']) && $enabled_resources['mp_77']){
+          $nodes = dale_get_mp_nodes('fm77',1,NULL,$account->uid);
+          if (count($nodes))
+          foreach ($nodes as $key => $node) {
+            if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value'])) 
+              $musicurl =  $node->field_mp3url[LANGUAGE_NONE][0]['value'];
+            if(!$musicurl){
+              // $node->field_mp3_file
+            }
+            $resources['key_'.$keyword]= array(
+              'type'  =>  'music',
+              'obj'   => array(
+                'title' => $node->title,
+                'desc'  =>  strtoupper($node->type) .' 公众号：'.variable_get('mp_config_appname_'.$account->uid, '永不止息'),
+                'musicurl'  =>  $musicurl,
+                'hgmusicurl'  =>  $musicurl,
+              ),
+            );            
+          }
+      }
+    }
+    if($key =='node'){
+      $nid = substr($keyword, 4);
+      if(is_numeric($nid)){
+        $node = node_load($nid);
+        if ($node->nid && $node->type == 'article') {
+          $pic = file_create_url($node->field_image[LANGUAGE_NONE][0]['uri']);
+           $img = array(
+                'Title'=> $node->title,
+                'Description'=> $node->body[LANGUAGE_NONE][0]['value'],
+                'PicUrl'=>$pic,
+                'Url'=> $node->field_link[LANGUAGE_NONE][0]['value'] ,//url('node/'.$node->nid, array('absolute' => TRUE))
+              );
+            $news[] = $img;
+            // if(in_array($keyword, array_keys($get_ybzx_resources)))
+            $resources['key_'.$keyword]= array(
+            'type'  =>  'news',
+            'obj'   =>  $news,
+            );
         }
-		  	// if(in_array($keyword, array_keys($get_ybzx_resources)))
-		  		$resources['key_'.$keyword]= array(
-					'type'	=>	'news',
-					'obj'		=>  $news,
-					);
-  	}
+      }
+    }
 
 	}
 	return $resources;
@@ -49,7 +99,7 @@ function mp_content_wxresources($resources, $account, $keyword){
  * must has pics (已配图)
  * @see node_get_recent
  */
-function dale_get_mp_nodes($type = 'article', $number=3, $tid = NULL, $publish = 1) {
+function dale_get_mp_nodes($type = 'article', $number=3, $tid = NULL, $uid = 1, $publish = 1) {
   $query = db_select('node', 'n');
 
   if (!user_access('bypass node access')) {
@@ -71,6 +121,7 @@ function dale_get_mp_nodes($type = 'article', $number=3, $tid = NULL, $publish =
   $query->condition(db_or()
     ->condition('n.type', $type)
   );
+  $query->condition('n.uid', $uid);
   $nids = $query
     ->fields('n', array('nid'))
     ->orderBy('n.changed', 'DESC')
@@ -78,7 +129,6 @@ function dale_get_mp_nodes($type = 'article', $number=3, $tid = NULL, $publish =
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
-
   $nodes = node_load_multiple($nids);
 
   return $nodes ? $nodes : array();

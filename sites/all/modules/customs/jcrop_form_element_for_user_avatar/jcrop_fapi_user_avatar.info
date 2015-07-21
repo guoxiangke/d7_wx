@@ -1,0 +1,5 @@
+name = User avatar Jcrop edit
+core = 7.x
+
+description = Custom Cropping For user avatar.
+dependencies[] = jcrop_fapi

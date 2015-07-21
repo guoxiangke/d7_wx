@@ -3,13 +3,13 @@
  * Implements hook_menu().
  */
 function mp_service_menu() {
-  $items['user/%user/mp'] = array(
-    'title' => '公众号',
+  $items['mp_services'] = array(
+    'title' => '一键接入',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('mp_service_settings_form'),
     'access arguments' => array('use mp service'),
     'file' => 'mp_service.admin.inc',
-    'type' => MENU_LOCAL_TASK,
+    'menu_name' => 'main-menu',
   );
 
   $items['mp_service/%user'] = array(
@@ -18,6 +18,36 @@ function mp_service_menu() {
     'access arguments' => array('access content'),//TODO
     'file' => 'mp_service_pages.inc',
     'type' => MENU_CALLBACK,
+  );
+  /* login with wechat */
+  $items['wechat_auth/%user'] = array(
+    'title' => 'Wechat Auth',
+    'page callback' => 'wechat_auth',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+    'file' => 'mp_service_pages.inc',
+  );
+  $items['wechat_login/%user'] = array(
+    'title' => '微信授权登陆',
+    'page callback' => 'wechat_login',
+    'access arguments' => array('access content'),
+    'page arguments' => array(1),
+    'type' => MENU_CALLBACK,
+  );
+  $items['wechat_auth/error'] = array(
+    'title' => 'Wechat Auth',
+    'page callback' => 'mp_plus_auth_error',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['user/%user/wechat'] = array(
+    'title' => '微信绑定',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('mp_service_bind_form'),
+    'access arguments' => array('access content'),
+    'file' => 'mp_service.admin.inc',
+    'type' => MENU_LOCAL_TASK,
   );
   return $items;
 }
@@ -66,23 +96,100 @@ function mp_service_keyword_response($weObj,$keyword,$account) {
   }
   $wxresources = array();  //TODO： get all (enabled)resources/node of account.
   $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword);
-
-	// watchdog('11', '<pre>'.print_r($wxresources,true), array(), WATCHDOG_NOTICE, 'link');
 	$ori_keyword = $keyword;
 	$keyword = 'key_'.$keyword;//1001 => 0 selution.
-  if(isset($wxresources[$keyword]))
-  switch ($wxresources[$keyword]['type']) {
-    case 'music':
-    	if(!isset($wxresources[$keyword]['obj']['hgmusicurl']))
-    		$wxresources[$keyword]['obj']['hgmusicurl'] = $wxresources[$keyword]['obj']['musicurl'];
-      $weObj->music('【'.$ori_keyword.'】'.$wxresources[$keyword]['obj']['title'], $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
-      break;
-    case 'text':
-      $weObj->text($wxresources[$keyword]['obj']['text']);
-      break;    
-    case 'news': 
-      $new = $wxresources[$keyword]['obj'];
-      $weObj->news($new);
-      break;
+  if(isset($wxresources[$keyword])){    
+    switch ($wxresources[$keyword]['type']) {
+      case 'music':
+        if(!isset($wxresources[$keyword]['obj']['hgmusicurl']))
+          $wxresources[$keyword]['obj']['hgmusicurl'] = $wxresources[$keyword]['obj']['musicurl'];
+        $weObj->music('【'.$ori_keyword.'】'.$wxresources[$keyword]['obj']['title'], $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
+        break;
+      case 'text':
+        $weObj->text($wxresources[$keyword]['obj']['text']);
+        break;    
+      case 'news': 
+        $new = $wxresources[$keyword]['obj'];
+        $weObj->news($new);
+        break;
+    }
   }
+}
+
+function copyright($account){
+    // Gather information from hook_libraries_info() in enabled modules.
+    foreach (module_implements('rescources_info') as $module) {
+      foreach (module_invoke($module, 'rescources_info') as $machine_name => $properties) {
+        $options[$properties['name']] = $properties['desc'];
+      }
+    }
+    $enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
+    $res ='';
+    foreach ($options as $key => $value) {
+     if(isset($enabled_resources[$key]) && $enabled_resources[$key])  
+      $res .= $value."\n";
+    }
+    return $focus = "\n本资源由<a href='http://wx.yongbuzhixi.com'>主内公众云</a>提供：\n".$res."";
+}
+
+
+
+/**
+ * Implements hook_user_insert().
+ */
+function mp_service_user_insert(&$edit, $account, $category) {
+  // [5] => 公众平台运营者
+  if(in_array('5', array_keys($edit['roles']))){
+    $term = new stdClass();
+    $term->name = $account->field_user_name[LANGUAGE_NONE][0]['value'];
+    $term->vid = 3;
+    taxonomy_term_save($term);
+    variable_set('mp_config_appmenuid_'.$account->uid, $term->tid);
+  }
+}
+
+
+/**
+ * user login by uid
+ */
+function _wechat_user_login($uid){
+  global $user;
+  $user = user_load($uid);
+  drupal_session_regenerate();
+}
+
+function mp_plus_auth_error(){
+  drupal_set_message('错误代码：1436005736 微信服务认证出错！', 'error', FALSE);
+  drupal_goto('<front>');
+}
+
+function wechat_login($mp_account){
+  global $user;
+  if(user_is_logged_in()){
+    // return 'you have login '.$user->name;
+  }
+  $path = url('wechat_auth/'.$mp_account->uid, array('absolute'=>true));
+  $onerror = url('wechat_auth/error', array('absolute'=>true));
+
+  // $mp_uid = 8;
+  // $mp_account = user_load($mp_uid);
+  $weObj = _mp_service_init_wechat($mp_account);
+  $auth_url = $weObj->getOauthRedirect(url('wechat_auth/'.$mp_account->uid, array('absolute'=>TRUE, 'query'=>array('destination'=>$path, 'onerror'=>$onerror))), 2, 'snsapi_userinfo');
+  drupal_goto($auth_url);
+}
+
+
+/**
+ * load user by wechat openid
+ */
+function wechat_token_get_user($openid){
+  $result = db_query("SELECT * FROM {users} WHERE init=:init", array(':init'=>$openid.'@wechat.bind'));
+  if(!$result){
+    return false;
+  }
+  $authmap = $result->fetchAssoc();
+  if(!empty($authmap['uid'])){
+    return user_load($authmap['uid']);
+  }
+  return false;
 }
