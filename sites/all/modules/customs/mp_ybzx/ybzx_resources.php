@@ -164,3 +164,49 @@ function get_ybzx_dstw(){
 
           );
 }
+
+
+function get_ybzx_resources_hyfd(){
+	$desc = '公众号：永不止息 婚姻辅导';
+	$urls = array(
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc001.mp3','title'=>'引言－婚姻的谬思与正解 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc002.mp3','title'=>'现代婚姻的威胁(1)世俗的模式'),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc003.mp3','title'=>'现代婚姻的威胁(2)自私的罪性 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc004.mp3','title'=>'现代婚姻的威胁(3)婚外的情事 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc005.mp3','title'=>'现代婚姻的威胁(4)适应的困难 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc006.mp3','title'=>'婚姻现状与蓝图－世俗婚姻与神创婚姻的比较 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc007.mp3','title'=>'原创婚姻说明书(1)神对婚姻的旨意(上) '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc008.mp3','title'=>'原创婚姻说明书(2)神对婚姻的旨意(下) '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc009.mp3','title'=>'原创婚姻说明书(3)神对婚姻的计划(上) '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc010.mp3','title'=>'原创婚姻说明书(4)神对婚姻的计划(下)'),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc011.mp3','title'=>'不再约会-恋爱前的预备 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc012.mp3','title'=>'婚前交往-有目标的恋爱 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc013.mp3','title'=>'订婚之前(1)评估现在的情感与和谐(上) '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc014.mp3','title'=>'订婚之前(2)评估现在的情感与和谐(下) '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc015.mp3','title'=>'订婚之前(3)预备未来的亲密和忠实 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc016.mp3','title'=>'订婚之前(4)面对过去的背景与经历 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc017.mp3','title'=>'结婚之前(1)订婚－建立婚姻的蓝图(上) '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc018.mp3','title'=>'结婚之前(2)订婚－建立婚姻的蓝图(下) '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc019.mp3','title'=>'结婚之前(3)如何视察辨明神的旨意(上)'),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc020.mp3','title'=>'结婚之前(4)如何视察辨明神的旨意(下)'),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc021.mp3','title'=>'神在婚姻中的地位与能力 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc022.mp3','title'=>'丈夫在婚姻中的角色与责任 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc023.mp3','title'=>'妻子在婚姻中的角色与责任 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc024.mp3','title'=>'建立更深的沟通 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc025.mp3','title'=>'建立亲密的性关系 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc026.mp3','title'=>'化解冲突的方式 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc027.mp3','title'=>'以德报怨－祝福的能力 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc028.mp3','title'=>'父亲与母亲的角色 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc029.mp3','title'=>'破裂、触礁与重建-关于离婚与再婚的辅导 '),
+	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc030.mp3','title'=>'建立属灵的承传'),
+	);
+	foreach ($urls as $key => $value) {
+		$resouces[(1001+$key)] = array(
+			'type' => 'audio',
+			'musicurl'	=> $value['mp3_link'],
+			'title' => $value['title'],
+			'desc'	=> $desc,			
+			);
+	}
+	return $resouces;
+}

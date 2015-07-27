@@ -22,7 +22,8 @@ function mp_ybzx_wxresources($resources, $account, $keyword){
 			  require_once('ybzx_resources.php');
 		  	//10010
 		  	$check_keyword = substr($keyword, 0, 4);
-				$get_ybzx_resources = get_ybzx_resources();
+		  	//1001-1030 婚姻辅导
+				$get_ybzx_resources = get_ybzx_resources_hyfd();
 		  	if(in_array($check_keyword, array_keys($get_ybzx_resources))){
 		  		$resources['key_'.$keyword]= array(
 					'type'	=>	'music',
@@ -31,7 +32,6 @@ function mp_ybzx_wxresources($resources, $account, $keyword){
 					if (strlen($keyword) == 5) {
 				  	$news = get_ybzx_dstw();
 						$index = substr($keyword, 3, 1) - 1;
-						watchdog($keyword, $index, array(), WATCHDOG_NOTICE, 'link');
 						$resources['key_'.$keyword]= array(
 							'type'	=>	'news',
 							'obj'		=>  array($news[$index]),
