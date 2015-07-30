@@ -238,10 +238,13 @@ function _mp_new_menu($user){
     if (isset($term->field_wechat_menu_key[LANGUAGE_NONE]['0']['target_id'])) {
       $key = 'node'. $term->field_wechat_menu_key[LANGUAGE_NONE]['0']['target_id'];
     }
+    $type = $term->field_wechat_menu_type[LANGUAGE_NONE]['0']['value'];
+    $arr_key = 'key';
+    if($type == 'view') $arr_key = 'url';
     $mp_menu[$term->tid] = array(
-      'type' => $term->field_wechat_menu_type[LANGUAGE_NONE]['0']['value'],
+      'type' => $type,
       'name' => $term->name,
-      'key' => $key,
+      $arr_key => $key,
       'weight' => $term->weight,
     );
   }
@@ -253,10 +256,13 @@ function _mp_new_menu($user){
       if (isset($term->field_wechat_menu_key[LANGUAGE_NONE]['0']['target_id'])) {
         $key = 'node'. $term->field_wechat_menu_key[LANGUAGE_NONE]['0']['target_id'];
       }
+      $type = $term->field_wechat_menu_type[LANGUAGE_NONE]['0']['value'];
+      $arr_key = 'key';
+      if($type == 'view') $arr_key = 'url';
       $mp_menu[$terms->parents['0']]['sub_button'][]= array(
-        'type' => $term->field_wechat_menu_type[LANGUAGE_NONE]['0']['value'],
+        'type' => $type,
         'name' => $term->name,
-        'key' => $key,
+        $arr_key => $key,
       );
     }
   }
