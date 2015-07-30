@@ -49,7 +49,6 @@ function mp_content_wxresources($resources, $account, $keyword){
     if ($keyword =='77') {
       if(isset($enabled_resources['mp_77']) && $enabled_resources['mp_77']){
           $nodes = dale_get_mp_nodes('fm77',1,NULL);//,$account->uid
-          watchdog('mp_content', '<pre>'.print_r($nodes,TRUE), array(), WATCHDOG_NOTICE, 'link');
           if (count($nodes))
           foreach ($nodes as $key => $node) {
             if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value'])) 
