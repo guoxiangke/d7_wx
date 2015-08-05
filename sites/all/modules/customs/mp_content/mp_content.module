@@ -5,7 +5,7 @@
 function mp_content_rescources_info(){
 	$rescources[] = array(
     'name' => 'mp_contents',
-    'desc' =>	'云优秀图文【美文】',
+    'desc' =>	'云优秀【图文】【美文】',
   );
   $rescources[] = array(
     'name' => 'mp_77',
@@ -22,19 +22,19 @@ function mp_content_rescources_info(){
  */
 function mp_content_wxresources($resources, $account, $keyword){
   $key = substr($keyword, 0,4);  
-  if($keyword !='美文' && $keyword !='77' && $key !='node') return;
+  if($keyword !='图文' && $keyword !='美文' && $keyword !='77' && $key !='node') return;
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
-    if ($keyword =='美文') {      
+    if ($keyword =='美文'||$keyword =='图文') {      
       if(isset($enabled_resources['mp_contents']) && $enabled_resources['mp_contents']){      
           $nodes = dale_get_mp_nodes('article',3);
           $news = array();
-          foreach ($nodes as $key => $node) {          
+          foreach ($nodes as $key => $node) {       
             $img = array(
                 'Title'=> $node->title,
                 'Description'=> $node->title,
-                'PicUrl'=>'http://www.yongbuzhixi.com/sites/all/themes/love/family_1.png',
+                'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
                 'Url'=> url('node/'.$node->nid, array('absolute' => TRUE)),
               );
             $news[] = $img;
