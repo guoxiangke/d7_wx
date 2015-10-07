@@ -5,7 +5,7 @@
  * $keyword = ty ty1 ty2
  */
 function wx_swty_resource_response($keyword) {
-	watchdog('swty', $keyword, array(), WATCHDOG_NOTICE, 'link');
+	// watchdog('swty', $keyword, array(), WATCHDOG_NOTICE, 'link');
 	$offset = 0;
 	/////
 		if(strlen($keyword)>2) {

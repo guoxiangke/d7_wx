@@ -103,7 +103,40 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				);
 		 	}
 		  if(is_numeric($keyword) && ($keyword>=600 && $keyword<=652) ) {
-		    $file_key = 'http://ly.yongbuzhixi.com/cron/cloud/'.date('Ymd').'.json'; 
+		    // $file_key = 'http://ly.yongbuzhixi.com/cron/cloud/'.date('Ymd').'.json'; 
+		    $file_key = dirname(__FILE__).'/'.date('Ymd').'.json'; ;
+		    if(!file_exists($file_key))  {
+					$radios = ly_stream_source();
+					foreach ($radios as $key => $radio) {
+					  $url = $radio['url'];
+					  $title = $radio['title'];
+
+					  $html = file_get_html($url);
+					  if(!$html) { 
+					  	watchdog('mp_liangyou', 'lost audio:'.$title, array(), WATCHDOG_NOTICE, 'error');
+					  	continue;
+					  }
+					  $url = $html->find('#div_playlist li', 0);
+
+					  $title_get = $html->find('#div_playlist li .mp3_title', 0)->plaintext;
+					  $mp3_description = $html->find('#div_playlist li .mp3_description', 0)->plaintext;
+					  $dates = explode('-', $title_get);
+					  $data[] = array(
+					    'title' => $title,
+					    'date' => $dates[1],
+					    'url'   =>  $url->attr['data-stream'],
+					    'desc'  => $mp3_description,
+					    );
+					  // break;
+					}
+					// var_dump($data);
+					$file = json_encode($data);
+					if(!is_null($file)){
+					  file_put_contents( $file_key , $file );
+					  watchdog('mp_liangyou', 'Success download ly audio list from stream', array(), WATCHDOG_NOTICE, 'link');
+					}
+				}
+
 		    $file = file_get_contents($file_key);
 		    $urls = json_decode($file,TRUE);
 		    if($keyword == 600){

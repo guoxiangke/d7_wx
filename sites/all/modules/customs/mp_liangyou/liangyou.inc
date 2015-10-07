@@ -141,115 +141,259 @@ function ly_get_menu(){
 
 
 function ly_stream_source(){
-  return array( 
-    'http://www.txly1.net/program/1njchx-3b2ozu',
-    'http://www.txly1.net/program/1njci3-3b2p06',
-    'http://www.txly1.net/program/1njciw-3b2p1s',
-    'http://www.txly1.net/program/1njci1-3b2p02',
-    'http://www.txly1.net/program/1njcia-3b2p0k',
-    'http://www.txly1.net/program/1njci7-3b2p0e',
-    'http://www.txly1.net/program/1njchu-3b2ozo',
-    'http://www.txly1.net/program/1njchy-3b2ozw',
-    'http://www.txly1.net/program/1njci2-3b2p04',
-    'http://www.txly1.net/program/1njcjm-3b2p38',
-    'http://www.txly1.net/program/1njci0-3b2p00',
-    'http://www.txly1.net/program/1njci6-3b2p0c',
-    'http://www.txly1.net/program/1njcil-3b2p16',
-    'http://www.txly1.net/program/1njci4-3b2p08',
-    'http://www.txly1.net/program/1njcif-3b2p0u',
-    'http://www.txly1.net/program/1njcjb-3b2p2m',
-    'http://www.txly1.net/program/1njclc-3b2p6o',
-    'http://www.txly1.net/program/1njcld-3b2p6q',
-    'http://www.txly1.net/program/1njcl2-3b2p64',
-    'http://www.txly1.net/program/1njciu-3b2p1o',
-    'http://www.txly1.net/program/1njchw-3b2ozs',
-    'http://www.txly1.net/program/1njcht-3b2ozm',
-    'http://www.txly1.net/program/1njcir-3b2p1i',
-    'http://www.txly1.net/program/1njcjh-3b2p2y',
-    'http://www.txly1.net/program/1njcj5-3b2p2a',
-    'http://www.txly1.net/program/1njcj8-3b2p2g',
-    'http://www.txly1.net/program/1njcj7-3b2p2e',
-    'http://www.txly1.net/program/1njcja-3b2p2k',
-    'http://www.txly1.net/program/1njcis-3b2p1k',
-    'http://www.txly1.net/program/1njcik-3b2p14',
-    'http://www.txly1.net/program/1njciy-3b2p1w',
-    'http://www.txly1.net/program/1njci8-3b2p0g',
-    'http://www.txly1.net/program/1njciz-3b2p1y',
-    'http://www.txly1.net/program/1njcix-3b2p1u',
-    'http://www.txly1.net/program/1njcjc-3b2p2o',
-    'http://www.txly1.net/program/1njcj9-3b2p2i',
-    'http://www.txly1.net/program/1njcj4-3b2p28',
-    'http://www.txly1.net/program/1njcji-3b2p30',
-    'http://www.txly1.net/program/1njclb-3b2p6m',
-    'http://www.txly1.net/program/1njck8-3b2p4g',
-    'http://www.txly1.net/program/1njck9-3b2p4i',
-    'http://www.txly1.net/program/1njcka-3b2p4k',
-    'http://www.txly1.net/program/1njckb-3b2p4m',
-    'http://www.txly1.net/program/1njckc-3b2p4o',
-    'http://www.txly1.net/program/1njchz-3b2ozy',
-    'http://www.txly1.net/program/1njchv-3b2ozq',
-    'http://www.txly1.net/program/1njci9-3b2p0i',
-    'http://www.txly1.net/program/1njcit-3b2p1m',
-    'http://www.txly1.net/program/1njcj3-3b2p26',
-    'http://www.txly1.net/program/1njcj2-3b2p24',
-    'http://www.txly1.net/program/1njcj0-3b2p20',
-    'http://www.txly1.net/program/1njcj1-3b2p22',
+  return array(//$radios = 
+  array(
+    'title' => '无限飞行号',
+    'url' => 'http://www.txly1.net/program/1njcjm-3b2p38',
+  ),
+  array(
+    'title' => 'i关怀心磁场',
+    'url' => 'http://www.txly1.net/program/1njchy-3b2ozw',
+  ),
+  array(
+    'title' => '空中辅导',
+    'url' => 'http://www.txly1.net/program/1njci2-3b2p04',
+  ),
+  array(
+    'title' => '恋爱季节',
+    'url' => 'http://www.txly1.net/program/1njci0-3b2p00',
+  ),
+  array(
+    'title' => '幸福满家园',
+    'url' => 'http://www.txly1.net/program/1njci6-3b2p0c',
+  ),
+  array(
+    'title' => '亲情不断电',
+    'url' => 'http://www.txly1.net/program/1njcil-3b2p16',
+  ),
+  array(
+    'title' => '欢乐卡恰碰',
+    'url' => 'http://www.txly1.net/program/1njci4-3b2p08',
+  ),
+  array(
+    'title' => '绝妙当家',
+    'url' => 'http://www.txly1.net/program/1njchx-3b2ozu',
+  ),
+  array(
+    'title' => '生活无国界',
+    'url' => 'http://www.txly1.net/program/1njci3-3b2p06',
+  ),
+  array(
+    'title' => '零点零距离',
+    'url' => 'http://www.txly1.net/program/1njciw-3b2p1s',
+  ),
+  array(
+    'title' => '书香园地',
+    'url' => 'http://www.txly1.net/program/1njci1-3b2p02',
+  ),
+  array(
+    'title' => 'i-Radio爱广播',
+    'url' => 'http://www.txly1.net/program/1njchu-3b2ozo',
+  ),
+  // array(
+  //   'title' => 'Yi-Radio爱广播',
+  //   'url' => 'http://www.txly1.net/program/1njciv-3b2p1q',
+  // ),
+  array(
+    'title' => '今夜心未眠',
+    'url' => 'http://www.txly1.net/program/1njcia-3b2p0k',
+  ),
+  array(
+    'title' => '听听90后',
+    'url' => 'http://www.txly1.net/program/1njci7-3b2p0e',
+  ),
+  array(
+    'title' => '彩虹桥',
+    'url' => 'http://www.txly1.net/program/1njchv-3b2ozq',
+  ),
+  array(
+    'title' => '现代人的希望',
+    'url' => 'http://www.txly1.net/program/1njcif-3b2p0u',
+  ),
+  array(
+    'title' => '生命的四季',
+    'url' => 'http://www.txly1.net/program/1njciu-3b2p1o',
+  ),
+  array(
+    'title' => '拥抱每一天',
+    'url' => 'http://www.txly1.net/program/1njchw-3b2ozs',
+  ),
+  array(
+    'title' => '灵命日粮',
+    'url' => 'http://www.txly1.net/program/1njcht-3b2ozm',
+  ),
+  array(
+    'title' => '真道分解',
+    'url' => 'http://www.txly1.net/program/1njcik-3b2p14',
+  ),
+  array(
+    'title' => '圣言盛宴',
+    'url' => 'http://www.txly1.net/program/1njci8-3b2p0g',
+  ),
+  array(
+    'title' => '齐来颂扬',
+    'url' => 'http://www.txly1.net/program/1njchz-3b2ozy',
+  ),
+  array(
+    'title' => '长夜的牵引',
+    'url' => 'http://www.txly1.net/program/1njci9-3b2p0i',
+  ),
+  array(
+    'title' => '真理之光',
+    'url' => 'http://www.txly1.net/program/1njcjh-3b2p2y',
+  ),
+  array(
+    'title' => '接棒人',
+    'url' => 'http://www.txly1.net/program/1njcj9-3b2p2i',
+  ),
+  array(
+    'title' => '聆听主道',
+    'url' => 'http://www.txly1.net/program/1njciy-3b2p1w',
+  ),
+  array(
+    'title' => '空中崇拜',
+    'url' => 'http://www.txly1.net/program/1njcir-3b2p1i',
+  ),
+  array(
+    'title' => '善牧良言',
+    'url' => 'http://www.txly1.net/program/1njciz-3b2p1y',
+  ),
+  array(
+    'title' => '好牧人',
+    'url' => 'http://www.txly1.net/program/1njcix-3b2p1u',
+  ),
+  array(
+    'title' => '经动人心',
+    'url' => 'http://www.txly1.net/program/1njcis-3b2p1k',
+  ),
+  array(
+    'title' => '佳美脚踪',
+    'url' => 'http://www.txly1.net/program/1njcl2-3b2p64',
+  ),
+  array(
+    'title' => '蓝天绿洲',
+    'url' => 'http://www.txly1.net/program/1njcit-3b2p1m',
+  ),
+  array(
+    'title' => '给力人生',
+    'url' => 'http://www.txly1.net/program/1njcj7-3b2p2e',
+  ),
+  array(
+    'title' => '空中门训',
+    'url' => 'http://www.txly1.net/program/1njcja-3b2p2k',
+  ),
+  array(
+    'title' => '生根建造',
+    'url' => 'http://www.txly1.net/program/1njcj5-3b2p2a',
+  ),
+  array(
+    'title' => '信仰百宝箱',
+    'url' => 'http://www.txly1.net/program/1njcj8-3b2p2g',
+  ),
+  array(
+    'title' => '生活之光',
+    'url' => 'http://www.txly1.net/program/1njcjc-3b2p2o',
+  ),
+  array(
+    'title' => '生命的福音',
+    'url' => 'http://www.txly1.net/program/1njcjb-3b2p2m',
+  ),
+  // array(
+  //   'title' => '无愧的工人',
+  //   'url' => 'http://www.txly1.net/program/1njcj4-3b2p28',
+  // ),
+  array(
+    'title' => '良友圣经学院（基础课程）',
+    'url' => 'http://www.txly1.net/program/1njck8-3b2p4g',
+  ),
+  array(
+    'title' => '良友圣经学院（本科文凭课程）（第一套）',
+    'url' => 'http://www.txly1.net/program/1njck9-3b2p4i',
+  ),
+  array(
+    'title' => '良友圣经学院（本科文凭课程）（第二套）',
+    'url' => 'http://www.txly1.net/program/1njcka-3b2p4k',
+  ),
+  array(
+    'title' => '良友圣经学院（进深文凭课程）（第一套）',
+    'url' => 'http://www.txly1.net/program/1njckb-3b2p4m',
+  ),
+  array(
+    'title' => '良友圣经学院（进深文凭课程）（第二套）',
+    'url' => 'http://www.txly1.net/program/1njckc-3b2p4o',
+  ),
+  array(
+    'title' => '晨曦讲座',
+    'url' => 'http://www.txly1.net/program/1njcji-3b2p30',
+  ),
+  array(
+    'title' => '天路导向',
+    'url' => 'http://www.txly1.net/program/1njcj3-3b2p26',
+  ),
+  array(
+    'title' => '天路导向（粤语）',
+    'url' => 'http://www.txly1.net/program/1njcj2-3b2p24',
+  ),
+  array(
+    'title' => '恩典与真理（回民）',
+    'url' => 'http://www.txly1.net/program/1njcj0-3b2p20',
+  ),
+  array(
+    'title' => '爱在人间（云南话）',
+    'url' => 'http://www.txly1.net/program/1njcj1-3b2p22',
+  ),
   );
 }
 
 function ly_stream_menu(){
   return '▶节目单
   ----------------------------------------------
-601 绝妙当家
-602 生活无国界
-603 零点零距离
-604 书香园地
-605 今夜心未眠
-606 听听90后
-607 i-Radio爱广播
-608 i关怀心磁场
-609 空中辅导
-610 无限飞行号
-611 恋爱季节
-612 幸福满家园
-613 亲情不断电
-614 欢乐卡恰碰
-615 现代人的希望
-616 生命的福音
-617 施恩座前
-618 这一刻，清心
-619 佳美脚踪
-620 生命的四季
-621 拥抱每一天
-622 灵命日粮
-623 空中崇拜
-624 真理之光
-625 生根建造
-626 信仰百宝箱
-627 给力人生
-628 空中门训
-629 经动人心
-630 真道分解
-631 聆听主道
-632 圣言盛宴
-633 善牧良言
-634 好牧人
-635 生活之光
-636 接棒人
-637 无愧的工人
-638 晨曦讲座
-639 良院精选
-640 良友圣经学院（基础课程）
-641 良友圣经学院（本科文凭课程）（第一套）
-642 良友圣经学院（本科文凭课程）（第二套）
-643 良友圣经学院（进深文凭课程）（第一套）
-644 良友圣经学院（进深文凭课程）（第二套）
-645 齐来颂扬
-646 彩虹桥
-647 长夜的牵引
-648 蓝天绿洲
-649 天路导向
-650 天路导向（粤语）
-651 恩典与真理（回民广播）
-652 爱在人间（云南话）';
+【601】无限飞行号
+【602】i关怀心磁场
+【603】空中辅导
+【604】恋爱季节
+【605】幸福满家园
+【606】亲情不断电
+【607】欢乐卡恰碰
+【608】绝妙当家
+【609】生活无国界
+【610】零点零距离
+【611】书香园地
+【612】i-Radio爱广播
+【613】今夜心未眠
+【614】听听90后
+【615】彩虹桥
+【616】现代人的希望
+【617】生命的四季
+【618】拥抱每一天
+【619】灵命日粮
+【620】真道分解
+【621】圣言盛宴
+【622】齐来颂扬
+【623】长夜的牵引
+【624】真理之光
+【625】接棒人
+【626】聆听主道
+【627】空中崇拜
+【628】善牧良言
+【629】好牧人
+【630】经动人心
+【631】佳美脚踪
+【632】蓝天绿洲
+【633】给力人生
+【634】空中门训
+【635】生根建造
+【636】信仰百宝箱
+【637】生活之光
+【638】生命的福音
+【639】良友圣经学院（基础课程）
+【640】良友圣经学院（本科1）
+【641】良友圣经学院（本科2）
+【642】良友圣经学院（进深1）
+【643】良友圣经学院（进深2）
+【644】晨曦讲座
+【645】天路导向
+【646】天路导向（粤语）
+【647】恩典与真理（回民）
+【648】爱在人间（云南话）';
 }
