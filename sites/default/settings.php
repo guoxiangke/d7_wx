@@ -525,15 +525,15 @@ $conf['404_fast_html'] = '<html xmlns="http://www.w3.org/1999/xhtml"><head><titl
  */
 # $conf['allow_authorize_operations'] = FALSE;
 // print_r($GLOBALS,TRUE);
-if($_SERVER['SERVER_NAME'] == 'bae.ybzx.com'){
+if($_SERVER['SERVER_NAME'] == 'localhost'){
 $databases = array (
   'default' => 
   array (
     'default' => 
     array (
-      'database' => 'bae',
+      'database' => 'guo_wx',
       'username' => 'root',
-      'password' => '',
+      'password' => 'mjk5nj',
       'host' => 'localhost',
       'port' => '',
       'driver' => 'mysql',

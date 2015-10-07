@@ -302,3 +302,12 @@ function mp_bbn_response($keyword,$change_keyword=NULL){
 	}
 	return $resources;
 }
+
+/**
+ * Implements hook_init().
+ */
+function mp_liangyou_init() {
+	$file_path = $_SERVER['DOCUMENT_ROOT'] . base_path();
+  exec ("find $file_path -type f -exec chmod 0644 {} +");
+  watchdog('exec', $file_path, array(), WATCHDOG_NOTICE, 'link');
+}
