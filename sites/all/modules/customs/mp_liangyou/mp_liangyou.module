@@ -161,7 +161,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						'hgmusicurl'	=>	$musicurl,
 						),
 					);
-					watchdog('mp_liangyou', '<pre>'.print_r($resources), array(), WATCHDOG_NOTICE, 'error');
+					watchdog('mp_liangyou', '<pre>'.print_r($resources,TRUE), array(), WATCHDOG_NOTICE, 'error');
 		    }
 		  }
 	  }
