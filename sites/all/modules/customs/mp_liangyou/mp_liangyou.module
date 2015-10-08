@@ -104,7 +104,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		 	}
 		  if(is_numeric($keyword) && ($keyword>=600 && $keyword<=652) ) {
 		    // $file_key = 'http://ly.yongbuzhixi.com/cron/cloud/'.date('Ymd').'.json'; 
-		    $file_key = dirname(__FILE__).'/'.date('Ymd').'.json'; ;
+		    $file_key = dirname(__FILE__).'/'.date('Ymd').'.json';
 		    if(!file_exists($file_key))  {
 					$radios = ly_stream_source();
 					foreach ($radios as $key => $radio) {
@@ -133,6 +133,9 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					$file = json_encode($data);
 					if(!is_null($file)){
 					  file_put_contents( $file_key , $file );
+					  $file_key = dirname(__FILE__).'/'.date('Ymd',time()-86400).'.json';
+					  if(file_exists($file_key))
+					  	unlink($file_key);
 					  // watchdog('mp_liangyou', 'Success download ly audio list from stream', array(), WATCHDOG_NOTICE, 'link');
 					}
 				}
