@@ -205,7 +205,7 @@ $databases = array (
   array (
     'default' => 
     array (
-      'database' => 'jvgMmduFJsqxCqduQTxq',
+      'database' => 'qzfVYMXrozLlThdYuQrX',// wxnew /jvgMmduFJsqxCqduQTxq
       'username' => '3IgpsqmgbjHBbGZDUalZfkjV',
       'password' => 'nKzYxGM6aEqUNMsqMYrpG7mCZFe2jV6M',
       'host' => 'sqld.duapp.com',
