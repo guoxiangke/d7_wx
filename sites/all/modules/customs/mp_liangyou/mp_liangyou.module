@@ -152,7 +152,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    }else{	    	
 			    $before_keyword = $keyword;
 			    $keyword = $keyword - 601;
-			    watchdog('keyword '.$before_keyword , $keyword, array(), WATCHDOG_NOTICE, 'link');
+			    // watchdog('keyword '.$before_keyword , $keyword, array(), WATCHDOG_NOTICE, 'link');
 			    $title = str_replace($keyword, '', $urls[$keyword]['title']);
 			    $musicurl = $urls[$keyword]['url'].'?='.$urls[$keyword]['date'].'.mp3';
 			    $desc =  substr($urls[$keyword]['date'], 4).' '.truncate_utf8($urls[$keyword]['desc'], 16, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
