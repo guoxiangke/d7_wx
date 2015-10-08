@@ -161,7 +161,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						'hgmusicurl'	=>	$musicurl,
 						),
 					);
-					watchdog('mp_liangyou', '<pre>'.print_r($resources,TRUE), array(), WATCHDOG_NOTICE, 'error');
 		    }
 		  }
 	  }
@@ -301,13 +300,4 @@ function mp_bbn_response($keyword,$change_keyword=NULL){
 		);
 	}
 	return $resources;
-}
-
-/**
- * Implements hook_init().
- */
-function mp_liangyou_init() {
-	$file_path = $_SERVER['DOCUMENT_ROOT'] . base_path();
-  exec ("find $file_path -type f -exec chmod 0644 {} +");
-  watchdog('exec', $file_path, array(), WATCHDOG_NOTICE, 'link');
 }
