@@ -133,7 +133,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					$file = json_encode($data);
 					if(!is_null($file)){
 					  file_put_contents( $file_key , $file );
-					  watchdog('mp_liangyou', 'Success download ly audio list from stream', array(), WATCHDOG_NOTICE, 'link');
+					  // watchdog('mp_liangyou', 'Success download ly audio list from stream', array(), WATCHDOG_NOTICE, 'link');
 					}
 				}
 
@@ -162,7 +162,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						'hgmusicurl'	=>	$musicurl,
 						),
 					);
-					watchdog('resources ', print_r($resources,TRUE), array(), WATCHDOG_NOTICE, 'link');
+					// watchdog('resources ', print_r($resources,TRUE), array(), WATCHDOG_NOTICE, 'link');
 		    }
 		  }
 	  }
