@@ -5,9 +5,6 @@ sites/*/settings*.php
 sites/*/files
 sites/*/private
 
-sites/all/modules/customs/wechat/
-sites/all/modules/customs/wechatdemo/
+sftp-config.json
 *.txt
 *.md
-sftp-config.json
-.DS_Store
