@@ -113,8 +113,18 @@ function mp_service_keyword_response($weObj,$keyword,$account) {
         $weObj->news($new);
         break;
     }
+    ga_push_add_event(array(
+       'category'        => 'wxservice',
+       'action'          => $wxresources[$keyword]['type'],
+       'label'           => $ori_keyword,
+     ));
   }elseif (strlen($keyword) > 10 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
-    watchdog('mp_service', 'transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
+    // watchdog('mp_service', 'transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
+    ga_push_add_event(array(
+       'category'        => 'wxservice',
+       'action'          => 'customerservice',
+       'label'           => $keyword,
+     ));
     $weObj->transfer_customer_service()->reply();
   }
 }

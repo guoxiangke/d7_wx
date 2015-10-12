@@ -14,7 +14,6 @@ function mp_service_callback($account){
   // if(is_record_history(gh_id)){
   //   entity_save('wxmsg');
   // }
-  
   $type = $weObj->getRev()->getRevType();
   switch($type){
     case Wechat::MSGTYPE_TEXT:
@@ -30,8 +29,9 @@ function mp_service_callback($account){
 }
 
 function _mp_service_process_text($weObj,$account){
-	$keyword = trim($weObj->getRevContent());
-  $keyword = make_semiangle($keyword);
+  $ori_keyword = $weObj->getRevContent();
+	$ori_keyword = trim($ori_keyword);
+  $keyword = make_semiangle($ori_keyword);
   $keyword = str_replace('[', '', $keyword);
   $keyword = str_replace(']', '', $keyword);
   $keyword = str_replace("'", '', $keyword);
@@ -39,8 +39,8 @@ function _mp_service_process_text($weObj,$account){
   $keyword = strtolower($keyword);
   mp_service_keyword_response($weObj,$keyword,$account);
   //default behavior if not hook wxresources_alter!
-  if(!is_array($weObj->Message(''))){
 
+  if(!is_array($weObj->Message(''))){
       $openid = $weObj->getRev()->getRevFrom();
       $user_info = $weObj->getUserInfo($openid);
       $data = array();
@@ -51,7 +51,7 @@ function _mp_service_process_text($weObj,$account){
       $data['time'] = $weObj->getRevCtime(); //1444450304
       $id = $weObj->getRevID();//6203866816598959257
       $re = firebaseset('wechat/'.$id,$data);
-      watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
+      // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
     if($default_keyword){
       mp_service_keyword_response($weObj,$default_keyword,$account);
@@ -59,6 +59,19 @@ function _mp_service_process_text($weObj,$account){
       $copyright = copyright($account);
       $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！").$copyright);
     }
+    ga_push_add_event(array(
+     'category'        => 'wxservice',
+     'action'          => 'noservice',
+     'label'           => $keyword,
+    ));
+
+  }else{
+    ga_push_add_event(array(
+     'category'        => 'wxservice',
+     'action'          => 'text',
+     'label'           => $keyword,
+    ));
+
   }
 
 }
@@ -68,6 +81,11 @@ function _mp_service_process_event($weObj,$account){
   if(!$event){
     break;
   }
+  ga_push_add_event(array(
+     'category'        => 'wxservice',
+     'action'          => 'event',
+     'label'           => $event['event'],
+  ));
   // else{
   //   $message = _wechat_menu_default_message($event);
   //   $message && $weObj->text($message);
