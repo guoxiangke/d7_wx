@@ -40,6 +40,18 @@ function _mp_service_process_text($weObj,$account){
   mp_service_keyword_response($weObj,$keyword,$account);
   //default behavior if not hook wxresources_alter!
   if(!is_array($weObj->Message(''))){
+
+      $openid = $weObj->getRev()->getRevFrom();
+      $user_info = $weObj->getUserInfo($openid);
+      $data = array();
+      $data['headimgurl'] = $user_info['headimgurl'].'.png';
+      $data['province'] = $user_info['province'].' '.$user_info['city'];
+      $data['nickname'] = $user_info['nickname'];
+      $data['content'] = $weObj->getRevContent();
+      $data['time'] = $weObj->getRevCtime(); //1444450304
+      $id = $weObj->getRevID();//6203866816598959257
+      $re = firebaseset('wechat/'.$id,$data);
+      watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
     if($default_keyword){
       mp_service_keyword_response($weObj,$default_keyword,$account);

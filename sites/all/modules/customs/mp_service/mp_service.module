@@ -91,13 +91,13 @@ function _mp_service_init_wechat($account){
  */
 	
 function mp_service_keyword_response($weObj,$keyword,$account) {
-  if (strlen($keyword) > 10 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
-    $weObj->transfer_customer_service()->reply();
-  }
+
   $wxresources = array();  //TODO： get all (enabled)resources/node of account.
   $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword);
 	$ori_keyword = $keyword;
 	$keyword = 'key_'.$keyword;//1001 => 0 selution.
+  // watchdog('mp_service', $keyword, array(), WATCHDOG_NOTICE, 'link');
+  // watchdog('mp_service', '<pre>'.print_r($wxresources,TRUE), array(), WATCHDOG_NOTICE, 'link');
   if(isset($wxresources[$keyword])){    
     switch ($wxresources[$keyword]['type']) {
       case 'music':
@@ -113,6 +113,9 @@ function mp_service_keyword_response($weObj,$keyword,$account) {
         $weObj->news($new);
         break;
     }
+  }elseif (strlen($keyword) > 10 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
+    watchdog('mp_service', 'transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
+    $weObj->transfer_customer_service()->reply();
   }
 }
 
@@ -192,4 +195,47 @@ function wechat_token_get_user($openid){
     return user_load($authmap['uid']);
   }
   return false;
+}
+
+function firebaseset($path,$value){//
+  require_once('firebase/src/firebaseInterface.php');
+  require_once('firebase/src/firebaseLib.php');
+  $DEFAULT_URL = 'https://lydemo.firebaseio.com/';
+  $DEFAULT_TOKEN = 'rjTExQGCSU615xFgZiSyHcr1AwPtFs7cB0Qd2qVm';
+  $DEFAULT_PATH = '/firebase/example';
+  $firebase = new \Firebase\FirebaseLib($DEFAULT_URL, $DEFAULT_TOKEN);
+
+  // --- storing an array ---
+  // $test = array( 
+  //     "nick_name" => "love_ybzx",
+  //     "content" => "lamp test!",
+  // );
+  // // -- Firebase API commands
+
+  // $firebase->set($path, $value);   // stores data in Firebase
+  // $value = $firebase->get($path);  // reads a value from Firebase
+  // $firebase->delete($path);        // deletes value from Firebase
+  // $firebase->update($path, $data); // updates data in Firebase
+  // $firebase->push($path, $data);   // push data to Firebase
+
+  // // -- Firebase PHP Library commands
+
+  // $firebase->setToken($token);     // set up Firebase token
+  // $firebase->setBaseURI($uri);     // set up Firebase base URI (root node)
+  // $firebase->setTimeOut($seconds); // set up maximum timeout / request
+
+// dpm($firebase->delete('wechat'));
+  $return = $firebase->set($path,$value);
+  dpm($return);
+  return $return;
+  // $dateTime = new DateTime();
+
+  // $firebase->set($DEFAULT_PATH . '/' . $dateTime->format('c'), $test);
+
+  // --- storing a string ---
+  // $firebase->set($DEFAULT_PATH . '/name/contact001', "John Doe");
+
+  // --- reading the stored string ---
+  // $name = $firebase->get($DEFAULT_PATH . '/name/contact001');
+  // 
 }

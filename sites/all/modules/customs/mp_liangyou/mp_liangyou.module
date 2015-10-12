@@ -268,6 +268,41 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	 			$resources['key_'.$keyword] = wx_swty_resource_response($keyword);
 	 		}
  		}
+ 		if(substr($keyword, 0,6) == '目录'){
+ 			$file_key = 'http://ly.yongbuzhixi.com/cron/nzzlist/20151012.json';
+ 			$file = file_get_contents($file_key);
+			$urls = json_decode($file,TRUE);
+			$menu = "回复【】内的汉字，即可获得响应节目\n";
+			foreach ($urls as $key => $value) {
+				$menu .= '【'.$value['title']."】\n";
+			}
+			$resources['key_'.$keyword]= array(
+					'type'	=>	'text',
+					'obj'		=> array(
+						'text'	=> $menu,
+					)
+			);
+ 		}
+ 		if(!isset($resources)){
+			$file_key = 'http://ly.yongbuzhixi.com/cron/nzzlist/20151012.json';
+ 			$file = file_get_contents($file_key);
+			$urls = json_decode($file,TRUE);
+			foreach ($urls as $key => $value) {
+				if($value['title'] ==$keyword){
+					$resources['key_'.$keyword]= array(
+					'type'	=>	'music',
+					'obj'		=> array(
+						'title'	=> $value['title'],
+						'desc'	=>	"点击►收听 服务号:永不止息 每日更新",
+						'musicurl'	=>	'http://bos.yongbuzhixi.com'.$value['bce'],//bce gprs
+						'hgmusicurl'	=>	'http://bos.yongbuzhixi.com'.$value['bce'],//$value['mp3_link'], //wifi  http://liangyou2.nissigz.com:15200/vhh/vhh151012.mp3
+					),
+				);
+					break;
+				}
+			}
+ 		}
+
 
 	}
 	return $resources;
