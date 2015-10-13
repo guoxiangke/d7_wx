@@ -65,15 +65,7 @@ function _mp_service_process_text($weObj,$account){
      'label'           => $keyword,
     ));
 
-  }else{
-    ga_push_add_event(array(
-     'category'        => 'wxservice',
-     'action'          => 'text',
-     'label'           => $keyword,
-    ));
-
   }
-
 }
 
 function _mp_service_process_event($weObj,$account){	
