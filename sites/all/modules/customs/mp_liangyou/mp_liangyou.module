@@ -104,6 +104,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		 	}
 		  if(is_numeric($keyword) && ($keyword>=600 && $keyword<=652) ) {
 		    // $file_key = 'http://ly.yongbuzhixi.com/cron/cloud/'.date('Ymd').'.json'; 
+		    date_default_timezone_set('Asia/Shanghai');
 		    $file_key = dirname(__FILE__).'/'.date('Ymd').'.json';
 		    if(!file_exists($file_key))  {
 					$radios = ly_stream_source();
