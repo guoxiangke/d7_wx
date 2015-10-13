@@ -271,7 +271,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
  		}
  		date_default_timezone_set('Asia/Shanghai');
  		if(substr($keyword, 0,6) == '目录'){
- 			$file_key = 'http://729ly.bj.bcebos.com/home/bae/app/cron/nzzlist/'.date('Ymd')'.json';
+ 			$file_key = 'http://729ly.bj.bcebos.com/home/bae/app/cron/nzzlist/'.date('Ymd').'.json';
  			$file = file_get_contents($file_key);
 			$urls = json_decode($file,TRUE);
 			$menu = "回复【】内的汉字，即可获得响应节目\n";
@@ -286,7 +286,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			);
  		}
  		if(!isset($resources)){
-			$file_key = 'http://729ly.bj.bcebos.com/home/bae/app/cron/nzzlist/'.date('Ymd')'.json';
+			$file_key = 'http://729ly.bj.bcebos.com/home/bae/app/cron/nzzlist/'.date('Ymd').'.json';
  			$file = file_get_contents($file_key);
 			$urls = json_decode($file,TRUE);
 			foreach ($urls as $key => $value) {
