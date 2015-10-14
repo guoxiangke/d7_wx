@@ -200,22 +200,36 @@
  *   );
  * @endcode
  */
+// $databases = array (
+//   'default' => 
+//   array (
+//     'default' => 
+//     array (
+//       'database' => 'SOivFedjcBhFTyLDtWrz',// wxnew /jvgMmduFJsqxCqduQTxq
+//       'username' => '3IgpsqmgbjHBbGZDUalZfkjV',
+//       'password' => 'nKzYxGM6aEqUNMsqMYrpG7mCZFe2jV6M',
+//       'host' => 'sqld.duapp.com',
+//       'port' => '4050',
+//       'driver' => 'mysql',
+//       'prefix' => '',
+//     ),
+//   ),
+// );
 $databases = array (
   'default' => 
   array (
     'default' => 
     array (
-      'database' => 'SOivFedjcBhFTyLDtWrz',// wxnew /jvgMmduFJsqxCqduQTxq
+      'database' => 'svrideo7ju7eg75',//SOivFedjcBhFTyLDtWrz  wxnew /jvgMmduFJsqxCqduQTxq
       'username' => '3IgpsqmgbjHBbGZDUalZfkjV',
       'password' => 'nKzYxGM6aEqUNMsqMYrpG7mCZFe2jV6M',
-      'host' => 'sqld.duapp.com',
-      'port' => '4050',
+      'host' => 'svrideo7ju7eg75.mysql.duapp.com',
+      'port' => '10503',
       'driver' => 'mysql',
       'prefix' => '',
     ),
   ),
 );
-
 /**
  * Access control for update.php script.
  *
