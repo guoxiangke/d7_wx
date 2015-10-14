@@ -55,12 +55,15 @@ function _mp_service_process_text($weObj,$account){
       // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
     }
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
-    watchdog('default_keyword', print_r($default_keyword,true), array(), WATCHDOG_NOTICE, 'link');
     if($default_keyword){
       mp_service_keyword_response($weObj,$default_keyword,$account);
     }else{
-      $copyright = copyright($account);
-      $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！").$copyright);
+      if($account->uid == '8'){
+        $weObj->text("您好，谢谢您的反馈！[调皮]");
+      }else{
+        $copyright = copyright($account);
+        $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！").$copyright);
+      }
     }
     ga_push_add_event(array(
      'category'        => 'wxservice',
