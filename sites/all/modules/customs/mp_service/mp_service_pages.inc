@@ -41,6 +41,7 @@ function _mp_service_process_text($weObj,$account){
   //default behavior if not hook wxresources_alter!
 
   if(!is_array($weObj->Message(''))){
+    if($account->uid == '8'){
       $openid = $weObj->getRev()->getRevFrom();
       $user_info = $weObj->getUserInfo($openid);
       $data = array();
@@ -52,6 +53,7 @@ function _mp_service_process_text($weObj,$account){
       $id = $weObj->getRevID();//6203866816598959257
       $re = firebaseset('wechat/'.$id,$data);
       // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
+    }
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
     if($default_keyword){
       mp_service_keyword_response($weObj,$default_keyword,$account);
