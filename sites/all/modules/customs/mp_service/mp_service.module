@@ -236,7 +236,6 @@ function firebaseset($path,$value){//
 
 // dpm($firebase->delete('wechat'));
   $return = $firebase->set($path,$value);
-  dpm($return);
   return $return;
   // $dateTime = new DateTime();
 

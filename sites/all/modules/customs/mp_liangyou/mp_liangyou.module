@@ -31,6 +31,10 @@ function mp_liangyou_rescources_info(){
     'name' => 'swty',
     'desc' =>	'世外桃源【ty】',
   );
+	$rescources[] = array(
+    'name' => 'mav',
+    'desc' =>	'良友圣经学院【a0】-【f0】',
+  );
   return $rescources;
 }
 
@@ -269,12 +273,70 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	 			$resources['key_'.$keyword] = wx_swty_resource_response($keyword);
 	 		}
  		}
+		//a1 b1 c1 d1 e1 f1-f9
+		if(isset($enabled_resources['mav']) && $enabled_resources['mav']){
+			// $keyword = 'd11';
+			$first = substr($keyword, 0,1);
+			$second = substr($keyword, 1,1);
+			$temp = array('a','b','c','d','e','f');
+			if(in_array($first, $temp) && $second>0 && $second<10 ){
+				$third = substr($keyword, 2,2);
+				$mav = get_ly_mav();
+				$mav = $mav[$first.$second];
+				if($third>0&&$third<$mav['count']){
+					//24 => 001
+					$count = $mav['count'];
+
+					$rep = str_pad($third, 2,'0',STR_PAD_LEFT);
+					$link = str_replace("$count", str_pad($third, 2,'0',STR_PAD_LEFT), $mav['link']);
+					$link = 'http://liangyou.u.qiniudn.com/old/'.urlencode($link);
+					$resources['key_'.$keyword]= array(
+						'type'	=>	'music',
+						'obj'		=> array(
+							'title'	=> $mav['title'],
+							'desc'	=>	"良友圣经学院 服务号:永不止息 点击►收听",
+							'musicurl'	=>	$link,
+							'hgmusicurl'	=>	$link,
+						),
+					);
+				}else{
+					//编码对，编号不对！
+					$resources['key_'.$keyword]= array(
+						'type'	=>	'text',
+						'obj'		=> array(
+							'text'	=> "[大哭]编码对，数字不对！",
+						)
+					);
+				}
+			}else{// a0 b0 c0 d0 e0 f0 
+				$menu = array('a0','b0','c0','d0','e0','f0');
+				$temp_keyword = substr($keyword, 0,2);
+				$first = substr($keyword, 0,1);
+				if(in_array($temp_keyword, $menu)){
+					$mav = get_ly_mav();
+					$mavmenu = '良友圣经学院课程目录'.$first."\n";
+					foreach ($mav as $key => $value) {
+						if(strpos($key,$first) !== false){
+							$mavmenu .= "【".$key."】".$value['title']."\n";
+						}
+					}
+					$mavmenu .="回复【".$first."11】，即可获得第一课[强]";
+					$resources['key_'.$keyword]= array(
+						'type'	=>	'text',
+						'obj'		=> array(
+						'text'	=> $mavmenu,
+						)
+					);
+				}
+			}
+		}//end of 良友圣经学院
+		//begin bos
  		date_default_timezone_set('Asia/Shanghai');
  		if(substr($keyword, 0,6) == '目录'){
  			$file_key = 'http://729ly.bj.bcebos.com/home/bae/app/cron/nzzlist/'.date('Ymd').'.json';
  			$file = file_get_contents($file_key);
 			$urls = json_decode($file,TRUE);
-			$menu = "回复【】内的汉字，即可获得响应节目\n";
+			$menu = "回复【】内的汉字，即可获得响应节目[调皮]\n";
 			foreach ($urls as $key => $value) {
 				$menu .= '【'.$value['title']."】\n";
 			}
@@ -289,6 +351,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			$file_key = 'http://729ly.bj.bcebos.com/home/bae/app/cron/nzzlist/'.date('Ymd').'.json';
  			$file = file_get_contents($file_key);
 			$urls = json_decode($file,TRUE);
+			if(count($urls))
 			foreach ($urls as $key => $value) {
 				if($value['title'] ==$keyword){
 					$resources['key_'.$keyword]= array(
@@ -303,8 +366,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					break;
 				}
 			}
- 		}
-
+ 		}//end bos
 
 	}
 	return $resources;

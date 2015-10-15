@@ -59,10 +59,10 @@ function _mp_service_process_text($weObj,$account){
       mp_service_keyword_response($weObj,$default_keyword,$account);
     }else{
       if($account->uid == '8'){
-        $weObj->text("您好，谢谢您的反馈！[调皮]");
+        $weObj->text("您好，谢谢您的反馈！[握手]");
       }else{
         $copyright = copyright($account);
-        $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！").$copyright);
+        $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！[握手]").$copyright);
       }
     }
     ga_push_add_event(array(
@@ -91,7 +91,7 @@ function _mp_service_process_event($weObj,$account){
 	//add default behavior
   if($event['event']=='subscribe'){
     $copyright = copyright($account);
-    $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！').$copyright);
+    $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！[握手]').$copyright);
   }else{
     // $menu = $weObj->getMenu();
     if (isset($event['key'])) {
