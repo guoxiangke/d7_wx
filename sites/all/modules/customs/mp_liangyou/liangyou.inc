@@ -478,9 +478,9 @@ function get_ly_mav(){
       'title'=>'诗歌智慧书2',
     ),
     'e5'=>array(
-      'link'=>'e本科课程/004诗歌智慧书2/mavpk030.mp3',
-      'count'=>30,
-      'title'=>'诗歌智慧书2',
+      'link'=>'f进深/001旧约神学/mavog024.mp3',
+      'count'=>24,
+      'title'=>'旧约神学',
     ),
     'e6'=>array(
       'link'=>'e本科课程/005讲道实习/mavjd024.mp3',
@@ -673,7 +673,6 @@ function get_ly_mav(){
       'title'=>'教牧学',
     ),
   );
-  //f进深/001旧约神学/mavog024.mp3
   //f进深/002诗篇精选/mavse030.mp3
   //g林慈信牧师在新加坡教导加尔文《基督教要义》2008年/Calvin_B4_L109.mp3
 }
