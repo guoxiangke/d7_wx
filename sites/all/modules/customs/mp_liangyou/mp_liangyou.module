@@ -330,6 +330,43 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				}
 			}
 		}//end of 良友圣经学院
+		//begin lysd sd1-sd999
+		$orikeyword = $keyword;
+		$check_keyword = substr($keyword, 0,2);
+		$index = substr($keyword, 2,3);
+		if($check_keyword == 'sd'){
+			$lysd = get_lysd();
+			if($keyword = 'sd'){
+				$mavmenu = "目录\n";
+				foreach ($lysd as $key => $value) {
+					$mavmenu .= $key.' sd'.$value['begin'].'-sd'.$value['end']."\n";
+				}
+				$resources['key_'.$keyword]= array(
+					'type'	=>	'text',
+					'obj'		=> array(
+					'text'	=> $mavmenu,
+					)
+				);
+			}
+			if(is_numeric($index)){
+				foreach ($lysd as $key => $value) {
+					if($index>=$value['begin'] && $index<=$value['end']){
+						$link = $value['title'].'/'.str_pad($index, 3,'0',STR_PAD_LEFT).'.mp3';
+						$link = 'http://ly729.b0.upaiyun.com/lysd/'.urlencode($link);
+						$resources['key_'.$orikeyword]= array(
+							'type'	=>	'music',
+							'obj'		=> array(
+								'title'	=> $value['title'],
+								'desc'	=>	"良友圣经学院 服务号:永不止息 点击►收听",
+								'musicurl'	=>	$link,
+								'hgmusicurl'	=>	$link,
+							),
+						);
+						break;
+					}
+				}
+			}
+		}
 		//begin bos
  		date_default_timezone_set('Asia/Shanghai');
  		if(substr($keyword, 0,6) == '目录'){
