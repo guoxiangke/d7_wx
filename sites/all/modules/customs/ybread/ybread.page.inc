@@ -5,7 +5,7 @@ function ybread_page(){
 	// get latest node.
 	$query = "SELECT n.nid nid, n.created created FROM {node} n  WHERE n.type = :type order by n.created desc limit 0,1";
 	$result = db_query($query, array(':type' => $content_type))->fetch();
-	dvm($result);
+	// dvm($result);
   //dvm(12*60*60);
 	$now = 0;
 	$last = 0;
@@ -43,7 +43,7 @@ function ybread_page(){
       $file = file_save_data($response->data, 'public://lingming/'.date('Ymd').'.jpg');
     }
 		$node->field_image[LANGUAGE_NONE][0]['fid']=$file->fid;
-		$node->field_image[LANGUAGE_NONE][0]['alt']=$html->find('.entry-content .thought-box', 0)->plaintext;
+		$node->field_image[LANGUAGE_NONE][0]['alt']=trim($html->find('.entry-content .thought-box', 0)->plaintext);
 
 	  $node->body[LANGUAGE_NONE][0]['value'] = '<div class="ybread-img"><img src ="'.$pic_url.'"/></div>'.$node->body[LANGUAGE_NONE][0]['value'];
 	  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
@@ -57,7 +57,7 @@ function ybread_page(){
   <source src="http://cdn.rbcintl.org/odb/zht/zht-odb-2015-10-21.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
-				<p style="color:#666">音频来源：simplified-odb.org &nbsp;liangyou.net &nbsp;&nbsp;文字来源： http://simplified-odb.org </p></div>';
+				<p style="color:#666">信息来源： http://simplified-odb.org </p></div>';
 
   $node_view = node_view($node); //drupal_render($node_view).;
   return drupal_render($node_view).$player;
