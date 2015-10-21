@@ -65,11 +65,6 @@ function _mp_service_process_text($weObj,$account){
         $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！[握手]").$copyright);
       }
     }
-    ga_push_add_event(array(
-     'category'        => 'wxservice',
-     'action'          => 'noservice',
-     'label'           => $keyword,
-    ));
 
   }
 }
