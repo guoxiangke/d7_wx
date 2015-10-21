@@ -49,7 +49,7 @@ function ybread_page(){
 	  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
 	  // dpm($node);
 	  node_save($node);
-  	$nid = $result->nid;
+  	$nid = $node->nid;
   }else{
   	$nid = $result->nid;
 		$node = node_load($nid);
