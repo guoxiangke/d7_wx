@@ -49,6 +49,7 @@ function ybread_page(){
 	  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
 	  // dpm($node);
 	  node_save($node);
+  	$nid = $result->nid;
   }else{
   	$nid = $result->nid;
 		$node = node_load($nid);
@@ -58,7 +59,7 @@ function ybread_page(){
 Your browser does not support the audio element.
 </audio>
 				<p style="color:#666">信息来源： http://simplified-odb.org </p></div>';
-
+	$node = node_load($nid);
   $node_view = node_view($node); //drupal_render($node_view).;
   return drupal_render($node_view).$player;
 }
