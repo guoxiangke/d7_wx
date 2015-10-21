@@ -130,7 +130,7 @@ function mp_service_keyword_response($weObj,$keyword,$account) {
     ga_push_add_event(array(
      'category'        => 'wxservice',
      'action'          => 'noservice',
-     'label'           => $keyword,
+     'label'           => $ori_keyword,
     ));
   }
 }
