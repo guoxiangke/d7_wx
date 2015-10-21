@@ -77,7 +77,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    	return mp_bbn_response($keyword,$key);
 		    }
 		    //6,7播出的节目
-		    if ($radios_list[$key]['day']=='6' && $offset == 0 && date('N')<=5) {
+		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='6' && $offset == 0 && date('N')<=5) {
 		    	$offset = date('N')%2+1;
 		    }
 		    $string = date('ymd',time()-$offset*24*60*60); 

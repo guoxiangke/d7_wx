@@ -91,9 +91,11 @@ function _mp_service_process_event($weObj,$account){
     // $menu = $weObj->getMenu();
     if (isset($event['key'])) {
       mp_service_keyword_response($weObj,$event['key'],$account);
+    }elseif($event=='WifiConnected'){
+      //do nothing!!!
+      watchdog('mp_service_pages', 'WifiConnected event trigger!', array(), WATCHDOG_NOTICE, 'link');
     }else{
-      watchdog('error221222', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'link');
-
+      watchdog('error221222', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
     }
   }
 }
