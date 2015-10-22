@@ -39,11 +39,13 @@ function mp_content_wxresources($resources, $account, $keyword){
               );
             $news[] = $img;
           }
+          $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
+          $news[] = (array)json_decode($lingming);
           // if(in_array($keyword, array_keys($get_ybzx_resources)))
-            $resources['key_'.$keyword]= array(
-            'type'  =>  'news',
-            'obj'   =>  $news,
-            );
+          $resources['key_'.$keyword]= array(
+          'type'  =>  'news',
+          'obj'   =>  $news,
+          );
       }
     }
     if ($keyword =='77') {
