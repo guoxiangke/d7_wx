@@ -44,7 +44,7 @@ function ybread_page(){
     }
 		$node->field_image[LANGUAGE_NONE][0]['fid']=$file->fid;
 		$node->field_image[LANGUAGE_NONE][0]['alt']=trim($html->find('.entry-content .thought-box', 0)->plaintext);
-
+		// $node->body[LANGUAGE_NONE][0]['summary'] = trim($html->find('.entry-content .thought-box', 0)->plaintext);
 	  $node->body[LANGUAGE_NONE][0]['value'] = $node->body[LANGUAGE_NONE][0]['value'];
 	  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
 	  // dpm($node);
