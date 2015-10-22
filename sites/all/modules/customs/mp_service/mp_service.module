@@ -90,13 +90,14 @@ function _mp_service_init_wechat($account){
  * //switch (type) news
  */
 	
-function mp_service_keyword_response($weObj,$keyword,$account) {
+function mp_service_keyword_response(&$weObj,$keyword,$account) {
 
   $wxresources = array();  //TODO： get all (enabled)resources/node of account.
   $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword);
 	$ori_keyword = $keyword;
 	$keyword = 'key_'.$keyword;//1001 => 0 selution.
-  // watchdog('mp_service', $keyword, array(), WATCHDOG_NOTICE, 'link');
+  // watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
+  // watchdog('ori_keyword', $ori_keyword, array(), WATCHDOG_NOTICE, 'link');
   // watchdog('mp_service', '<pre>'.print_r($wxresources,TRUE), array(), WATCHDOG_NOTICE, 'link');
   if(isset($wxresources[$keyword])){    
     switch ($wxresources[$keyword]['type']) {

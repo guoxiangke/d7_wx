@@ -25,12 +25,12 @@ function mp_fm_wxresources($resources, $account, $keyword){
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
     if(in_array($keyword, array('xl','sl','xwz'))){
-      require_once('xmly.inc');
-      $resources['key_'.$keyword]= array(
-          'type'  =>  'music',
-          'obj'   => xmly_get_radio($keyword),
-        );
-      return $resources;
+      // require_once('xmly.inc');
+      // $resources['key_'.$keyword]= array(
+      //     'type'  =>  'music',
+      //     'obj'   => xmly_get_radio($keyword),
+      //   );
+      // return $resources;
     }
     if($keyword =='700'&&isset($enabled_resources[$keyword]) && $enabled_resources[$keyword]){
       $nodes = dale_get_mp_nodes('audio_resource', 100);
@@ -46,15 +46,19 @@ function mp_fm_wxresources($resources, $account, $keyword){
       );
       return $resources;
     }
+
     $temp_key = substr($keyword, 0, 3);
     if($temp_key != '700') return;
-
-  	if(isset($enabled_resources[$keyword]) && $enabled_resources[$keyword]){
+  	if(isset($enabled_resources[$temp_key]) && $enabled_resources[$temp_key]){
       $nid = substr($keyword, 3);
-      $node = node_load($nid);
+      // $node = node_load($nid);
+      $title = db_query('SELECT title FROM {node} WHERE nid = :nid', array(':nid' => $nid))->fetchField();
+      $link_value = db_query('SELECT field_link_value FROM {field_data_field_link} WHERE entity_id = :nid', array(':nid' => $nid))->fetchField();
+      $field_audio_type  = db_query('SELECT field_audio_type_value FROM {field_data_field_audio_type} WHERE entity_id = :nid', array(':nid' => $nid))->fetchField();
 
-      if($node->field_audio_type[LANGUAGE_NONE][0]['value'] == 'xmly'){
-        $html = file_get_contents($node->field_link[LANGUAGE_NONE][0]['value']);//'http://www.ximalaya.com/22873240/album/348894'
+      if($field_audio_type == 'xmly'){
+
+        $html = file_get_contents($link_value);//'http://www.ximalaya.com/22873240/album/348894'
         preg_match('/sound_ids=".+/', $html,$matches);
         $html = $matches[0];
         $html = str_replace('sound_ids="', '', $html );
@@ -78,30 +82,33 @@ function mp_fm_wxresources($resources, $account, $keyword){
         }
         $sound_id = trim($sound_ids[$index]);
         $json = file_get_contents('http://www.ximalaya.com/tracks/'.$sound_id.'.json');
+        // $json = file_get_contents(getcwd().'/sites/all/modules/customs/mp_fm/test.json');
         $json = json_decode($json);
+        // $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【700】';
         $resources['key_'.$keyword]= array(
           'type'  =>  'music',
           'obj'   => array(
-            'title' => $json->title,
-            'desc'  =>  $json->intro,
+            'title' => $title,
+            'desc'  => $json->intro,//$desc,//
             'musicurl'  =>  $json->play_path_32,
             'hgmusicurl'  =>  $json->play_path_64,
           ),
         );
       }
+
       //70034
-      if($node->field_audio_type[LANGUAGE_NONE][0]['value'] == 'lizhi'){
-        // $html = file_get_contents($node->field_link[LANGUAGE_NONE][0]['value']);        
+      if($field_audio_type == 'lizhi'){
+        
+        $node_body = db_query('SELECT body_value FROM {field_data_body} WHERE entity_id = :nid', array(':nid' => $nid))->fetchField();   
         //http://www.lizhi.fm/api/radio_audios?band=43136&s=0&l=365
-        $html = json_decode($node->body[LANGUAGE_NONE][0]['value']);
+        $html = json_decode($node_body);
         $sound_ids = array_reverse($html); 
         $index = (date('z')-17) % count($sound_ids);
         if (date('i') > 30) {
           $index++;
         }
         $json = $sound_ids[$index];        
-        $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【xmly】';
-        watchdog($index, $keyword, array(), WATCHDOG_NOTICE, 'link');
+        $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【700】';
         $resources['key_'.$keyword]= array(
           'type'  =>  'music',
           'obj'   => array(
@@ -115,5 +122,6 @@ function mp_fm_wxresources($resources, $account, $keyword){
     }
 
   }
+  watchdog('700res', '<pre>'.print_r($resources,true), array(), WATCHDOG_NOTICE, 'link');
 	return $resources;
 }

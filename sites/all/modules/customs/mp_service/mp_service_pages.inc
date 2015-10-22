@@ -28,7 +28,7 @@ function mp_service_callback($account){
   exit;
 }
 
-function _mp_service_process_text($weObj,$account){
+function _mp_service_process_text(&$weObj,$account){
   $ori_keyword = $weObj->getRevContent();
 	$ori_keyword = trim($ori_keyword);
   $keyword = make_semiangle($ori_keyword);

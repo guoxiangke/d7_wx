@@ -64,10 +64,11 @@ function xmly_get_radio($keyword){
 	  if($offday==0)
 	  	$title =  $resources[$check_keyword]['title'];
 	  $result = array(
-	  	'keyword'			=>	$check_keyword,
+	  	// 'keyword'			=>	$check_keyword,
 	  	'title'				=>	$title,
-	  	'musicurl'		=>	$hgmusicurl,
-	  	'hgmusicurl'	=>	$hgmusicurl,
+	  	'desc'				=>	'公众号：永不止息',
+	  	'musicurl'		=>	$hgmusicurl.'?test=mp3',
+	  	'hgmusicurl'	=>	$hgmusicurl.'?test=mp3',
 	  );
   }
   return $result; 
