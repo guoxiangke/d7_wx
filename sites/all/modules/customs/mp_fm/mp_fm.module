@@ -25,12 +25,12 @@ function mp_fm_wxresources($resources, $account, $keyword){
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
     if(in_array($keyword, array('xl','sl','xwz'))){
-      // require_once('xmly.inc');
-      // $resources['key_'.$keyword]= array(
-      //     'type'  =>  'music',
-      //     'obj'   => xmly_get_radio($keyword),
-      //   );
-      // return $resources;
+      require_once('xmly.inc');
+      $resources['key_'.$keyword]= array(
+          'type'  =>  'music',
+          'obj'   => xmly_get_radio($keyword),
+        );
+      return $resources;
     }
     if($keyword =='700'&&isset($enabled_resources[$keyword]) && $enabled_resources[$keyword]){
       $nodes = dale_get_mp_nodes('audio_resource', 100);
