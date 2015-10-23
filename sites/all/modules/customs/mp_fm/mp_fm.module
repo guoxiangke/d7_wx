@@ -38,8 +38,8 @@ function mp_fm_wxresources($resources, $account, $keyword){
           'obj'   => array(
             'title' => '小王子-0'.date('G')%8,
             'desc'  => '公众号：永不止息',
-            'musicurl'  =>  'http://7xnqlx.com1.z0.glb.clouddn.com/'.date('G')%8.'.mp3',
-            'hgmusicurl'  =>  'http://7xnqlx.com1.z0.glb.clouddn.com/'.date('G')%8.'.mp3',
+            'musicurl'  =>  'http://7xnqlx.com1.z0.glb.clouddn.com/'.(date('G')%8).'.mp3',
+            'hgmusicurl'  =>  'http://7xnqlx.com1.z0.glb.clouddn.com/'.(date('G')%8).'.mp3',
           ),
         );
       return $resources;
