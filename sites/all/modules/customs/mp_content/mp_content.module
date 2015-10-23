@@ -26,9 +26,9 @@ function mp_content_wxresources($resources, $account, $keyword){
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
     //灵命日粮
-    if ($keyword != 'lm'||$keyword =='灵命'||$keyword =='美文'||$keyword =='图文') {      
+    if ($keyword == 'lm'||$keyword =='灵命'||$keyword =='美文'||$keyword =='图文') {      
       if(isset($enabled_resources['mp_contents']) && $enabled_resources['mp_contents']){      
-          if($keyword != 'lm'||$keyword =='灵命'){
+          if($keyword == 'lm'||$keyword =='灵命'){
             $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
             $news[] = (array)json_decode($lingming);
           }else{
