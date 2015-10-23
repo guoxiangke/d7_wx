@@ -55,7 +55,7 @@ function ybread_page(){
 		$node = node_load($nid);
   }
   $player ='<div class="ybread-player"><audio controls>
-  <source src="http://cdn.rbcintl.org/odb/zht/zht-odb-2015-10-21.mp3" type="audio/mpeg">
+  <source src="http://cdn.rbcintl.org/odb/zht/zht-odb-'.date("Y").'-'.date("m").'-'.date("d").'.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
 				<p style="color:#666">信息来源： http://simplified-odb.org </p></div>';
