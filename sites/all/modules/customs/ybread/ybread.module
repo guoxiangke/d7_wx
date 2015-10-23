@@ -34,7 +34,7 @@ function get_last_node($content_type = 'lingming') {
     header('Content-Type: application/json');
     $img = array(
         'Title'=> '【灵命日粮】'.$node->title,
-        'Description'=> truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 250, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1),
+        'Description'=> truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 150, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1),
         'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
         'Url'=> url('node/'.$node->nid, array('absolute' => TRUE)),
       );

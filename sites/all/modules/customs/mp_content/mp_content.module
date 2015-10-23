@@ -21,7 +21,9 @@ function mp_content_rescources_info(){
  * Hook_wxresources
  */
 function mp_content_wxresources($resources, $account, $keyword){
-  if($keyword != 'lm'||$keyword != '灵命'||$keyword !='图文' && $keyword !='美文' && $keyword !='77' && $key !='node') return;
+  $key = substr($keyword, 0,4);
+  if($keyword != 'lm'&&$keyword != '灵命'&&$keyword !='图文' && $keyword !='美文' && $keyword !='77' && $key !='node') return;
+  watchdog('mp_content', 'message', array(), WATCHDOG_NOTICE, 'link');
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
