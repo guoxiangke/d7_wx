@@ -636,16 +636,19 @@ input.form-submit {
 	line-height: 50px;
 	color: #53284f;
 }
-
+/*ybread*/
 .verse-box,.poem-box,.thought-box{
 	font-weight: bolder;
 	padding: 10px;
 
 }
+.poem-box{
+	padding: 10px 0;
+}
 .thought-box{
 	text-align: center;
+	color: #00AEEF;
 }
-
 .verse-box {
   background: #f9f9f9;
   border-left: 10px solid #ccc;
@@ -661,6 +664,12 @@ input.form-submit {
   margin-right: 0.25em;
   vertical-align: -0.4em;
 }
+.node-lingming p br{
+  display: block;
+  margin: 10px 0;
+  content: " ";
+}
+
 
 /* VIEWS ********************************** */
 /* ----- Search Results -------------- */
