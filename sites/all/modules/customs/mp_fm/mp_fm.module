@@ -84,12 +84,12 @@ function mp_fm_wxresources($resources, $account, $keyword){
         $json = file_get_contents('http://www.ximalaya.com/tracks/'.$sound_id.'.json');
         // $json = file_get_contents(getcwd().'/sites/all/modules/customs/mp_fm/test.json');
         $json = json_decode($json);
-        // $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【700】';
+        $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【700】';
         $resources['key_'.$keyword]= array(
           'type'  =>  'music',
           'obj'   => array(
             'title' => $title,
-            'desc'  => $json->intro,//$desc,//
+            'desc'  => $desc,//$json->intro,//
             'musicurl'  =>  $json->play_path_32,
             'hgmusicurl'  =>  $json->play_path_64,
           ),
