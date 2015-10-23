@@ -12,7 +12,7 @@ function xmly_radio_menu(){
 			'title'	=>'黑门山路',
 			'url'	=> 'http://www.ximalaya.com/4816433/album/253230',
 		),
-		'xwz' => array(
+		'wz' => array(
 			'title'	=>'小王子',
 			'url'	=> 'http://www.ximalaya.com/1288726/album/240506',
 		),
@@ -58,8 +58,8 @@ function xmly_get_radio($keyword){
 	  $url = "http://www.ximalaya.com/tracks/".$audio[$offday].".json";
 	  $html = file_get_html($url)->outertext;
 	  $audio =  drupal_json_decode($html);
-	  $musicurl = "http://fdfs.xmcdn.com/".$audio['play_path_32'];
-	  $hgmusicurl = "http://fdfs.xmcdn.com/".$audio['play_path_64'];
+	  $musicurl = $audio['play_path_32'];//"http://fdfs.xmcdn.com/".
+	  $hgmusicurl = $audio['play_path_64'];//"http://fdfs.xmcdn.com/".
 	  $title = $resources[$check_keyword]['title'].'('.$offday.')';
 	  if($offday==0)
 	  	$title =  $resources[$check_keyword]['title'];
@@ -67,8 +67,8 @@ function xmly_get_radio($keyword){
 	  	// 'keyword'			=>	$check_keyword,
 	  	'title'				=>	$title,
 	  	'desc'				=>	'公众号：永不止息',
-	  	'musicurl'		=>	$hgmusicurl.'?test=mp3',
-	  	'hgmusicurl'	=>	$hgmusicurl.'?test=mp3',
+	  	'musicurl'		=>	$hgmusicurl,
+	  	'hgmusicurl'	=>	$hgmusicurl,
 	  );
   }
   return $result; 

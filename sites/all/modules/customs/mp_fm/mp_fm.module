@@ -24,11 +24,23 @@ function mp_fm_wxresources($resources, $account, $keyword){
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
-    if(in_array($keyword, array('xl','sl','xwz'))){
+    if(in_array($keyword, array('xl','sl','wz'))){
       require_once('xmly.inc');
       $resources['key_'.$keyword]= array(
           'type'  =>  'music',
           'obj'   => xmly_get_radio($keyword),
+        );
+      return $resources;
+    }
+    if($keyword='xwz'){
+      $resources['key_'.$keyword]= array(
+          'type'  =>  'music',
+          'obj'   => array(
+            'title' => '小王子-0'.date('G')%8,
+            'desc'  => '公众号：永不止息',
+            'musicurl'  =>  'http://7xnqlx.com1.z0.glb.clouddn.com/'.date('G')%8.'.mp3',
+            'hgmusicurl'  =>  'http://7xnqlx.com1.z0.glb.clouddn.com/'.date('G')%8.'.mp3',
+          ),
         );
       return $resources;
     }
