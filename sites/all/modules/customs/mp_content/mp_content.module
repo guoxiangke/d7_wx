@@ -22,26 +22,32 @@ function mp_content_rescources_info(){
  */
 function mp_content_wxresources($resources, $account, $keyword){
   $key = substr($keyword, 0,4);  
-  if($keyword !='图文' && $keyword !='美文' && $keyword !='77' && $key !='node') return;
+  if($keyword != '灵命日粮'||$keyword !='图文' && $keyword !='美文' && $keyword !='77' && $key !='node') return;
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
-    if ($keyword =='美文'||$keyword =='图文') {      
+    //灵命日粮
+    if ($keyword =='灵命日粮'||$keyword =='美文'||$keyword =='图文') {      
       if(isset($enabled_resources['mp_contents']) && $enabled_resources['mp_contents']){      
-          $nodes = dale_get_mp_nodes('article',3);
-          $news = array();
-          foreach ($nodes as $key => $node) {       
-            $img = array(
-                'Title'=> $node->title,
-                'Description'=> $node->title,
-                'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
-                'Url'=> url('node/'.$node->nid, array('absolute' => TRUE)),
-              );
-            $news[] = $img;
+          if($keyword =='灵命日粮'){
+            $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
+            $news[] = (array)json_decode($lingming);
+          }else{
+            $nodes = dale_get_mp_nodes('article',3);
+            $news = array();
+            foreach ($nodes as $key => $node) {       
+              $img = array(
+                  'Title'=> $node->title,
+                  'Description'=> $node->title,
+                  'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
+                  'Url'=> url('node/'.$node->nid, array('absolute' => TRUE)),
+                );
+              $news[] = $img;
+            }
+            $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
+            $news[] = (array)json_decode($lingming);
+            // if(in_array($keyword, array_keys($get_ybzx_resources)))
           }
-          $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
-          $news[] = (array)json_decode($lingming);
-          // if(in_array($keyword, array_keys($get_ybzx_resources)))
           $resources['key_'.$keyword]= array(
           'type'  =>  'news',
           'obj'   =>  $news,
