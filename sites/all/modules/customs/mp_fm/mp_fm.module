@@ -32,7 +32,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
         );
       return $resources;
     }
-    if($keyword='xwz'){
+    if($keyword=='xwz'){
       $resources['key_'.$keyword]= array(
           'type'  =>  'music',
           'obj'   => array(
