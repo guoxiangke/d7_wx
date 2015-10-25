@@ -29,7 +29,7 @@ function liangyou_audio_list(){
       'im' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njchy-3b2ozw', 'name' =>'i关怀心磁场', 'prefix'=>$prefix['31'],'day'=>5),//1-5
       'ib' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcjm-3b2p38', 'name' =>'无限飞行号', 'prefix'=>$prefix['31'],'day'=>0),//0
       'rt' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcia-3b2p0k', 'name' =>'今夜心未眠', 'prefix'=>$prefix['31'],'day'=>6),//6,7
-      'em' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci7-3b2p0e', 'name' =>'听听90后', 'prefix'=>$prefix['31'],'day'=>6),//6,7
+      'ls' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci7-3b2p0e', 'name' =>'燃亮的一生', 'prefix'=>$prefix['31'],'day'=>6),//6,7
       'yr' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njciv-3b2p1q', 'name' =>'Yi-radio爱广播', 'prefix'=>$prefix['31'],'day'=>0),//0
       'bv' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njciv-3b2p1q', 'name' =>'灵命日粮', 'prefix'=>$prefix['32'],'day'=>0),//0
       'mw' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcly-3b2p7w', 'name' =>'旷野吗哪', 'prefix'=>$prefix['32'],'day'=>0),//0
@@ -124,7 +124,7 @@ function ly_get_menu(){
   【im】i关怀心磁场
   【ib】无限飞行号
   【rt】今夜心未眠
-  【em】听听90后
+  【ls】燃亮的一生
   【yr】Yi-radio爱广播
   【bv】旷野吗哪
   【ee】拥抱每一天
@@ -199,9 +199,13 @@ function ly_stream_source(){
     'title' => '今夜心未眠',
     'url' => 'http://www.txly1.net/program/1njcia-3b2p0k',
   ),
+  // array(
+  //   'title' => '听听90后',ls
+  //   'url' => 'http://www.txly1.net/program/1njci7-3b2p0e',
+  // ),
   array(
-    'title' => '听听90后',
-    'url' => 'http://www.txly1.net/program/1njci7-3b2p0e',
+    'title' => '燃亮的一生',
+    'url' => 'http://www.txly1.net/program/1njclz-3b2p7y',
   ),
   array(
     'title' => '彩虹桥',
@@ -362,7 +366,7 @@ function ly_stream_menu(){
 【611】书香园地
 【612】i-Radio爱广播
 【613】今夜心未眠
-【614】听听90后
+【614】燃亮的一生
 【615】彩虹桥
 【616】现代人的希望
 【617】生命的四季
