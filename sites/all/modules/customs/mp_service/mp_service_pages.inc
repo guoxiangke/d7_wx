@@ -74,6 +74,7 @@ function _mp_service_process_event($weObj,$account){
   if(!$event){
     break;
   }
+  if(!isset($event['key']))
   ga_push_add_event(array(
      'category'        => 'wxservice',
      'action'          => 'event',
@@ -87,16 +88,19 @@ function _mp_service_process_event($weObj,$account){
   if($event['event']=='subscribe'){
     $copyright = copyright($account);
     $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！[握手]').$copyright);
+  }elseif($event['event']=='WifiConnected'){
+    //do nothing!!!
+    watchdog('mp_service_pages', 'WifiConnected event trigger!', array(), WATCHDOG_NOTICE, 'link');
+    $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎来到我家！[握手]'));
+  }elseif(isset($event['key'])) {
+    mp_service_keyword_response($weObj,$event['key'],$account);
+    ga_push_add_event(array(
+       'category'        => 'wxservice',
+       'action'          => 'event_'.$event['event'],
+       'label'           => $event['key'],//CLICK/VIEW!
+    ));
   }else{
-    // $menu = $weObj->getMenu();
-    if (isset($event['key'])) {
-      mp_service_keyword_response($weObj,$event['key'],$account);
-    }elseif($event=='WifiConnected'){
-      //do nothing!!!
-      watchdog('mp_service_pages', 'WifiConnected event trigger!', array(), WATCHDOG_NOTICE, 'link');
-    }else{
-      watchdog('error221222', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
-    }
+    watchdog('no track event!', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
   }
 }
 
