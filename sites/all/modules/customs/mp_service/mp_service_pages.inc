@@ -14,6 +14,12 @@ function mp_service_callback($account){
   // if(is_record_history(gh_id)){
   //   entity_save('wxmsg');
   // }
+  ga_push_add_pageview(array(
+      'location' => url('mp_service/'.$account->uid, array('absolute' => true)),
+      'page'     => '/'.variable_get('mp_config_appid_'.$account->uid, ""),
+      'title'    => $account->name,
+  ));
+
   $type = $weObj->getRev()->getRevType();
   switch($type){
     case Wechat::MSGTYPE_TEXT:
