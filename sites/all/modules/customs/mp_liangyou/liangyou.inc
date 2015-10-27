@@ -164,7 +164,7 @@ function ly_stream_source(){
     '生活无国界' => 'http://www.txly1.net/program/1njci3-3b2p06',
     '零点零距离' => 'http://www.txly1.net/program/1njciw-3b2p1s',
     '书香园地' => 'http://www.txly1.net/program/1njci1-3b2p02',
-    'i-Radio爱广播' => 'http://www.txly1.net/program/1njchu-3b2ozo',
+    '爱广播' => 'http://www.txly1.net/program/1njchu-3b2ozo',
     '今夜心未眠' => 'http://www.txly1.net/program/1njcia-3b2p0k',
     '彩虹桥' => 'http://www.txly1.net/program/1njchv-3b2ozq',
     '长夜的牵引' => 'http://www.txly1.net/program/1njci9-3b2p0i',
