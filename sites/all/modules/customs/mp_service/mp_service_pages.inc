@@ -16,8 +16,8 @@ function mp_service_callback($account){
   // }
   ga_push_add_pageview(array(
       'location' => url('mp_service/'.$account->uid, array('absolute' => true)),
-      'page'     => '/'.variable_get('mp_config_appid_'.$account->uid, ""),
-      'title'    => $account->name,
+      'page'     => $account->name,
+      'title'    => '/'.variable_get('mp_config_appid_'.$account->uid, ""),
   ));
 
   $type = $weObj->getRev()->getRevType();
