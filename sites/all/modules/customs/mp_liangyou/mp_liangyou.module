@@ -114,8 +114,10 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    if(!file_exists($file_key))  {
 					$radios = ly_stream_source();
 					foreach ($radios as $key => $radio) {
-					  $url = $radio['url'];
-					  $title = $radio['title'];
+					  // $url = $radio['url'];
+					  // $title = $radio['title'];
+					  $url = $radio;
+					  $title = $key;
 
 					  $html = file_get_html($url);
 					  if(!$html) { 
