@@ -289,7 +289,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				if($third>0&&$third<$mav['count']){
 					//24 => 001
 					$count = $mav['count'];
-
+					if($count<9)
+						$count = '0'.$count;
 					$rep = str_pad($third, 2,'0',STR_PAD_LEFT);
 					$link = str_replace("$count", str_pad($third, 2,'0',STR_PAD_LEFT), $mav['link']);
 					$link = 'http://liangyou.u.qiniudn.com/old/'.urlencode($link);
