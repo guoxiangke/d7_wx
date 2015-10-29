@@ -59,3 +59,16 @@ function dale_prev_next_node($current_node = NULL, $node_types = array()) {
 
     return array('prev' => $prev, 'next' => $next);
 }
+
+function buildout_technologies_preprocess_comment(&$variables) {
+  // Let's say you want to have a custom template like comment--custom-TYPE.tpl.php
+  // e.g. for an article content type, the template file will be comment--custom-article.tpl.php
+  // dpm($variables);
+  $variables['theme_hook_suggestions'][] = 'comment__custom_' . $variables['node']->type;
+}
+function buildout_technologies_preprocess_comment_wrapper(&$variables) {
+  // Let's say you want to have a custom template like comment--custom-TYPE.tpl.php
+  // e.g. for an article content type, the template file will be comment--custom-article.tpl.php
+  // dpm($variables);
+  $variables['theme_hook_suggestions'][] = 'comment__wrapper_custom_' . $variables['node']->type;
+}

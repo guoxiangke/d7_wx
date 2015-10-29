@@ -18,7 +18,7 @@ body {
 	background: #fff;
 	font-size: 18px;
 	line-height: 25px;
-	color: #787b80;
+	color: #787b80;	
 	font-family: 'Source Sans Pro', sans-serif;
 	font-weight: 400;
 	min-width: 300px;
@@ -331,7 +331,6 @@ h1 :hover, h2 :hover, h3 :hover, h4 :hover, h5 :hover, h6 :hover {
 .main, .content-head, .mc-content {
 	margin-bottom: 0;
 }
-
 .button a, ul.links li a, input.form-submit {
 	display: inline-block;
 	padding: 10px 20px;
@@ -352,35 +351,43 @@ h1 :hover, h2 :hover, h3 :hover, h4 :hover, h5 :hover, h6 :hover {
     
 	  display: inline-block;
     overflow: visible;
-    padding: 0 22px;
-    height: 30px;
-    line-height: 30px;
-    *line-height: 28px;
+    padding: 0 10px;
+    height: 15px;
+    line-height: 15px;
+    *line-height: 15px;
     vertical-align: middle;
     text-align: center;
     text-decoration: none;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    font-size: 14px;
+    font-size: 12px;
     border-width: 1px;
     border-style: solid;
     cursor: pointer
 }
-	.button a:hover, ul.links li a:hover, input.form-submit:hover {
-		background: #53284f;
-		 	background-color: #2f9833;
-	    background-image: -moz-linear-gradient(top,#2f9833 0,#2f9833 100%);
-	    background-image: -webkit-gradient(linear,0 0,0 100%,from(#2f9833),to(#2f9833));
-	    background-image: -webkit-linear-gradient(top,#2f9833 0,#2f9833 100%);
-	    background-image: -o-linear-gradient(top,#2f9833 0,#2f9833 100%);
-	    background-image: linear-gradient(to bottom,#2f9833 0,#2f9833 100%);
-	    border-color: #2f9833;
-	    box-shadow: none;
-	    -moz-box-shadow: none;
-	    -webkit-box-shadow: none;
-	    color: #fff
-	}
+
+input.form-submit {
+    padding: 0 22px;
+    height: 30px;
+    line-height: 30px;
+    *line-height: 28px;
+    font-size: 14px;
+}
+.button a:hover, ul.links li a:hover, input.form-submit:hover {
+	background: #53284f;
+ 	background-color: #2f9833;
+  background-image: -moz-linear-gradient(top,#2f9833 0,#2f9833 100%);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(#2f9833),to(#2f9833));
+  background-image: -webkit-linear-gradient(top,#2f9833 0,#2f9833 100%);
+  background-image: -o-linear-gradient(top,#2f9833 0,#2f9833 100%);
+  background-image: linear-gradient(to bottom,#2f9833 0,#2f9833 100%);
+  border-color: #2f9833;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  color: #fff
+}
 
 .button {
 	margin-top: 24px;
