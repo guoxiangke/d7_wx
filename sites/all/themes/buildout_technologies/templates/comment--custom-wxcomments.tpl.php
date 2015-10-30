@@ -78,14 +78,14 @@
 			    </div>
 			    <?php endif; ?>
 			  </div>
-
+			  <div class="submitted visible-lg-block">
+			    <span class="author"><?php echo $author;?></span>
+			    <span class="time"><?php echo $created;?></span>
+			  </div>
+		  	<p class="visible-lg-block"> 微信回复Ta->【留言内容?<?php echo $node->nid;?>#<?php echo $comment->cid;?>#】</p>
 			  <?php print render($content['links']) ?>
 			</div>
 
 		</div>
 
-		  <div class="submitted">
-		    <span class="author"><?php echo $author;?></span>
-		    <span class="time"><?php echo $created;?></span>
-		  </div>
 </div>

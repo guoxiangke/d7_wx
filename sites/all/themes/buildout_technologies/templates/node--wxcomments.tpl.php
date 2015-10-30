@@ -234,7 +234,9 @@
 	.comment .col-xs-2{
 		padding-right: 0;
 	}
-
+	.user-picture a{
+		float: right;
+	}
 </style>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 

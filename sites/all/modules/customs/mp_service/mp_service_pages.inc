@@ -35,8 +35,7 @@ function mp_service_callback($account){
 }
 
 function _mp_service_process_text(&$weObj,$account){
-  $ori_keyword = $weObj->getRevContent();
-	$ori_keyword = trim($ori_keyword);
+	$ori_keyword = trim($weObj->getRevContent());
   $keyword = make_semiangle($ori_keyword);
   $keyword = str_replace('[', '', $keyword);
   $keyword = str_replace(']', '', $keyword);
@@ -54,11 +53,14 @@ function _mp_service_process_text(&$weObj,$account){
       $data['headimgurl'] = $user_info['headimgurl'].'.png';
       $data['province'] = $user_info['province'].' '.$user_info['city'];
       $data['nickname'] = $user_info['nickname'];
-      $data['content'] = $weObj->getRevContent();
+      $data['openid'] = $openid;
+      $data['content'] = $keyword;
       $data['time'] = $weObj->getRevCtime(); //1444450304
       $id = $weObj->getRevID();//6203866816598959257
       $re = firebaseset('wechat/'.$id,$data);
       // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
+      //POST DATA!!
+      // _post_wxcomments($user_info,$keyword,$id);
     }
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
     if($default_keyword){
@@ -257,4 +259,124 @@ function make_semiangle($str)
                  '＂'=>'"'); 
    
     return strtr($str, $arr);    
+}
+
+function mp_service_comments(){
+  $nid = 113;
+  $node_type = 'wxcomments';
+  //POST($user_info,$ori_keyword);
+  $id = $_POST['id'];//62038668165989592
+  // watchdog('id', $id, array(), WATCHDOG_NOTICE, 'link');
+  if(variable_get('wxcomments_before', '0') == $id) {
+    watchdog('why twice!!end!', 'message', array(), WATCHDOG_NOTICE, 'link');
+    return;
+  }
+  $user_info = (array)json_decode($_POST['user_info']);
+  $content = $_POST['content'];
+
+  $comment_body = $content;
+  //微信回复【内容@106】 即可留言！
+  $str = explode('@',$content);
+  $count = count($str);
+  if($count && is_numeric($str[$count-1])){
+    if(node_load($str[$count-1])){
+      $nid = $str[$count-1];
+      $comment_body = $str[0];
+    }
+    // watchdog('nidchanged!', $nid , array(), WATCHDOG_NOTICE, 'link');
+  }
+  // watchdog('content', $content, array(), WATCHDOG_NOTICE, 'link');
+  $mail = $user_info['openid'].'@wechat.bind';
+  $account = user_load_by_mail($mail);
+  if(!$account){
+    watchdog('create user', 'message', array(), WATCHDOG_NOTICE, 'link');
+    // create $user;
+    $response = drupal_http_request($user_info['headimgurl']);
+
+    if ($response->code == 200){
+      $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'.jpg');
+    }
+    $user_name = $user_info['nickname'];
+    while(user_load_by_name($user_name)){
+      // $user_name = $user_name.rand(0, 100);
+      $user_name = $user_info['nickname'].'_'.rand(0, 100);
+    }
+    $pass = date('Ymd');
+    $new_user = array(
+      'name' => $user_name,
+      'pass' => $pass,//user_password()
+      'mail' => $mail,
+      'init' => $mail,
+      'picture'=> $file->fid,  
+      'status' => 1,
+      'data'  => $user_info,
+      'roles' => array(
+        DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+      ),
+      // 'field_sex' => 1,2男 ＝》 0 男 1 女
+      'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
+    );
+    $account = user_save(null, $new_user);
+    if(!$account){
+      // drupal_set_message('账户创建失败！', 'error', FALSE);
+      watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
+    }
+    // drupal_set_message('恭喜您成功注册！', 'status', FALSE);
+  }
+  // check comment ID
+  {
+    // $content = "啊是放假啊社发动机?109#78#";
+    $pid = 0;
+
+    $str = explode('?',$comment_body);
+    if(isset($str[0]))
+      $comment_body = $str[0];
+    if(isset($str[1])){
+      $str2 = explode('#',$str[1]);
+      if(isset($str2[0])){
+        if(node_load($str2[0]))
+          $nid = $str2[0];
+      }
+      if(isset($str2[1]))
+        $pid = $str2[1];
+    }
+
+    // dpm($nid,'nid');
+    // dpm($pid,'pid');
+    // dpm($comment_body,'comment_body');
+    $comment = new stdClass();
+    $comment->nid = $nid; // nid of a node you want to attach a comment to
+    $comment->cid = 0; // leave it as is
+    $comment->pid = $pid; // parent comment id, 0 if none 
+    $comment->uid = $account->uid; // user's id, who left the comment
+    
+    $comment->mail = $mail;//
+    // $comment->thread = '01/'; // OPTIONAL. If you need comments to be threaded you can fill this value. Otherwise omit it.
+    $comment->name = $account->name;//; // If user is authenticated you can omit this field, it will be auto-populated, if the user is anonymous and you want to name him somehow, input his name here
+    // $comment->thread = '01/'; // OPTIONAL. If you need comments to be threaded you can fill this value. Otherwise omit it.
+    $comment->hostname = $_SERVER['REMOTE_ADDR'] ;// OPTIONAL. You can log poster's ip here
+    $comment->created = time(); // OPTIONAL. You can set any time you want here. Useful for backdated comments creation.
+    $comment->is_anonymous = 0; // leave it as is
+    $comment->homepage = ''; // you can add homepage URL here
+    $comment->status = COMMENT_PUBLISHED;//COMMENT_PUBLISHED; // We auto-publish this comment
+    $comment->language = LANGUAGE_NONE; // The same as for a node
+    // $keyword = substr($keyword, 2);
+    $subject = truncate_utf8($comment_body, 15, $wordsafe = FALSE, $add_ellipsis = FALSE, $min_wordsafe_length = 1);
+    $comment->subject = $comment_body; 
+    
+    // $comment->signature = '';//$wechat_user_info['contact_info']['signature'] ;
+    
+    // $comment->signature_format = 'filtered_html'; 
+    $comment->comment_body[$comment->language][0]['value'] = $comment_body; // Everything here is pretty much like with a node
+    $comment->comment_body[$comment->language][0]['format'] = 'filtered_html'; 
+    // $comment->field_custom_field_name[LANGUAGE_NONE][0]['value'] = 'Some value'; // OPTIONAL. If your comment has a custom field attached it can added as simple as this // preparing a comment for a save
+     // saving a comment
+    ///////////end
+    if($comment = comment_submit($comment)) { // Prepare node for saving                      
+      comment_save($comment);
+        // return $comment;
+      variable_set('wxcomments_before', $id);
+    }
+
+  }
 }

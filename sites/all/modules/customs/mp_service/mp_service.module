@@ -11,7 +11,6 @@ function mp_service_menu() {
     'file' => 'mp_service.admin.inc',
     'menu_name' => 'main-menu',
   );
-
   $items['mp_service/%user'] = array(
     'page callback' => 'mp_service_callback',
     'page arguments' => array(1),
@@ -48,6 +47,12 @@ function mp_service_menu() {
     'access arguments' => array('access content'),
     'file' => 'mp_service.admin.inc',
     'type' => MENU_LOCAL_TASK,
+  );
+  $items['mp_service/comments'] = array(
+    'page callback' => 'mp_service_comments',
+    'access arguments' => array('access content'),//TODO
+    'file' => 'mp_service_pages.inc',
+    'type' => MENU_CALLBACK,
   );
   return $items;
 }
@@ -119,7 +124,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
        'action'          => $wxresources[$keyword]['type'],
        'label'           => $ori_keyword,
      ));
-  }elseif (strlen($keyword) > 10 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
+  }elseif (strlen($keyword) > 30 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
     // watchdog('mp_service', 'transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
     if($ori_keyword=='http://www.yongbuzhixi.com?from=wx'){
       ga_push_add_event(array(
@@ -134,7 +139,13 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
          'label'           => $ori_keyword,
        ));
     }
-    $weObj->transfer_customer_service()->reply();
+    // $weObj->transfer_customer_service()->reply();
+
+    $weObj->text("您的消息已发给管理员！小永回答后会出现在<a href='http://wx.yongbuzhixi.com/node/113'>这里</a>哦！")->reply();
+    $openid = $weObj->getRev()->getRevFrom();
+    $user_info = $weObj->getUserInfo($openid);
+    $id = $weObj->getRevID();
+    _post_wxcomments($user_info,$ori_keyword,$id);
   }else{ 
     ga_push_add_event(array(
      'category'        => 'wxservice',
@@ -262,4 +273,29 @@ function firebaseset($path,$value){//
   // --- reading the stored string ---
   // $name = $firebase->get($DEFAULT_PATH . '/name/contact001');
   // 
+}
+
+function _post_wxcomments($user_info,$keyword,$id){
+  //set POST variables
+  $url = url('mp_service/comments',array('absolute'=>TRUE));
+  //$url = http://wx.yongbuzhixi.com/mp_service/comments
+  $fields = array(
+    'user_info' => urlencode(json_encode($user_info)),
+    'content' => urlencode($keyword),
+    'id' => urlencode($id)
+  );
+  //url-ify the data for the POST
+  $fields_string = '';
+  foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+  rtrim($fields_string, '&');
+  //open connection
+  $ch = curl_init();
+  //set the url, number of POST vars, POST data
+  curl_setopt($ch,CURLOPT_URL, $url);
+  curl_setopt($ch,CURLOPT_POST, count($fields));
+  curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+  //execute post
+  $result = curl_exec($ch);
+  //close connection
+  curl_close($ch);
 }
