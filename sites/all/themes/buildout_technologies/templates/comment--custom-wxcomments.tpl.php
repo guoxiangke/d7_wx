@@ -61,15 +61,16 @@
 ?>
 <div class="container-fluid comment-container">
 		<div class="row <?php print $classes; ?> clearfix"<?php print $attributes; ?>>
-			<div class="img-circle comment-padding col-xs-2" style="width:auto;">
+			<div class="img-circle comment-padding col-xs-2">
 				<?php print $picture ?>
 			</div>
-			<div class="comment-padding comment-fullwidth">
+			<div class="comment-padding col-xs-10">
 			  <div class="content"<?php print $content_attributes; ?>>
+			  <pre><?php echo trim($comment->comment_body[LANGUAGE_NONE][0]['safe_value']); ?></pre>
 			    <?php
 			      // We hide the comments and links now so that we can render them later.
-			      hide($content['links']);
-			      print render($content);
+			      // hide($content['links']);
+			      // print render($content);
 			    ?>
 			    <?php if ($signature): ?>
 			    <div class="user-signature clearfix">

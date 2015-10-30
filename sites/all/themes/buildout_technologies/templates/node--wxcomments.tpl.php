@@ -125,8 +125,8 @@
 	.comment-padding{
 		padding-top: 5px;
 	}
-	.comment-fullwidth .content{
-		padding: 9px 13px;
+	.col-xs-10 .content{
+		padding: 0;
     background-color: #b2e281;
     display: inline-block;
     text-align: left;
@@ -135,11 +135,11 @@
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 	}
-	.comment-fullwidth .content:before{
+	.col-xs-10 .content:before{
     content: "";
     position: absolute;
     top: 15px;
-    left: 62px;
+    left: 6px;
     border-style: solid;
     border-width: 8px 10px 8px 0;
     border-color: transparent #b2e281;
@@ -149,7 +149,7 @@
 	}
 	.img-circle img{
 	    border-radius: 50%;
-	    width: 40px;
+	    width: 50px;
 	}
 	.node-wxcomments{
 		position: relative;
@@ -157,9 +157,8 @@
     overflow: hidden;
     font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Microsoft YaHei', 微软雅黑, Arial, sans-serif;
 	}
-	.comment-fullwidth{
+	.col-xs-10{
 	  position: relative;
-	  width: 100%;
 	}
 	.comment-desc{
 		padding: 8px 36px;
@@ -182,7 +181,7 @@
     top: 20px;
     background: #FFF;
     display: block;
-    width: 10%;
+    width: 15%;
     z-index: 10;
     left: 22px;
     color: green;
@@ -198,10 +197,10 @@
 		margin-bottom: 0;
 	}
 
-	.indented .comment-fullwidth .content{
+	.indented .col-xs-10 .content{
 		background-color: #fff;
 	}
-	.indented .comment-fullwidth .content:before{
+	.indented .col-xs-10 .content:before{
 		border-color: transparent #fff;
 	}
 	div[class|="edit-author"],#edit-author--2,.form-item-comment-body-und-0-value label{
@@ -213,6 +212,29 @@
 
     background-size: 38px 38px;
 	}
+	.col-xs-10 pre {
+		display: block; */
+     padding: 0px; 
+    margin: 0;
+    font-size: 12px;
+    /* line-height: 20px; */
+    /* word-break: break-all; */
+    word-wrap: break-word;
+    white-space: pre;
+    white-space: pre-wrap;
+     background:transparent; 
+    border:none;
+    -webkit-border-radius: none;
+    -moz-border-radius: none;
+     border-radius: none; 
+	}
+	.col-xs-10 ul.links{
+		display: block;
+	}
+	.comment .col-xs-2{
+		padding-right: 0;
+	}
+
 </style>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
@@ -238,7 +260,7 @@
       print render($content);
   	?>
   	<div class="desc-wrapper">
-	    <div class="comment-desc"  data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><span>微信回复 留言内容@106 即可咨询留言！+-</span></div>
+	    <div class="comment-desc"  data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><span>微信回复【内容@<?php echo $node->nid;?>】 即可留言！</span></div>
 
 	    <div class="collapse" id="collapseExample">
 	    	<p class='title'>话题介绍</p>	
