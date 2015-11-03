@@ -124,7 +124,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
        'action'          => $wxresources[$keyword]['type'],
        'label'           => $ori_keyword,
      ));
-  }elseif (strlen($keyword) > 30 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
+  }elseif (strlen($keyword) > 10 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
     // watchdog('mp_service', 'transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
     if($ori_keyword=='http://www.yongbuzhixi.com?from=wx'){
       ga_push_add_event(array(
@@ -132,6 +132,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
          'action'          => 'PageViewFromMp',
          'label'           => $ori_keyword,
        ));
+      return;
     }else{
       ga_push_add_event(array(
          'category'        => 'wxservice',
@@ -139,13 +140,16 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
          'label'           => $ori_keyword,
        ));
     }
-    // $weObj->transfer_customer_service()->reply();
 
-    $weObj->text("您的消息已发给管理员！小永回答后会出现在<a href='http://wx.yongbuzhixi.com/node/113'>这里</a>哦！")->reply();
-    $openid = $weObj->getRev()->getRevFrom();
-    $user_info = $weObj->getUserInfo($openid);
-    $id = $weObj->getRevID();
-    _post_wxcomments($user_info,$ori_keyword,$id);
+    if(strlen($keyword) <= 30){
+      $weObj->transfer_customer_service()->reply();
+    }else{//>30!
+      $weObj->text("评论留言成功！小永审核后会出现在<a href='http://wx.yongbuzhixi.com/node/113'>这里</a>哦！")->reply();
+      $openid = $weObj->getRev()->getRevFrom();
+      $user_info = $weObj->getUserInfo($openid);
+      $id = $weObj->getRevID();
+      _post_wxcomments($user_info,$ori_keyword,$id);
+    }
   }else{ 
     ga_push_add_event(array(
      'category'        => 'wxservice',
