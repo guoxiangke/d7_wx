@@ -274,6 +274,10 @@ function mp_service_comments(){
   $user_info = (array)json_decode($_POST['user_info']);
   $content = $_POST['content'];
 
+  if($content == 'http://www.yongbuzhixi.com'){
+    watchdog('prevent www!', 'message', array(), WATCHDOG_NOTICE, 'error');
+    return;
+  }
   $comment_body = $content;
   //微信回复【内容@106】 即可留言！
   $str = explode('@',$content);
