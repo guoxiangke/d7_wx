@@ -25,16 +25,18 @@ function mp_ybzx_wxresources($resources, $account, $keyword){
 		  	//1001-1030 婚姻辅导
 				$get_ybzx_resources = get_ybzx_resources_hyfd();
 		  	if(in_array($check_keyword, array_keys($get_ybzx_resources))){
-		  		$resources['key_'.$keyword]= array(
-					'type'	=>	'music',
-					'obj'		=>  $get_ybzx_resources[$keyword],
-					);
+		  		//1001-1030
 					if (strlen($keyword) == 5) {
 				  	$news = get_ybzx_dstw();
 						$index = substr($keyword, 3, 1) - 1;
 						$resources['key_'.$keyword]= array(
 							'type'	=>	'news',
 							'obj'		=>  array($news[$index]),
+						);
+					}else{//10010-10060
+						$resources['key_'.$keyword]= array(
+							'type'	=>	'music',
+							'obj'		=>  $get_ybzx_resources[$keyword],
 						);
 					}
 

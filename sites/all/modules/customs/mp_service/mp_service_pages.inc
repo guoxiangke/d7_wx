@@ -268,7 +268,7 @@ function mp_service_comments(){
   $id = $_POST['id'];//62038668165989592
   // watchdog('id', $id, array(), WATCHDOG_NOTICE, 'link');
   if(variable_get('wxcomments_before', '0') == $id) {
-    watchdog('why twice!!end!', 'message', array(), WATCHDOG_NOTICE, 'link');
+    watchdog('prevent twice post by wechat servuce!', 'message', array(), WATCHDOG_NOTICE, 'link');
     return;
   }
   $user_info = (array)json_decode($_POST['user_info']);
