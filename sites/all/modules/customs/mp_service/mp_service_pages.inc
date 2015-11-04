@@ -10,10 +10,6 @@ function mp_service_callback($account){
   // watchdog('menu', '<pre>'.print_r($menu,true), array(), WATCHDOG_NOTICE, 'link');
   // watchdog('wechat_plus_pages', '<pre>'.print_r($weObj->getRev(),true), array(), WATCHDOG_NOTICE, 'link');
 
-  // TODO： history of wx msg.
-  // if(is_record_history(gh_id)){
-  //   entity_save('wxmsg');
-  // }
   ga_push_add_pageview(array(
       'location' => url('mp_service/'.$account->uid, array('absolute' => true)),
       'page'     => $account->name,
@@ -67,7 +63,11 @@ function _mp_service_process_text(&$weObj,$account){
       mp_service_keyword_response($weObj,$default_keyword,$account);
     }else{
       if($account->uid == '8'){
-        $weObj->text("您好，谢谢您的反馈！[握手]");
+        if(date('j')>13) {
+          $weObj->text("谢谢！请看大屏幕吧[握手]");
+        }else{
+          $weObj->text("您好，谢谢您的反馈！[握手]");
+        }
       }else{
         $copyright = copyright($account);
         $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！[握手]").$copyright);
@@ -100,6 +100,8 @@ function _mp_service_process_event($weObj,$account){
     //do nothing!!!
     watchdog('mp_service_pages', 'WifiConnected event trigger!', array(), WATCHDOG_NOTICE, 'link');
     $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎来到我家！[握手]'));
+  }elseif($event['event']=='kf_create_session'){
+    //
   }elseif(isset($event['key'])) {
     mp_service_keyword_response($weObj,$event['key'],$account);
     ga_push_add_event(array(
@@ -262,30 +264,16 @@ function make_semiangle($str)
 }
 
 function mp_service_comments(){
-  $nid = 113;
+  // $nid = 113;
   $node_type = 'wxcomments';
   //POST($user_info,$ori_keyword);
-  $id = $_POST['id'];//62038668165989592
-  // watchdog('id', $id, array(), WATCHDOG_NOTICE, 'link');
-  if(variable_get('wxcomments_before', '0') == $id) {
-    watchdog('prevent twice post by wechat servuce!', 'message', array(), WATCHDOG_NOTICE, 'link');
-    return;
-  }
+  $nid = $_POST['nid'];
+  $id = $_POST['id'];
+  $pid = $_POST['pid'];
   $user_info = (array)json_decode($_POST['user_info']);
-  $content = $_POST['content'];
 
-  $comment_body = $content;
-  //微信回复【内容@106】 即可留言！
-  $str = explode('@',$content);
-  $count = count($str);
-  if($count && is_numeric($str[$count-1])){
-    if(node_load($str[$count-1])){
-      $nid = $str[$count-1];
-      $comment_body = $str[0];
-    }
-    // watchdog('nidchanged!', $nid , array(), WATCHDOG_NOTICE, 'link');
-  }
-  // watchdog('content', $content, array(), WATCHDOG_NOTICE, 'link');
+  $comment_body = $_POST['content'];
+
   $mail = $user_info['openid'].'@wechat.bind';
   $account = user_load_by_mail($mail);
   if(!$account){
@@ -325,21 +313,7 @@ function mp_service_comments(){
   }
   // check comment ID
   {
-    // $content = "啊是放假啊社发动机?109#78#";
-    $pid = 0;
-
-    $str = explode('?',$comment_body);
-    if(isset($str[0]))
-      $comment_body = $str[0];
-    if(isset($str[1])){
-      $str2 = explode('#',$str[1]);
-      if(isset($str2[0])){
-        if(node_load($str2[0]))
-          $nid = $str2[0];
-      }
-      if(isset($str2[1]))
-        $pid = $str2[1];
-    }
+    
 
     // dpm($nid,'nid');
     // dpm($pid,'pid');

@@ -124,7 +124,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
        'action'          => $wxresources[$keyword]['type'],
        'label'           => $ori_keyword,
      ));
-  }elseif (strlen($keyword) > 10 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
+  }elseif (strlen($ori_keyword) > 10 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
     // watchdog('mp_service', 'transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
     if($ori_keyword=='http://www.yongbuzhixi.com?from=wx'){
       ga_push_add_event(array(
@@ -133,22 +133,60 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
          'label'           => $ori_keyword,
        ));
       return;
-    }else{
-      ga_push_add_event(array(
-         'category'        => 'wxservice',
-         'action'          => 'customerservice',
-         'label'           => $ori_keyword,
-       ));
     }
-
-    if(strlen($keyword) <= 30){
+    //10--30 你真的好吗==15
+    // watchdog('strlen', strlen($ori_keyword), array(), WATCHDOG_NOTICE, 'link');
+    if(strlen($ori_keyword) <= 30){
+      ga_push_add_event(array(
+       'category'        => 'wxservice',
+       'action'          => 'customerservice',
+       'label'           => $ori_keyword,
+      ));
       $weObj->transfer_customer_service()->reply();
     }else{//>30!
-      $weObj->text("评论留言成功！小永审核后会出现在<a href='http://wx.yongbuzhixi.com/node/119'>这里</a>哦！")->reply();
+      ga_push_add_event(array(
+       'category'        => 'wxservice',
+       'action'          => 'comments',
+       'label'           => $ori_keyword,
+      ));
+      $nid = 113;
+      $node_type = 'wxcomments';
+      //POST($user_info,$ori_keyword);
+      $id = $weObj->getRevID();
+      // watchdog('id', $id, array(), WATCHDOG_NOTICE, 'link');
+      if(variable_get('wxcomments_before', '0') == $id) {
+        watchdog('prevent twice post by wechat servuce!', 'message', array(), WATCHDOG_NOTICE, 'link');
+        return;
+      }
       $openid = $weObj->getRev()->getRevFrom();
       $user_info = $weObj->getUserInfo($openid);
-      $id = $weObj->getRevID();
-      _post_wxcomments($user_info,$ori_keyword,$id);
+     
+      $comment_body = $ori_keyword;
+      //微信回复【内容@106】 即可留言！
+      $str = explode('@',$comment_body);
+      $count = count($str);
+      if($count && is_numeric($str[$count-1])){
+        if(node_load($str[$count-1])){
+          $nid = $str[$count-1];
+          $comment_body = $str[0];
+        }
+      }
+      // $content = "啊是放假啊社发动机?109#78#";
+      $pid = 0;
+      $str = explode('?',$comment_body);
+      if(isset($str[0]))
+        $comment_body = $str[0];
+      if(isset($str[1])){
+        $str2 = explode('#',$str[1]);
+        if(isset($str2[0])){
+          if(node_load($str2[0]))
+            $nid = $str2[0];
+        }
+        if(isset($str2[1]))
+          $pid = $str2[1];
+      }
+      $weObj->text("评论留言成功！小永审核后会出现在<a href='http://wx.yongbuzhixi.com/node/".$nid ."'>这里</a>哦！")->reply();
+      _post_wxcomments($user_info,$comment_body,$nid,$id,$pid);
     }
   }else{ 
     ga_push_add_event(array(
@@ -279,14 +317,16 @@ function firebaseset($path,$value){//
   // 
 }
 
-function _post_wxcomments($user_info,$keyword,$id){
+function _post_wxcomments($user_info,$keyword,$nid,$id,$pid){
   //set POST variables
   $url = url('mp_service/comments',array('absolute'=>TRUE));
   //$url = http://wx.yongbuzhixi.com/mp_service/comments
   $fields = array(
     'user_info' => urlencode(json_encode($user_info)),
     'content' => urlencode($keyword),
-    'id' => urlencode($id)
+    'nid' => urlencode($nid),
+    'id' => urlencode($id),
+    'pid' => urlencode($pid)
   );
   //url-ify the data for the POST
   $fields_string = '';
