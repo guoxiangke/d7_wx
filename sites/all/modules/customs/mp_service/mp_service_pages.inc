@@ -47,11 +47,7 @@ function _mp_service_process_text(&$weObj,$account){
       mp_service_keyword_response($weObj,$default_keyword,$account);
     }else{
       if($account->uid == '8'){
-        if(date('j')>13) {
-          $weObj->text("谢谢！请看大屏幕吧[握手]");
-        }else{
-          $weObj->text("您好，谢谢您的反馈！[握手]");
-        }
+        $weObj->text("您好，谢谢您的反馈！[握手]")->reply();
         //firebaseset begin!
         $openid = $weObj->getRev()->getRevFrom();
         $user_info = $weObj->getUserInfo($openid);
