@@ -181,7 +181,7 @@
     top: 20px;
     background: #FFF;
     display: block;
-    width: 15%;
+    width: 20%;
     z-index: 10;
     left: 22px;
     color: green;
