@@ -184,7 +184,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	      $str = date('md');
 	      //http://audio1.liangyou.net/files/media/ly_daily/2013Daily_130114.mp3
 	      $musicurl = 'http://inhim.qiniudn.com/2013Daily_13'.$str.'.mp3';
-	      $desc = "点击►收听 服务号:永不止息 每日更新 ".date('md');
+	      $desc = "点击►收听 公众号:永不止息 每日更新 ".date('md');
 	      $url = $musicurl;
 	      $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
@@ -209,7 +209,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	    $title = "恩典365";// '【'.$check_word.'】'.
 	    $year = ($check_word=='365')?'2013':'2014';
 	    $url = 'http://grace365.qiniudn.com/'.$year.'/'.$str.'.mp3';
-	    $desc = "点击►收听 服务号:永不止息 每日更新";
+	    $desc = "点击►收听 公众号:永不止息 每日更新";
 	    $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
 				'obj'		=> array(
@@ -298,7 +298,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						'type'	=>	'music',
 						'obj'		=> array(
 							'title'	=> $mav['title'],
-							'desc'	=>	"良友圣经学院 服务号:永不止息 点击►收听",
+							'desc'	=>	"良友圣经学院 公众号:永不止息 点击►收听",
 							'musicurl'	=>	$link,
 							'hgmusicurl'	=>	$link,
 						),
@@ -361,7 +361,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 							'type'	=>	'music',
 							'obj'		=> array(
 								'title'	=> $value['title'],
-								'desc'	=>	"良友圣经学院 服务号:永不止息 点击►收听",
+								'desc'	=>	"良友礼品卡 公众号:永不止息 点击►收听",
 								'musicurl'	=>	$link,
 								'hgmusicurl'	=>	$link,
 							),
@@ -406,7 +406,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					'type'	=>	'music',
 					'obj'		=> array(
 						'title'	=> $value['title'],
-						'desc'	=>	"点击►收听 服务号:永不止息 每日更新",
+						'desc'	=>	"点击►收听 公众号:永不止息 每日更新",
 						'musicurl'	=>	'http://bos.yongbuzhixi.com'.$value['bce'],//bce gprs
 						'hgmusicurl'	=>	'http://bos.yongbuzhixi.com'.$value['bce'],//$value['mp3_link'], //wifi  http://liangyou2.nissigz.com:15200/vhh/vhh151012.mp3
 					),
