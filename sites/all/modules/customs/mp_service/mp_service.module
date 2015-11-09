@@ -168,6 +168,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
      
       $comment_body = $ori_keyword;
       //微信回复【内容@106】 即可留言！
+      // $comment_body = '@113.我没有单身的恩赐.等了很多年另一半还没出现.我问神.神一直没回应我. ';
       $str = explode('@',$comment_body);
       $count = count($str);
       if($count && is_numeric($str[$count-1])){
@@ -175,6 +176,11 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
           $nid = $str[$count-1];
           $comment_body = $str[0];
         }
+      }
+      preg_match('/@\d{3}/', $comment_body,$m);//$m[0]=@113
+      if(isset($m[0])){
+        $nid = str_replace('@', '', $m[0]);
+        $comment_body =  str_replace($m[0], '', $comment_body);
       }
       // $content = "啊是放假啊社发动机?109#78#";
       $pid = 0;
