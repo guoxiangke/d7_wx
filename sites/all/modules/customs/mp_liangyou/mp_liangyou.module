@@ -61,9 +61,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		  $radios_list = liangyou_audio_list();
 		  $radios_keys = array_keys($radios_list);
 			// bc1
-			
-	    if($keyword=='cc') $keyword='cc1';
-	    if($keyword=='603') $keyword='cc1';
 		  $key = substr($keyword, 0,2); 
 		  if(in_array($key, $radios_keys)) {
 		    $offset = 0;
@@ -76,6 +73,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    	$key = 'bf';
 		    }
 		    if($key=='bv') $key='mw';
+		    if($key=='cc' && $offset == 0) $offset=1;
+	    	// if($key=='603') $keyword='cc1';
 		    if ($key=='bf' && $offset == 0 && date('N')<=5) {
 		    	$keyword = '416';
 		    	return mp_bbn_response($keyword,$key);
