@@ -37,7 +37,15 @@ function _mp_service_process_text(&$weObj,$account){
   $keyword = str_replace(']', '', $keyword);
   $keyword = str_replace("'", '', $keyword);
   $keyword = str_replace('"', '', $keyword);
+  $keyword = str_replace("收听", '', $keyword);
+  $keyword = str_replace('`', '', $keyword);
   $keyword = strtolower($keyword);
+  // $emoj = array(':)',':~',':B',':|','8-)',':<',':$',':X',':Z',':’(',':-|',':@',':P',':D',':O',':(',':+','–b',':Q',':T',',@P',',@-D',':d',',@o',':g','|-)',':!',':L',':>',':,@',',@f',':-S','?',',@x',',@@',':8',',@!','!!!','xx','bye','wipe','dig','handclap','&-(','B-)','<@','@>',':-O','>-|','P-(',':’|','X-)',':*','@x','8*','pd','<W>','beer','basketb','oo','coffee','eat','pig','rose','fade','showlove','heart','break','cake','li','bome','kn','footb','ladybug','shit','moon','sun','gift','hug','strong','weak','share','v','@)','jj','@@','bad','lvu','no','ok','love','<L>','jump','shake','<O>','circle','kotow','turn','skip','#-0','kiss','<&','&>');
+  // //[挥手] [街舞]
+  // $text = array('微笑','伤心','美女','发呆','墨镜','哭','羞','哑','睡','哭','囧','怒','调皮','笑','惊讶','难过','酷','汗','抓狂','吐','笑','快乐','奇','傲','饿','累','吓','汗','高兴','闲','努力','骂','疑问','秘密','乱','疯','哀','鬼','打击','bye','汗','抠','鼓掌','糟糕','恶搞','什么','什么','累','看','难过','难过','坏','亲','吓','可怜','刀','水果','酒','篮球','乒乓','咖啡','美食','动物','鲜花','枯','唇','爱','分手','生日','电','炸弹','刀','足球','虫','臭','月亮','太阳','礼物','伙伴','赞','差','握手','优','恭','勾','顶','坏','爱','不','好的','爱','吻','跳','怕','尖叫','圈','拜','回头','跳','激动','吻','瑜伽','太极');
+  // $keyword = str_replace('/:', '', $keyword);
+  // $keyword = str_replace($emoj,$text,$keyword);
+  // watchdog('$keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
   mp_service_keyword_response($weObj,$keyword,$account);
   //default behavior if not hook wxresources_alter!
 
