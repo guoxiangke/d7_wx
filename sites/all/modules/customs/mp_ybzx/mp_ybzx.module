@@ -23,7 +23,7 @@ function mp_ybzx_wxresources($resources, $account, $keyword){
 		  	//10010
 		  	$check_keyword = substr($keyword, 0, 4);
 		  	//1001-1030 婚姻辅导
-				$get_ybzx_resources = get_ybzx_resources_hyfd();
+				$get_ybzx_resources = get_ybzx_resources_hyfd($account);
 		  	if(in_array($check_keyword, array_keys($get_ybzx_resources))){
 		  		//1001-1030
 					if (strlen($keyword) == 5) {

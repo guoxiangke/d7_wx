@@ -166,7 +166,7 @@ function get_ybzx_dstw(){
 }
 
 
-function get_ybzx_resources_hyfd(){
+function get_ybzx_resources_hyfd($account){
 	$desc = '公众号：'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 婚姻辅导';
 	$urls = array(
 	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc001.mp3','title'=>'引言－婚姻的谬思与正解 '),
