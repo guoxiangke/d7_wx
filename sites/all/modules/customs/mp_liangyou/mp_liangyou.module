@@ -84,7 +84,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    	$offset = date('N')%2+1;
 		    }
 		    $string = date('ymd',time()-$offset*24*60*60); 
-		    $desc = '公众号:永不止息 更多节目请回复【ly】';
+		    $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【ly】';
 		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
 		  	$resources['key_'.$keyword]= array(
 					'type'	=>	'music',
@@ -186,7 +186,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	      $str = date('md');
 	      //http://audio1.liangyou.net/files/media/ly_daily/2013Daily_130114.mp3
 	      $musicurl = 'http://inhim.qiniudn.com/2013Daily_13'.$str.'.mp3';
-	      $desc = "点击►收听 公众号:永不止息 每日更新 ".date('md');
+	      $desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新 ".date('md');
 	      $url = $musicurl;
 	      $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
@@ -211,7 +211,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	    $title = "恩典365";// '【'.$check_word.'】'.
 	    $year = ($check_word=='365')?'2013':'2014';
 	    $url = 'http://grace365.qiniudn.com/'.$year.'/'.$str.'.mp3';
-	    $desc = "点击►收听 公众号:永不止息 每日更新";
+	    $desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新";
 	    $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
 				'obj'		=> array(
@@ -240,7 +240,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	      $ysqm = get_ysqm();
 	      $musicurl = 'http://bibles.qiniudn.com/ysqm/ch-'.$str.'.mp3';
 	      $title = $ysqm[(int)$str];
-	      $desc = '公众号:永不止息 圣诞特辑《耶稣全貌》';
+	      $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 圣诞特辑《耶稣全貌》';
 	      $resources['key_'.$keyword]= array(
 					'type'	=>	'music',
 					'obj'		=> array(
@@ -258,7 +258,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	      $ysqm = get_ysqm();
 	      $title = $ysqm[(int)$str];
 	      $musicurl = 'http://bibles.qiniudn.com/ysqm/ch-'.$str.'.mp3';        
-	      $desc = '公众号:永不止息 《耶稣全貌》';
+	      $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 《耶稣全貌》';
 	      $hgmusicurl = $musicurl;
 	      $resources['key_'.$keyword]= array(
 					'type'	=>	'music',
@@ -300,7 +300,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						'type'	=>	'music',
 						'obj'		=> array(
 							'title'	=> $mav['title'],
-							'desc'	=>	"良友圣经学院 公众号:永不止息 点击►收听",
+							'desc'	=>	"良友圣经学院 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
 							'musicurl'	=>	$link,
 							'hgmusicurl'	=>	$link,
 						),
@@ -363,7 +363,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 							'type'	=>	'music',
 							'obj'		=> array(
 								'title'	=> $value['title'],
-								'desc'	=>	"良友礼品卡 公众号:永不止息 点击►收听",
+								'desc'	=>	"良友礼品卡 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
 								'musicurl'	=>	$link,
 								'hgmusicurl'	=>	$link,
 							),
@@ -408,7 +408,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					'type'	=>	'music',
 					'obj'		=> array(
 						'title'	=> $value['title'],
-						'desc'	=>	"点击►收听 公众号:永不止息 每日更新",
+						'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
 						'musicurl'	=>	'http://bos.yongbuzhixi.com'.$value['bce'],//bce gprs
 						'hgmusicurl'	=>	'http://bos.yongbuzhixi.com'.$value['bce'],//$value['mp3_link'], //wifi  http://liangyou2.nissigz.com:15200/vhh/vhh151012.mp3
 					),
@@ -442,7 +442,7 @@ function mp_bbn_response($keyword,$change_keyword=NULL){
 		$musicurl = bbn_url($keyword);
 		$bbns = bbn_audio_list();
 		$title = $bbns[$keyword]['title'];
-		$desc = '点击►收听 公众号:永不止息 '.truncate_utf8($bbns[$keyword]['description'], 12, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
+		$desc = '点击►收听 公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").truncate_utf8($bbns[$keyword]['description'], 12, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
 		$resources['key_'.$change_keyword]= array(
 			'type'	=>	'music',
 			'obj'		=> array(

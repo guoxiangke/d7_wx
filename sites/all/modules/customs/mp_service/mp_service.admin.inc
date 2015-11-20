@@ -116,6 +116,22 @@ function mp_service_settings_form(){
     '#default_value' => variable_get('mp_config_default_re_'.$user->uid, ""),
     '#attributes' => array('placeholder'=>'se'),
   );
+  $form['default_message']['copy_message'] = array(
+    '#type' => 'textarea',
+    '#title' => '附加消息头',
+    // '#description' => '',
+    '#default_value' => variable_get('wechat_copy_message_'.$user->uid, ""),
+    '#required' => false,
+    '#attributes' => array('placeholder'=>"本资源由<a href='http://wx.yongbuzhixi.com'>主内公众云</a>提供："),
+  );
+  $form['default_message']['foot_message'] = array(
+    '#type' => 'textarea',
+    '#title' => '附加消息尾',
+    // '#description' => '',
+    '#default_value' => variable_get('wechat_foot_message_'.$user->uid, ""),
+    '#required' => false,
+    '#attributes' => array('placeholder'=>"回复【】内容给我试试吧[调皮]"),
+  );
   $form['default_message']['submit_message'] = array(
     '#type' => 'submit',
     '#value' => t('Submit'),
@@ -181,6 +197,8 @@ function wechat_admin_default_message_submit($form, &$form_state){
 	global $user;
   variable_set('wechat_default_message_'.$user->uid, $form_state['values']['default_message']);
   variable_set('wechat_follow_message_'.$user->uid, $form_state['values']['follow_message']);
+  variable_set('wechat_copy_message_'.$user->uid, $form_state['values']['copy_message']);
+  variable_set('wechat_foot_message_'.$user->uid, $form_state['values']['foot_message']);
   variable_set('mp_config_default_re_'.$user->uid, $form_state['values']['config_default_re']);
 }
 

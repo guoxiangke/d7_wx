@@ -1,6 +1,6 @@
 <?php
 function get_ybzx_resources(){
-	$desc = '公众号：永不止息 莫非单身讲座';
+	$desc = '公众号：'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 莫非单身讲座';
 	return array(
 		'1001'=>array(
 			'type' => 'audio',
@@ -167,7 +167,7 @@ function get_ybzx_dstw(){
 
 
 function get_ybzx_resources_hyfd(){
-	$desc = '公众号：永不止息 婚姻辅导';
+	$desc = '公众号：'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 婚姻辅导';
 	$urls = array(
 	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc001.mp3','title'=>'引言－婚姻的谬思与正解 '),
 	  array('mp3_link'=>'https://dn-cfyin.qbox.me/mavmc002.mp3','title'=>'现代婚姻的威胁(1)世俗的模式'),
