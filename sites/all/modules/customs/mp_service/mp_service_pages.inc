@@ -48,6 +48,7 @@ function _mp_service_process_text(&$weObj,$account){
   // watchdog('$keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
   mp_service_keyword_response($weObj,$keyword,$account);
   //default behavior if not hook wxresources_alter!
+  module_invoke_all('wxservice_default_msg_alter', $weObj, $keyword,$account);
 
   if(!is_array($weObj->Message(''))){
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");

@@ -32,7 +32,7 @@ function mp_content_wxresources($resources, $account, $keyword){
       if(isset($enabled_resources['mp_contents']) && $enabled_resources['mp_contents']){      
           if($keyword == 'lm'||$keyword =='灵命'){
             $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
-            $news[] = (array)json_decode($lingming);
+            $news = (array)json_decode($lingming);
           }else{
             $nodes = dale_get_mp_nodes('article',3);
             $news = array();
@@ -46,7 +46,7 @@ function mp_content_wxresources($resources, $account, $keyword){
               $news[] = $img;
             }
             $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
-            $news[] = (array)json_decode($lingming);
+            $news = $news + (array)json_decode($lingming);
             // if(in_array($keyword, array_keys($get_ybzx_resources)))
           }
           $resources['key_'.$keyword]= array(
@@ -108,29 +108,41 @@ function mp_content_wxresources($resources, $account, $keyword){
  * must has pics (已配图)
  * @see node_get_recent
  */
-function dale_get_mp_nodes($type = 'article', $number=3, $tid = NULL, $uid = 1, $publish = 1) {
+function dale_get_mp_nodes($type = 'article', $number = 3, $tid = NULL, $uid = NULL, $promote = NODE_NOT_PROMOTED, $publish = NODE_PUBLISHED){
   $query = db_select('node', 'n');
+  $query->condition('n.status', $publish);
+  $query->condition('n.type', $type);
 
-  if (!user_access('bypass node access')) {
-    // If the user is able to view their own unpublished nodes, allow them to
-    // see these in addition to published nodes. Check that they actually have
-    // some unpublished nodes to view before adding the condition.
-    if (user_access('view own unpublished content') && $own_unpublished = db_query('SELECT nid FROM {node} WHERE uid = :uid AND status = :status', array(':uid' => $GLOBALS['user']->uid, ':status' => NODE_NOT_PUBLISHED))->fetchCol()) {
-      $query->condition(db_or()
-        ->condition('n.status', $publish)
-        ->condition('n.type', $type)
-        ->condition('n.nid', $own_unpublished, 'IN')
-      );
-    }
-    else {
-      // If not, restrict the query to published nodes.
-      $query->condition('n.status', $publish);
-    }
-  }
-  $query->condition(db_or()
-    ->condition('n.type', $type)
-  );
-  $query->condition('n.uid', $uid);
+
+  // watchdog('1', 'message', array(), WATCHDOG_NOTICE, 'link');
+  // if (!user_access('bypass node access')) {
+  //   watchdog('2', 'message', array(), WATCHDOG_NOTICE, 'link');
+  //   // If the user is able to view their own unpublished nodes, allow them to
+  //   // see these in addition to published nodes. Check that they actually have
+  //   // some unpublished nodes to view before adding the condition.
+  //   if (user_access('view own unpublished content') && $own_unpublished = db_query('SELECT nid FROM {node} WHERE uid = :uid AND status = :status', array(':uid' => $GLOBALS['user']->uid, ':status' => NODE_NOT_PUBLISHED))->fetchCol()) {
+  //     $query->condition(db_or()
+  //       ->condition('n.status', $publish)
+        
+  //       ->condition('n.type', $type)
+  //       ->condition('n.nid', $own_unpublished, 'IN')
+  //     );
+  //     watchdog('3', 'message', array(), WATCHDOG_NOTICE, 'link');
+  //   }
+  //   else {
+  //     // If not, restrict the query to published nodes.
+  //     $query->condition('n.status', $publish);
+      
+  //     watchdog('4', 'message', array(), WATCHDOG_NOTICE, 'link');
+  //   }
+  // }
+
+  // $query->condition(db_or()
+  //   ->condition('n.type', $type)
+  // );
+  if($uid)
+    $query->condition('n.uid', $uid);
+  $query->condition('n.promote', $promote);
   $nids = $query
     ->fields('n', array('nid'))
     ->orderBy('n.changed', 'DESC')
@@ -138,7 +150,105 @@ function dale_get_mp_nodes($type = 'article', $number=3, $tid = NULL, $uid = 1, 
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
+    watchdog('nids', '<pre>'.print_r($nids,1), array(), WATCHDOG_NOTICE, 'link');
   $nodes = node_load_multiple($nids);
-
   return $nodes ? $nodes : array();
+}
+
+/**
+ * default 图文！
+  // 1.news*1
+  // 2.promoted article*1
+  // 4.资源列表
+ */
+function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
+  //set 自动图文！
+  if(variable_get('wechat_multi_message_'.$account->uid, "")){
+    $counts = explode(':', variable_get('wechat_multi_message_count_'.$account->uid, "1:1:1"));
+    $news = array();
+    //get newest
+    // ($type = 'article', $number = 3, $tid = NULL, $uid = NULL, $promote = NODE_NOT_PROMOTED, $publish = NODE_PUBLISHED)
+    $nodes = dale_get_mp_nodes('article',$counts[0],NULL,$account->uid,NODE_NOT_PROMOTED);
+
+    if($nodes)
+    foreach ($nodes as $key => $node) { 
+
+      if(!empty($node->field_link['und'][0]['value'])){
+        $url = $node->field_link['und'][0]['value'];
+      }else{
+        $url = url('node/'.$node->nid, array('absolute' => TRUE));
+      }      
+      $img = array(
+          'Title'=> $node->title,
+          'Description'=> $node->title,
+          'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
+          'Url'=> $url,
+        );
+      $news[] = $img;
+    } 
+    //get promote!
+    if($counts[1]>0)
+    $nodes = dale_get_mp_nodes('article',$counts[1],NULL,$account->uid,NODE_PROMOTED);
+    if($nodes)
+    foreach ($nodes as $key => $node) {     
+      if(!empty($node->field_link['und'][0]['value'])){
+        $url = $node->field_link['und'][0]['value'];
+      }else{
+        $url = url('node/'.$node->nid, array('absolute' => TRUE));
+      }
+      $img = array(
+          'Title'=> $node->title,
+          'Description'=> $node->title,
+          'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
+          'Url'=> $url,
+        );
+      $news[] = $img;
+    }
+    //显示底部！
+    if($counts[2]!=0){
+      $img = array(
+        'Title'=>copyright($account),
+        'Description'=>'',
+        'PicUrl'=>'',
+        'Url'=>''
+      );
+      $news[] = $img;
+    }
+  }
+  // $img = array(
+  //   'Title'=>'news',
+  //   'Description'=>'提前2:1 我劝你，第一要为万人恳求、祷告、代求、祝谢。 雅5:16 所以你们要彼此认罪，互相代求，使你们可以得医治。',
+  //   'PicUrl'=>'https://farm8.staticflickr.com/7317/8730739154_7a2706fd27.jpg',
+  //   'Url'=>'http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=200643642&idx=1&sn=9a6da3075bba7f5001bd5a57ab9f1c6d#rd'
+  // );
+  // $news[] = $img;
+  
+  //单图文 标题15字 摘要60字
+  //多图文 1标题16字 2标题15字
+  $weObj->news($news)->reply();
+}
+
+
+/**
+ * Implements get_last_node().
+ */
+function get_last_node($content_type = 'lingming',$count=1) {
+  $query = "SELECT n.nid nid, n.created created FROM {node} n  WHERE n.type = :type order by n.created desc limit 0, $count";
+  $result = db_query($query, array(':type' => $content_type));
+  $news = array();
+  while($record = $result->fetchAssoc()) {
+    $nid = $record['nid'];
+    $node = node_load($nid);//TODO:fast query!
+    $img = array(
+      'Title'=> '【灵命日粮】'.$node->title,
+      'Description'=> truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 150, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1),
+      'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
+      'Url'=> url('lingming', array('absolute' => TRUE)),
+    );
+    $news[] = $img;
+  }
+  // dpm($news);
+  header('Content-Type: application/json');
+  print json_encode($img);
+  drupal_exit();
 }

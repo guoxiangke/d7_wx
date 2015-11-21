@@ -109,13 +109,6 @@ function mp_service_settings_form(){
     '#required' => false,
     '#attributes' => array('placeholder'=>'您好，欢迎关注我们！'),
   );
-  $form['default_message']['config_default_re'] = array(
-    '#type' => 'textfield',
-    '#title' => '自动回复资源',
-    '#description' => '必须填写已开启的资源关键词，如【se】炼爱季节',
-    '#default_value' => variable_get('mp_config_default_re_'.$user->uid, ""),
-    '#attributes' => array('placeholder'=>'se'),
-  );
   $form['default_message']['copy_message'] = array(
     '#type' => 'textarea',
     '#title' => '附加消息头',
@@ -131,6 +124,29 @@ function mp_service_settings_form(){
     '#default_value' => variable_get('wechat_foot_message_'.$user->uid, ""),
     '#required' => false,
     '#attributes' => array('placeholder'=>"回复【】内容给我试试吧[调皮]"),
+  );
+  $form['default_message']['config_default_re'] = array(
+    '#type' => 'textfield',
+    '#title' => '自动回复资源',
+    '#description' => '必须填写已开启的资源关键词，如【se】炼爱季节',
+    '#default_value' => variable_get('mp_config_default_re_'.$user->uid, ""),
+    '#attributes' => array('placeholder'=>'se'),
+  );
+  $form['default_message']['multi_message'] = array(
+    '#type' => 'checkbox',
+    '#title' => '开启图文回复',
+    '#description' => '本功能与自动回复资源互斥！',
+    '#default_value' => variable_get('wechat_multi_message_'.$user->uid, ""),
+    '#required' => false,
+    
+  );
+  $form['default_message']['multi_message_count'] = array(
+    '#type' => 'textfield',
+    '#title' => '图文数量',
+    '#description' => '默认回复您当日的？篇图文+置顶的图文？+资源菜单和消息尾部<>与自动回复资源互斥！',
+    '#default_value' => variable_get('wechat_multi_message_count_'.$user->uid, "1:1:1"),
+    '#required' => false,
+    '#attributes' => array('placeholder'=>"1:1:1"),
   );
   $form['default_message']['submit_message'] = array(
     '#type' => 'submit',
@@ -199,6 +215,8 @@ function wechat_admin_default_message_submit($form, &$form_state){
   variable_set('wechat_follow_message_'.$user->uid, $form_state['values']['follow_message']);
   variable_set('wechat_copy_message_'.$user->uid, $form_state['values']['copy_message']);
   variable_set('wechat_foot_message_'.$user->uid, $form_state['values']['foot_message']);
+  variable_set('wechat_multi_message_'.$user->uid, $form_state['values']['multi_message']);
+  variable_set('wechat_multi_message_count_'.$user->uid, $form_state['values']['multi_message_count']);
   variable_set('mp_config_default_re_'.$user->uid, $form_state['values']['config_default_re']);
 }
 

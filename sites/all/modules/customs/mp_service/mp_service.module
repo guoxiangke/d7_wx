@@ -222,10 +222,10 @@ function copyright($account){
       $res .= $value."\n";
     }
     $foot = variable_get('wechat_foot_message_'.$account->uid, "回复【】内容给我试试吧[调皮]");
-    $copy = variable_get('wechat_copy_message_'.$account->uid, "") ;
+    $copy = variable_get('wechat_copy_message_'.$account->uid, "本资源有主内公众云提供") ;
     $res .= $foot;
     if(!$copy) return $res;
-    return "\n".$copy."\n".$res;
+    return "$copy"."\n".$res;
 }
 
 
