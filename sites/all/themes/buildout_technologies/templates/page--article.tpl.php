@@ -95,7 +95,7 @@
     <div class="container">
      <?php print render($wx_date); ?>&nbsp;&nbsp;
      <?php print render($wx_term); ?>&nbsp;&nbsp;
-     <?php print l('永不止息','http://t.cn/RA1nOGY'); ?>
+     <?php print l(variable_get('mp_config_appname_'.$nodeuid, "永不止息"),variable_get('mp_config_default_url_'.$nodeuid, 'http://t.cn/RA1nOGY')); ?>
    </div>
 </div>
 

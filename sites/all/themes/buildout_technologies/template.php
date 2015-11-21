@@ -15,6 +15,7 @@ function buildout_technologies_preprocess_page(&$vars) {
       $term = taxonomy_term_load($vars['node']->field_term[LANGUAGE_NONE][0]['tid']);
       $term_name = $term->name;
       $vars['wx_term'] = $wx_author == '未知'?$term_name:$wx_author;
+      $vars['nodeuid'] = $vars['node']->uid;
     }
   }
 }
