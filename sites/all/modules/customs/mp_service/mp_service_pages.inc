@@ -12,10 +12,10 @@ function mp_service_callback($account){
 
   ga_push_add_pageview(array(
       'location' => url('mp_service/'.$account->uid, array('absolute' => true)),
-      'page'     => $account->name,
+      'page'     => variable_get('mp_config_appname_'.$account->uid, "永不止息"),
       'title'    => '/'.variable_get('mp_config_appid_'.$account->uid, ""),
   ));
-
+  
   $type = $weObj->getRev()->getRevType();
   switch($type){
     case Wechat::MSGTYPE_TEXT:
