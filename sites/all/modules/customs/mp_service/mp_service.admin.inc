@@ -57,13 +57,6 @@ function mp_service_settings_form(){
     '#description' => '(如果您的公众号已认证，请勾选)',
     '#default_value' => variable_get('mp_config_certified_'.$user->uid, ""),    
   );
-  // $form['config']['config_appmenuid'] = array(
-  //   '#type' => 'textfield',
-  //   '#title' => '菜单根termID',
-  //   '#description' => '隐藏字段,注册时自动创建并分配',
-  //   '#default_value' => variable_get('mp_config_appmenuid_'.$user->uid, ""),
-  //   '#required' => true,
-  // );
   $form['config']['submit_config'] = array(
     '#type' => 'submit',
     '#value' => t('Save'),
@@ -148,6 +141,13 @@ function mp_service_settings_form(){
     '#required' => false,
     '#attributes' => array('placeholder'=>"1:1:1"),
   );
+  $form['default_message']['config_default_url'] = array(
+    '#type' => 'textfield',
+    '#title' => '图文关注链接',
+    '#description' => '比如关于我们，或引导关注公众号官方图文链接',
+    '#default_value' => variable_get('mp_config_default_url_'.$user->uid, ""),
+    '#attributes' => array('placeholder'=>'http://mp.weixin.qq.com/s?__biz=***'),
+  );
   $form['default_message']['submit_message'] = array(
     '#type' => 'submit',
     '#value' => t('Submit'),
@@ -218,6 +218,7 @@ function wechat_admin_default_message_submit($form, &$form_state){
   variable_set('wechat_multi_message_'.$user->uid, $form_state['values']['multi_message']);
   variable_set('wechat_multi_message_count_'.$user->uid, $form_state['values']['multi_message_count']);
   variable_set('mp_config_default_re_'.$user->uid, $form_state['values']['config_default_re']);
+  variable_set('mp_config_default_url_'.$user->uid, $form_state['values']['config_default_url']);
 }
 
 
