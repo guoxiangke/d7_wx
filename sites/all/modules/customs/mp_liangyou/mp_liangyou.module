@@ -35,6 +35,10 @@ function mp_liangyou_rescources_info(){
     'name' => 'mav',
     'desc' =>	'良友圣经学院【a0】-【f0】',
   );
+	$rescources[] = array(
+    'name' => 'jckc',
+    'desc' =>	'良友圣经学院【基础课程】【基础】【jc】【jckc】',
+  );
   return $rescources;
 }
 
@@ -288,7 +292,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				$third = substr($keyword, 2,2);
 				$mav = get_ly_mav();
 				$mav = $mav[$first.$second];
-				if($third>0&&$third<$mav['count']){
+				if($third>0&&$third<=$mav['count']){
 					//24 => 001
 					$count = $mav['count'];
 					if($count<9)
@@ -336,6 +340,88 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				}
 			}
 		}//end of 良友圣经学院
+		//x0 y0 z0
+		// 		阮老师，我在设计新的良院编码，这样可以吗？：
+		// 用户回复【基础课程】或【jckc】可得到基础课程8科按顺序排列的节目，8*24+1(pdf)=200天循环一次。
+		// 每个科目，比如事奉装备，用户回复【事奉装备】或【sfzb】获得当天节目，25天一循环，收听14课可以回复【sfzb14】
+		// 我们的文档目录规律性很强，但个别的rev1和rev2等需要我花一点时间，做好可能还需要您来测试一下。
+
+		//begin new 良友圣经学院
+	if(isset($enabled_resources['jckc']) && $enabled_resources['jckc']){
+		if($keyword == '基础' || $keyword == 'jc'){
+			$mav = get_ly_jckc();
+			$mavmenu = "良院基础课程目录\n";
+			foreach ($mav as $key => $value) {
+				$mavmenu .= "【J".$value['order']."】".$value['title']."\n";//"【".strtoupper($key)."】".
+			}
+			$mavmenu .="回复【J11】，即可获得第一课[强]";
+			$resources['key_'.$keyword]= array(
+				'type'	=>	'text',
+				'obj'		=> array(
+				'text'	=> $mavmenu,
+				)
+			);
+		}
+
+		$temp_keyword = $keyword;
+		if($keyword == '基础课程' || $keyword == 'jckc'){
+			$index_day = date('z');
+			$total = 25;
+			$index1 = $index_day%200;//200天一循环！
+			// dvm($index1);
+			// dvm($index1%25,'课');
+			// dvm(ceil($index1/25),'单元');
+			$course_id = $index1%$total;//课
+			$course_index = ceil($index1/$total);//单元
+			$temp_keyword = 'j'.$course_index.$course_id;//326 j1514
+			// watchdog('course_id', $course_id, array(), WATCHDOG_NOTICE, 'link');
+			// watchdog('course_index', $course_index, array(), WATCHDOG_NOTICE, 'link');
+			// watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
+		}
+
+		//J11 J124 J21 J224...
+		$first = substr($temp_keyword, 0,1);//J
+		$second = substr($temp_keyword, 1,1);//1-8
+		$temp = array('j');
+		$level = '基础课程';
+		
+		if(in_array($first, $temp) && $second>0 && $second<10 ){
+			$third = substr($temp_keyword, 2,2);
+			$mav = get_ly_jckc();
+			$mav = $mav[$second];
+			watchdog('mav', '<pre>'.print_r($mav,TRUE), array(), WATCHDOG_NOTICE, 'link');
+			if($third>0&&$third<=$mav['max']){
+				//24 => 001
+				$count = $mav['max'];
+				$index = str_pad($third, 2,'0',STR_PAD_LEFT);
+				$path = 'new/'.$level.'/'.$mav['title'].'/'.$mav['prefex'].$index.'.mp3';
+				$cdn = 'http://lts33.b0.upaiyun.com/';
+				$link = $cdn . urlencode($path);
+				$resources['key_'.$keyword]= array(
+					'type'	=>	'music',
+					'obj'		=> array(
+						'title'	=> $mav['title'].':'.$index,
+						'desc'	=>	"良友圣经学院 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
+						'musicurl'	=>	$link,
+						'hgmusicurl'	=>	$link,
+					),
+				);
+			}else{
+				//编码对，编号不对！
+				$path = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
+				watchdog('mp_liangyou', $path, array(), WATCHDOG_NOTICE, 'link');
+				$cdn = 'http://lts33.b0.upaiyun.com/';
+				$link = $cdn . urlencode($path);
+				$resources['key_'.$keyword]= array(
+					'type'	=>	'text',
+					'obj'		=> array(
+						'text'	=> "恭喜您，良友圣经学院 $level 《".$mav['title']."》已结束！\n回复J".($second+1)."1学习下一门课程[强]\n".'<a href="http://ly.yongbuzhixi.com/pdfviewer/web/?pdf='.$link.'">查看'.$mav['title'].'讲义</a>',
+					)
+				);
+			}	
+		}
+		//end of new 良友圣经学院
+	}
 		//begin lysd sd1-sd999
 		$orikeyword = $keyword;
 		$check_keyword = substr($keyword, 0,2);

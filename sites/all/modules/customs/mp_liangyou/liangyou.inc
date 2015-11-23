@@ -641,3 +641,72 @@ function get_lysd(){
     ),
   );
 }
+
+function get_ly_jckc(){
+  return $jckc = array(//基础课程
+    '1'  =>  array(
+      'title' =>  '事奉装备',
+      'pdf' => 1,
+      'max' => 24,
+      'legth' =>3,
+      'prefex'  => 'mavpr0',
+      'order' =>'1',
+    ),
+    '2'  =>  array(
+      'title' =>  '信仰与生活',
+      'pdf' => 1,
+      'max' => 24,
+      'legth' =>3,
+      'prefex'  => 'mavfl0',
+      'order' =>'2',
+    ),
+    '3'  =>  array(
+      'title' =>  '基本研经法',
+      'pdf' => 1,
+      'max' => 24,
+      'legth' =>3,
+      'prefex'  => 'mavbm0',
+      'order' =>'3',
+    ),
+    '4'  =>  array(
+      'title' =>  '基要真理',
+      'pdf' => 1,
+      'max' => 24,
+      'legth' =>3,
+      'prefex'  => 'mavfb0',
+      'order' =>'4',
+    ),
+    '5'  =>  array(
+      'title' =>  '婚姻与家庭',
+      'pdf' => 1,
+      'max' => 24,
+      'legth' =>3,
+      'prefex'  => 'mavmf1',
+      'order' =>'5',
+    ),
+    '6'  =>  array(
+      'title' =>  '新约浅说',
+      'pdf' => 1,
+      'max' => 24,
+      'legth' =>3,
+      'prefex'  => 'mavkn0',
+      'order' =>'6',
+    ),
+    '7'  =>  array(
+      'title' =>  '旧约浅说',
+      'pdf' => 1,
+      'max' => 24,
+      'legth' =>3,
+      'prefex'  => 'mavko0',
+      'order' =>'7',
+    ),
+    '8'  =>  array(
+      'title' =>  '耶稣生平',
+      'pdf' => 1,
+      'max' => 24,
+      'legth' =>3,
+      'prefex'  => 'mavls0',
+      'order' =>'8',
+    ),
+  );
+}
