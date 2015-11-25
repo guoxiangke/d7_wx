@@ -118,7 +118,7 @@ function dale_get_mp_nodes($type = 'article', $number = 3, $tid = NULL, $uid = N
   $query->condition('n.promote', $promote);
   $nids = $query
     ->fields('n', array('nid'))
-    ->orderBy('n.changed', 'DESC')
+    ->orderBy('n.created', 'DESC')
     ->range(0, $number)
     ->addTag('node_access')
     ->execute()
@@ -144,8 +144,8 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
     if($nodes)
     foreach ($nodes as $key => $node) { 
 
-      if(!empty($node->field_link['und'][0]['value'])){
-        $url = $node->field_link['und'][0]['value'];
+      if(!empty($node->field_redirect_link['und'][0]['value'])){
+        $url = $node->field_redirect_link['und'][0]['value'];
       }else{
         $url = url('node/'.$node->nid, array('absolute' => TRUE));
       }      
@@ -156,14 +156,15 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
           'Url'=> $url,
         );
       $news[] = $img;
+      $news = array_reverse($news);
     } 
     //get promote!
     if($counts[1]>0)
     $nodes = dale_get_mp_nodes('article',$counts[1],NULL,$account->uid,NODE_PROMOTED);
     if($nodes)
     foreach ($nodes as $key => $node) {     
-      if(!empty($node->field_link['und'][0]['value'])){
-        $url = $node->field_link['und'][0]['value'];
+      if(!empty($node->field_redirect_link['und'][0]['value'])){
+        $url = $node->field_redirect_link['und'][0]['value'];
       }else{
         $url = url('node/'.$node->nid, array('absolute' => TRUE));
       }

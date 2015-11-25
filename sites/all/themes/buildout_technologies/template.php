@@ -16,6 +16,28 @@ function buildout_technologies_preprocess_page(&$vars) {
       $term_name = $term->name;
       $vars['wx_term'] = $wx_author == '未知'?$term_name:$wx_author;
       $vars['nodeuid'] = $vars['node']->uid;
+      if(isset($vars['node']->field_mp3url[LANGUAGE_NONE][0])){
+        drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/soundjs-0.6.1.min.js', 'file');
+        drupal_add_js('(function ($) {
+          $(document).ready(function(){
+                  var soundID = "sound'.$vars['node']->nid.'";
+                  function loadSound () {
+                    createjs.Sound.registerSound("'.$vars['node']->field_mp3url[LANGUAGE_NONE][0]['value'].'", soundID);
+                  }
+
+                  function playSound () {
+                    createjs.Sound.play(soundID);
+                  }
+                  loadSound();
+                  $(".wxplay").click(function(){
+                    playSound ();
+                  });
+                  
+
+          });
+        })(jQuery);', 'inline');
+      }
+
     }
   }
 }

@@ -124,8 +124,8 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
        'action'          => $wxresources[$keyword]['type'],
        'label'           => $ori_keyword,
      ));
-  }elseif (strlen($ori_keyword) >= 12 && variable_get('mp_config_certified_'.$account->uid, false)) { //认证与否
-    // watchdog('mp_service', 'transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
+  }elseif (strlen($ori_keyword) >= 12 && variable_get('mp_config_certified_'.$account->uid, false)) { //且已认证
+    // watchdog('mp_service', '??transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
     if($ori_keyword=='http://www.yongbuzhixi.com?from=wx'){
       ga_push_add_event(array(
          'category'        => 'wxservice',
@@ -140,15 +140,18 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     //长夜的牵引 ＝ 15
     //婚姻的意义留言内容==27
     // watchdog('strlen', strlen($ori_keyword), array(), WATCHDOG_NOTICE, 'link');
-    $len = strlen($ori_keyword);
-    if($len > 15 && $len <= 30){
-      ga_push_add_event(array(
-       'category'        => 'wxservice',
-       'action'          => 'customerservice',
-       'label'           => $ori_keyword,
-      ));
-      $weObj->transfer_customer_service()->reply();
-    }elseif($len > 30){
+
+    /////字数太少，我们为你转人工服务吧！
+    // $len = strlen($ori_keyword);
+    // if($len > 15 && $len <= 30){
+    //   ga_push_add_event(array(
+    //    'category'        => 'wxservice',
+    //    'action'          => 'customerservice',
+    //    'label'           => $ori_keyword,
+    //   ));
+    //   $weObj->transfer_customer_service()->reply();
+    // }elseif($len > 30)
+    {
       ga_push_add_event(array(
        'category'        => 'wxservice',
        'action'          => 'comments',
@@ -158,8 +161,8 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       $node_type = 'wxcomments';
       //POST($user_info,$ori_keyword);
       $id = $weObj->getRevID();
-      // watchdog('id', $id, array(), WATCHDOG_NOTICE, 'link');
-      if(variable_get('wxcomments_before', '0') == $id) {
+      // watchdog('id?', $id, array(), WATCHDOG_NOTICE, 'link');
+      if(variable_get('mp_config_wxcomments_before', '0') == $id) {
         watchdog('prevent twice post by wechat servuce!', 'message', array(), WATCHDOG_NOTICE, 'link');
         return;
       }
@@ -196,7 +199,8 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         if(isset($str2[1]))
           $pid = $str2[1];
       }
-      $weObj->text("评论留言成功！小永审核后会出现在<a href='http://wx.yongbuzhixi.com/node/".$nid ."'>这里</a>哦！")->reply();
+      $url = url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q=').'node/'.$nid;
+      $weObj->text("评论留言成功！\n审核后会<a href='".$url."'>出现在这里哦</a>！")->reply();
       _post_wxcomments($user_info,$comment_body,$nid,$id,$pid);
     }
   }else{ 
@@ -333,9 +337,16 @@ function firebaseset($path,$value){//
 }
 
 function _post_wxcomments($user_info,$keyword,$nid,$id,$pid){
+  // watchdog('user_info', '<pre>'.print_r($user_info,1), array(), WATCHDOG_NOTICE, 'link');
+  // watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
+  // watchdog('nid', $nid, array(), WATCHDOG_NOTICE, 'link');
+  // watchdog('pid', $pid, array(), WATCHDOG_NOTICE, 'link');
+  // watchdog('getRevID', $id, array(), WATCHDOG_NOTICE, 'link');
+
   //set POST variables
   $url = url('mp_service/comments',array('absolute'=>TRUE));
   //$url = http://wx.yongbuzhixi.com/mp_service/comments
+  watchdog('url', $url, array(), WATCHDOG_NOTICE, 'link');
   $fields = array(
     'user_info' => urlencode(json_encode($user_info)),
     'content' => urlencode($keyword),

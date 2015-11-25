@@ -79,6 +79,9 @@
 	#sidebar-second{
 		display: none;
 	}
+	body.node-type-article {
+		font-size: 13px;
+	}
 }
 
 /* Extra Small Devices, Phones */ 

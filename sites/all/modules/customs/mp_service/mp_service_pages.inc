@@ -48,14 +48,14 @@ function _mp_service_process_text(&$weObj,$account){
   // watchdog('$keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
   mp_service_keyword_response($weObj,$keyword,$account);
   //default behavior if not hook wxresources_alter!
-  module_invoke_all('wxservice_default_msg_alter', $weObj, $keyword,$account);
 
   if(!is_array($weObj->Message(''))){
+    module_invoke_all('wxservice_default_msg_alter', $weObj, $keyword,$account);
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
     if($default_keyword){
       mp_service_keyword_response($weObj,$default_keyword,$account);
     }else{
-      if($account->uid == '8'){
+      if(0&&$account->uid == '8'){
         $weObj->text("您好，谢谢您的反馈！[握手]")->reply();
         //firebaseset begin!
         $openid = $weObj->getRev()->getRevFrom();
@@ -339,7 +339,7 @@ function mp_service_comments(){
     $comment->language = LANGUAGE_NONE; // The same as for a node
     // $keyword = substr($keyword, 2);
     $subject = truncate_utf8($comment_body, 15, $wordsafe = FALSE, $add_ellipsis = FALSE, $min_wordsafe_length = 1);
-    $comment->subject = $comment_body; 
+    $comment->subject = $subject; 
     
     // $comment->signature = '';//$wechat_user_info['contact_info']['signature'] ;
     
@@ -352,7 +352,7 @@ function mp_service_comments(){
     if($comment = comment_submit($comment)) { // Prepare node for saving                      
       comment_save($comment);
         // return $comment;
-      variable_set('wxcomments_before', $id);
+      variable_set('mp_config_wxcomments_before', $id);
     }
 
   }
