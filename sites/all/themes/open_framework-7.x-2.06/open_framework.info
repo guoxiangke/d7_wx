@@ -5,7 +5,7 @@ version = 2.06
 
 stylesheets[all][] = bootstrap/css/bootstrap.min.css
 stylesheets[all][] = bootstrap/css/bootstrap-responsive.min.css
-stylesheets[all][] = fontawesome/css/font-awesome.min.css
+
 stylesheets[all][] = css/open_framework.css
 stylesheets[print][] = css/open_framework_print.css
 stylesheets[all][] = css/ie.css

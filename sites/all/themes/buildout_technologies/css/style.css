@@ -677,8 +677,23 @@ input.form-submit {
   content: " ";
 }
 
-
-
+.audio_area {
+    border: 1px solid #ebebeb;
+    background-color: #fcfcfc;
+    overflow: hidden;
+    padding: 12px 20px 12px 12px;
+    margin-bottom: 13px;
+    color: #51a351;
+}
+.audio_area span{
+	padding-left: 30px;
+	font-size: 12px;
+}
+.wxstop{padding-left: 100px}
+.pic_audio_default{
+	/*display: none;*/
+	width: 18px;
+}
 
 
 

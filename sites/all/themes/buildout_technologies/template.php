@@ -28,14 +28,24 @@ function buildout_technologies_preprocess_page(&$vars) {
                   function playSound () {
                     createjs.Sound.play(soundID);
                   }
-                  loadSound();
-                  $(".wxplay").click(function(){
-                    playSound ();
-                  });
                   
-
+                  $(".wxload").click(function(){
+                    loadSound();
+                    setTimeout(function(){ $(".wxplay").fadeIn(1000); }, 3000);
+                  });
+                  $(".wxplay").click(function(){
+                    playSound(soundID);
+                    $(".wxstop").fadeIn(1000);
+                    $(".wxplay").hide();
+                  });
+                  $(".wxstop").click(function(){
+                    createjs.Sound.stop(soundID);
+                    $(".wxplay").fadeIn(1000);
+                    $(this).hide();
+                  });
           });
         })(jQuery);', 'inline');
+        // http://stackoverflow.com/questions/27934839/how-do-i-toggle-play-pause-with-soundjs
       }
 
     }

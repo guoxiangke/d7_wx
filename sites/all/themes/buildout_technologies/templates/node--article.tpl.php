@@ -89,6 +89,18 @@
   <?php endif; ?>
   <div class="content"<?php print $content_attributes; ?>>
     <?php
+      // hide($content['field_image']);
+      print render($content['field_image']);
+      if(isset($node->field_mp3url[LANGUAGE_NONE][0])){
+        echo '<div class="wxload audio_area">
+        <i class="icon_audio_default"></i>
+        <i class="icon_audio_playing"></i>
+        <img src="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/appmsg/audio/icon_audio_unread26f1f1.png" alt="" class="pic_audio_default">
+        
+        <span class="wxplay hide"><i class="fa fa-play">播放</i></span>
+        <span class="wxstop hide"><i class="fa fa-stop">停止</i></span>
+        </div>';
+      }
       // We hide the comments and links now so that we can render them later.
       hide($content['comments']);
       hide($content['links']);
