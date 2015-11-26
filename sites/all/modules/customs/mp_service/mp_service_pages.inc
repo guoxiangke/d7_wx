@@ -48,12 +48,23 @@ function _mp_service_process_text(&$weObj,$account){
   // watchdog('$keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
   mp_service_keyword_response($weObj,$keyword,$account);
   //default behavior if not hook wxresources_alter!
-
   if(!is_array($weObj->Message(''))){
     module_invoke_all('wxservice_default_msg_alter', $weObj, $keyword,$account);
+    ga_push_add_event(array(
+     'category'        => 'news',
+     'action'          => $ori_keyword,
+     'label'           => 'wxservice_'.$account->uid,
+    ));
+  }
+  if(!is_array($weObj->Message(''))){
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
     if($default_keyword){
       mp_service_keyword_response($weObj,$default_keyword,$account);
+      ga_push_add_event(array(
+       'category'        => 'default_keyword_resource',
+       'action'          => $ori_keyword,
+       'label'           => 'wxservice_'.$account->uid,
+      ));
     }else{
       if(0&&$account->uid == '8'){
         $weObj->text("您好，谢谢您的反馈！[握手]")->reply();
@@ -71,9 +82,19 @@ function _mp_service_process_text(&$weObj,$account){
         $re = firebaseset('wechat/'.$id,$data);
         // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
         //firebaseset end!
+        ga_push_add_event(array(
+         'category'        => 'firebaseset',
+         'action'          => $ori_keyword,
+         'label'           => 'wxservice_'.$account->uid,
+        ));
       }else{
         $copyright = copyright($account);
         $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！[握手]").$copyright);
+        ga_push_add_event(array(
+         'category'        => 'copyrightGet',
+         'action'          => $ori_keyword,
+         'label'           => 'wxservice_'.$account->uid,
+        ));
       }
     }
 
@@ -87,9 +108,9 @@ function _mp_service_process_event($weObj,$account){
   }
   if(!isset($event['key']))
   ga_push_add_event(array(
-     'category'        => 'wxservice',
-     'action'          => 'event',
-     'label'           => $event['event'],
+     'category'        => 'event',
+     'action'          => $event['event'],
+     'label'           => 'wxservice_'.$account->uid,
   ));
   // else{
   //   $message = _wechat_menu_default_message($event);
@@ -108,11 +129,16 @@ function _mp_service_process_event($weObj,$account){
   }elseif(isset($event['key'])) {
     mp_service_keyword_response($weObj,$event['key'],$account);
     ga_push_add_event(array(
-       'category'        => 'wxservice',
-       'action'          => 'event_'.$event['event'],
-       'label'           => $event['key'],//CLICK/VIEW!
+       'category'        => 'event_'.$event['event'],
+       'action'          =>  $event['key'],
+       'label'           => 'wxservice_'.$account->uid,
     ));
   }else{
+    ga_push_add_event(array(
+       'category'        => 'event_'.$event['event'],
+       'action'          =>  $event['key'],
+       'label'           => 'wxservice_'.$account->uid,
+    ));
     watchdog('no track event!', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
   }
 }
