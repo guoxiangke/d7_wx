@@ -142,7 +142,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     // watchdog('strlen', strlen($ori_keyword), array(), WATCHDOG_NOTICE, 'link');
 
     /////字数太少，我们为你转人工服务吧！
-    // $len = strlen($ori_keyword);
+    $len = strlen($ori_keyword);
     // if($len > 15 && $len <= 30){
     //   ga_push_add_event(array(
     //    'category'        => 'wxservice',
@@ -152,11 +152,6 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     //   $weObj->transfer_customer_service()->reply();
     // }elseif($len > 30)
     {
-      ga_push_add_event(array(
-       'category'        => 'comments',
-       'action'          => $ori_keyword,
-       'label'           => 'wxservice_'.$account->uid,
-      ));
       $nid = 113;
       $node_type = 'wxcomments';
       //POST($user_info,$ori_keyword);
@@ -185,6 +180,31 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $nid = str_replace('@', '', $m[0]);
         $comment_body =  str_replace($m[0], '', $comment_body);
       }
+
+      if($nid == 127 && $len > 29 && $len <= 100){//cc空中辅导大屏幕！10-30字
+
+        $openid = $weObj->getRev()->getRevFrom();
+        $user_info = $weObj->getUserInfo($openid);
+        $data = array();
+        $data['headimgurl'] = $user_info['headimgurl'].'.png';
+        $data['province'] = $user_info['province'].' '.$user_info['city'];
+        $data['nickname'] = $user_info['nickname'];
+        $data['openid'] = $openid;
+        $data['content'] = $ori_keyword;
+        $data['time'] = $weObj->getRevCtime(); //1444450304
+        $id = $weObj->getRevID();//6203866816598959257
+        $re = firebaseset('wechat/'.$id,$data);
+        // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
+        //firebaseset end!
+        ga_push_add_event(array(
+         'category'        => 'firebaseset',
+         'action'          => $ori_keyword,
+         'label'           => 'wxservice_'.$account->uid,
+        ));
+        $weObj->text("互动留言已发布到大屏幕！\n周师母直播时会选读的哦！")->reply();
+        return;
+      }
+
       // $content = "啊是放假啊社发动机?109#78#";
       $pid = 0;
       $str = explode('?',$comment_body);
@@ -202,6 +222,11 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       $url = url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q=').'node/'.$nid;
       $weObj->text("评论留言成功！\n审核后会<a href='".$url."'>出现在这里哦</a>！")->reply();
       _post_wxcomments($user_info,$comment_body,$nid,$id,$pid);
+      ga_push_add_event(array(
+       'category'        => 'comments',
+       'action'          => $ori_keyword,
+       'label'           => 'wxservice_'.$account->uid,
+      ));
     }
   }
 }
