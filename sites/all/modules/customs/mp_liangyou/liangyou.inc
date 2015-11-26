@@ -282,279 +282,404 @@ function ly_stream_menu(){
  */
 function get_ly_mav(){
   return array(
-    'c1'=>array(
-      'link'=>'c义工/001动员、恩赐与训练/mavmg030.mp3',
-      'count'=>30,
-      'title'=>'动员、恩赐与训练',
-    ),
-    'c2'=>array(
-      'link'=>'c义工/002认识教会/maveg024.mp3',
-      'count'=>24,
-      'title'=>'认识教会',
-    ),
-    'd1'=>array(
-      'link'=>'d基础课程/001耶稣生平/mavls024.mp3',
-      'count'=>24,
-      'title'=>'耶稣生平',
-    ),
-    'd2'=>array(
-      'link'=>'d基础课程/002旧约浅说/mavko024.mp3',
-      'count'=>24,
-      'title'=>'旧约浅说',
-    ),
-    'd3'=>array(
-      'link'=>'d基础课程/003新约浅说/mavkn024.mp3',
-      'count'=>24,
-      'title'=>'新约浅说',
-    ),
-    'd4'=>array(
-      'link'=>'d基础课程/004婚姻与家庭/mavmf024.mp3',
-      'count'=>24,
-      'title'=>'婚姻与家庭',
-    ),
-    'd5'=>array(
-      'link'=>'d基础课程/005基要真理/mavfb024.mp3',
-      'count'=>24,
-      'title'=>'基要真理',
-    ),
-    'd6'=>array(
-      'link'=>'d基础课程/006基本研经法/mavbm024.mp3',
-      'count'=>24,
-      'title'=>'基本研经法',
-    ),
-    'd7'=>array(
-      'link'=>'d基础课程/007团队事奉/mavsm018.mp3',
-      'count'=>18,
-      'title'=>'团队事奉',
-    ),
-    'd8'=>array(
-      'link'=>'d基础课程/008初信造就/mavnb024.mp3',
-      'count'=>24,
-      'title'=>'初信造就',
-    ),
-    'd9'=>array(
-      'link'=>'d基础课程/009信仰与生活/mavfl024.mp3',
-      'count'=>24,
-      'title'=>'信仰与生活',
-    ),
-    'e1'=>array(
-      'link'=>'e本科课程/001青少年事工/mavym024.mp3',
-      'count'=>24,
-      'title'=>'青少年事工',
-    ),
-    'e2'=>array(
-      'link'=>'e本科课程/002路加福音/mavlu030.mp3',
-      'count'=>30,
-      'title'=>'路加福音',
-    ),
-    'e3'=>array(
-      'link'=>'e本科课程/003诗歌智慧书1/mavpb030.mp3',
-      'count'=>30,
-      'title'=>'诗歌智慧书1',
-    ),
-    'e4'=>array(
-      'link'=>'e本科课程/004诗歌智慧书2/mavpk030.mp3',
-      'count'=>30,
-      'title'=>'诗歌智慧书2',
-    ),
-    'e5'=>array(
-      'link'=>'f进深/001旧约神学/mavog024.mp3',
-      'count'=>24,
-      'title'=>'旧约神学',
-    ),
-    'e6'=>array(
-      'link'=>'e本科课程/005讲道实习/mavjd024.mp3',
-      'count'=>24,
-      'title'=>'讲道实习',
-    ),
-    'e7'=>array(
-      'link'=>'e本科课程/006讲道学/mavho024.mp3',
-      'count'=>24,
-      'title'=>'讲道学',
-    ),
-    'e8'=>array(
-      'link'=>'e本科课程/007解经与研经/mavle024.mp3',
-      'count'=>24,
-      'title'=>'解经与研经',
-    ),
-    'e9'=>array(
-      'link'=>'e本科课程/008苦难与罪恶/mavss012.mp3',
-      'count'=>12,
-      'title'=>'苦难与罪恶',
-    ),
-    'b1'=>array(
-      'link'=>'e本科课程/009罗马书/mavrs030.mp3',
-      'count'=>30,
-      'title'=>'罗马书',
-    ),
-    'b2'=>array(
-      'link'=>'e本科课程/010约翰福音/mavjo030.mp3',
-      'count'=>30,
-      'title'=>'约翰福音',
-    ),
-    'b3'=>array(
-      'link'=>'e本科课程/011神迹奇事/mavsw024.mp3',
-      'count'=>24,
-      'title'=>'神迹奇事',
-    ),
-    'b4'=>array(
-      'link'=>'e本科课程/012灵修默想与应用/mavdm024.mp3',
-      'count'=>24,
-      'title'=>'灵修默想与应用',
-    ),
-    'b5'=>array(
-      'link'=>'e本科课程/013本土差传/mavom018.mp3',
-      'count'=>18,
-      'title'=>'本土差传',
-    ),
-    'b6'=>array(
-      'link'=>'e本科课程/014普通书信/mavge024.mp3',
-      'count'=>24,
-      'title'=>'普通书信',
-    ),
-    'b7'=>array(
-      'link'=>'e本科课程/015旧约综览/mavjy030.mp3',
-      'count'=>30,
-      'title'=>'旧约综览',
-    ),
-    'b8'=>array(
-      'link'=>'e本科课程/016旧约历史书1/mavoh030.mp3',
-      'count'=>30,
-      'title'=>'旧约历史书1',
-    ),
-    'b9'=>array(
-      'link'=>'e本科课程/017旧约历史书2/mavoi030.mp3',
-      'count'=>30,
-      'title'=>'旧约历史书2',
-    ),
     'a1'=>array(
-      'link'=>'e本科课程/018新约综览/mavxy030.mp3',
-      'count'=>30,
-      'title'=>'新约综览',
+      'prefex'  => 'mavst0',
+      'count'=>24,
+      'title'=>'主日学教学法',
+      'level'=>'1',//本科课程
+      'pdf' => '1',//本科课程/主日学教学法/主日学教学法.pdf=level+title+pdf
     ),
     'a2'=>array(
-      'link'=>'e本科课程/019基督工人操守/mavcw024.mp3',
-      'count'=>24,
-      'title'=>'基督工人操守',
+      'prefex'  => 'mavop0',
+      'count'=>30,
+      'title'=>'先知书I',
+      'level'=>'1',
+      'pdf' => '1'
     ),
     'a3'=>array(
-      'link'=>'e本科课程/020教导与牧养/mavtp018.mp3',
-      'count'=>18,
-      'title'=>'教导与牧养',
+      'prefex'  => 'mavor0',
+      'count'=>30,
+      'title'=>'先知书II',
+      'level'=>'1',
+      'pdf' => '1'
     ),
     'a4'=>array(
-      'link'=>'e本科课程/021教会行政/mavca024.mp3',
-      'count'=>24,
-      'title'=>'教会行政',
-    ),
-    'a5'=>array(
-      'link'=>'e本科课程/022教会增长/mavcg024.mp3',
-      'count'=>24,
-      'title'=>'教会增长',
-    ),
-    'a6'=>array(
-      'link'=>'e本科课程/023教会历史/mavch030.mp3',
-      'count'=>30,
-      'title'=>'教会历史',
-    ),
-    'a7'=>array(
-      'link'=>'e本科课程/024摩西五经/mavph030.mp3',
-      'count'=>30,
-      'title'=>'摩西五经',
-    ),
-    'a8'=>array(
-      'link'=>'e本科课程/025探访事工/mavvm006.mp3',
-      'count'=>6,
-      'title'=>'探访事工',
-    ),
-    'a9'=>array(
-      'link'=>'e本科课程/026异端与极端/mavhx030.mp3',
-      'count'=>30,
-      'title'=>'异端与极端',
-    ),
-    'f1'=>array(
-      'link'=>'e本科课程/027差传导论/mavmi024.mp3',
-      'count'=>24,
-      'title'=>'差传导论',
-    ),
-    'f2'=>array(
-      'link'=>'e本科课程/028婚姻辅导/mavmc030.mp3',
-      'count'=>30,
-      'title'=>'婚姻辅导',
-    ),
-    'f3'=>array(
-      'link'=>'e本科课程/029基督教教义/mavcd030.mp3',
-      'count'=>30,
-      'title'=>'基督教教义',
-    ),
-    'f4'=>array(
-      'link'=>'e本科课程/030基督教伦理学/mavce024.mp3',
-      'count'=>24,
-      'title'=>'基督教伦理学',
-    ),
-    'f5'=>array(
-      'link'=>'e本科课程/031基督化家庭/mavcf024.mp3',
-      'count'=>24,
-      'title'=>'基督化家庭',
-    ),
-    'f6'=>array(
-      'link'=>'e本科课程/032圣经背景/mavbj024.mp3',
-      'count'=>24,
-      'title'=>'圣经背景',
-    ),
-    'f7'=>array(
-      'link'=>'e本科课程/033圣经教师训练/mavtb024.mp3',
-      'count'=>24,
-      'title'=>'圣经教师训练',
-    ),
-    'f8'=>array(
-      'link'=>'e本科课程/034圣灵论/mavpn024.mp3',
-      'count'=>24,
-      'title'=>'圣灵论',
-    ),
-    'f9'=>array(
-      'link'=>'e本科课程/035团契生活/mavfe024.mp3',
-      'count'=>24,
-      'title'=>'团契生活',
-    ),
-    'c3'=>array(
-      'link'=>'e本科课程/036启示录（第八届）/mavrt030.mp3',
+      'prefex'  => 'mavrt0',
       'count'=>30,
       'title'=>'启示录',
+      'level'=>'1',
+      'pdf' => '1'
+    ),
+    'a5'=>array(
+      'prefex'  => 'mavfe0',
+      'count'=>24,
+      'title'=>'团契生活',
+      'level'=>'1',
+      'pdf' => '1'
+    ),
+    'a6'=>array(
+      'prefex'  => 'mavpn1',
+      'count'=>24,
+      'title'=>'圣灵论',
+      'level'=>'1',
+      'pdf' => '1'
+    ),
+    'a7'=>array(
+      'prefex'  => 'mavtb0',
+      'count'=>24,
+      'title'=>'圣经教师训练',
+      'level'=>'1',
+      'pdf' => '1'
+    ),
+    'a8'=>array(
+      'prefex'  => 'mavbi0',
+      'count'=>24,
+      'title'=>'圣经背景',
+      'level'=>'1',
+      'pdf' => '1'
+    ),
+    'a9'=>array(
+      'prefex'  => 'mavcw0',
+      'count'=>24,
+      'title'=>'基督工人操守',
+      'level'=>'1',
+      'pdf' => '1'
+    ),
+    'b1'=>array(
+      'prefex'  => 'mavcs0',
+      'count'=>24,
+      'title'=>'基督教与科学',
+      'level'=>'1',
+      'pdf' => '1'
+    ), 
+    'b2'=>array(
+      'prefex'  => 'mavcd0',
+      'count'=>30,
+      'title'=>'基督教教义',
+      'level'=>'1',
+      'pdf' => '2'
+    ),
+    'b3'=>array(
+      'prefex'  => 'mavmc0',
+      'count'=>30,
+      'title'=>'婚姻辅导',
+      'level'=>'1',
+      'pdf' => '1'
+    ), 
+    'b4'=>array(
+      'prefex'  => 'mavoe1',
+      'count'=>6,
+      'title'=>'学习锦囊',
+      'level'=>'1',
+      'pdf' => '0'//To change name!!-1本科课程/学习锦囊/第十一届课程概览.pdf
+    ), 
+    'b5'=>array(
+      'prefex'  => 'mavhx0',
+      'count'=>30,
+      'title'=>'异端与极端',
+      'level'=>'1',
+      'pdf' => '1'
+    ),  
+    'b6'=>array(
+      'prefex'  => 'mavch0',
+      'count'=>30,
+      'title'=>'教会历史',
+      'level'=>'1',
+      'pdf' => '1'
+    ),   
+    'b7'=>array(
+      'prefex'  => 'mavcm0',
+      'count'=>24,
+      'title'=>'教会复兴运动',
+      'level'=>'1',
+      'pdf' => '1'
+    ),  
+    'b8'=>array(
+      'prefex'  => 'mavca0',
+      'count'=>24,
+      'title'=>'教会行政',
+      'level'=>'1',
+      'pdf' => '1'
+    ),     
+    'b9'=>array(
+      'prefex'  => 'mavnt0',
+      'count'=>30,
+      'title'=>'新约综览',
+      'level'=>'1',
+      'pdf' => '2'
+    ),    //本科课程/新约综览/新约综览考题.doc //本科课程/新约综览/新约综览考题.pdf
+    'c1'=>array(
+      'prefex'  => 'mavot0',
+      'count'=>30,
+      'title'=>'旧约综览',
+      'level'=>'1',
+      'pdf' => '2'
+    ), 
+    'c2'=>array(
+      'prefex'  => 'mavge0',
+      'count'=>30,
+      'title'=>'普通书信',
+      'level'=>'1',
+      'pdf' => '1'
+    ),
+    'c3'=>array(
+      'prefex'  => 'mavom0',
+      'count'=>18,
+      'title'=>'本土差传',
+      'level'=>'1',
+      'pdf' => '1'
     ),
     'c4'=>array(
-      'link'=>'e本科课程/037先知书1（第八届）/mavop030.mp3',
-      'count'=>30,
-      'title'=>'先知书1',
+      'prefex'  => 'mavsw0',
+      'count'=>24,
+      'title'=>'神迹奇事',
+      'level'=>'1',
+      'pdf' => '1'
     ),
     'c5'=>array(
-      'link'=>'e本科课程/038先知书2（第八届）/mavor030.mp3',
+      'prefex'  => 'mavrs0',
       'count'=>30,
-      'title'=>'先知书2',
+      'title'=>'罗马书',
+      'level'=>'1',
+      'pdf' => '1'
     ),
     'c6'=>array(
-      'link'=>'e本科课程/039保罗书信1/mavpa030.mp3',
-      'count'=>30,
-      'title'=>'保罗书信1',
+      'prefex'  => 'mavhe0',
+      'count'=>24,
+      'title'=>'解经与研经',
+      'level'=>1,
+      'pdf' => 2,
     ),
     'c7'=>array(
-      'link'=>'e本科课程/040保罗书信2/mavpu030.mp3',
+      'prefex'  => 'mavpb0',
       'count'=>30,
-      'title'=>'保罗书信2',
-    ),
+      'title'=>'诗歌智慧书I',
+      'level'=>1,
+      'pdf' => 1,
+    ), 
     'c8'=>array(
-      'link'=>'e本科课程/041使徒行传/mavas030.mp3',
+      'prefex'  => 'mavpk0',
       'count'=>30,
-      'title'=>'使徒行传',
+      'title'=>'诗歌智慧书II',
+      'level'=>1,
+      'pdf' => 1,
     ),
     'c9'=>array(
-      'link'=>'e本科课程/042教牧学/mavpt024.mp3',
+      'prefex'  => 'mavlu0',
+      'count'=>30,
+      'title'=>'路加福音',
+      'level'=>1,
+      'pdf' => 1,
+    ), 
+    'd1'=>array(
+      'prefex'  => 'mavym0',
+      'count'=>24,
+      'title'=>'青少年事工',
+      'level'=>1,
+      'pdf' => 1,
+    ), 
+        // 本科课程/2015毕业周特辑/mavsp328.mp3
+        // 本科课程/2015毕业周特辑/mavsp329.mp3
+        // 本科课程/2015毕业周特辑/mavsp330.mp3
+        // 本科课程/2015毕业周特辑/mavsp331.mp3
+        // 本科课程/2015毕业周特辑/mavsp332.mp3
+        // 本科课程/2015毕业周特辑/mavsp333.mp3
+        // 本科课程/33周年院庆培灵会/mavsp334.mp3
+        // 本科课程/33周年院庆培灵会/mavsp335.mp3
+        // 本科课程/33周年院庆培灵会/mavsp336.mp3
+        // 本科课程/33周年院庆培灵会/mavsp337.mp3
+        // 本科课程/33周年院庆培灵会/mavsp338.mp3
+        // 本科课程/33周年院庆培灵会/mavsp339.mp3
+        // 本科课程/本科2015开学周特辑/mavsp340.mp3
+        // 本科课程/本科2015开学周特辑/mavsp341.mp3
+        // 本科课程/本科2015开学周特辑/mavsp342.mp3
+        // 本科课程/本科2015开学周特辑/mavsp343.mp3
+        // 本科课程/本科2015开学周特辑/mavsp344.mp3
+        // 本科课程/本科2015开学周特辑/mavsp345.mp3
+    //level=2 进深课程
+    'e1'=>array(
+      'prefex'  => 'mavee0',
+      'count'=>24,
+      'title'=>'以弗所书',
+      'level'=>2,
+      'pdf' => 1,
+    ), 
+    'e2'=>array(
+      'prefex'  => 'mavis0',
+      'count'=>30,
+      'title'=>'以赛亚书',
+      'level'=>2,
+      'pdf' => 1,
+    ),
+    'e3'=>array(
+      'prefex'  => 'mavda0',
+      'count'=>24,
+      'title'=>'但以理书',
+      'level'=>2,
+      'pdf' => 1,
+    ),  
+    'e4'=>array(
+      'prefex'  => 'mavgs1',
+      'count'=>24,
+      'title'=>'创世记',
+      'level'=>2,
+      'pdf' => 1,
+    ),
+    'e5'=>array(
+      'prefex'  => 'mavga0',
+      'count'=>24,
+      'title'=>'加拉太书',
+      'level'=>2,
+      'pdf' => 1,
+    ),    
+    'e6'=>array(
+      'prefex'  => 'mavdr0',
+      'count'=>18,
+      'title'=>'启示论',
+      'level'=>2,
+      'pdf' => 1,
+    ),  
+    'e7'=>array(
+      'prefex'  => 'mavic0',
+      'count'=>24,
+      'title'=>'哥林多前书',
+      'level'=>2,
+      'pdf' => 1,
+    ),  
+    'e8'=>array(
+      'prefex'  => 'mavio0',
+      'count'=>24,
+      'title'=>'哥林多后书',
+      'level'=>2,
+      'pdf' => 1,
+    ),       
+    'e9'=>array(
+      'prefex'  => 'mavbl0',
+      'count'=>24,
+      'title'=>'圣经文学导论',
+      'level'=>2,
+      'pdf' => 1,
+    ),        
+    'f1'=>array(
+      'prefex'  => 'mavbt0',
+      'count'=>24,
+      'title'=>'圣经神学',
+      'level'=>2,
+      'pdf' => 1,
+    ),                
+    'f2'=>array(
+      'prefex'  => 'mavcy1',
+      'count'=>24,
+      'title'=>'基督论',
+      'level'=>2,
+      'pdf' => 1,
+    ),                    
+    'f3'=>array(
+      'prefex'  => 'mavso1',
+      'count'=>24,
+      'title'=>'崇拜学',
+      'level'=>2,
+      'pdf' => 1,
+    ),                        
+    'f4'=>array(
+      'prefex'  => 'mavmg0',
+      'count'=>24,
+      'title'=>'差传神学',
+      'level'=>2,
+      'pdf' => 1,
+    ),                             
+    'f5'=>array(
+      'prefex'  => 'mavhb1',
+      'count'=>24,
+      'title'=>'希伯来书',
+      'level'=>2,
+      'pdf' => 1,
+    ),                                    
+    'f6'=>array(
+      'prefex'  => 'mavsn0',
+      'count'=>24,
+      'title'=>'救恩论',
+      'level'=>2,
+      'pdf' => 1,
+    ),                                            
+    'f7'=>array(
+      'prefex'  => 'mavey0',
+      'count'=>24,
+      'title'=>'教会论',
+      'level'=>2,
+      'pdf' => 1,
+    ),                                                   
+    'f8'=>array(
+      'prefex'  => 'mavps1',
+      'count'=>24,
+      'title'=>'教牧书信',
+      'level'=>2,
+      'pdf' => 1,
+    ),                                                    
+    'f9'=>array(
+      'prefex'  => 'mavpt0',
       'count'=>24,
       'title'=>'教牧学',
+      'level'=>2,
+      'pdf' => 1,
+    ),                                                  
+    'g1'=>array(
+      'prefex'  => 'mavpc0',
+      'count'=>24,
+      'title'=>'教牧辅导',
+      'level'=>2,
+      'pdf' => 1,
+    ),   //进深课程/教牧辅导/婚前辅导手册.pdf                                              
+    'g2'=>array(
+      'prefex'  => 'mavng1',
+      'count'=>24,
+      'title'=>'新约神学',
+      'level'=>2,
+      'pdf' => 1,
+    ),   
+    'g3'=>array(
+      'prefex'  => 'mavog0',
+      'count'=>24,
+      'title'=>'旧约神学',
+      'level'=>2,
+      'pdf' => 1,
+    ),     
+    'g3'=>array(
+      'prefex'  => 'mavet0',
+      'count'=>24,
+      'title'=>'末世论',
+      'level'=>2,
+      'pdf' => 1,
+    ),    
+    'g4'=>array(
+      'prefex'  => 'mavhh0',
+      'count'=>24,
+      'title'=>'进深讲道学',
+      'level'=>2,
+      'pdf' => 1,
+    ),    
+    'g5'=>array(
+      'prefex'  => 'maveh1',
+      'count'=>24,
+      'title'=>'释经与讲道',
+      'level'=>2,
+      'pdf' => 1,
+    ),      
+    'g6'=>array(
+      'prefex'  => 'mavla0',
+      'count'=>24,
+      'title'=>'领袖训练 I',
+      'level'=>2,
+      'pdf' => 1,
+    ),       
+    'g7'=>array(
+      'prefex'  => 'mavlb0',
+      'count'=>24,
+      'title'=>'领袖训练 II',
+      'level'=>2,
+      'pdf' => 1,
     ),
   );
-  //f进深/002诗篇精选/mavse030.mp3
-  //g林慈信牧师在新加坡教导加尔文《基督教要义》2008年/Calvin_B4_L109.mp3
 }
 
 function get_lysd(){

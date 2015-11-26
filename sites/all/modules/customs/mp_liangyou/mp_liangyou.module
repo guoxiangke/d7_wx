@@ -33,7 +33,7 @@ function mp_liangyou_rescources_info(){
   );
 	$rescources[] = array(
     'name' => 'mav',
-    'desc' =>	'良友圣经学院【a0】-【f0】',
+    'desc' =>	'良友圣经学院【a0】-【g0】',
   );
 	$rescources[] = array(
     'name' => 'jckc',
@@ -283,6 +283,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	 		}
  		}
 		//a1 b1 c1 d1 e1 f1-f9
+
 		if(isset($enabled_resources['mav']) && $enabled_resources['mav']){
 			// $keyword = 'd11';
 			$first = substr($keyword, 0,1);
@@ -298,12 +299,14 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					if($count<9)
 						$count = '0'.$count;
 					$rep = str_pad($third, 2,'0',STR_PAD_LEFT);
-					$link = str_replace("$count", str_pad($third, 2,'0',STR_PAD_LEFT), $mav['link']);
-					$link = 'http://liangyou.u.qiniudn.com/old/'.urlencode($link);
+					$link = 'new/'.(($mav['level'] == 1)?'本科课程/':'本科课程/').$mav['title'].'/'.$mav['prefex'].$rep.'.mp3';	
+					watchdog('mp_liangyou', $link, array(), WATCHDOG_NOTICE, 'link');
+					$cdn = 'http://lts33.b0.upaiyun.com/';
+					$link = $cdn . urlencode($link);
 					$resources['key_'.$keyword]= array(
 						'type'	=>	'music',
 						'obj'		=> array(
-							'title'	=> $mav['title'],
+							'title'	=> $mav['title'].'-'.$rep,
 							'desc'	=>	"良友圣经学院 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
 							'musicurl'	=>	$link,
 							'hgmusicurl'	=>	$link,
@@ -311,15 +314,27 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					);
 				}else{
 					//编码对，编号不对！
-					$resources['key_'.$keyword]= array(
-						'type'	=>	'text',
-						'obj'		=> array(
-							'text'	=> "[大哭]编码对，数字不对！",
-						)
-					);
+					$path = 'new/'.(($mav['level'] == 1)?'本科课程/':'本科课程/').$mav['title'].'/'.$mav['title'].'.pdf';
+					$cdn = 'http://lts33.b0.upaiyun.com/';
+					$link = $cdn . urlencode($path);
+					if($mav['pdf']>0){
+						$resources['key_'.$keyword]= array(
+							'type'	=>	'text',
+							'obj'		=> array(
+								'text'	=> "恭喜您，良院 $level 《".$mav['title']."》已结束！\n回复".$first.($second+1)."1学习下一门课程[强]\n".'<a href="http://ly.yongbuzhixi.com/pdfviewer/web/?pdf='.$link.'">查看'.$mav['title'].'讲义</a>',
+							)
+						);
+					}else{
+						$resources['key_'.$keyword]= array(
+							'type'	=>	'text',
+							'obj'		=> array(
+								'text'	=> "[大哭]本科没有讲义哦！",
+							)
+						);
+					}
 				}
 			}else{// a0 b0 c0 d0 e0 f0 
-				$menu = array('a0','b0','c0','d0','e0','f0');
+				$menu = array('a0','b0','c0','d0','e0','f0','g0');
 				$temp_keyword = substr($keyword, 0,2);
 				$first = substr($keyword, 0,1);
 				if(in_array($temp_keyword, $menu)){
@@ -344,8 +359,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		// 		阮老师，我在设计新的良院编码，这样可以吗？：
 		// 用户回复【基础课程】或【jckc】可得到基础课程8科按顺序排列的节目，8*24+1(pdf)=200天循环一次。
 		// 每个科目，比如事奉装备，用户回复【事奉装备】或【sfzb】获得当天节目，25天一循环，收听14课可以回复【sfzb14】
-		// 我们的文档目录规律性很强，但个别的rev1和rev2等需要我花一点时间，做好可能还需要您来测试一下。
-
 		//begin new 良友圣经学院
 	if(isset($enabled_resources['jckc']) && $enabled_resources['jckc']){
 		if($keyword == '基础' || $keyword == 'jc'){
@@ -400,7 +413,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				$resources['key_'.$keyword]= array(
 					'type'	=>	'music',
 					'obj'		=> array(
-						'title'	=> $mav['title'].':'.$index,
+						'title'	=> $mav['title'].'-'.$index,
 						'desc'	=>	"良友圣经学院 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
 						'musicurl'	=>	$link,
 						'hgmusicurl'	=>	$link,
