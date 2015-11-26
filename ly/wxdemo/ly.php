@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0020)http://edublogs.org/ -->
 <html xmlns="http://www.w3.org/1999/xhtml" class="wf-felttiproman-n4-active wf-proximanovasoft-n4-active wf-proximanovasoft-n5-active wf-proximanovasoft-n6-active wf-proximanovasoft-n7-active wf-active">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -64,15 +63,14 @@
 	margin:0 10px 0 0;
 	}
 .bulletin {
-	float:left;
-	height:23px;
+	height:500px;
 	color: #fff;
-	margin:0 0 0 20px;
+	margin:0 20px;
 	background:url(./heiban_files/wechat/bulletin.gif) no-repeat;
 	min-height:23px;
 	overflow:hidden;
 	}
-.bulletin li{
+	.bulletin li{
 	height:23px;
 	padding-left:25px;
 	list-style: none;
@@ -85,12 +83,28 @@
 
 	}
 	#messagesDiv img{
-		max-width: 50px;
+		width: 50px;
+		height: 50px;
 		display: inline;
 		vertical-align: middle;
+		border-radius: 50%;
 	}
-	#gg,#bulletin,#messagesDiv,.bulletin,.bulletin li{
+	.bulletin li{
 		height: 50px;
+		border-bottom: 1px dotted #FFF;
+		padding: 10px 0;
+		list-style-type: decimal;
+	}
+	#messagesDiv li .time{
+		font-size: 12px;
+		float: right;
+	}
+	#messagesDiv li .province{
+		font-size: 13px;
+	}
+
+	#gg{
+		height: 500px;
 	}
 	</style>
 
@@ -111,12 +125,13 @@ function aud_play_pause() {
   }
 }
 </script>
+<?php if((isset($_POST['password']) && $_POST['password']=='ly729')) :?>
 	<header id="top">
 		<div id="top-container">
 			<div id="top-panel">
 				<div id="top-panel-inner">
 					<div class="tp-left">
-						<strong>微信祝福墙</strong></div>
+						<strong>微直播大屏幕</strong></div>
 						<div class="tp-right">
 							<div id="logged-user">
 								<span class="welcome">知音、牵手、同行！</span>
@@ -129,7 +144,7 @@ function aud_play_pause() {
 					<div id="header-inner">
 						<div class="site-logo">
 							<a href="###" title="Click here any time to return to the Edublogs home page">
-								<img src="./heiban_files/wechat/123.jpg" onclick="aud_play_pause()" height='68px' alt="home"></a></div>
+								<img src="./wxc.png" onclick="aud_play_pause()" height='68px' alt="home"></a></div>
 						<nav class="site-nav">
 
 							<ul>
@@ -147,100 +162,12 @@ function aud_play_pause() {
 						</h2>							
 						<div id="gg" style="margin-bottom:5px;">							
 								<div class="bulletin">
-									<ul id="messagesDiv">
-									</ul>
+									<marquee id="scrollArea" height="500" width="auto" loop="-1" scrollamount="4" scrolldelay="50" direction="up" onMouseOver=scrollArea.stop() onMouseOut=scrollArea.start()>
+										<ul id="messagesDiv">
+										</ul>
+									</marquee> 
 								</div>
-							</div>
-						<div class="main-hero">
-							<img src="./heiban_files/ly.png" alt="">
-							<ul class="main-features" style="display:none;">
-								<li>Safe, secure &amp; easy to use.</li>
-								<li>Used for e-portfolios, class sites &amp; much more...</li>
-								<li>Trusted by over 2million educators since 2005.</li>
-							</ul>
-						</div>
-						<div class="main-cta">
-
-
-
-							<ul class="main-testimonials">
-								<li class="testimonial active">
-									<img src="./heiban_files/ly/fwh.jpg" alt="">
-								</li>
-								<?php
-									$bless[] = array(
-										'name'=>'路俊红',
-										'tel'=>'1',
-										'content'=>'唯一的缺点就是不能暂停，后退。如果来电话了，就没有记忆功能又从头播；如果没听清或者觉得说得特别好想再听一下，也得从头听。',
-									);
-									$bless[] = array(
-										'name'=>'夏❈ 唯淇♡々',
-										'tel'=>'2',
-										'content'=>'最近网没有，十几天没听了，现在有网了，真心很愿听孙大忠的讲道，以马内利',
-									);
-									$bless[] = array(
-										'name'=>'路俊红',
-										'tel'=>'1',
-										'content'=>'谢谢小永辛勤的努力，为我们提供灵命的粮食，我每天都听拥抱每一天（一档充满智慧和正能量的节目），灵命日粮（教我们圣经），最近开始听信仰百宝',
-									);
-									$bless[] = array(
-										'name'=>'邓淑英43号',
-										'tel'=>'4',
-										'content'=>'听了你们这个平台，对我们有多的帮助！感谢！',
-										);
-									$bless[] = array(
-										'name'=>'袁梅君',
-										'tel'=>'5',
-										'content'=>'良友广插越办越好，使凡听的蒙造就。每天都能收听。（今天又听不了）',
-										);
-									$bless[] = array(
-										'name'=>'秀丽',
-										'tel'=>'3',
-										'content'=>'永不止息，我们真的需要，特别是(圣经导读)，对我们的帮助更大，衷心感谢！',
-										);
-									$bless[] = array(
-										'name'=>'路俊红',
-										'tel'=>'1',
-										'content'=>'这些天收听效果不好，有的节目听不完整就不能听了，有的节目听了一半停一会一时又重开始了，有时听上一个小时也听不完整一个节目，同行频道也是，今早我听真道分解就是听了四次都是一半',
-									);
-foreach ($bless as $key => $value) {
-	if($key/3==0){
-		?>
-		<li class="testimonial active">
-			<img src="./heiban_files/ly/fwh.jpg" alt="">
-		</li>
-		<?php
-	}
-?>
-<li class="testimonial">
-	<blockquote>
-		<p class="quote"><?php echo $value['content']?></p>
-		<div class="author">
-			<div class="avatar">
-
-			<?php if(1||file_exists(getcwd().'/heiban_files/ly/'.$value['tel'].'jpeg')) {
-				echo '<img src="http://'.$_SERVER["SERVER_NAME"].str_replace('ly.php', '', $_SERVER['REQUEST_URI']).'heiban_files/ly/'.$value['tel'].'.jpeg'.'" alt="">';
-
-			}else{
-				echo '<img src="./heiban_files/RobertBarker.jpg" alt="">';
-			}?>
-			</div>
-			<cite>
-				<span class="name"><?php echo $value['name']?></span>
-				<span class="company">来自微信</span>
-			</cite>
-		</div>
-	</blockquote>
-</li>
-<?php
-}
-								?>
-							</ul>
-							<div class="main-button-cta">
-								<a href="#">微信大屏幕</a>
-							</div>
-							<p class="wordpress">Power by <a href="">yongbuzhixi.com</a> </p>
-						</div>
+							</div>  
 					</div>
 					<div id="home-main-inner" class="home-video" style="text-align:center; display:none;">
 						<div id="promo_video"></div>
@@ -272,38 +199,38 @@ foreach ($bless as $key => $value) {
  <script>
 
  // 文字滚动
-    (function($){
-    $.fn.extend({
-    Scroll:function(opt,callback){
-    if(!opt) var opt={};
-    var _this=this.eq(0).find("ul:first");
-    var        lineH=_this.find("li:first").height(),
-    line=opt.line?parseInt(opt.line,10):parseInt(this.height()/lineH,10),
-    speed=opt.speed?parseInt(opt.speed,10):7000, //卷动速度，数值越大，速度越慢（毫秒）
-    timer=opt.timer?parseInt(opt.timer,10):100000; //滚动的时间间隔（毫秒）
-    if(line==0) line=1;
-    var upHeight=0-line*lineH;
-    scrollUp=function(){
-    _this.animate({
-    marginTop:upHeight
-    },speed,function(){
-    for(i=1;i<=line;i++){
-    _this.find("li:first").appendTo(_this);
-    }
-    _this.css({marginTop:0});
-    });
-    }
-    _this.hover(function(){
-    clearInterval(timerID);
-    },function(){
-    timerID=setInterval("scrollUp()",timer);
-    }).mouseout();
-    }
-    })
-    })(jQuery);
+    // (function($){
+    // $.fn.extend({
+    // Scroll:function(opt,callback){
+    // if(!opt) var opt={};
+    // var _this=this.eq(0).find("ul:first");
+    // var        lineH=_this.find("li:first").height(),
+    // line=opt.line?parseInt(opt.line,10):parseInt(this.height()/lineH,10),
+    // speed=opt.speed?parseInt(opt.speed,10):7000, //卷动速度，数值越大，速度越慢（毫秒）
+    // timer=opt.timer?parseInt(opt.timer,10):100000; //滚动的时间间隔（毫秒）
+    // if(line==0) line=1;
+    // var upHeight=0-line*lineH;
+    // scrollUp=function(){
+    // _this.animate({
+    // marginTop:upHeight
+    // },speed,function(){
+    // for(i=1;i<=line;i++){
+    // _this.find("li:first").appendTo(_this);
+    // }
+    // _this.css({marginTop:0});
+    // });
+    // }
+    // _this.hover(function(){
+    // clearInterval(timerID);
+    // },function(){
+    // timerID=setInterval("scrollUp()",timer);
+    // }).mouseout();
+    // }
+    // })
+    // })(jQuery);
 
     $(document).ready(function(){
-    	$(".bulletin").Scroll({line:1,speed:2000,timer:3000});//修改此数字调整滚动时间
+    	// $(".bulletin").Scroll({line:1,speed:2000,timer:3000});//修改此数字调整滚动时间
 
 
 
@@ -345,7 +272,8 @@ foreach ($bless as $key => $value) {
 			       //      console.log(prop + " = " + obj[prop]);
 			       //    }
 			       // }
-			      $('#messagesDiv').prepend('<li> <img src="'+obj['headimgurl']+'"> [' +obj['nickname'] + ']: ' + obj['content']+' <-来自'+ obj['province']+'</li>');
+			       var dt = new Date(obj['time']*1000);
+			      $('#messagesDiv').prepend('<li> <img src="'+obj['headimgurl']+'"> ' +obj['nickname'] +'<span class="province">/'+obj['province']+'</span>'+ ': ' + obj['content']+'<span class="time">'+ (dt.getMonth()+1) +'/'+dt.getDate()+' '+ dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds() +'</span>'+'</li>');
 			      $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
 			    } 
 	      // $('<li/>').text().prependTo($('#messagesDiv'));
@@ -354,5 +282,64 @@ foreach ($bless as $key => $value) {
 
     };
 	</script>
+<?php endif;?>
 
+<?php if(!isset($_POST['password']) || (isset($_POST['password']) && $_POST['password']!='ly729')){?>
+<form class="loginform" method='post' action="ly.php">
+    <div class="activity_title">微信微直播</div>
+    <div><input id="password" name='password' class="password" placeholder="请输入微直播的管理密码" type="password"></div>
+    <div class="submitline">
+         <input type="submit" class="button-login" value="开启">
+    </div>
+</form>
+<script type="text/javascript">
+	$('body').css('background-image','url(wxcbjfootball.jpg)');
+	$('#top').hide();
+	<?php if(isset($_POST['password'])): ?>
+		alert('密码不正确！');
+	<?php endif;?>
+</script>
+<?php } ?>
+<style type="text/css">
+	.loginform { position: absolute; width: 300px; height: 140px; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; background-color: rgba(0, 0, 0, 0); left: 50%; margin-left: -150px; 
+		top: 40%; margin-top: -75px; padding: 20px; font-size: 24px;
+color: #fff;
+text-align: center;
+text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.39); z-index:10000;}
+.loginform .password { 
+color: #fff;
+position: relative;
+width: 100%;
+height: 32px;
+margin: 20px auto;
+line-height: 32px;
+font-size: 20px;
+text-indent: 15px;
+border-radius: 15px;
+padding: 5px 0;
+border: 2px solid rgba(0, 0, 0, 0);
+background-color: rgba(0, 0, 0, 0.51);
+box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.46) inset,1px 2px 2px rgba(255, 255, 255, 0.61);
+  }
+.loginform .submitline { text-align: center; height: 40px }
+.loginform .button-login { cursor: pointer;
+width: 100%;
+height: 40px;
+border-radius: 12px;
+-moz-border-radius: 6px;
+font-size: 26px;
+text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.37);
+color: #fff;
+padding: 5px 0;
+border: 0;
+background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.85)), color-stop(100%, rgba(218, 218, 218, 0)));
+box-shadow: 0 3px 3px rgba(0, 0, 0, 0.36); }
+.loginform .button-login:hover {
+background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.85)), color-stop(100%, rgba(218, 218, 218, 0.3)));
+}
+.loginform .button-login:active {
+background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.2)), color-stop(100%, rgba(218, 218, 218, 0.85)));
+}
+
+</style>
 </body></html>
