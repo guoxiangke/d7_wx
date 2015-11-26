@@ -5,11 +5,11 @@
 function mp_liangyou_rescources_info(){
 	$rescources[] = array(
     'name' => 'ly',
-    'desc' =>	'良友电台节目单【ly】',
+    'desc' =>	'良友电台节目表【ly】',
   );
 	$rescources[] = array(
     'name' => 'ly2',
-    'desc' =>	'良友电台串流广播节目单【600】',
+    'desc' =>	'良友电台串流广播节目表【600】',
   );
 	$rescources[] = array(
     'name' => '365',
