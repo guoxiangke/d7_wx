@@ -340,7 +340,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				$first = substr($keyword, 0,1);
 				if(in_array($temp_keyword, $menu)){
 					$mav = get_ly_mav();
-					if(in_array($temp_keyword, array('e0','f0','g0')){
+					if(in_array($temp_keyword, array('e0','f0','g0'))){
 						$level = '进深';
 					}else{
 						$level = '本科';
