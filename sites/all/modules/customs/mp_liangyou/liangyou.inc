@@ -101,7 +101,7 @@ function ly_get_menu(){
   // $menu .= '<br/>【'.$key.'】'.$audio['name'];
   // }
   // dvm($menu);
-  return '▶节目单
+  return '▶良友电台节目表
   ----------------------------------------------
   【mp】这一刻，清心
   【tg】施恩座前
@@ -220,7 +220,7 @@ function ly_stream_source(){
 // }
 // dvm($links);
 function ly_stream_menu(){
-  return '▶节目单
+  return '▶良友电台串流广播节目单
   ----------------------------------------------
   【601】无限飞行号
   【602】i关怀心磁场

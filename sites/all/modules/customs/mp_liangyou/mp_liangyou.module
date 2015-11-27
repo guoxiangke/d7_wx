@@ -293,13 +293,14 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				$third = substr($keyword, 2,2);
 				$mav = get_ly_mav();
 				$mav = $mav[$first.$second];
+				$level = (($mav['level'] == 1)?'本科课程':'进深课程')
 				if($third>0&&$third<=$mav['count']){
 					//24 => 001
 					$count = $mav['count'];
 					if($count<9)
 						$count = '0'.$count;
 					$rep = str_pad($third, 2,'0',STR_PAD_LEFT);
-					$link = 'new/'.(($mav['level'] == 1)?'本科课程/':'本科课程/').$mav['title'].'/'.$mav['prefex'].$rep.'.mp3';	
+					$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['prefex'].$rep.'.mp3';	
 					watchdog('mp_liangyou', $link, array(), WATCHDOG_NOTICE, 'link');
 					$cdn = 'http://lts33.b0.upaiyun.com/';
 					$link = $cdn . urlencode($link);
@@ -307,21 +308,21 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						'type'	=>	'music',
 						'obj'		=> array(
 							'title'	=> $mav['title'].'-'.$rep,
-							'desc'	=>	"良友圣经学院 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
+							'desc'	=>	"良友圣经学院 ".$level." 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
 							'musicurl'	=>	$link,
 							'hgmusicurl'	=>	$link,
 						),
 					);
 				}else{
 					//编码对，编号不对！
-					$path = 'new/'.(($mav['level'] == 1)?'本科课程/':'本科课程/').$mav['title'].'/'.$mav['title'].'.pdf';
+					$path = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
 					$cdn = 'http://lts33.b0.upaiyun.com/';
 					$link = $cdn . urlencode($path);
 					if($mav['pdf']>0){
 						$resources['key_'.$keyword]= array(
 							'type'	=>	'text',
 							'obj'		=> array(
-								'text'	=> "恭喜您，良院 $level 《".$mav['title']."》已结束！\n回复".$first.($second+1)."1学习下一门课程[强]\n".'<a href="http://ly.yongbuzhixi.com/pdfviewer/web/?pdf='.$link.'">查看'.$mav['title'].'讲义</a>',
+								'text'	=> "恭喜您，良院 $level 《".$mav['title']."》已结束！\n回复".$first.($second+1)."1学习下一门课程[强]\n".'<a href="http://ly.yongbuzhixi.com/pdfviewer/web/?pdf='.$link.'&q='.time().'">查看'.$mav['title'].'讲义</a>',
 							)
 						);
 					}else{
@@ -339,7 +340,12 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				$first = substr($keyword, 0,1);
 				if(in_array($temp_keyword, $menu)){
 					$mav = get_ly_mav();
-					$mavmenu = '良友圣经学院课程目录'.$first."\n";
+					if(in_array($temp_keyword, array('e0','f0','g0')){
+						$level = '进深';
+					}else{
+						$level = '本科';
+					}
+					$mavmenu = '良院'.$level.'文凭课程目录'.$first."\n";
 					foreach ($mav as $key => $value) {
 						if(strpos($key,$first) !== false){
 							$mavmenu .= "【".$key."】".$value['title']."\n";
