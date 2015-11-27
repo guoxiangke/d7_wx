@@ -293,7 +293,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				$third = substr($keyword, 2,2);
 				$mav = get_ly_mav();
 				$mav = $mav[$first.$second];
-				$level = (($mav['level'] == 1)?'本科课程':'进深课程')
+				$level = (($mav['level'] == 1)?'本科课程':'进深课程');
 				if($third>0&&$third<=$mav['count']){
 					//24 => 001
 					$count = $mav['count'];
