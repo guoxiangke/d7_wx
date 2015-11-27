@@ -81,7 +81,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	    	// if($key=='603') $keyword='cc1';
 		    if ($key=='bf' && $offset == 0 && date('N')<=5) {
 		    	$keyword = '416';
-		    	return mp_bbn_response($keyword,$key);
+		    	return mp_bbn_response($keyword,$account,$key);
 		    }
 		    //6,7播出的节目
 		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='6' && $offset == 0 && date('N')<=5) {
@@ -232,7 +232,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
     //圣经广播网 400-435
     if(isset($enabled_resources['400']) && $enabled_resources['400'])
     if(is_numeric($keyword) && ($keyword>=400 && $keyword<=435) ) {
-    	$resources = mp_bbn_response($keyword);
+    	$resources = mp_bbn_response($keyword,$account);
     }
 
  		if(isset($enabled_resources['1225']) && $enabled_resources['1225']){
@@ -532,7 +532,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 /**
  * $change_keyword = return key!
  */
-function mp_bbn_response($keyword,$change_keyword=NULL){
+function mp_bbn_response($keyword,$account,$change_keyword=NULL){
 	$resources = array();
 	if (!$change_keyword) {
 		$change_keyword = $keyword;
