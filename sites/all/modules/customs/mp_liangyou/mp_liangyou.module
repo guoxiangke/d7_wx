@@ -482,7 +482,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
  		date_default_timezone_set('Asia/Shanghai');
  		if(substr($keyword, 0,6) == '目录'){
 			$file_key = 'http://ly.yongbuzhixi.com/cron/nzzlist/'.date('Ymd').'.json';
-			if(@get_headers($file_key)[0] == 'HTTP/1.1 404 Not Found'){
+			$getheaders = @get_headers($file_key);
+			if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
 				$file_key = 'http://729ly.bj.bcebos.com/home/bae/app/cron/nzzlist/'.date('Ymd').'.json';
 			}
  			$file = file_get_contents($file_key);
