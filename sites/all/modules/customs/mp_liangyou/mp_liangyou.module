@@ -334,7 +334,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						);
 					}
 				}
-			}else{// a0 b0 c0 d0 e0 f0 
+			}else{
 				$menu = array('a0','b0','c0','d0','e0','f0','g0');
 				$temp_keyword = substr($keyword, 0,2);
 				$first = substr($keyword, 0,1);
