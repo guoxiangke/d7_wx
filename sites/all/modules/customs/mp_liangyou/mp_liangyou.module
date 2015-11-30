@@ -5,11 +5,11 @@
 function mp_liangyou_rescources_info(){
 	$rescources[] = array(
     'name' => 'ly',
-    'desc' =>	'良友电台节目表【ly】',
+    'desc' =>	'良友电台线路1【ly】',
   );
 	$rescources[] = array(
     'name' => 'ly2',
-    'desc' =>	'良友电台串流广播节目表【600】',
+    'desc' =>	'良友电台线路2【600】',
   );
 	$rescources[] = array(
     'name' => '365',
@@ -37,7 +37,7 @@ function mp_liangyou_rescources_info(){
   );
 	$rescources[] = array(
     'name' => 'jckc',
-    'desc' =>	'良友圣经学院【基础课程】【jc】',
+    'desc' =>	'良院【基础课程】【jc】',
   );
   return $rescources;
 }

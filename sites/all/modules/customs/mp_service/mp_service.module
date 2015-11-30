@@ -124,7 +124,22 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
        'action'          => $ori_keyword,
        'label'           => 'wxservice_'.$account->uid,
      ));
-  }elseif (strlen($ori_keyword) >= 12 && variable_get('mp_config_certified_'.$account->uid, false)) { //且已认证
+    return;
+  }
+  //....
+  $special_keywords = array('?','？','？','？');
+  if(is_numeric($ori_keyword) || in_array($ori_keyword, $special_keywords)){
+    $copyright = copyright($account);
+    $weObj->text($copyright);
+    ga_push_add_event(array(
+     'category'        => 'menuGet',
+     'action'          => $ori_keyword,
+     'label'           => 'wxservice_'.$account->uid,
+    ));
+    return;
+  }
+  //long keywords
+  if (strlen($ori_keyword) >= 12 && variable_get('mp_config_certified_'.$account->uid, false)) { //且已认证
     // watchdog('mp_service', '??transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
     if($ori_keyword=='http://www.yongbuzhixi.com?from=wx'){
       ga_push_add_event(array(
