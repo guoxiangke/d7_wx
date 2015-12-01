@@ -7,9 +7,9 @@
 	 *		https://gist.github.com/1809044
 	 */
 	// The commands
-	if ( !(isset($_POST['payload']) || (isset($_GET['go']) && $_GET['go']=='1')) ) {
-		echo 'no permission!';	
-	}
+	// if ( !(isset($_POST['payload']) || (isset($_GET['go']) && $_GET['go']=='1')) ) {
+	// 	echo 'no permission!';	
+	// }
 	$commands = array(
 		'echo $PWD',
 		'whoami',
