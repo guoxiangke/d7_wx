@@ -7,7 +7,7 @@
 	 *		https://gist.github.com/1809044
 	 */
 	// The commands
-	if ( !(isset($_POST['payload']) || (isset($_GET['q']) && $_GET['q']='dale')) ) {
+	if ( !(isset($_POST['payload']) || (isset($_GET['go']) && $_GET['go']='1')) ) {
 		return 'no permission!';	
 	}
 	$commands = array(
