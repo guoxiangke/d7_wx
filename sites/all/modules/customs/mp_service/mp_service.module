@@ -126,9 +126,9 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
      ));
     return;
   }
-  //....
+  //menuGet....
   $special_keywords = array('?','？','？','？');
-  if(is_numeric($ori_keyword) || in_array($ori_keyword, $special_keywords)){
+  if($ori_keyword == 1 || in_array($ori_keyword, $special_keywords)){
     $copyright = copyright($account);
     $weObj->text($copyright);
     ga_push_add_event(array(
@@ -154,10 +154,11 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     //真理之光 ＝ 12
     //长夜的牵引 ＝ 15
     //婚姻的意义留言内容==27
-    // watchdog('strlen', strlen($ori_keyword), array(), WATCHDOG_NOTICE, 'link');
+    
 
     /////字数太少，我们为你转人工服务吧！
     $len = strlen($ori_keyword);
+    // watchdog('strlen', $len, array(), WATCHDOG_NOTICE, 'link');
     // if($len > 15 && $len <= 30){
     //   ga_push_add_event(array(
     //    'category'        => 'wxservice',
@@ -165,7 +166,8 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     //    'label'           => $ori_keyword,
     //   ));
     //   $weObj->transfer_customer_service()->reply();
-    // }elseif($len > 30)
+    // }else
+    if($len > 30)
     {
       $nid = 113;
       $node_type = 'wxcomments';
