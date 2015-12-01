@@ -7,14 +7,19 @@
 	 *		https://gist.github.com/1809044
 	 */
 	// The commands
+	if ( !(isset($_POST['payload']) || (isset($_GET['q']) && $_GET['q']='dale')) ) {
+		return 'no permission!';	
+	}
 	$commands = array(
 		'echo $PWD',
 		'whoami',
-		'git pull',
+		'git checkout sites/all/',
+		'git pull origin master',
 		'git status',
 		'git submodule sync',
 		'git submodule update',
 		'git submodule status',
+		'git log -1',
 	);
 	// Run the commands for output
 	$output = '';
