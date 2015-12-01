@@ -306,7 +306,7 @@ function mp_service_comments(){
   $mail = $user_info['openid'].'@wechat.bind';
   $account = user_load_by_mail($mail);
   if(!$account){
-    watchdog('create user '.$mail, 'message', array(), WATCHDOG_NOTICE, 'link');
+    // watchdog('create user '.$mail, 'message', array(), WATCHDOG_NOTICE, 'link');
     // create $user;
     $response = drupal_http_request($user_info['headimgurl']);
 
@@ -378,7 +378,6 @@ function mp_service_comments(){
     if($comment = comment_submit($comment)) { // Prepare node for saving                      
       comment_save($comment);
         // return $comment;
-      variable_set('mp_config_wxcomments_before', $id);
     }
 
   }
