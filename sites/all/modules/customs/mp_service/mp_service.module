@@ -380,7 +380,6 @@ function _post_wxcomments($user_info,$keyword,$nid,$id,$pid){
   //set POST variables
   $url = url('mp_service/comments',array('absolute'=>TRUE));
   //$url = http://wx.yongbuzhixi.com/mp_service/comments
-  watchdog('url', $url, array(), WATCHDOG_NOTICE, 'link');
   $fields = array(
     'user_info' => urlencode(json_encode($user_info)),
     'content' => urlencode($keyword),

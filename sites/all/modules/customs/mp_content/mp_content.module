@@ -21,9 +21,9 @@ function mp_content_rescources_info(){
  * Hook_wxresources
  */
 function mp_content_wxresources($resources, $account, $keyword){
-  $key = substr($keyword, 0,4);
-  if($keyword != 'lm'&&$keyword != '灵命'&&$keyword !='图文' && $keyword !='美文' && $keyword !='77' && $key !='node') return;
-  watchdog('mp_content', 'message', array(), WATCHDOG_NOTICE, 'link');
+  $temp_key = substr($keyword, 0,4);
+  $allow_keys = array('lm','灵命','lingming','tuwen','meiwen','tw','图文','美文','77','node');
+  if(!in_array($keyword, $allow_keys) || !in_array($temp_key, $allowkeys) ) return;
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
@@ -36,18 +36,37 @@ function mp_content_wxresources($resources, $account, $keyword){
           }else{
             $nodes = dale_get_mp_nodes('article',3);
             $news = array();
+            $count = 0;
             foreach ($nodes as $key => $node) {       
+              if(isset($node->field_image2['und'][0]['uri'])){
+                $picurl = file_create_url($node->field_image2['und'][0]['uri']);
+              }elseif(isset($node->field_image['und'][0]['uri'])){
+                $picurl = file_create_url($node->field_image['und'][0]['uri']);
+              }
+              $count++;
+              if($count == count($nodes)){//第一个不用2图
+                if(isset($node->field_image['und'][0]['uri'])){
+                  $picurl = file_create_url($node->field_image['und'][0]['uri']);   
+                }else{//default img!!
+                  $info = field_info_instance('node', 'field_image', 'article');
+                  if (!empty($info) && $info['settings']['default_image'] > 0){
+                    $default_img_fid  = $info['settings']['default_image'];
+                    $default_img_file = file_load($default_img_fid);
+                  }
+                  $picurl = file_create_url($default_img_file->uri);  
+                }
+              }
               $img = array(
                   'Title'=> $node->title,
                   'Description'=> $node->title,
-                  'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
+                  'PicUrl'=> $picurl,
                   'Url'=> url('node/'.$node->nid, array('absolute' => TRUE)),
                 );
               $news[] = $img;
             }
             $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
-            $news = $news + (array)json_decode($lingming);
-            // if(in_array($keyword, array_keys($get_ybzx_resources)))
+            // $news = $news + (array)json_decode($lingming);
+            array_push($news,(array)json_decode($lingming));
           }
           $resources['key_'.$keyword]= array(
           'type'  =>  'news',

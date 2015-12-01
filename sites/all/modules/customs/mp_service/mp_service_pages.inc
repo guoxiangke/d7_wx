@@ -306,7 +306,7 @@ function mp_service_comments(){
   $mail = $user_info['openid'].'@wechat.bind';
   $account = user_load_by_mail($mail);
   if(!$account){
-    watchdog('create user', 'message', array(), WATCHDOG_NOTICE, 'link');
+    watchdog('create user '.$mail, 'message', array(), WATCHDOG_NOTICE, 'link');
     // create $user;
     $response = drupal_http_request($user_info['headimgurl']);
 

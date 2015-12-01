@@ -408,7 +408,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			$third = substr($temp_keyword, 2,2);
 			$mav = get_ly_jckc();
 			$mav = $mav[$second];
-			watchdog('mav', '<pre>'.print_r($mav,TRUE), array(), WATCHDOG_NOTICE, 'link');
 			if($third>0&&$third<=$mav['max']){
 				//24 => 001
 				$count = $mav['max'];
@@ -428,7 +427,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			}else{
 				//编码对，编号不对！
 				$path = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
-				watchdog('mp_liangyou', $path, array(), WATCHDOG_NOTICE, 'link');
 				$cdn = 'http://lts33.b0.upaiyun.com/';
 				$link = $cdn . urlencode($path);
 				$resources['key_'.$keyword]= array(
