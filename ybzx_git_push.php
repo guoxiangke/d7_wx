@@ -8,7 +8,7 @@
 	 */
 	// The commands
 	if ( !(isset($_POST['payload']) || (isset($_GET['go']) && $_GET['go']=='1')) ) {
-		return 'no permission!';	
+		echo 'no permission!';	
 	}
 	$commands = array(
 		'echo $PWD',
