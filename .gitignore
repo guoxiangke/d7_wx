@@ -6,5 +6,4 @@ sites/*/files
 sites/*/private
 
 sftp-config.json
-*.txt
 *.md
