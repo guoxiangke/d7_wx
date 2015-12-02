@@ -23,9 +23,10 @@ function mp_content_rescources_info(){
 function mp_content_wxresources($resources, $account, $keyword){
   $temp_key = substr($keyword, 0,4);
   $allow_keys = array('lm','灵命','lingming','tuwen','meiwen','tw','图文','美文','77','node');
-  if(!in_array($keyword, $allow_keys) || !in_array($temp_key, $allow_keys) ) return;
+  if( !(in_array($keyword, $allow_keys) || in_array($temp_key, $allow_keys)) ) return;
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
+
   if(!isset($resources)){
     //灵命日粮
     if ($keyword == 'lm'||$keyword =='灵命'||$keyword =='美文'||$keyword =='图文') {      
@@ -82,7 +83,7 @@ function mp_content_wxresources($resources, $account, $keyword){
             if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value'])) 
               $musicurl =  $node->field_mp3url[LANGUAGE_NONE][0]['value'];
             if(!$musicurl){
-              // $node->field_mp3_file
+              //TODO $node->field_mp3_file
             }
             $resources['key_'.$keyword]= array(
               'type'  =>  'music',
