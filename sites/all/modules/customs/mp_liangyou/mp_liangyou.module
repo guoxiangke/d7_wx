@@ -488,7 +488,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			$urls = json_decode($file,TRUE);
 			$menu = "回复【】内的汉字，即可获得响应节目[调皮]\n";
 			foreach ($urls as $key => $value) {
-				if(isset($value['bce']))
+				if(isset($value['bce']) && $value['bce']!='404')
 					$menu .= '【'.$value['title']."】\n";
 			}
 			$resources['key_'.$keyword]= array(
