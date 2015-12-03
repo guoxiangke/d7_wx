@@ -10,11 +10,11 @@ function ybread_page(){
 	$now = 0;
 	$last = 0;
   if(isset($result->nid)){
-	  $now = date('d',time());
+	  $now = time();
 	  $hour = date('G',time());
-	  $last = date('d',$result->created);
+	  $last = $result->created;
   }
-  if(($now - $last >= 1 && $hour >= 7)|| !isset($result->nid)) {
+  if(($now - $last >= 86400 && $hour >= 7)|| !isset($result->nid)) {
 	  $html = file_get_html('http://simplified-odb.org/today/');
 		// get title
 		$node = new stdClass();
