@@ -417,9 +417,17 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				//24 => 001
 				$count = $mav['max'];
 				$index = str_pad($third, 2,'0',STR_PAD_LEFT);
-				$path = 'new/'.$level.'/'.$mav['title'].'/'.$mav['prefex'].$index.'.mp3';
+
+
+				$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['prefex'].$index.'.mp3';
+
+				$etime = time()+3600; // 授权十分钟后过期
+				$key = 'ly729';   // token 防盗链密钥
+				$path = '/'.$link; // 图片相对路径
+				$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+				
 				$cdn = 'http://lts33.b0.upaiyun.com/';
-				$link = $cdn . urlencode($path);
+				$link = $cdn . urlencode($link).'?_upt='.$sign;
 				$resources['key_'.$keyword]= array(
 					'type'	=>	'music',
 					'obj'		=> array(
