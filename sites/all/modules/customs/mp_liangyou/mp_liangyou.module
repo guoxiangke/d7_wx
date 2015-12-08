@@ -439,9 +439,16 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				);
 			}else{
 				//编码对，编号不对！
-				$path = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
+				$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
 				$cdn = 'http://lts33.b0.upaiyun.com/';
-				$link = $cdn . urlencode($path);
+
+
+				$etime = time()+3600; // 授权十分钟后过期
+				$key = 'ly729';   // token 防盗链密钥
+				$path = '/'.$link; // 图片相对路径
+				$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+
+				$link = $cdn . urlencode($path).'?_upt='.$sign;
 				$resources['key_'.$keyword]= array(
 					'type'	=>	'text',
 					'obj'		=> array(
