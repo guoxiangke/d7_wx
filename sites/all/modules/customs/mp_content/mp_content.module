@@ -200,7 +200,7 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
     //get promote!
     if($counts[1]>0)
       $nodes2 = dale_get_mp_nodes('article',$counts[1],NULL,$account->uid,NODE_PROMOTED);
-    if($nodes2)
+    if(isset($nodes2))
     foreach ($nodes2 as $key => $node) {     
       if(!empty($node->field_redirect_link['und'][0]['value'])){
         $url = $node->field_redirect_link['und'][0]['value'];

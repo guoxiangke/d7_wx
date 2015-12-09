@@ -235,7 +235,7 @@ function aud_play_pause() {
 
 
 	    // Get a database reference to our posts
-			var ref = new Firebase("https://lydemo.firebaseio.com/wechat");
+			var ref = new Firebase("https://kzfd.firebaseio.com/wechat");
 
 			// Attach an asynchronous callback to read the data at our posts reference
 			ref.on("value", function(snapshot) {

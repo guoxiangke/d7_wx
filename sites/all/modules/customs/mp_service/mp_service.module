@@ -100,6 +100,8 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
   $wxresources = array();  //TODO： get all (enabled)resources/node of account.
   $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword);
 	$ori_keyword = $keyword;
+  $len = strlen($ori_keyword);
+  
 	$keyword = 'key_'.$keyword;//1001 => 0 selution.
   // watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
   // watchdog('ori_keyword', $ori_keyword, array(), WATCHDOG_NOTICE, 'link');
@@ -139,7 +141,8 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     return;
   }
   //long keywords
-  if (strlen($ori_keyword) >= 12 && variable_get('mp_config_certified_'.$account->uid, false)) { //且已认证
+  watchdog('strlen1', $len, array(), WATCHDOG_NOTICE, 'link');
+  if ($len>= 12 && variable_get('mp_config_certified_'.$account->uid, false)) { // 且已认证
     // watchdog('mp_service', '??transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
     if($ori_keyword=='http://www.yongbuzhixi.com?from=wx'){
       ga_push_add_event(array(
@@ -157,8 +160,6 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     
 
     /////字数太少，我们为你转人工服务吧！
-    $len = strlen($ori_keyword);
-    // watchdog('strlen', $len, array(), WATCHDOG_NOTICE, 'link');
     // if($len > 15 && $len <= 30){
     //   ga_push_add_event(array(
     //    'category'        => 'wxservice',
@@ -184,22 +185,29 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       $comment_body = $ori_keyword;
       //微信回复【内容@106】 即可留言！
       // $comment_body = '@113.我没有单身的恩赐.等了很多年另一半还没出现.我问神.神一直没回应我. ';
-      $str = explode('@',$comment_body);
-      $count = count($str);
-      if($count && is_numeric($str[$count-1])){
-        if(node_load($str[$count-1])){
-          $nid = $str[$count-1];
-          $comment_body = $str[0];
-        }
-      }
-      preg_match('/@\d{3}/', $comment_body,$m);//$m[0]=@113
+      // $str = explode('@',$comment_body);
+      // $count = count($str);
+      // if($count && is_numeric($str[$count-1])){
+      //   if(node_load($str[$count-1])){
+      //     $nid = $str[$count-1];
+      //     $comment_body = $str[0];
+      //   }
+      //   watchdog('1', $nid , array(), WATCHDOG_NOTICE, 'link');
+      // }
+
+      preg_match('/@\d{3}/', $ori_keyword,$m);//$m[0]=@113
       if(isset($m[0])){
         $nid = str_replace('@', '', $m[0]);
         $comment_body =  str_replace($m[0], '', $comment_body);
       }
 
-      if($nid == 127 && $len > 29 && $len <= 100){//cc空中辅导大屏幕！10-30字
-
+      if (strpos($ori_keyword,'周师母') !== false|| strpos($ori_keyword,'周素琴') !== false || strpos($ori_keyword,'空中辅导') !== false) {
+        $nid = 163;
+        $comment_body = $ori_keyword;
+      }
+      //空中辅导直播留言板开放时间：周2-3-4 晚上6点-9点 [微笑]敬请留意！字数>10<30字的内容会到发送到直播间大屏幕！
+      if($nid == 163 && $len > 29 && $len <= 100 &&  in_array(date('N'), array(2,3,4))){//cc空中辅导大屏幕！10-30字
+        watchdog('dpm', 'message', array(), WATCHDOG_NOTICE, 'link');
         $openid = $weObj->getRev()->getRevFrom();
         $user_info = $weObj->getUserInfo($openid);
         $data = array();
@@ -221,8 +229,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $weObj->text("互动留言已发布到大屏幕！\n周师母直播时会选读的哦！")->reply();
         return;
       }
-
-      // $content = "啊是放假啊社发动机?109#78#";
+      //其他时间段会到留言板！
       $pid = 0;
       $str = explode('?',$comment_body);
       if(isset($str[0]))
@@ -337,8 +344,8 @@ function wechat_token_get_user($openid){
 function firebaseset($path,$value){//
   require_once('firebase/src/firebaseInterface.php');
   require_once('firebase/src/firebaseLib.php');
-  $DEFAULT_URL = 'https://lydemo.firebaseio.com/';
-  $DEFAULT_TOKEN = 'rjTExQGCSU615xFgZiSyHcr1AwPtFs7cB0Qd2qVm';
+  $DEFAULT_URL = 'https://kzfd.firebaseio.com/';
+  $DEFAULT_TOKEN = 'rv9cjRdivU06ieEHctk1Jln8wqHU04WWjL4MwJPt';
   $DEFAULT_PATH = '/firebase/example';
   $firebase = new \Firebase\FirebaseLib($DEFAULT_URL, $DEFAULT_TOKEN);
 
