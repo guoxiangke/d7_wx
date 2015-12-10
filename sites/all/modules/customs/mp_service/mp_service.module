@@ -207,7 +207,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       }
       //空中辅导直播留言板开放时间：周2-3-4 晚上6点-9点 [微笑]敬请留意！字数>10<60字的内容会到发送到直播间大屏幕！
 
-      if($nid == 163 && $len > 29 && $len <= 200 &&  in_array(date('N'), array(2,3,4)) && date('G')>=6 &&date('G')>=9 ){//cc空中辅导大屏幕！10-30字
+      if(0&&$nid == 163 && $len > 29 && $len <= 200 &&  in_array(date('N'), array(2,3,4)) && date('G')>=6 &&date('G')>=9 ){//cc空中辅导大屏幕！10-30字
         // watchdog('dpm', 'message', array(), WATCHDOG_NOTICE, 'link');
         $openid = $weObj->getRev()->getRevFrom();
         $user_info = $weObj->getUserInfo($openid);
