@@ -364,6 +364,7 @@ function mp_service_comments(){
     
     $status = COMMENT_PUBLISHED;
     if($nid == '163') $status = COMMENT_NOT_PUBLISHED;
+    if($pid != 0) $status = COMMENT_PUBLISHED;
     $comment->status = $status;//COMMENT_PUBLISHED; // We auto-publish this comment
     $comment->language = LANGUAGE_NONE; // The same as for a node
     // $keyword = substr($keyword, 2);
