@@ -361,7 +361,10 @@ function mp_service_comments(){
     $comment->created = time(); // OPTIONAL. You can set any time you want here. Useful for backdated comments creation.
     $comment->is_anonymous = 0; // leave it as is
     $comment->homepage = ''; // you can add homepage URL here
-    $comment->status = COMMENT_PUBLISHED;//COMMENT_PUBLISHED; // We auto-publish this comment
+    
+    $status = COMMENT_PUBLISHED;
+    if($nid == '163') $status = COMMENT_NOT_PUBLISHED;
+    $comment->status = $status;//COMMENT_PUBLISHED; // We auto-publish this comment
     $comment->language = LANGUAGE_NONE; // The same as for a node
     // $keyword = substr($keyword, 2);
     $subject = truncate_utf8($comment_body, 15, $wordsafe = FALSE, $add_ellipsis = FALSE, $min_wordsafe_length = 1);
