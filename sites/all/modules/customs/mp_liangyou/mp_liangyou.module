@@ -544,6 +544,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			if(count($urls))
 			foreach ($urls as $key => $value) {
 				if($value['title'] ==$keyword){
+					if(!isset($value['bce'])) return;
 					$resources['key_'.$keyword]= array(
 					'type'	=>	'music',
 					'obj'		=> array(

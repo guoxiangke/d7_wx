@@ -1,51 +1,124 @@
 <?php
 function liangyou_audio_list(){
-  $prefix['31'] = 'http://liangyou2.nissigz.com:15200/';
-  $prefix['32'] = 'http://liangyou.nissigz.com:18100/';
+  $prefix['31'] = 'http://liangyou.nissigz.com/';
+  $prefix['32'] = 'http://liangyou2.nissigz.com/';
+  $prefix['33'] = 'http://liangyou3.nissigz.com/';
   $radios_list = array(
-    // 福音节目-适合所有人士
-    // '31' => array(//15200
-      'mp' => array('download_button' =>0,'url'=>'??', 'name' =>'这一刻，清心', 'prefix'=>$prefix['31'],'day'=>6),
-      'tg' => array('download_button' =>0,'url'=>'??', 'name' =>'施恩座前', 'prefix'=>$prefix['31'],'day'=>0),//0
-      'ns' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcji-3b2p30', 'name' =>'生命的四季', 'prefix'=>$prefix['32'],'day'=>0),//0
-      'ds' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcji-3b2p30', 'prefix'=>$prefix['31'],'name' =>'晨曦讲座'),
+      'ir' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchu-3b2ozo', 'name' =>'爱广播', 'prefix'=>$prefix['32'],'day'=>0),
+      'gt' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcj0-3b2p20', 'name' =>'恩典与真理', 'prefix'=>$prefix['32'],'day'=>0),//0
+      'wa' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcj3-3b2p26', 'name' =>'天路导向', 'prefix'=>$prefix['32'],'day'=>6),//6,7
+      // 'cwa' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj2-3b2p24', 'name' =>'天路导向（粤）', 'prefix'=>$prefix['32'],'day'=>6),//6,7
+      'yu' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchx-3b2ozu', 'name' =>'绝妙当家', 'prefix'=>$prefix['32'],'day'=>0),//0
+      'gv' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci3-3b2p06', 'name' =>'生活无国界', 'prefix'=>$prefix['32'],'day'=>0),//0
+      'zz' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njciw-3b2p1s', 'name' =>'零点零距离', 'prefix'=>$prefix['32'],'day'=>5),//1-5
+      'se' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci0-3b2p00', 'name' =>'炼爱季节', 'prefix'=>$prefix['32'],'day'=>5),//1-5   
+      'up' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci6-3b2p0c', 'name' =>'亲情不断电', 'prefix'=>$prefix['32'],'day'=>5),//1-5
+      'bc' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci1-3b2p02', 'name' =>'书香园地', 'prefix'=>$prefix['32'],'day'=>5),//1-5
 
-      'cc' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcji-3b2p30', 'prefix'=>$prefix['32'],'name' =>'空中辅导'),
-      'ir' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njchu-3b2ozo', 'name' =>'i-radio爱广播', 'prefix'=>$prefix['31'],'day'=>0),//0
-      // 'eg' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcjg-3b2p2w', 'name' =>'英语世界', 'prefix'=>$prefix['31'],'day'=>2),//2
-      'gt' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj0-3b2p20', 'name' =>'恩典与真理', 'prefix'=>$prefix['31'],'day'=>0),//0
-      'wa' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj3-3b2p26', 'name' =>'天路导向', 'prefix'=>$prefix['31'],'day'=>6),//6,7
-      'cwa' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj2-3b2p24', 'name' =>'天路导向（粤）', 'prefix'=>$prefix['31'],'day'=>6),//6,7
-      // 'bg' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcjd-3b2p2q', 'name' =>'普世佳音', 'prefix'=>$prefix['31'],'day'=>1),//1
-      'yu' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njchx-3b2ozu', 'name' =>'绝妙当家', 'prefix'=>$prefix['31'],'day'=>0),//0
-      'gv' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci3-3b2p06', 'name' =>'生活无国界', 'prefix'=>$prefix['31'],'day'=>0),//0
-      'zz' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njciw-3b2p1s', 'name' =>'零点零距离', 'prefix'=>$prefix['31'],'day'=>5),//1-5
-      'se' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci0-3b2p00', 'name' =>'炼爱季节', 'prefix'=>$prefix['31'],'day'=>5),//1-5
-      'up' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcil-3b2p16', 'name' =>'亲情不断电', 'prefix'=>$prefix['31'],'day'=>5),//1-5
-      'bc' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci1-3b2p02', 'name' =>'书香园地', 'prefix'=>$prefix['31'],'day'=>5),//1-5
-      'fc' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcm0-3b2p80', 'name' =>'微播出炉', 'prefix'=>$prefix['31'],'day'=>5),//1-5
-      'gn' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcif-3b2p0u', 'name' =>'现代人的希望', 'prefix'=>$prefix['31'],'day'=>0),//0
-      'hg' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci4-3b2p08', 'name' =>'欢乐卡恰碰', 'prefix'=>$prefix['31'],'day'=>0),//0
-      'yn' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj1-3b2p22', 'name' =>'爱在人间（云南）', 'prefix'=>$prefix['31'],'day'=>0),//0
-      'im' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njchy-3b2ozw', 'name' =>'i关怀心磁场', 'prefix'=>$prefix['31'],'day'=>5),//1-5
-      'ib' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcjm-3b2p38', 'name' =>'无限飞行号', 'prefix'=>$prefix['31'],'day'=>0),//0
-      'rt' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcia-3b2p0k', 'name' =>'今夜心未眠', 'prefix'=>$prefix['31'],'day'=>6),//6,7
-      'ls' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci7-3b2p0e', 'name' =>'燃亮的一生', 'prefix'=>$prefix['31'],'day'=>6),//6,7
-      // 'yr' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njciv-3b2p1q', 'name' =>'Yi-radio爱广播', 'prefix'=>$prefix['31'],'day'=>0),//0
-      'bv' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njciv-3b2p1q', 'name' =>'灵命日粮', 'prefix'=>$prefix['32'],'day'=>0),//0
-      'mw' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcly-3b2p7w', 'name' =>'旷野吗哪', 'prefix'=>$prefix['32'],'day'=>0),//0
-      
-    // '32' => array(//18100
-      'ee' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njchw-3b2ozs', 'name' =>'拥抱每一天', 'prefix'=>$prefix['32'],'day'=>0),//0
-      'bf' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci6-3b2p0c', 'name' =>'幸福满家园', 'prefix'=>$prefix['32'],'day'=>6),//6 7
-      'ws' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci9-3b2p0i', 'name' =>'长夜的牵引', 'prefix'=>$prefix['32'],'day'=>0),//0
-      'be' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcik-3b2p14', 'name' =>'真道分解', 'prefix'=>$prefix['32'],'day'=>0),//0
-      'tr' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njchv-3b2ozq', 'name' =>'彩虹桥', 'prefix'=>$prefix['32'],'day'=>0),//0
-      'ns' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njciu-3b2p1o', 'name' =>'生命的四季', 'prefix'=>$prefix['32'],'day'=>5),
-      'cw' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njchz-3b2ozy', 'name' =>'齐来颂扬', 'prefix'=>$prefix['32'],'day'=>5),
-      // 'wpb' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcim-3b2p18', 'name' =>'圣乐天地', 'prefix'=>$prefix['32'],'day'=>6),
-    );
+      'gn' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcif-3b2p0u', 'name' =>'现代人的希望', 'prefix'=>$prefix['32'],'day'=>0),//0
+      'hg' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci4-3b2p08', 'name' =>'欢乐卡恰碰', 'prefix'=>$prefix['32'],'day'=>0),//0
+      // 'ynf' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj1-3b2p22', 'name' =>'爱在人间（云南）', 'prefix'=>$prefix['32'],'day'=>0),//0
+      'im' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchy-3b2ozw', 'name' =>'i关怀心磁场', 'prefix'=>$prefix['32'],'day'=>5),//1-5
+      'ib' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcjm-3b2p38', 'name' =>'无限飞行号', 'prefix'=>$prefix['32'],'day'=>0),//0
+      'rt' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcia-3b2p0k', 'name' =>'今夜心未眠', 'prefix'=>$prefix['32'],'day'=>6),//6,7
+      'mp' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcld-3b2p6q', 'name' =>'这一刻，清心', 'prefix'=>$prefix['32'],'day'=>6),//6,7
+      'tg' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njclc-3b2p6o', 'name' =>'施恩座前', 'prefix'=>$prefix['32'],'day'=>0),//0
+      'ls' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njclz-3b2p7y', 'name' =>'燃亮的一生', 'prefix'=>$prefix['32'],'day'=>6),//0
+    
+      'fc' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcm0-3b2p80', 'name' =>'微播出炉', 'prefix'=>$prefix['32'],'day'=>5),//1-5
+
+      ///////良友知音站栽培节目 - 适合基督徒
+      'ns' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njciu-3b2p1o', 'name' =>'生命的四季', 'prefix'=>$prefix['33'],'day'=>0),//0
+      'be' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcik-3b2p14', 'name' =>'真道分解', 'prefix'=>$prefix['33'],'day'=>0),//0
+      'cc' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci2-3b2p04', 'prefix'=>$prefix['33'],'name' =>'空中辅导'),
+      'bf' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci6-3b2p0c', 'name' =>'幸福满家园', 'prefix'=>$prefix['33'],'day'=>6),//6 7
+      'ee' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchw-3b2ozs', 'name' =>'拥抱每一天', 'prefix'=>$prefix['33'],'day'=>0),//0
+      'tr' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchv-3b2ozq', 'name' =>'彩虹桥', 'prefix'=>$prefix['33'],'day'=>0),//0
+      'cw' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchz-3b2ozy', 'name' =>'齐来颂扬', 'prefix'=>$prefix['33'],'day'=>5),
+      'hd' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcit-3b2p1m', 'name' =>'蓝天绿洲', 'prefix'=>$prefix['33'],'day'=>6),//6 7
+      'hd' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcix-3b2p1u', 'name' =>'好牧人', 'prefix'=>$prefix['33'],'day'=>7),//7
+      'hd' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njciz-3b2p1y', 'name' =>'善牧良言', 'prefix'=>$prefix['33'],'day'=>7),//only 5！！！
+      'ba' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcis-3b2p1k', 'name' =>'经动人心', 'prefix'=>$prefix['33'],'day'=>7),//7
+      //信仰百宝箱 135
+      'ws' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci9-3b2p0i', 'name' =>'长夜的牵引', 'prefix'=>$prefix['33'],'day'=>0),//0
+      //生命的福音 5
+      // 生根建造 135
+      //聆听主道 67
+      //圣言盛宴 1-5
+      //真理之光 1-5
+      //空中崇拜 7
+      //给力人生 1-5
+      //空中门训 1-5
+      //生活之光 67
+      //佳美脚踪  6
+      'bv' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcly-3b2p7w', 'name' =>'灵命日粮', 'prefix'=>$prefix['33'],'day'=>0),//0
+      'mw' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcly-3b2p7w', 'name' =>'旷野吗哪', 'prefix'=>$prefix['33'],'day'=>0),//0
+
+      ///////
+      'pb' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcj9-3b2p2i', 'name' =>'接棒人', 'prefix'=>$prefix['32'],'day'=>5),//1-5
+      'ds' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcji-3b2p30', 'prefix'=>$prefix['32'],'name' =>'晨曦讲座'),
+      'vx' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njclb-3b2p6m', 'name' =>'良院精选', 'prefix'=>$prefix['32'],'day'=>7),//7
+  );
+  // foreach($radios_list as $key=>$audio){
+  // $menu .= '<br/>【'.$key.'】'.$audio['name'];
+  // }
+  // dvm($menu);
   return $radios_list;
+  //   return  array(
+  //   '无限飞行号' => '',
+  //   'i关怀心磁场' => '',
+  //   '空中辅导' => '',
+  //   '恋爱季节' => '',
+  //   '幸福满家园' => '',
+  //   '亲情不断电' => 'http://www.txly1.net/program/1njcil-3b2p16',
+  //   '欢乐卡恰碰' => '',
+  //   '绝妙当家' => '',
+  //   '微播出炉' => '',
+  //   '生活无国界' => '',
+  //   '零点零距离' => '',
+  //   '书香园地' => '',
+  //   '爱广播' => '',
+  //   '今夜心未眠' => '',
+  //   '彩虹桥' => '',
+  //   '长夜的牵引' => '',
+  //   '现代人的希望' => '',
+  //   '生命的四季' => '',
+  //   '拥抱每一天' => '',
+  //   '旷野吗哪' => '',
+  //   '真道分解' => '',
+  //   '圣言盛宴' => 'http://www.txly1.net/program/1njci8-3b2p0g',
+  //   '齐来颂扬' => '',
+  //   '施恩座前' => '',
+  //   '真理之光' => 'http://www.txly1.net/program/1njcjh-3b2p2y',
+  //   '接棒人' => '',
+  //   '聆听主道' => 'http://www.txly1.net/program/1njciy-3b2p1w',
+  //   '空中崇拜' => 'http://www.txly1.net/program/1njcir-3b2p1i',
+  //   '善牧良言' => '',
+  //   '好牧人' => '',
+  //   '经动人心' => '',
+  //   '佳美脚踪' => 'http://www.txly1.net/program/1njcl2-3b2p64',
+  //   '蓝天绿洲' => '',
+  //   '给力人生' => 'http://www.txly1.net/program/1njcj7-3b2p2e',
+  //   '空中门训' => 'http://www.txly1.net/program/1njcja-3b2p2k',
+  //   '生根建造' => 'http://www.txly1.net/program/1njcj5-3b2p2a',
+  //   '信仰百宝箱' => 'http://www.txly1.net/program/1njcj8-3b2p2g',
+  //   '生活之光' => 'http://www.txly1.net/program/1njcjc-3b2p2o',
+  //   '生命的福音' => 'http://www.txly1.net/program/1njcjb-3b2p2m',
+  //   '这一刻，清心' => '',
+  //   '良院（基础课程）' => 'http://www.txly1.net/program/1njck8-3b2p4g',
+  //   '良院（本科一套）' => 'http://www.txly1.net/program/1njck9-3b2p4i',
+  //   '良院（本科二套）' => 'http://www.txly1.net/program/1njcka-3b2p4k',
+  //   '良院（进深一套）' => 'http://www.txly1.net/program/1njckb-3b2p4m',
+  //   '良院（进深二套）' => 'http://www.txly1.net/program/1njckc-3b2p4o',
+  //   '晨曦讲座' => '',
+  //   '良院精选' => '',
+  //   '天路导向' => '',
+  //   '天路导向（粤语）' => 'http://www.txly1.net/program/1njcj2-3b2p24',
+  //   '恩典与真理（回民）' => '',
+  //   '爱在人间（云南话）' => 'http://www.txly1.net/program/1njcj1-3b2p22',
+  //   '燃亮的一生' => '',
+  // );
+
 }
 
 function ly_get_download_urls($key = '',$offday = '0'){
@@ -103,13 +176,7 @@ function ly_get_menu(){
   // dvm($menu);
   return '▶良友电台节目表
   ----------------------------------------------
-  【mp】这一刻，清心
-  【tg】施恩座前
-  【ns】生命的四季
-  【ds】晨曦讲座
-  【cc】空中辅导
   【ir】爱广播
-  【fc】微播出炉
   【gt】恩典与真理
   【wa】天路导向
   【yu】绝妙当家
@@ -120,18 +187,28 @@ function ly_get_menu(){
   【bc】书香园地
   【gn】现代人的希望
   【hg】欢乐卡恰碰
-  【yn】爱在人间（云南）
-  【im】关怀心磁场
+  【im】i关怀心磁场
   【ib】无限飞行号
   【rt】今夜心未眠
+  【mp】这一刻，清心
+  【tg】施恩座前
   【ls】燃亮的一生
-  【bv】旷野吗哪
-  【ee】拥抱每一天
-  【bf】幸福满家园
-  【ws】长夜的牵引
+  【fc】微播出炉
+  【ns】生命的四季
   【be】真道分解
+  【cc】空中辅导
+  【bf】幸福满家园
+  【ee】拥抱每一天
   【tr】彩虹桥
   【cw】齐来颂扬
+  【hd】善牧良言
+  【ba】经动人心
+  【ws】长夜的牵引
+  【bv】灵命日粮
+  【mw】旷野吗哪
+  【pb】接棒人
+  【ds】晨曦讲座
+  【vx】良院精选
   回复【】内容[调皮]
   点击►收听[抱拳]
   ';

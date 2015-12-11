@@ -141,7 +141,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     return;
   }
   //long keywords
-  watchdog('strlen1', $len, array(), WATCHDOG_NOTICE, 'link');
+  // watchdog('strlen1', $len, array(), WATCHDOG_NOTICE, 'link');
   if ($len>= 12 && variable_get('mp_config_certified_'.$account->uid, false)) { // 且已认证
     // watchdog('mp_service', '??transfer_customer_service', array(), WATCHDOG_NOTICE, 'link');
     if($ori_keyword=='http://www.yongbuzhixi.com?from=wx'){

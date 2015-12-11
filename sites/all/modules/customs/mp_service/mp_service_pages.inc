@@ -134,6 +134,7 @@ function _mp_service_process_event($weObj,$account){
        'label'           => 'wxservice_'.$account->uid,
     ));
   }else{
+    if(isset($event['key']))
     ga_push_add_event(array(
        'category'        => 'event_'.$event['event'],
        'action'          =>  $event['key'],
