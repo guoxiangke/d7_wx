@@ -84,9 +84,18 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    	return mp_bbn_response($keyword,$account,$key);
 		    }
 		    //6,7播出的节目
-		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='6' && $offset == 0 && date('N')<=5) {
+		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='67' && $offset == 0 && date('N')<=5) {
+		    	$offset = date('N');
+		    }
+		    //7周日播出
+		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='7' && $offset == 0 && date('N')<=6) {
+		    	$offset = date('N');
+		    }
+		    //周1-5播出
+		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='5' && $offset == 0 && date('N')>=6) {
 		    	$offset = date('N')%2+1;
 		    }
+
 		    $string = date('ymd',time()-$offset*24*60*60); 
 		    $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【ly】';
 		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';

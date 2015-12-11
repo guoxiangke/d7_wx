@@ -6,8 +6,8 @@ function liangyou_audio_list(){
   $radios_list = array(
       'ir' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchu-3b2ozo', 'name' =>'爱广播', 'prefix'=>$prefix['32'],'day'=>0),
       'gt' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcj0-3b2p20', 'name' =>'恩典与真理', 'prefix'=>$prefix['32'],'day'=>0),//0
-      'wa' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcj3-3b2p26', 'name' =>'天路导向', 'prefix'=>$prefix['32'],'day'=>6),//6,7
-      // 'cwa' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj2-3b2p24', 'name' =>'天路导向（粤）', 'prefix'=>$prefix['32'],'day'=>6),//6,7
+      'wa' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcj3-3b2p26', 'name' =>'天路导向', 'prefix'=>$prefix['32'],'day'=>67),
+      // 'cwa' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj2-3b2p24', 'name' =>'天路导向（粤）', 'prefix'=>$prefix['32'],'day'=>67),
       'yu' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchx-3b2ozu', 'name' =>'绝妙当家', 'prefix'=>$prefix['32'],'day'=>0),//0
       'gv' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci3-3b2p06', 'name' =>'生活无国界', 'prefix'=>$prefix['32'],'day'=>0),//0
       'zz' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njciw-3b2p1s', 'name' =>'零点零距离', 'prefix'=>$prefix['32'],'day'=>5),//1-5
@@ -20,29 +20,29 @@ function liangyou_audio_list(){
       // 'ynf' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njcj1-3b2p22', 'name' =>'爱在人间（云南）', 'prefix'=>$prefix['32'],'day'=>0),//0
       'im' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchy-3b2ozw', 'name' =>'i关怀心磁场', 'prefix'=>$prefix['32'],'day'=>5),//1-5
       'ib' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcjm-3b2p38', 'name' =>'无限飞行号', 'prefix'=>$prefix['32'],'day'=>0),//0
-      'rt' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcia-3b2p0k', 'name' =>'今夜心未眠', 'prefix'=>$prefix['32'],'day'=>6),//6,7
-      'mp' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcld-3b2p6q', 'name' =>'这一刻，清心', 'prefix'=>$prefix['32'],'day'=>6),//6,7
+      'rt' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcia-3b2p0k', 'name' =>'今夜心未眠', 'prefix'=>$prefix['32'],'day'=>67),//6,7
+      'mp' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcld-3b2p6q', 'name' =>'这一刻，清心', 'prefix'=>$prefix['32'],'day'=>67),//6,7
       'tg' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njclc-3b2p6o', 'name' =>'施恩座前', 'prefix'=>$prefix['32'],'day'=>0),//0
-      'ls' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njclz-3b2p7y', 'name' =>'燃亮的一生', 'prefix'=>$prefix['32'],'day'=>6),//0
+      'ls' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njclz-3b2p7y', 'name' =>'燃亮的一生', 'prefix'=>$prefix['32'],'day'=>67),
     
       'fc' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcm0-3b2p80', 'name' =>'微播出炉', 'prefix'=>$prefix['32'],'day'=>5),//1-5
 
       ///////良友知音站栽培节目 - 适合基督徒
       'ns' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njciu-3b2p1o', 'name' =>'生命的四季', 'prefix'=>$prefix['33'],'day'=>0),//0
       'be' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcik-3b2p14', 'name' =>'真道分解', 'prefix'=>$prefix['33'],'day'=>0),//0
-      'cc' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci2-3b2p04', 'prefix'=>$prefix['33'],'name' =>'空中辅导'),
-      'bf' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci6-3b2p0c', 'name' =>'幸福满家园', 'prefix'=>$prefix['33'],'day'=>6),//6 7
+      'cc' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci2-3b2p04', 'name' =>'空中辅导', 'prefix'=>$prefix['33'],'day'=>0),
+      'bf' => array('download_button' =>1,'url'=>'http://stream.liangyou.net/program/1njci6-3b2p0c', 'name' =>'幸福满家园', 'prefix'=>$prefix['33'], 'day'=>67),
       'ee' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchw-3b2ozs', 'name' =>'拥抱每一天', 'prefix'=>$prefix['33'],'day'=>0),//0
       'tr' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchv-3b2ozq', 'name' =>'彩虹桥', 'prefix'=>$prefix['33'],'day'=>0),//0
       'cw' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njchz-3b2ozy', 'name' =>'齐来颂扬', 'prefix'=>$prefix['33'],'day'=>5),
-      'hd' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcit-3b2p1m', 'name' =>'蓝天绿洲', 'prefix'=>$prefix['33'],'day'=>6),//6 7
+      'hd' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcit-3b2p1m', 'name' =>'蓝天绿洲', 'prefix'=>$prefix['33'],'day'=>67),//6 7
       'hd' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcix-3b2p1u', 'name' =>'好牧人', 'prefix'=>$prefix['33'],'day'=>7),//7
       'hd' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njciz-3b2p1y', 'name' =>'善牧良言', 'prefix'=>$prefix['33'],'day'=>7),//only 5！！！
       'ba' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcis-3b2p1k', 'name' =>'经动人心', 'prefix'=>$prefix['33'],'day'=>7),//7
       //信仰百宝箱 135
       'ws' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njci9-3b2p0i', 'name' =>'长夜的牵引', 'prefix'=>$prefix['33'],'day'=>0),//0
       //生命的福音 5
-      // 生根建造 135
+      //生根建造 135
       //聆听主道 67
       //圣言盛宴 1-5
       //真理之光 1-5
@@ -56,7 +56,7 @@ function liangyou_audio_list(){
 
       ///////
       'pb' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcj9-3b2p2i', 'name' =>'接棒人', 'prefix'=>$prefix['32'],'day'=>5),//1-5
-      'ds' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcji-3b2p30', 'prefix'=>$prefix['32'],'name' =>'晨曦讲座'),
+      'ds' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njcji-3b2p30', 'prefix'=>$prefix['32'],'name' =>'晨曦讲座','day'=>0),
       'vx' => array('download_button' =>1,'url'=>'http://www.txly1.net/program/1njclb-3b2p6m', 'name' =>'良院精选', 'prefix'=>$prefix['32'],'day'=>7),//7
   );
   // foreach($radios_list as $key=>$audio){
