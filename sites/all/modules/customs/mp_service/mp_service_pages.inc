@@ -106,42 +106,33 @@ function _mp_service_process_event($weObj,$account){
   if(!$event){
     break;
   }
-  if(!isset($event['key']))
-  ga_push_add_event(array(
-     'category'        => 'event',
-     'action'          => $event['event'],
-     'label'           => 'wxservice_'.$account->uid,
-  ));
-  // else{
-  //   $message = _wechat_menu_default_message($event);
-  //   $message && $weObj->text($message);
-  // }
+  if(!isset($event['key'])){
+    ga_push_add_event(array(
+       'category'        => 'event',
+       'action'          => $event['event'],
+       'label'           => 'wxservice_'.$account->uid,
+    ));
+  }else{
+    mp_service_keyword_response($weObj,$event['key'],$account);
+    if(!is_array($weObj->Message(''))){ 
+      ga_push_add_event(array(
+         'category'        => 'event_'.$event['event'],
+         'action'          =>  $event['key'],
+         'label'           => 'wxservice_'.$account->uid,
+      ));
+    }
+  }
 	//add default behavior
   if($event['event']=='subscribe'){
     $copyright = copyright($account);
     $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！[握手]').$copyright);
   }elseif($event['event']=='WifiConnected'){
-    //do nothing!!!
-    watchdog('mp_service_pages', 'WifiConnected event trigger!', array(), WATCHDOG_NOTICE, 'link');
+    // watchdog('mp_service_pages', 'WifiConnected event trigger!', array(), WATCHDOG_NOTICE, 'link');
     $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎来到我家！[握手]'));
   }elseif($event['event']=='kf_create_session'){
-    //
-  }elseif(isset($event['key'])) {
-    mp_service_keyword_response($weObj,$event['key'],$account);
-    ga_push_add_event(array(
-       'category'        => 'event_'.$event['event'],
-       'action'          =>  $event['key'],
-       'label'           => 'wxservice_'.$account->uid,
-    ));
-  }else{
-    if(isset($event['key']))
-    ga_push_add_event(array(
-       'category'        => 'event_'.$event['event'],
-       'action'          =>  $event['key'],
-       'label'           => 'wxservice_'.$account->uid,
-    ));
-    watchdog('no track event!', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
+    //TODO
   }
+  // watchdog('no track event!', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
 }
 
 /**

@@ -523,10 +523,10 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		//begin bos
  		date_default_timezone_set('Asia/Shanghai');
  		if(substr($keyword, 0,6) == '目录'){
-			$file_key = 'http://ly.yongbuzhixi.com/cron/nzzlist/'.date('Ymd').'.json';
+			$file_key = 'http://121.41.79.122/lycloud/cron/nissigz/json/'.date('Ymd').'.json';
 			$getheaders = @get_headers($file_key);
 			if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
-				$file_key = 'http://729ly.bj.bcebos.com/home/bae/app/cron/nzzlist/'.date('Ymd').'.json';
+				$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ymd').'.json';
 			}
  			$file = file_get_contents($file_key);
 			$urls = json_decode($file,TRUE);
@@ -543,26 +543,29 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			);
  		}
  		if(!isset($resources)){
-			$file_key = 'http://729ly.bj.bcebos.com/home/bae/app/cron/nzzlist/'.date('Ymd').'.json';
+			$file_key = 'http://121.41.79.122/lycloud/cron/nissigz/json/'.date('Ymd').'.json';
 			$getheaders = @get_headers($file_key);
 			if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
-				$file_key = 'http://ly.yongbuzhixi.com/cron/nzzlist/'.date('Ymd').'.json';
+				$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ymd').'.json';
 			}
  			$file = file_get_contents($file_key);
 			$urls = json_decode($file,TRUE);
+			$cdn = 'http://lyniss.b0.upaiyun.com';
+
 			if(count($urls))
 			foreach ($urls as $key => $value) {
-				if($value['title'] ==$keyword){
+				if($value['title'] == $keyword){
 					if(!isset($value['bce'])) return;
 					$resources['key_'.$keyword]= array(
 					'type'	=>	'music',
 					'obj'		=> array(
-						'title'	=> $value['title'],
-						'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
-						'musicurl'	=>	'http://bos.yongbuzhixi.com'.$value['bce'],//bce gprs
-						'hgmusicurl'	=>	'http://bos.yongbuzhixi.com'.$value['bce'],//$value['mp3_link'], //wifi  http://liangyou2.nissigz.com:15200/vhh/vhh151012.mp3
+					'title'	=> $value['title'],
+					'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
+					'musicurl'	=>	$cdn.$value['bce'],//bce gprs
+					'hgmusicurl'	=>	$cdn.$value['bce'],
 					),
 				);
+					watchdog('mp_liangyou', $cdn.urlencode($value['bce']), array(), WATCHDOG_NOTICE, 'link');
 					break;
 				}
 			}
