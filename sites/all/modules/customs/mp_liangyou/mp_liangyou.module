@@ -1,5 +1,5 @@
 <?php
-define('UPBUCKETNAME', 'lyradio');
+define('UPBUCKETNAME', 'lyaudio');
 define('CDNLINK', UPBUCKETNAME.'.b0.upaiyun.com');
 /**
  * hook_rescources_info
@@ -101,6 +101,36 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    $string = date('ymd',time()-$offset*24*60*60); 
 		    $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【ly】';
 		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
+		    //USE UPYUN
+		    {
+		 			$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
+					$getheaders = @get_headers($file_key);
+					if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
+						//do nothing!
+					}else{
+			 			$file = file_get_contents($file_key);
+						$urls = json_decode($file,TRUE);
+						if(count($urls))
+						foreach ($urls as $value) {
+							if(!isset($value['bce'])) continue;
+							if(strpos($value['bce'],$keyword) !== false){
+								$musicurl = 'http://'.CDNLINK.$value['bce'].upyun_get_token($value['objectKey']);
+								$resources['key_'.$keyword]= array(
+									'type'	=>	'music',
+									'obj'		=> array(
+										'title'	=> $value['title'].'♪',
+										'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
+										'musicurl'	=>	$musicurl,
+										'hgmusicurl'	=>	$musicurl,
+									),
+								);
+								watchdog('return', $musicurl, array(), WATCHDOG_NOTICE, 'link');
+								return $resources;
+								// break;
+							}
+						}
+					}
+		    }//UPYUN END
 		  	$resources['key_'.$keyword]= array(
 					'type'	=>	'music',
 					'obj'		=> array(
@@ -116,16 +146,42 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		// 600-652 stream ly
 	  if(isset($enabled_resources['ly2']) && $enabled_resources['ly2']){
 		  require_once('liangyou.inc');
-		 	if($keyword == 'ly2' || $keyword == '良友2'){
-				$resources['key_'.$keyword]= array(
-					'type'	=>	'text',
-					'obj'		=> array(
-					'text'	=> ly_stream_menu(),
-					)
-				);
-		 	}
 		  if(is_numeric($keyword) && ($keyword>=600 && $keyword<=652) ) {
-		    // $file_key = 'http://ly.yongbuzhixi.com/cron/cloud/'.date('Ymd').'.json'; 
+		     //USE UPYUN
+		    {
+		 			$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
+					$getheaders = @get_headers($file_key);
+					if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
+						//do nothing!
+					}else{
+						require_once('liangyou_audio_list.php');
+						$liangyou_audio_list = liangyou_audio_list_byindex();
+						$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
+
+			 			$file = file_get_contents($file_key);
+						$urls = json_decode($file,TRUE);
+						if(count($urls))
+						foreach ($urls as $value) {
+							if(!isset($value['bce'])) continue;
+							if($liangyou_audio_list_info['title'] == $value['title']){
+								$musicurl = 'http://'.CDNLINK.$value['bce'].upyun_get_token($value['objectKey']);
+								$resources['key_'.$keyword]= array(
+									'type'	=>	'music',
+									'obj'		=> array(
+										'title'	=> $value['title'].'♪',
+										'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
+										'musicurl'	=>	$musicurl,
+										'hgmusicurl'	=>	$musicurl,
+									),
+								);
+								watchdog('return', $musicurl, array(), WATCHDOG_NOTICE, 'link');
+								return $resources;
+								// break;
+							}
+						}
+					}
+		    }//UPYUN END
+
 		    date_default_timezone_set('Asia/Shanghai');
 		    $file_key = dirname(__FILE__).'/'.date('Ymd').'.json';
 		    if(!file_exists($file_key))  {
@@ -525,8 +581,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		//begin bos
  		date_default_timezone_set('Asia/Shanghai');
  		if(substr($keyword, 0,6) == '目录'){
-			$file_key = '/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
-			$file_key = upyun_get_link($file_key);
+ 			$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
 			$getheaders = @get_headers($file_key);
 			if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
 				$resources['key_'.$keyword]= array(
@@ -552,8 +607,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			);
  		}
  		if(!isset($resources)){
-			$file_key = '/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
-			$file_key = upyun_get_link($file_key);
+ 			$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
 			$getheaders = @get_headers($file_key);
 			if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
 				$resources['key_'.$keyword]= array(
@@ -571,18 +625,16 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			foreach ($urls as $key => $value) {
 				if($value['title'] == $keyword){
 					if(!isset($value['bce'])) return;
-					$musicurl = upyun_get_link($value['bce']);
+					$musicurl = 'http://'.CDNLINK.$value['bce'].upyun_get_token($value['objectKey']);
 					$resources['key_'.$keyword]= array(
-					'type'	=>	'music',
-					'obj'		=> array(
-					'title'	=> $value['title'],
-					'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
-					'musicurl'	=>	$musicurl,
-					'hgmusicurl'	=>	$musicurl,
-					),
-				);
-					// watchdog('mp_liangyou',$value['bce'], array(), WATCHDOG_NOTICE, 'link');
-					// watchdog('mp_liangyou',$musicurl, array(), WATCHDOG_NOTICE, 'link');
+						'type'	=>	'music',
+						'obj'		=> array(
+							'title'	=> $value['title'].'♪',
+							'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
+							'musicurl'	=>	$musicurl,
+							'hgmusicurl'	=>	$musicurl,
+						),
+					);
 					break;
 				}
 			}
@@ -632,7 +684,7 @@ function mp_bbn_response($keyword,$account,$change_keyword=NULL){
 // 图片相对路径
 // token 防盗链密钥
 // 授权1分钟后过期
-function upyun_get_link($path, $etime = 600, $key = 'ly729'){
+function upyun_get_token($path, $etime = 86400, $key = 'ly729'){
 	$etime = time()+$etime; // 授权1分钟后过期
-	return 'http://'.CDNLINK.$path. '?_upt='. substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+	return '?_upt='. substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
 }
