@@ -50,11 +50,6 @@ function _mp_service_process_text(&$weObj,$account){
   //default behavior if not hook wxresources_alter!
   if(!is_array($weObj->Message(''))){
     module_invoke_all('wxservice_default_msg_alter', $weObj, $keyword,$account);
-    ga_push_add_event(array(
-     'category'        => 'news',
-     'action'          => $ori_keyword,
-     'label'           => 'wxservice_'.$account->uid,
-    ));
   }
   if(!is_array($weObj->Message(''))){
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
