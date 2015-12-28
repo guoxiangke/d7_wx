@@ -12,6 +12,7 @@ function liangyou_audio_list_bytitle(){
 function liangyou_audio_list_byindex(){
   $audios = liangyou_audio_list2();
   foreach ($audios as $code => $audio) {
+    $audios[$code]['code'] = $code;
     $audios[$audio['index']] = $audios[$code];
     unset($audios[$code]); 
   }

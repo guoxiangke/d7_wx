@@ -108,27 +108,28 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
 						//do nothing!
 					}else{
-			 			$file = file_get_contents($file_key);
-						$urls = json_decode($file,TRUE);
-						if(count($urls))
-						foreach ($urls as $value) {
-							if(!isset($value['bce'])) continue;
-							if(strpos($value['bce'],$keyword) !== false){
-								$musicurl = 'http://'.CDNLINK.$value['bce'].upyun_get_token($value['objectKey']);
+						require_once('liangyou_audio_list.php');
+						$liangyou_audio_list = liangyou_audio_list2();
+						$liangyou_audio_list_info = $liangyou_audio_list[$key];
+						$title = $liangyou_audio_list_info['title'];
+						$code = $key;
+
+						$dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
+	          $objectKey = '/'.$dir_stru .'/'.$code. date('ymd').'.mp3';
+	          $bce_url = '/liangyou/nissigz/'.urlencode($title).'/'.date('Ym').'/'.$code.date('ymd').'.mp3';
+	          $musicurl = 'http://'.CDNLINK.$bce_url.upyun_get_token($objectKey);
+	          if(@get_headers($musicurl)[0] == 'HTTP/1.1 200 OK'){//远程有!!!
 								$resources['key_'.$keyword]= array(
 									'type'	=>	'music',
 									'obj'		=> array(
-										'title'	=> $value['title'].'♪',
+										'title'	=> $title.'♪',
 										'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
 										'musicurl'	=>	$musicurl,
 										'hgmusicurl'	=>	$musicurl,
 									),
 								);
-								watchdog('return', $musicurl, array(), WATCHDOG_NOTICE, 'link');
 								return $resources;
-								// break;
-							}
-						}
+	          }
 					}
 		    }//UPYUN END
 		  	$resources['key_'.$keyword]= array(
@@ -157,28 +158,25 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						require_once('liangyou_audio_list.php');
 						$liangyou_audio_list = liangyou_audio_list_byindex();
 						$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
+						$title = $liangyou_audio_list_info['title'];
+						$code = $liangyou_audio_list_info['code'];
 
-			 			$file = file_get_contents($file_key);
-						$urls = json_decode($file,TRUE);
-						if(count($urls))
-						foreach ($urls as $value) {
-							if(!isset($value['bce'])) continue;
-							if($liangyou_audio_list_info['title'] == $value['title']){
-								$musicurl = 'http://'.CDNLINK.$value['bce'].upyun_get_token($value['objectKey']);
+						$dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
+	          $objectKey = '/'.$dir_stru .'/'.$code. date('ymd').'.mp3';
+	          $bce_url = '/liangyou/nissigz/'.urlencode($title).'/'.date('Ym').'/'.$code.date('ymd').'.mp3';
+	          $musicurl = 'http://'.CDNLINK.$bce_url.upyun_get_token($objectKey);
+	          if(@get_headers($musicurl)[0] == 'HTTP/1.1 200 OK'){//远程有!!!
 								$resources['key_'.$keyword]= array(
 									'type'	=>	'music',
 									'obj'		=> array(
-										'title'	=> $value['title'].'♪',
+										'title'	=> $title.'♪',
 										'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
 										'musicurl'	=>	$musicurl,
 										'hgmusicurl'	=>	$musicurl,
 									),
 								);
-								// watchdog('return', $musicurl, array(), WATCHDOG_NOTICE, 'link');
 								return $resources;
-								// break;
-							}
-						}
+	          }
 					}
 		    }//UPYUN END
 
@@ -262,7 +260,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	      $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
 				'obj'		=> array(
-					'title'	=> $title,
+					'title'	=> $title.'♫',
 					'desc'	=>	$desc,
 					'musicurl'	=>	$url,
 					'hgmusicurl'	=>	$url,
@@ -286,7 +284,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	    $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
 				'obj'		=> array(
-					'title'	=> $title,
+					'title'	=> $title.'♫',
 					'desc'	=>	$desc,
 					'musicurl'	=>	$url,
 					'hgmusicurl'	=>	$url,
