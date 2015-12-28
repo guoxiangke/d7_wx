@@ -118,7 +118,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	          $objectKey = '/'.$dir_stru .'/'.$code. date('ymd').'.mp3';
 	          $bce_url = '/liangyou/nissigz/'.urlencode($title).'/'.date('Ym').'/'.$code.date('ymd').'.mp3';
 	          $musicurl = 'http://'.CDNLINK.$bce_url.upyun_get_token($objectKey);
-	          if(@get_headers($musicurl)[0] == 'HTTP/1.1 200 OK'){//远程有!!!
+	          $temp = @get_headers($musicurl);
+	          if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
 								$resources['key_'.$keyword]= array(
 									'type'	=>	'music',
 									'obj'		=> array(
@@ -165,7 +166,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	          $objectKey = '/'.$dir_stru .'/'.$code. date('ymd').'.mp3';
 	          $bce_url = '/liangyou/nissigz/'.urlencode($title).'/'.date('Ym').'/'.$code.date('ymd').'.mp3';
 	          $musicurl = 'http://'.CDNLINK.$bce_url.upyun_get_token($objectKey);
-	          if(@get_headers($musicurl)[0] == 'HTTP/1.1 200 OK'){//远程有!!!
+	          $temp = @get_headers($musicurl);
+	          if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
 								$resources['key_'.$keyword]= array(
 									'type'	=>	'music',
 									'obj'		=> array(
