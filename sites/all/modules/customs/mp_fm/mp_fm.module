@@ -45,8 +45,8 @@ function mp_fm_wxresources($resources, $account, $keyword){
       return $resources;
     }
     if($keyword =='700'&&isset($enabled_resources[$keyword]) && $enabled_resources[$keyword]){
-      $nodes = dale_get_mp_nodes('audio_resource', 100);
-      $return_menu = "【700】--网络电台资源--";
+      $nodes = dale_get_mp_nodes('audio_resource', 100,NULL,array($account->uid,1));
+      $return_menu = "--------700网络电台--------";
       foreach ($nodes as $key => $node) {   
          $return_menu .="\n【700". $node->nid ."】".$node->title;
       }

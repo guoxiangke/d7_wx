@@ -15,7 +15,7 @@ function mp_liangyou_rescources_info(){
   );
 	$rescources[] = array(
     'name' => '365',
-    'desc' =>	'恩典365【365】【366】',
+    'desc' =>	'恩典【365】【366】',
   );
 	$rescources[] = array(
     'name' => '523',
@@ -39,7 +39,7 @@ function mp_liangyou_rescources_info(){
   );
 	$rescources[] = array(
     'name' => 'jckc',
-    'desc' =>	'良院【基础课程】【jc】',
+    'desc' =>	'良院基础课程【jc】',
   );
   return $rescources;
 }
@@ -174,7 +174,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 										'hgmusicurl'	=>	$musicurl,
 									),
 								);
-								watchdog('return', $musicurl, array(), WATCHDOG_NOTICE, 'link');
+								// watchdog('return', $musicurl, array(), WATCHDOG_NOTICE, 'link');
 								return $resources;
 								// break;
 							}

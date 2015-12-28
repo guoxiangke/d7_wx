@@ -5,7 +5,7 @@
 function mp_content_rescources_info(){
 	$rescources[] = array(
     'name' => 'mp_contents',
-    'desc' =>	'云优秀【图文】【美文】',
+    'desc' =>	'云优秀【图文】',
   );
   $rescources[] = array(
     'name' => 'mp_77',
@@ -35,7 +35,7 @@ function mp_content_wxresources($resources, $account, $keyword){
             $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
             $news = (array)json_decode($lingming);
           }else{
-            $nodes = dale_get_mp_nodes('article',3);
+            $nodes = dale_get_mp_nodes('article',3,NULL,array(1,$account->uid));
             $news = array();
             $count = 0;
             foreach ($nodes as $key => $node) {       
@@ -43,9 +43,15 @@ function mp_content_wxresources($resources, $account, $keyword){
                 $picurl = file_create_url($node->field_image2['und'][0]['uri']);
               }elseif(isset($node->field_image['und'][0]['uri'])){
                 $picurl = file_create_url($node->field_image['und'][0]['uri']);
+              }else{
+                $info = field_info_instance('node', 'field_image2', 'article');
+                if (!empty($info) && $info['settings']['default_image'] > 0){
+                  $default_img_fid  = $info['settings']['default_image'];
+                  $default_img_file = file_load($default_img_fid);
+                }
+                $picurl = file_create_url($default_img_file->uri);  
               }
-              $count++;
-              if($count == count($nodes)){//第一个不用2图
+              if($count == 0){//第一个不用2图
                 if(isset($node->field_image['und'][0]['uri'])){
                   $picurl = file_create_url($node->field_image['und'][0]['uri']);   
                 }else{//default img!!
@@ -57,14 +63,16 @@ function mp_content_wxresources($resources, $account, $keyword){
                   $picurl = file_create_url($default_img_file->uri);  
                 }
               }
+              $count++;
               $img = array(
                   'Title'=> $node->title,
-                  'Description'=> $node->title,
+                  'Description'=> strlen($node->body[LANGUAGE_NONE][0]['summary'])?truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['summary']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1):truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1),
                   'PicUrl'=> $picurl,
-                  'Url'=> url('node/'.$node->nid, array('absolute' => TRUE)),
+                  'Url'=> url('node/'.$node->nid, array('absolute' => TRUE,'alias'=>TRUE)),
                 );
               $news[] = $img;
             }
+            // $news = array_reverse($news);
             $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
             // $news = $news + (array)json_decode($lingming);
             array_push($news,(array)json_decode($lingming));
@@ -84,6 +92,7 @@ function mp_content_wxresources($resources, $account, $keyword){
               $musicurl =  $node->field_mp3url[LANGUAGE_NONE][0]['value'];
             if(!$musicurl){
               //TODO $node->field_mp3_file
+             $musicurl = file_create_url($node->field_mp3_file[LANGUAGE_NONE][0]['uri']);
             }
             $resources['key_'.$keyword]= array(
               'type'  =>  'music',
@@ -107,7 +116,7 @@ function mp_content_wxresources($resources, $account, $keyword){
                 'Title'=> $node->title,
                 'Description'=> $node->body[LANGUAGE_NONE][0]['value'],
                 'PicUrl'=>$pic,
-                'Url'=> $node->field_link[LANGUAGE_NONE][0]['value'] ,//url('node/'.$node->nid, array('absolute' => TRUE))
+                'Url'=> $node->field_link[LANGUAGE_NONE][0]['value'] ,
               );
             $news[] = $img;
             // if(in_array($keyword, array_keys($get_ybzx_resources)))
@@ -128,18 +137,17 @@ function mp_content_wxresources($resources, $account, $keyword){
  * must has pics (已配图)
  * @see node_get_recent
  */
-function dale_get_mp_nodes($type = 'article', $number = 3, $tid = NULL, $uid = NULL, $promote = NODE_NOT_PROMOTED, $publish = NODE_PUBLISHED){
+function dale_get_mp_nodes($type = 'article', $number = 3, $tid = NULL, $uids = array(), $promote = NODE_NOT_PROMOTED, $publish = NODE_PUBLISHED){
   $query = db_select('node', 'n');
   $query->condition('n.status', $publish);
   $query->condition('n.type', $type);
   $query->condition('n.promote', $promote);
-  
-  if($uid)
-    $query->condition('n.uid', $uid);
+  if($uids)
+    $query->condition('n.uid', $uids,'IN');
   
   $nids = $query
     ->fields('n', array('nid'))
-    ->orderBy('n.created', 'DESC')
+    ->orderBy('n.changed', 'DESC')
     ->range(0, $number)
     ->addTag('node_access')
     ->execute()
@@ -160,14 +168,14 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
     $counts = explode(':', variable_get('wechat_multi_message_count_'.$account->uid, "1:1:1"));
     $news = array();
     //get newest
-    $nodes = dale_get_mp_nodes('article',$counts[0],NULL,$account->uid,NODE_NOT_PROMOTED);
+    $nodes = dale_get_mp_nodes('article',$counts[0],NULL,array($account->uid),NODE_NOT_PROMOTED);
     $count = 0;
     if($nodes)
     foreach ($nodes as $key => $node) { 
       if(!empty($node->field_redirect_link['und'][0]['value'])){
         $url = $node->field_redirect_link['und'][0]['value'];
       }else{
-        $url = url('node/'.$node->nid, array('absolute' => TRUE));
+        $url = url('node/'.$node->nid, array('absolute' => TRUE,'alias'=>TRUE));
       }      
       if(isset($node->field_image2['und'][0]['uri'])){
         $picurl = file_create_url($node->field_image2['und'][0]['uri']);
@@ -189,7 +197,7 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
       }
       $img = array(
           'Title'=> $node->title,
-          'Description'=> $node->title,
+          'Description'=>strlen($node->body[LANGUAGE_NONE][0]['summary'])?truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['summary']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1):truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1),
           'PicUrl'=> $picurl,
           'Url'=> $url,
         );
@@ -199,13 +207,13 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
 
     //get promote!
     if($counts[1]>0)
-      $nodes2 = dale_get_mp_nodes('article',$counts[1],NULL,$account->uid,NODE_PROMOTED);
+      $nodes2 = dale_get_mp_nodes('article',$counts[1],NULL,array($account->uid),NODE_PROMOTED);
     if(isset($nodes2))
     foreach ($nodes2 as $key => $node) {     
       if(!empty($node->field_redirect_link['und'][0]['value'])){
         $url = $node->field_redirect_link['und'][0]['value'];
       }else{
-        $url = url('node/'.$node->nid, array('absolute' => TRUE));
+        $url = url('node/'.$node->nid, array('absolute' => TRUE,'alias'=>TRUE));
       }
       $img = array(
           'Title'=> $node->title,
@@ -244,7 +252,7 @@ function get_last_node($content_type = 'lingming',$count=1) {
       'Title'=> '【灵命日粮】'.$node->title,
       'Description'=> truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 150, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1),
       'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
-      'Url'=> url('lingming', array('absolute' => TRUE)),
+      'Url'=> url('lingming', array('absolute' => TRUE,'alias'=>TRUE)),
     );
     $news[] = $img;
   }
