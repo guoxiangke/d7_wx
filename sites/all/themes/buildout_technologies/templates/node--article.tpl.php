@@ -94,8 +94,15 @@
   <?php endif; ?>
   <div class="content"<?php print $content_attributes; ?>>
     <?php
-      // hide($content['field_image']);
-      print render($content['field_image']);
+      // 
+
+      $field_updated  = db_query('SELECT field_updated_value FROM {field_data_field_updated} WHERE entity_id = :nid', array(':nid' => $node->nid))->fetchField();
+      if($field_updated != '1'){
+        print render($content['field_image']);
+      }else{
+        hide($content['field_image']);
+      }
+      
       if(isset($node->field_mp3url[LANGUAGE_NONE][0])){
         echo '<div class="wxload audio_area">
         <i class="icon_audio_default"></i>

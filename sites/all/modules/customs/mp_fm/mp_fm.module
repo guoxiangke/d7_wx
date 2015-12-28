@@ -67,6 +67,8 @@ function mp_fm_wxresources($resources, $account, $keyword){
       $title = db_query('SELECT title FROM {node} WHERE nid = :nid', array(':nid' => $nid))->fetchField();
       $link_value = db_query('SELECT field_link_value FROM {field_data_field_link} WHERE entity_id = :nid', array(':nid' => $nid))->fetchField();
       $field_audio_type  = db_query('SELECT field_audio_type_value FROM {field_data_field_audio_type} WHERE entity_id = :nid', array(':nid' => $nid))->fetchField();
+      $field_updated  = db_query('SELECT field_updated_value FROM {field_data_field_updated} WHERE entity_id = :nid', array(':nid' => $nid))->fetchField();
+      $field_order  = db_query('SELECT field_order_value FROM {field_data_field_order} WHERE entity_id = :nid', array(':nid' => $nid))->fetchField();
 
       if($field_audio_type == 'xmly'){
 
@@ -76,27 +78,29 @@ function mp_fm_wxresources($resources, $account, $keyword){
         $html = str_replace('sound_ids="', '', $html );
         $html = str_replace('">', '', $html );
         $sound_ids = explode(',', $html);
-        $sound_ids = array_reverse($sound_ids); 
+        if($field_order == '1')//倒序排列的节目！
+          $sound_ids = array_reverse($sound_ids); 
+        // watchdog('field_order', '<pre>'.print_r($sound_ids,1), array(), WATCHDOG_NOTICE, 'link');
         
-        if ($keyword == '70037') {//今夜心未眠zhi港口之声
-          $index = count($sound_ids)-1;
-        }elseif ($keyword == '70033') {//I关怀zhi健康节目
-          $index = (date('z')-11) % count($sound_ids);
-        }else{
-          $index = (date('z')) % count($sound_ids); 
+        $index = (date('z')) % count($sound_ids)-1; 
+        if ($field_updated == '1'){
+          $index = 0;//已经更新完成的节目！每次都是获得第一个！
         }
 
-        # code...
         $offset = 0;
-        $donext = date('s')%2;
-        if ($donext) {
-          $index = (date('z')-$offset) % count($sound_ids);
-        }
+        $offsets = explode('+', $keyword);
+        if(isset($offsets['1'])){
+          if(is_numeric($offsets['1']))
+            $offset = $offsets['1'];
+        } 
+        $index = $index + $offset % count($sound_ids);
+        // watchdog('index', $index, array(), WATCHDOG_NOTICE, 'link');
         $sound_id = trim($sound_ids[$index]);
+        // watchdog('sound_id', $sound_id, array(), WATCHDOG_NOTICE, 'link');
         $json = file_get_contents('http://www.ximalaya.com/tracks/'.$sound_id.'.json');
         // $json = file_get_contents(getcwd().'/sites/all/modules/customs/mp_fm/test.json');
         $json = json_decode($json);
-        $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【700】';
+        $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 下一集请回复'.$offsets['0'].'+'.($offset+1);
         $resources['key_'.$keyword]= array(
           'type'  =>  'music',
           'obj'   => array(
