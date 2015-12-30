@@ -6,9 +6,9 @@
 <!-- /#admin-shortcuts -->
 <!-- /#main-menu -->
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+<link href="/<?php echo drupal_get_path('theme', 'buildout_technologies');?>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="/<?php echo drupal_get_path('theme', 'buildout_technologies');?>/bootstrap/js/bootstrap.min.js"></script>
 
 <div class="clearfix main" role="main">
   <div class="container">
