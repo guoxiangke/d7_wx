@@ -16,37 +16,6 @@ function buildout_technologies_preprocess_page(&$vars) {
       $term_name = $term->name;
       $vars['wx_term'] = $wx_author == '未知'?$term_name:$wx_author;
       $vars['nodeuid'] = $vars['node']->uid;
-      if(isset($vars['node']->field_mp3url[LANGUAGE_NONE][0])){
-        drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/soundjs-0.6.1.min.js', 'file');
-        drupal_add_js('(function ($) {
-          $(document).ready(function(){
-                  var soundID = "sound'.$vars['node']->nid.'";
-                  function loadSound () {
-                    createjs.Sound.registerSound("'.$vars['node']->field_mp3url[LANGUAGE_NONE][0]['value'].'", soundID);
-                  }
-
-                  function playSound () {
-                    createjs.Sound.play(soundID);
-                  }
-                  
-                  $(".wxload").click(function(){
-                    loadSound();
-                    setTimeout(function(){ $(".wxplay").fadeIn(1000); }, 3000);
-                  });
-                  $(".wxplay").click(function(){
-                    playSound(soundID);
-                    $(".wxstop").fadeIn(1000);
-                    $(".wxplay").hide();
-                  });
-                  $(".wxstop").click(function(){
-                    createjs.Sound.stop(soundID);
-                    $(".wxplay").fadeIn(1000);
-                    $(this).hide();
-                  });
-          });
-        })(jQuery);', 'inline');
-        // http://stackoverflow.com/questions/27934839/how-do-i-toggle-play-pause-with-soundjs
-      }
 
     }
   }
