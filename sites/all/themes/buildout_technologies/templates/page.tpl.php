@@ -94,6 +94,17 @@
 
 
 <div id="main" class="clearfix main" role="main">
+  <?php if (arg(0)=='node'): ?>
+  <div id="wx-header" class="row-fluid ">
+      <h1 class="title"> <?php print $title; ?> </h1>
+      <div class="authors">
+       <?php print render($wx_date); ?>&nbsp;&nbsp;
+       <?php print render($wx_term); ?>&nbsp;&nbsp;
+       <?php print l(variable_get('mp_config_appname_'.$nodeuid, "永不止息"),variable_get('mp_config_default_url_'.$nodeuid, 'http://t.cn/RA1nOGY')); ?>
+     </div>
+  </div>  
+  <?php endif; ?>
+
   <div class="container">
     <?php if (0 && !($is_front) && ($breadcrumb)): ?>
     <div id="breadcrumb"><?php print $breadcrumb; ?></div>

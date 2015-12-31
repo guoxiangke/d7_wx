@@ -7,17 +7,18 @@
 function buildout_technologies_preprocess_page(&$vars) {
   if (isset($vars['node'])) {
     $vars['theme_hook_suggestions'][] = 'page__'. str_replace('_', '--', $vars['node']->type);
-    if($vars['node']->type == 'article'){
+    // if($vars['node']->type == 'article' || $vars['node']->type == 'fm77' ){
       $wx_author = '';
       if(isset($vars['node']->field_user_name[LANGUAGE_NONE]))
         $wx_author = $vars['node']->field_user_name[LANGUAGE_NONE][0]['value'];
       $vars['wx_date'] = date('Y-m-d',$vars['node']->created);
-      $term = taxonomy_term_load($vars['node']->field_term[LANGUAGE_NONE][0]['tid']);
-      $term_name = $term->name;
+      if($vars['node']->type == 'article'){
+        $term = taxonomy_term_load($vars['node']->field_term[LANGUAGE_NONE][0]['tid']);
+        $term_name = $term->name;
+      }
       $vars['wx_term'] = $wx_author == '未知'?$term_name:$wx_author;
       $vars['nodeuid'] = $vars['node']->uid;
-
-    }
+    // }
   }
 }
 

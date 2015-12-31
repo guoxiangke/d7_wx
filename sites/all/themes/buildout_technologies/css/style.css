@@ -3,9 +3,23 @@
 /*@import url(//fonts.useso.com/css?family=Source+Sans+Pro:300,400,700,300italic);*/
 
 /* GLOBAL ********************************* */
-
 #first-time {
 	display: none;
+}
+#header-bottom{
+	background: #fff;
+	
+}
+#wx-header .title,#header-bottom #page-title{
+  margin-bottom: 10px;
+  line-height: 1.4;
+  font-weight: 400;
+  font-size: 24px;	
+  color: #4d4f53;
+}
+#wx-header .authors {
+	font-size: 16px;
+	color: #8c8c8c;
 }
 
 #admin-menu {
@@ -243,11 +257,6 @@ a.follow-link-facebook {
 }
 
 /* CONTENT ******************************** */
-
-#main {
-	padding-top: 72px;
-	padding-bottom: 63px;
-}
 
 .node {
 	margin-bottom: 40px;
