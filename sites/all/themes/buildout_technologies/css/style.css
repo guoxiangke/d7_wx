@@ -10,6 +10,13 @@
 	background: #fff;
 	
 }
+.field-name-field-mp3-img{
+  padding-top: 50px;
+  text-align: center;
+}
+.field-name-field-mp3-img img{
+	max-width: 150px;
+}
 #wx-header .title,#header-bottom #page-title{
   margin-bottom: 10px;
   line-height: 1.4;
