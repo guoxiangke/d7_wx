@@ -11,6 +11,10 @@ function mp_content_rescources_info(){
     'name' => 'mp_77',
     'desc' => 'FM77【77】',
   );
+  $rescources[] = array(
+    'name' => 'mp_77_share',
+    'desc' => '需要资源共享别人的FM77吗？（不共享如果不添加FM77内容的话，默认没有内容的哦！）',
+  );
   // $rescources[] = array(
   //   'name' => 'mp_contents_lianai',
   //   'desc' => '本站图文资源byterm【炼爱】',
@@ -26,7 +30,6 @@ function mp_content_wxresources($resources, $account, $keyword){
   if( !(in_array($keyword, $allow_keys) || in_array($temp_key, $allow_keys)) ) return;
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
-
   if(!isset($resources)){
     //灵命日粮
     if ($keyword == 'lm'||$keyword =='灵命'||$keyword =='美文'||$keyword =='图文') {      
@@ -85,7 +88,12 @@ function mp_content_wxresources($resources, $account, $keyword){
     }
     if ($keyword =='77') {
       if(isset($enabled_resources['mp_77']) && $enabled_resources['mp_77']){
-          $nodes = dale_get_mp_nodes('fm77',1,NULL);//,$account->uid
+          //TODO 是否需要共享资源？
+          if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
+            $nodes = dale_get_mp_nodes('fm77',1,NULL);  
+          }else{
+            $nodes = dale_get_mp_nodes('fm77',1,NULL,array($account->uid));
+          }
           if (count($nodes))
           foreach ($nodes as $key => $node) {
             if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value'])) 
@@ -106,7 +114,7 @@ function mp_content_wxresources($resources, $account, $keyword){
           }
       }
     }
-    if($key =='node'){
+    if($keyword =='node'){
       $nid = substr($keyword, 4);
       if(is_numeric($nid)){
         $node = node_load($nid);
