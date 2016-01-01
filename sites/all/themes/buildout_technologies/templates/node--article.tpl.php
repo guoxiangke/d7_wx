@@ -78,11 +78,6 @@
  * @see template_process()
  */
 ?>
-<style type="text/css">
-  #content-wrapper p{
-    margin-bottom: 0;
-  }
-</style>
 <?php if(!empty($body)): ?>
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>> <?php print $user_picture; ?> <?php print render($title_prefix); ?>
   <?php if (!$page): ?>
@@ -97,11 +92,21 @@
       // 
 
       $field_updated  = db_query('SELECT field_updated_value FROM {field_data_field_updated} WHERE entity_id = :nid', array(':nid' => $node->nid))->fetchField();
-      if($field_updated != '1'){
-        print render($content['field_image']);
+      
+      if(isset($node->book['bid'])){
+        if($node->book['bid'] =='183'){
+          echo '<img typeof="foaf:Image" src="/sites/default/files/styles/sc900_500/public/field/image/22791549504_048814b027_k.jpg?itok=ST4XuKTu" width="900" height="500" alt="">';
+          hide($content['field_image']);
+        }
       }else{
-        hide($content['field_image']);
+        if($field_updated != '1'){
+          print render($content['field_image']);
+        }else{
+          hide($content['field_image']);
+        }
       }
+      
+
   if(isset($node->field_mp3url[LANGUAGE_NONE][0])){
     ?>    
    <div class="audio-wrapper">

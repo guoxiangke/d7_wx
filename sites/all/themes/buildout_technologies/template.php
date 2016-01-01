@@ -5,6 +5,7 @@
  * @param $variables
  */
 function buildout_technologies_preprocess_page(&$vars) {
+  $vars['nodeuid'] = 1;
   if (isset($vars['node'])) {
     $vars['theme_hook_suggestions'][] = 'page__'. str_replace('_', '--', $vars['node']->type);
     // if($vars['node']->type == 'article' || $vars['node']->type == 'fm77' ){

@@ -3,6 +3,16 @@
 /*@import url(//fonts.useso.com/css?family=Source+Sans+Pro:300,400,700,300italic);*/
 
 /* GLOBAL ********************************* */
+
+.form-radios .form-type-radio label{
+	display: inline;
+}
+
+#content-wrapper p{
+    margin-bottom: 5px;
+    text-indent: 2em;
+}
+
 #first-time {
 	display: none;
 }
