@@ -18,8 +18,8 @@ function ybread_menu() {
     'access callback' => TRUE,
     'file' => 'ybread.page.inc',
   );
-  $items['ed365'] = array(
-    'title' => '365',
+  $items['365'] = array(
+    'title' => '恩典365',
     'page callback' => 'grace365_page',
     'type' => MENU_CALLBACK,
     // 'menu_name'=> 'main-menu',
