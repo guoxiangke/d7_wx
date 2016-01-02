@@ -18,6 +18,14 @@ function ybread_menu() {
     'access callback' => TRUE,
     'file' => 'ybread.page.inc',
   );
+  $items['ed365'] = array(
+    'title' => '365',
+    'page callback' => 'grace365_page',
+    'type' => MENU_CALLBACK,
+    // 'menu_name'=> 'main-menu',
+    'access callback' => TRUE,
+    'file' => 'ybread.page.inc',
+  );
 
   return $items;
 }
@@ -29,6 +37,8 @@ function ybread_node_view($node, $view_mode, $langcode) {
   if($node->type=='lingming')
     drupal_set_title('灵命日粮-'.$node->title);
 }
+
+
 
 
 
