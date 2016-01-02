@@ -47,6 +47,7 @@ function ybread_page(){
 		// $node->body[LANGUAGE_NONE][0]['summary'] = trim($html->find('.entry-content .thought-box', 0)->plaintext);
 	  $node->body[LANGUAGE_NONE][0]['value'] = $node->body[LANGUAGE_NONE][0]['value'];
 	  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
+	  $node->field_mp3url[LANGUAGE_NONE][0]['value'] = 'http://cdn.rbcintl.org/odb/zht/zht-odb-'.date("Y").'-'.date("m").'-'.date("d").'.mp3';
 	  // dpm($node);
 	  node_save($node);
   	$nid = $node->nid;
@@ -54,14 +55,9 @@ function ybread_page(){
   	$nid = $result->nid;
 		$node = node_load($nid);
   }
-  $player ='<div class="ybread-player"><audio controls>
-  <source src="http://cdn.rbcintl.org/odb/zht/zht-odb-'.date("Y").'-'.date("m").'-'.date("d").'.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
-</audio>
-				<p style="color:#666">信息来源： http://simplified-odb.org </p></div>';
 	$node = node_load($nid);
   $node_view = node_view($node); //drupal_render($node_view).;
-  return drupal_render($node_view).$player;
+  return drupal_render($node_view);
 }
 
 function grace365_page(){
