@@ -193,13 +193,9 @@ function grace365_page(){
 			$body = $html->find('.content',0)->plaintext;
 			$html = substr($body, 0,strpos($body, '以上视频由天声传播协会录制'));
 
-			$html = str_replace('&nbsp;', '', $html);
-			$html = str_replace('&ldquo;', '“', $html);
-			$html = str_replace('&rdquo;', '”', $html);
-			$html = str_replace('&hellip;', '…', $html);
-			$html = str_replace('&mdash;', '—', $html);
-			$html = str_replace('ζ', '…', $html);
-			$html = str_replace('涫碘', '其实', $html);
+		  $search =  array('&nbsp;','&ldquo;','&rdquo;','&hellip;','&mdash;','ζ','涫碘',);
+		  $replace =  array('', '“','”','…','—','…','其实', ); 
+		  $html = str_replace($search, $replace, $html);
 			$title = str_replace('(附文字版)', '', $title);
 			$ori_title = $title;
 			$title = str_replace(date('Ymd'), '', $title);
@@ -233,7 +229,7 @@ function grace365_page(){
   	$nid = $result->nid;
 		$node = node_load($nid);
   }
-  $player ='player';
+  $player ='请记住我们的网址：http://wx.yongbuzhixi.com/grace365 每早7点后自动同步更新哦！';
 	$node = node_load($nid);
   $node_view = node_view($node); //drupal_render($node_view).;
   return drupal_render($node_view).$player;
