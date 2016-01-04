@@ -355,7 +355,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			// $keyword = 'd11';
 			$first = substr($keyword, 0,1);
 			$second = substr($keyword, 1,1);
-			$temp = array('a','b','c','d','e','f');
+			$temp = array('a','b','c','d','e','f','g');
 			if(in_array($first, $temp) && $second>0 && $second<10 ){
 				$third = substr($keyword, 2,2);
 				$mav = get_ly_mav();
