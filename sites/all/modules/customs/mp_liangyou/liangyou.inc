@@ -681,14 +681,14 @@ function get_ly_mav(){
     'g6'=>array(
       'prefex'  => 'mavla0',
       'count'=>24,
-      'title'=>'领袖训练 I',
+      'title'=>'领袖训练I',
       'level'=>2,
       'pdf' => 1,
     ),       
     'g7'=>array(
       'prefex'  => 'mavlb0',
       'count'=>24,
-      'title'=>'领袖训练 II',
+      'title'=>'领袖训练II',
       'level'=>2,
       'pdf' => 1,
     ),

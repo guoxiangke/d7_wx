@@ -13,7 +13,7 @@ function mp_content_rescources_info(){
   );
   $rescources[] = array(
     'name' => 'mp_77_share',
-    'desc' => '需要资源共享别人的FM77吗？（不共享如果不添加FM77内容的话，默认没有内容的哦！）',
+    'desc' => 'FM77++',
   );
   // $rescources[] = array(
   //   'name' => 'mp_contents_lianai',
