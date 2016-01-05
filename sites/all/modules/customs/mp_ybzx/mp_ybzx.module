@@ -46,11 +46,3 @@ function mp_ybzx_wxresources($resources, $account, $keyword){
 	}
 	return $resources;
 }
-
-
-/**
- * Hook_wxservice_event_alter
- */
-function mp_ybzx_wxservice_event_alter($weObj){
-
-}
