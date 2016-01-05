@@ -23,7 +23,8 @@ function mp_service_callback($account){
       break;
     case Wechat::MSGTYPE_EVENT:
       _mp_service_process_event($weObj,$account);
-      module_invoke_all('wxservice_event_alter', $weObj);
+      // TODO
+      // module_invoke_all('wxservice_event_alter', $weObj);
       break;	  
   }
   $weObj->reply();
@@ -50,6 +51,7 @@ function _mp_service_process_text(&$weObj,$account){
         file_get_contents($url, false, $context);
         // watchdog('result', '<pre>'.print_r($result,1), array(), WATCHDOG_NOTICE, 'link');
         $weObj->text("今日<a href='http://wx.yongbuzhixi.com/grace365'>恩典365</a>已发布成功！谢谢您杨弟兄！[握手]")->reply();
+        return;
     }
   }
 
@@ -197,13 +199,23 @@ function _mp_service_process_event($weObj,$account){
        'label'           => 'wxservice_'.$account->uid,
     ));
   }else{
-    mp_service_keyword_response($weObj,$event['key'],$account);
+    if($event['event']=='VIEW'){
+      //MP menu!
+    }else{
+      mp_service_keyword_response($weObj,$event['key'],$account);
+    }
     if(!is_array($weObj->Message(''))){ 
       ga_push_add_event(array(
          'category'        => 'event_'.$event['event'],
          'action'          =>  $event['key'],
          'label'           => 'wxservice_'.$account->uid,
       ));
+    }else{
+      if($event['event']=='CLICK'){
+        //MP menu!
+      }else{
+        watchdog('no! track event!', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
+      }
     }
   }
 	//add default behavior

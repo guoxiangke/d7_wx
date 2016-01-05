@@ -70,15 +70,16 @@ function grace365_page(){
 	if(isset($result->nid)) $nid = $result->nid;
 	// dvm($result);
   //dvm(12*60*60);
-	$now = 0;
+	$now = time();
 	$last = 0;
+	$hour = date('G',time());
   if(isset($result->nid)){
-	  $now = time();
-	  $hour = date('G',time());
 	  $last = $result->created;
   }
+  watchdog('ybread-hour', $hour, array(), WATCHDOG_NOTICE, 'link');
+  watchdog('ybread-now', $now - $last, array(), WATCHDOG_NOTICE, 'link');
   if(isset($_POST['link']))
-  if(($now - $last >= 86400 && $hour >= 7 && $_POST['link']) || !isset($result->nid)) {
+  if(($now - $last >= 43200 && $hour >= 1 && $_POST['link']) || !isset($result->nid)) {
 		// $link = 'http://mp.weixin.qq.com/s?__biz=MzA5NTI4MzM2Mg==&mid=416574017&idx=1&sn=cd31b45978a42bd5265e2aa91a752986&3rd=MzA3MDU4NTYzMw==&scene=6#rd';
 		$link = $_POST['link'];
 		// watchdog('POSTlink', $link, array(), WATCHDOG_NOTICE, 'link');
@@ -128,8 +129,6 @@ function grace365_page(){
 	  node_save($node);
   	$nid = $node->nid;
   	watchdog('ybread', 'created 365 '.$nid, array(), WATCHDOG_NOTICE, 'link');
-  }else{
-		$node = node_load($nid);
   }
   $player ='请记住我们的网址：http://wx.yongbuzhixi.com/grace365 每早7点后自动同步更新哦！';
 	$node = node_load($nid);
