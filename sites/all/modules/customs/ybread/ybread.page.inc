@@ -76,10 +76,12 @@ function grace365_page(){
   if(isset($result->nid)){
 	  $last = $result->created;
   }
-  watchdog('ybread-hour', $hour, array(), WATCHDOG_NOTICE, 'link');
-  watchdog('ybread-now', $now - $last, array(), WATCHDOG_NOTICE, 'link');
+  watchdog('ybread-hour0', $hour, array(), WATCHDOG_NOTICE, 'link');
+  watchdog('ybread-now0', $now - $last, array(), WATCHDOG_NOTICE, 'link');
   if(isset($_POST['link']))
   if(($now - $last >= 43200 && $hour >= 1 && $_POST['link']) || !isset($result->nid)) {
+	  watchdog('ybread-hour', $hour, array(), WATCHDOG_NOTICE, 'link');
+	  watchdog('ybread-now', $now - $last, array(), WATCHDOG_NOTICE, 'link');
 		// $link = 'http://mp.weixin.qq.com/s?__biz=MzA5NTI4MzM2Mg==&mid=416574017&idx=1&sn=cd31b45978a42bd5265e2aa91a752986&3rd=MzA3MDU4NTYzMw==&scene=6#rd';
 		$link = $_POST['link'];
 		// watchdog('POSTlink', $link, array(), WATCHDOG_NOTICE, 'link');
@@ -96,7 +98,7 @@ function grace365_page(){
 		// watchdog('ori_title', '<pre>'.print_r($ori_title,1), array(), WATCHDOG_NOTICE, 'link');
 
 
-		$search =  array('&nbsp;','〔恩典365〕','(附文字版)',date('Y.n.j'),);
+		$search =  array('&nbsp;','〔恩典365〕','(附文字版)','/',);
 	  $replace =  array(' ','','','',); 
 	  $title = str_replace($search, $replace, $ori_title);
 		$body = $html->find('#js_content',0)->outertext;
@@ -122,7 +124,7 @@ function grace365_page(){
 	  $node->body[LANGUAGE_NONE][0]['value'] = $body;//trim($tempbody->plaintext);
 	  $node->field_mp3url[LANGUAGE_NONE][0]['value']=$voice_url;
 	  $node->field_video_url[LANGUAGE_NONE][0]['value']=$video_url;
-	  $node->field_title[LANGUAGE_NONE][0]['value']=$ori_title;
+	  // $node->field_title[LANGUAGE_NONE][0]['value']=$ori_title;
 	  $node->language = LANGUAGE_NONE;
 	  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
 	  // dpm($node);
