@@ -93,9 +93,34 @@ function mp_content_wxresources($resources, $account, $keyword){
       $offset = 0;
       if(isset($enabled_resources['mp_77']) && $enabled_resources['mp_77']){
           if(strlen($keyword)>2) {
-            $offset = substr($keyword,2)-1;
-            if($offset<0) $offset = 0;
             //get all nodes77 of one content!
+            $offset = substr($keyword,2)-1;
+            if($offset<0) {
+              $text = "------已有资源------";
+              if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
+                $nodes = dale_get_mp_nodes('fm77', 0, $tid = NULL, $uids = array(),NODE_NOT_PROMOTED,NODE_PUBLISHED,"DESC");
+              }else{
+                $nodes = dale_get_mp_nodes('fm77', 0, $tid = NULL, array($account->uid),NODE_NOT_PROMOTED,NODE_PUBLISHED,"DESC");
+              }
+              $i = 0;
+              $total = count($nodes);
+              foreach ($nodes as $node) {
+                $j =  $total-$i;
+                $i++;
+                if($j>=10&&$j<100) $j=  str_pad($j,2,"0",STR_PAD_LEFT);
+                if($j>=100&&$j<1000) $j=  str_pad($j,3,"0",STR_PAD_LEFT);
+                $text .="\n【77".(0+$j).'】'.$node->title;
+                # code...
+              }
+              $resources['key_'.$keyword]= array(
+                'type'  =>  'text',
+                'obj'   => array(
+                  'text' => $text."\n回复编号给我吧！[调皮]",
+                ),
+              );
+              return $resources;
+            }
+
             if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
               $nids = dale_get_mp_nodes_count('fm77', 0, NULL, array(),NODE_PUBLISHED,1);
             }else{
@@ -217,7 +242,7 @@ function mp_content_wxresources($resources, $account, $keyword){
  * get all nodes77 of one content!
  * $return = 1 get all nids!
  */
-function dale_get_mp_nodes_count($type = 'article', $number = 0, $tid = NULL, $uids = array(),$publish = NODE_PUBLISHED,$return = NULL){
+function dale_get_mp_nodes_count($type = 'article', $number = 0, $tid = NULL, $uids = array(),$publish = NODE_PUBLISHED,$return = NULL,$order="DESC"){
   $query = db_select('node', 'n');
   $query->condition('n.status', $publish);
   $query->condition('n.type', $type);
@@ -229,13 +254,13 @@ function dale_get_mp_nodes_count($type = 'article', $number = 0, $tid = NULL, $u
   
   if($return) return $query
     ->fields('n', array('nid'))
-    ->orderBy('n.changed', 'DESC')
+    ->orderBy('n.created', 'DESC')
     ->addTag('node_access')
     ->execute()
     ->fetchAll();
   $result = $query
     ->fields('n', array('nid'))
-    ->orderBy('n.changed', 'DESC')
+    ->orderBy('n.created', $order)
     ->addTag('node_access')
     ->execute();
   
@@ -248,18 +273,19 @@ function dale_get_mp_nodes_count($type = 'article', $number = 0, $tid = NULL, $u
  * must has pics (已配图)
  * @see node_get_recent
  */
-function dale_get_mp_nodes($type = 'article', $number = 3, $tid = NULL, $uids = array(), $promote = NODE_NOT_PROMOTED, $publish = NODE_PUBLISHED){
+function dale_get_mp_nodes($type = 'article', $number = 3, $tid = NULL, $uids = array(), $promote = NODE_NOT_PROMOTED, $publish = NODE_PUBLISHED,$order="DESC"){
   $query = db_select('node', 'n');
   $query->condition('n.status', $publish);
   $query->condition('n.type', $type);
   $query->condition('n.promote', $promote);
   if($uids)
     $query->condition('n.uid', $uids,'IN');
+  if($number!=0)
+     $query->range(0, $number);
   
   $nids = $query
     ->fields('n', array('nid'))
-    ->orderBy('n.changed', 'DESC')
-    ->range(0, $number)
+    ->orderBy('n.created', $order)
     ->addTag('node_access')
     ->execute()
     ->fetchCol();
