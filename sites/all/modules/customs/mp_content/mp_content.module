@@ -26,8 +26,9 @@ function mp_content_rescources_info(){
  */
 function mp_content_wxresources($resources, $account, $keyword){
   $temp_key = substr($keyword, 0,4);
+  $temp_key2 = substr($keyword, 0,2);
   $allow_keys = array('lm','灵命','lingming','tuwen','meiwen','tw','图文','美文','77','node');
-  if( !(in_array($keyword, $allow_keys) || in_array($temp_key, $allow_keys)) ) return;
+  if( !(in_array($keyword, $allow_keys)||in_array($temp_key2, $allow_keys) || in_array($temp_key, $allow_keys)) ) return;
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
@@ -86,8 +87,53 @@ function mp_content_wxresources($resources, $account, $keyword){
           );
       }
     }
-    if ($keyword =='77') {
+    //77001 77002 77003 ... 77999
+    $temp_key2 = substr($keyword, 0,2);
+    if ($temp_key2 =='77') {
+      $offset = 0;
       if(isset($enabled_resources['mp_77']) && $enabled_resources['mp_77']){
+          if(strlen($keyword)>2) {
+            $offset = substr($keyword,2)-1;
+            if($offset<0) $offset = 0;
+            //get all nodes77 of one content!
+            if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
+              $nids = dale_get_mp_nodes_count('fm77', 0, NULL, array(),NODE_PUBLISHED,1);
+            }else{
+              $nids = dale_get_mp_nodes_count('fm77', 0, NULL, array($account->uid),NODE_PUBLISHED,1);
+            }
+            $nids =  array_reverse($nids);
+            $total = count($nids);
+            if($offset<$total){
+              // watchdog($offset, 'offset'.$total, array(), WATCHDOG_NOTICE, 'link');
+              $node = node_load($nids[$offset]->nid);
+              // watchdog($offset.' '.$node->title, $node->nid, array(), WATCHDOG_NOTICE, 'link');
+              if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value'])) 
+                $musicurl =  $node->field_mp3url[LANGUAGE_NONE][0]['value'];
+              if(!$musicurl){
+                //TODO $node->field_mp3_file
+               $musicurl = file_create_url($node->field_mp3_file[LANGUAGE_NONE][0]['uri']);
+              }
+              $resources['key_'.$keyword]= array(
+                'type'  =>  'music',
+                'obj'   => array(
+                  'title' => $node->title,
+                  'desc'  =>  strtoupper($node->type) .' 公众号：'.variable_get('mp_config_appname_'.$account->uid, '永不止息'),
+                  'musicurl'  =>  $musicurl,
+                  'hgmusicurl'  =>  $musicurl,
+                ),
+              );
+              return $resources;
+            }else{
+              // '暂无此资源！';
+              $resources['key_'.$keyword]= array(
+                'type'  =>  'text',
+                'obj'   => array(
+                  'text' => "[调皮]没有啦！",
+                ),
+              );
+              return $resources;
+            }
+          }else{//77
           //TODO 是否需要共享资源？
           if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
             $nodes = dale_get_mp_nodes('fm77',1,NULL);  
@@ -96,6 +142,33 @@ function mp_content_wxresources($resources, $account, $keyword){
           }
           if (count($nodes))
           foreach ($nodes as $key => $node) {
+            $musicurl = NULL;
+            if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value'])) 
+              $musicurl =  $node->field_mp3url[LANGUAGE_NONE][0]['value'];
+            if(!$musicurl){
+              //TODO $node->field_mp3_file
+             $musicurl = file_create_url($node->field_mp3_file[LANGUAGE_NONE][0]['uri']);
+            }
+            $resources['key_'.$keyword]= array(
+              'type'  =>  'music',
+              'obj'   => array(
+                'title' => $node->title,
+                'desc'  =>  strtoupper($node->type) .' 公众号：'.variable_get('mp_config_appname_'.$account->uid, '永不止息'),
+                'musicurl'  =>  $musicurl,
+                'hgmusicurl'  =>  $musicurl,
+              ),
+            );            
+          }
+          }
+          //TODO 是否需要共享资源？
+          if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
+            $nodes = dale_get_mp_nodes('fm77',1,NULL);  
+          }else{
+            $nodes = dale_get_mp_nodes('fm77',1,NULL,array($account->uid));
+          }
+          if (count($nodes))
+          foreach ($nodes as $key => $node) {
+            $musicurl = NULL;
             if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value'])) 
               $musicurl =  $node->field_mp3url[LANGUAGE_NONE][0]['value'];
             if(!$musicurl){
@@ -139,6 +212,36 @@ function mp_content_wxresources($resources, $account, $keyword){
 	}
 	return $resources;
 }
+/**
+ * $number = 0 ＝＝ALL
+ * get all nodes77 of one content!
+ * $return = 1 get all nids!
+ */
+function dale_get_mp_nodes_count($type = 'article', $number = 0, $tid = NULL, $uids = array(),$publish = NODE_PUBLISHED,$return = NULL){
+  $query = db_select('node', 'n');
+  $query->condition('n.status', $publish);
+  $query->condition('n.type', $type);
+  // $query->condition('n.promote', $promote);
+  if($uids)
+    $query->condition('n.uid', $uids,'IN');
+  if($number!=0)
+     $query->range(0, $number);
+  
+  if($return) return $query
+    ->fields('n', array('nid'))
+    ->orderBy('n.changed', 'DESC')
+    ->addTag('node_access')
+    ->execute()
+    ->fetchAll();
+  $result = $query
+    ->fields('n', array('nid'))
+    ->orderBy('n.changed', 'DESC')
+    ->addTag('node_access')
+    ->execute();
+  
+  return $result->rowCount();
+}
+
 /**
  * get recently create contents of articles!!!
  * by termID
