@@ -76,8 +76,6 @@ function grace365_page(){
   if(isset($result->nid)){
 	  $last = $result->created;
   }
-  watchdog('ybread-hour0', $hour, array(), WATCHDOG_NOTICE, 'link');
-  watchdog('ybread-now0', $now - $last, array(), WATCHDOG_NOTICE, 'link');
   if(isset($_POST['link']))
   if(($now - $last >= 43200 && $hour >= 1 && $_POST['link']) || !isset($result->nid)) {
 	  watchdog('ybread-hour', $hour, array(), WATCHDOG_NOTICE, 'link');
