@@ -158,27 +158,29 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					}else{
 						require_once('liangyou_audio_list.php');
 						$liangyou_audio_list = liangyou_audio_list_byindex();
-						$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
-						$title = $liangyou_audio_list_info['title'];
-						$code = $liangyou_audio_list_info['code'];
+						if(isset($liangyou_audio_list[$keyword])){
+							$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
+							$title = $liangyou_audio_list_info['title'];
+							$code = $liangyou_audio_list_info['code'];
 
-						$dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
-	          $objectKey = '/'.$dir_stru .'/'.$code. date('ymd').'.mp3';
-	          $bce_url = '/liangyou/nissigz/'.urlencode($title).'/'.date('Ym').'/'.$code.date('ymd').'.mp3';
-	          $musicurl = 'http://'.CDNLINK.$bce_url.upyun_get_token($objectKey);
-	          $temp = @get_headers($musicurl);
-	          if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-								$resources['key_'.$keyword]= array(
-									'type'	=>	'music',
-									'obj'		=> array(
-										'title'	=> $title.'♪',
-										'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
-										'musicurl'	=>	$musicurl,
-										'hgmusicurl'	=>	$musicurl,
-									),
-								);
-								return $resources;
-	          }
+							$dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
+		          $objectKey = '/'.$dir_stru .'/'.$code. date('ymd').'.mp3';
+		          $bce_url = '/liangyou/nissigz/'.urlencode($title).'/'.date('Ym').'/'.$code.date('ymd').'.mp3';
+		          $musicurl = 'http://'.CDNLINK.$bce_url.upyun_get_token($objectKey);
+		          $temp = @get_headers($musicurl);
+		          if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
+									$resources['key_'.$keyword]= array(
+										'type'	=>	'music',
+										'obj'		=> array(
+											'title'	=> $title.'♪',
+											'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
+											'musicurl'	=>	$musicurl,
+											'hgmusicurl'	=>	$musicurl,
+										),
+									);
+									return $resources;
+		          }
+						}
 					}
 		    }//UPYUN END
 
