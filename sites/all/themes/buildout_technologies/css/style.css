@@ -3,7 +3,17 @@
 /*@import url(//fonts.useso.com/css?family=Source+Sans+Pro:300,400,700,300italic);*/
 
 /* GLOBAL ********************************* */
-
+.view-taxonomy-term .views-row{
+	margin-bottom: 0;
+	padding-top: 10px;
+  padding-bottom: 10px;
+}
+.view-taxonomy-term .node{
+	margin-bottom: 0;
+}
+.view-taxonomy-term .node .node-readmore{
+	display: none;
+}
 .form-radios .form-type-radio label{
 	display: inline;
 }

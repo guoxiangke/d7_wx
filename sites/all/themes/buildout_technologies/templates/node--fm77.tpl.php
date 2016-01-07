@@ -164,6 +164,7 @@
       hide($content['field_image2']);
       hide($content['field_term']);
       print render($content);
+       if($view_mode=='full'){
       ?>
       <div class="field-name-field-mp3-img">
       <?php
@@ -185,7 +186,7 @@
       }
       ?>
       </div>
-      <?php
+      <?php }
       print render($content['field_term']);
     ?>
   </div>
