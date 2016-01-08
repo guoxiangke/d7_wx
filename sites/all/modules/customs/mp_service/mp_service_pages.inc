@@ -12,7 +12,7 @@ function mp_service_callback($account){
 
   ga_push_add_pageview(array(
       'location' => url('mp_service/'.$account->uid, array('absolute' => true)),
-      'page'     => variable_get('mp_config_appname_'.$account->uid, "永不止息"),
+      'page'     => variable_get('mp_config_appname_'.$account->uid, "永不止息").'_'.$account->uid,
       'title'    => '/'.variable_get('mp_config_appid_'.$account->uid, ""),
   ));
   
