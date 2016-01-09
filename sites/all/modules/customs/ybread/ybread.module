@@ -50,7 +50,7 @@ function get_last_node_json($content_type = 'lingming',$title = '灵命日粮',$
     if(isset($node->field_image['und'][0]['uri'])){
       $picurl = file_create_url($node->field_image['und'][0]['uri']);   
     }else{//default img!!
-      $info = field_info_instance('node', 'field_image2', 'article');
+      $info = field_info_instance('node', 'field_image2', $content_type);
       if (!empty($info) && $info['settings']['default_image'] > 0){
         $default_img_fid  = $info['settings']['default_image'];
         $default_img_file = file_load($default_img_fid);
