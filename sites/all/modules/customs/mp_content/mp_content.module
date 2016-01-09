@@ -78,7 +78,8 @@ function mp_content_wxresources($resources, $account, $keyword){
             }
             // $news = array_reverse($news);
             $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
-            // $news = $news + (array)json_decode($lingming);
+            array_push($news,(array)json_decode($lingming));
+            $lingming = file_get_contents('http://wx.yongbuzhixi.com/grace365/json');
             array_push($news,(array)json_decode($lingming));
           }
           $resources['key_'.$keyword]= array(
@@ -372,29 +373,4 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
     }
     $weObj->news($news)->reply();
   }
-}
-
-
-/**
- * Implements get_last_node().
- */
-function get_last_node($content_type = 'lingming',$count=1) {
-  $query = "SELECT n.nid nid, n.created created FROM {node} n  WHERE n.type = :type order by n.created desc limit 0, $count";
-  $result = db_query($query, array(':type' => $content_type));
-  $news = array();
-  while($record = $result->fetchAssoc()) {
-    $nid = $record['nid'];
-    $node = node_load($nid);//TODO:fast query!
-    $img = array(
-      'Title'=> '【灵命日粮】'.$node->title,
-      'Description'=> truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 150, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1),
-      'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
-      'Url'=> url('lingming', array('absolute' => TRUE,'alias'=>TRUE)),
-    );
-    $news[] = $img;
-  }
-  // dpm($news);
-  header('Content-Type: application/json');
-  print json_encode($img);
-  drupal_exit();
 }
