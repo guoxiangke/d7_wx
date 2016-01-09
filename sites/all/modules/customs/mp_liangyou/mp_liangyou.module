@@ -5,10 +5,10 @@ define('CDNLINK', UPBUCKETNAME.'.b0.upaiyun.com');
  * hook_rescources_info
  */
 function mp_liangyou_rescources_info(){
-	$rescources[] = array(
-    'name' => 'ly',
-    'desc' =>	'良友电台线路1【ly】',
-  );
+	// $rescources[] = array(
+ //    'name' => 'ly',
+ //    'desc' =>	'良友电台线路1【ly】',
+ //  );
 	$rescources[] = array(
     'name' => 'ly2',
     'desc' =>	'良友电台线路2【600】',
@@ -17,10 +17,10 @@ function mp_liangyou_rescources_info(){
     'name' => '365',
     'desc' =>	'恩典【365】【366】',
   );
-	$rescources[] = array(
-    'name' => '523',
-    'desc' =>	'在天父怀中【523】',
-  );
+	// $rescources[] = array(
+ //    'name' => '523',
+ //    'desc' =>	'在天父怀中【523】',
+ //  );
 	$rescources[] = array(
     'name' => '400',
     'desc' =>	'圣经广播网【400】',
@@ -53,7 +53,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
   	//ee bv se gv
-	  if(isset($enabled_resources['ly']) && $enabled_resources['ly']){
+	  if(1||(isset($enabled_resources['ly']) && $enabled_resources['ly'])){
 		  require_once('liangyou.inc');
 		 	if($keyword == 'ly' || $keyword == '良友' ){
 				$resources['key_'.$keyword]= array(

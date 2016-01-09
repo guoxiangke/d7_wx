@@ -3,6 +3,10 @@
 /*@import url(//fonts.useso.com/css?family=Source+Sans+Pro:300,400,700,300italic);*/
 
 /* GLOBAL ********************************* */
+#block-block-1{
+	text-align: center;
+	display: none;
+}
 .prev-next-post {
 	padding-top: 10px	
 }
@@ -27,11 +31,9 @@
 }
 
 
-  .rich_media_tool {
-    overflow: hidden;
-    padding: 30px 15px 0;
-    line-height: 32px;
-    margin-bottom: 10px;
+.rich_media_tool {
+  overflow: hidden;
+  padding: 10px 0;
 }
 
 .rich_media_tool .meta_primary {

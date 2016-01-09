@@ -57,6 +57,9 @@
 		padding: 0;
 		border:none;
 	}
+	#block-block-1{
+		display: block;
+	}
 	#header{
 		display: none;
 	}
