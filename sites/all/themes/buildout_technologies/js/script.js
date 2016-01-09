@@ -2,7 +2,7 @@
   $(document).ready(function(){
     
     text = $('.links .statistics_counter').text();
-    var number = parseInt(text, 10);
+    var number = parseInt(text.replace(/[^0-9\.]/g, ''), 10);
     $('#statistics_counter').html(number);
 
    	number -= Math.floor(Math.random() * (number - 0));
