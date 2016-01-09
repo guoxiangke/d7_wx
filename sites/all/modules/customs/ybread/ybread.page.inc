@@ -132,8 +132,7 @@ function grace365_page(){
   	$nid = $node->nid;
   	watchdog('ybread', 'created 365 '.$nid, array(), WATCHDOG_NOTICE, 'link');
   }
-  $player ='请记住我们的网址：http://wx.yongbuzhixi.com/grace365 每早7点后自动同步更新哦！';
 	$node = node_load($nid);
   $node_view = node_view($node); //drupal_render($node_view).;
-  return drupal_render($node_view).$player;
+  return drupal_render($node_view);
 }

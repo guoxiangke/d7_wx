@@ -177,6 +177,3 @@
   <?php print render($content['comments']); ?> 
 </article>
 <?php endif; ?>
-<?php 
-  include('wx_bottom.php');
-?>
