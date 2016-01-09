@@ -29,10 +29,10 @@ function mp_liangyou_rescources_info(){
     'name' => '1225',
     'desc' =>	'耶稣全貌【1225】',
   );
-	$rescources[] = array(
-    'name' => 'swty',
-    'desc' =>	'世外桃源【ty】',
-  );
+	// $rescources[] = array(
+ //    'name' => 'swty',
+ //    'desc' =>	'世外桃源【ty】',
+ //  );
 	$rescources[] = array(
     'name' => 'mav',
     'desc' =>	'良友圣经学院【a0】-【g0】',
