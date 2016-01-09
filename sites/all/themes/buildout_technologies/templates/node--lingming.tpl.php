@@ -170,27 +170,9 @@
   <?php print render($content['links']); ?>
   <?php if($view_mode == 'full'):?>
     <?php 
-    	$relate_node = dale_prev_next_node($node, array('grace365'));
-    	if($relate_node['prev']){
-    		$prev = l('« 上一篇','node/'.$relate_node['prev']['nid']);
-    	}else{
-    		$prev = '<a href="###">没有了</a>';
-    	}
-    	if($relate_node['next']){
-    		$next = l('下一篇 »','node/'.$relate_node['next']['nid']);
-    	}else{
-    		$next = '<a href="###">没有了</a>';
-    	}
+      include('prev-next-post.php');
+      include('wx_bottom.php');
     ?>
-    <div class="row-fluid prev-next-post"> 
-      <div class="span6 previous"> 
-        <div class="group"><?php echo $prev;?></div>
-      </div>
-
-      <div class="span6 next"> 
-        <div class="group"><?php echo $next;?></div>
-      </div>
-    </div>
   <?php endif;?>
   <?php print render($content['comments']); ?> 
 </article>

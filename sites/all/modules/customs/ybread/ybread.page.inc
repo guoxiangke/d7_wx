@@ -5,7 +5,7 @@ function ybread_page(){
 	// get latest node.
 	$query = "SELECT n.nid nid, n.created created FROM {node} n  WHERE n.type = :type order by n.created desc limit 0,1";
 	$result = db_query($query, array(':type' => $content_type))->fetch();
-	// dvm($result);
+	// dvm($result->nid);
   //dvm(12*60*60);
 	$now = 0;
 	$last = 0;
@@ -14,8 +14,10 @@ function ybread_page(){
 	  $hour = date('G',time());
 	  $last = $result->created;
   }
-  if(($now - $last >= 86400 && $hour >= 7)|| !isset($result->nid)) {
+  if(($now - $last >= 43200 && $hour >= 6)|| !isset($result->nid)) {
 	  $html = file_get_html('http://simplified-odb.org/today/');
+	  watchdog('ybread-hour1', $hour, array(), WATCHDOG_NOTICE, 'link');
+	  watchdog('ybread-now1', $now - $last, array(), WATCHDOG_NOTICE, 'link');
 		// get title
 		$node = new stdClass();
 		$node->type = $content_type;

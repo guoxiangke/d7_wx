@@ -147,20 +147,6 @@ ul.links>li.comment_forbidden{
 .form-type-item div,.form-type-item label{
 	float: left;
 }
-
-
-.node-type-article .prev-next-post .group a {
-  background: #e6e6e6;
-  display: block;
-  color: #4d4d4d;
-  border-bottom: 0;
-  padding: 10px;
-}
-.node-type-article .prev-next-post .group a:hover {
-  background: #53284f;
-  color: white; 
-}
-
 .view-display-id-block_1 .views-row {
    margin-bottom: 0; 
   padding:11px 0 10px 0;
@@ -169,12 +155,6 @@ ul.links>li.comment_forbidden{
 
 .site-name a, .site-name a:hover { color: #00AEEF;}
 
-a:hover{
-	color: #00AEEF;
-}
-a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a{
-	color: #00AEEF;
-}
 #content-wrapper, #sidebar-second .region-sidebar-second {
 	background-color: #FFF;
 }
