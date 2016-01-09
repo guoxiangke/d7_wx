@@ -3,8 +3,9 @@
 /*@import url(//fonts.useso.com/css?family=Source+Sans+Pro:300,400,700,300italic);*/
 
 /* GLOBAL ********************************* */
-
-
+.prev-next-post {
+	padding-top: 10px	
+}
 .prev-next-post .group {
 	float: right;
 }
