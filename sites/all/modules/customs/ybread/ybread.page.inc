@@ -98,8 +98,8 @@ function grace365_page(){
 		// watchdog('ori_title', '<pre>'.print_r($ori_title,1), array(), WATCHDOG_NOTICE, 'link');
 
 
-		$search =  array('&nbsp;','〔恩典365〕','(附文字版)','/',);
-	  $replace =  array(' ','','','',); 
+		$search =  array('&nbsp;','〔恩典365〕','(附文字版)','/','【恩典365】');
+	  $replace =  array(' ','','','','',); 
 	  $title = str_replace($search, $replace, $ori_title);
 		$body = $html->find('#js_content',0)->outertext;
 		$body = strip_tags($body,'<span><p><section>');
