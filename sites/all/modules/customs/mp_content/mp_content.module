@@ -13,7 +13,7 @@ function mp_content_rescources_info(){
   );
   $rescources[] = array(
     'name' => 'mp_77_share',
-    'desc' => 'FM77共享',
+    'desc' => 'FM77【770】',
   );
   // $rescources[] = array(
   //   'name' => 'mp_contents_lianai',
