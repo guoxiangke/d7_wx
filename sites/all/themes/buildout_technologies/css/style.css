@@ -106,6 +106,10 @@
     margin-bottom: 5px;
     text-indent: 2em;
 }
+#content-wrapper blockquote p{
+    margin-bottom: 5px;
+    text-indent: 0em;
+}
 
 #first-time {
 	display: none;

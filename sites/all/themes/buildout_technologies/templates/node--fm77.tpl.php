@@ -199,6 +199,3 @@
   <?php endif;?>
   <?php print render($content['comments']); ?> 
 </article>
-<?php 
-  include('wx_bottom.php');
-?>å
