@@ -11,16 +11,16 @@ function mp_liangyou_rescources_info(){
  //  );
 	$rescources[] = array(
     'name' => 'ly2',
-    'desc' =>	'良友电台线路2【600】',
+    'desc' =>	'良友电台【600】',
   );
 	$rescources[] = array(
     'name' => '365',
     'desc' =>	'恩典【365】【366】',
   );
-	// $rescources[] = array(
- //    'name' => '523',
- //    'desc' =>	'在天父怀中【523】',
- //  );
+	$rescources[] = array(
+    'name' => '523',
+    'desc' =>	'在天父怀中【523】',
+  );
 	$rescources[] = array(
     'name' => '400',
     'desc' =>	'圣经广播网【400】',
@@ -35,7 +35,7 @@ function mp_liangyou_rescources_info(){
  //  );
 	$rescources[] = array(
     'name' => 'mav',
-    'desc' =>	'良友圣经学院【a0】-【g0】',
+    'desc' =>	'良友圣经学院【a0】~【g0】',
   );
 	$rescources[] = array(
     'name' => 'jckc',
