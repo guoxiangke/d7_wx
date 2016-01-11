@@ -406,7 +406,7 @@ function liangyou_audio_list2(){
       'txly'=>'http://www.txly1.net/program/1njck8-3b2p4g',
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
-      'index'=>640,
+      'index'=>641,
       'desc'=>'良院（基础课程）为装备教会义工而设，适合初信者和预备报读本科文凭课程的信徒收听',
       ),
     'a0'=>array(
