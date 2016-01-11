@@ -33,6 +33,13 @@ function mp_service_callback($account){
 
 function _mp_service_process_text(&$weObj,$account){
 	$ori_keyword = trim($weObj->getRevContent());
+  if(in_array(strlen($ori_keyword),array(1437,72,164,1160,407))){
+    //评论留言成功！ 审核后会出现在这里哦！72
+    //in_array($account->uid, array(1,8,12))&&
+    $weObj->text("对不起，资源有限，[抱拳]\n如果再复制发送，就把你拉黑！[抱拳]\n如果是误会，请末尾加1后再次发送，谢谢体谅，小永敬上[握手]")->reply();//164
+    return;
+  }
+  // watchdog('len23', strlen($ori_keyword), array(), WATCHDOG_NOTICE, 'link');
   $keyword = make_semiangle($ori_keyword);
   if($account->uid == 8 && strpos($ori_keyword,'http://mp.weixin.qq.com/s?__biz=')!==FALSE){
     $openid = $weObj->getRev()->getRevFrom();
