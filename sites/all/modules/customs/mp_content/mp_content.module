@@ -306,42 +306,53 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
     $counts = explode(':', variable_get('wechat_multi_message_count_'.$account->uid, "1:1:1"));
     $news = array();
     //get newest
-    $nodes = dale_get_mp_nodes('article',$counts[0],NULL,array($account->uid),NODE_NOT_PROMOTED);
+    if($counts[0]!=0)
+      $nodes = dale_get_mp_nodes('article',$counts[0],NULL,array($account->uid),NODE_NOT_PROMOTED);
     $count = 0;
-    if($nodes)
-    foreach ($nodes as $key => $node) { 
+    if(isset($nodes)){
+      foreach ($nodes as $key => $node) { 
       if(!empty($node->field_redirect_link['und'][0]['value'])){
-        $url = $node->field_redirect_link['und'][0]['value'];
+      $url = $node->field_redirect_link['und'][0]['value'];
       }else{
-        $url = url('node/'.$node->nid, array('absolute' => TRUE,'alias'=>TRUE));
+      $url = url('node/'.$node->nid, array('absolute' => TRUE,'alias'=>TRUE));
       }      
       if(isset($node->field_image2['und'][0]['uri'])){
-        $picurl = file_create_url($node->field_image2['und'][0]['uri']);
+      $picurl = file_create_url($node->field_image2['und'][0]['uri']);
       }elseif(isset($node->field_image['und'][0]['uri'])){
-        $picurl = file_create_url($node->field_image['und'][0]['uri']);
+      $picurl = file_create_url($node->field_image['und'][0]['uri']);
+      }else{
+      $info = field_info_instance('node', 'field_image2', 'article');
+        if (!empty($info) && $info['settings']['default_image'] > 0){
+          $default_img_fid  = $info['settings']['default_image'];
+          $default_img_file = file_load($default_img_fid);
+      }
+      $picurl = file_create_url($default_img_file->uri);  
       }
       $count++;
       if($count == count($nodes)){//第一个不用2图
-        if(isset($node->field_image['und'][0]['uri'])){
-          $picurl = file_create_url($node->field_image['und'][0]['uri']);   
-        }else{//default img!!
-          $info = field_info_instance('node', 'field_image', 'article');
-          if (!empty($info) && $info['settings']['default_image'] > 0){
-            $default_img_fid  = $info['settings']['default_image'];
-            $default_img_file = file_load($default_img_fid);
-          }
-          $picurl = file_create_url($default_img_file->uri);  
+      if(isset($node->field_image['und'][0]['uri'])){
+        $picurl = file_create_url($node->field_image['und'][0]['uri']);   
+      }else{//default img!!
+        $info = field_info_instance('node', 'field_image', 'article');
+        if (!empty($info) && $info['settings']['default_image'] > 0){
+          $default_img_fid  = $info['settings']['default_image'];
+          $default_img_file = file_load($default_img_fid);
         }
+        $picurl = file_create_url($default_img_file->uri);  
       }
+      }
+      $desc = strlen($node->body[LANGUAGE_NONE][0]['summary'])?truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['summary']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1):truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
       $img = array(
-          'Title'=> $node->title,
-          'Description'=>strlen($node->body[LANGUAGE_NONE][0]['summary'])?truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['summary']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1):truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1),
-          'PicUrl'=> $picurl,
-          'Url'=> $url,
-        );
+        'Title'=> $node->title,
+        'Description'=>$desc,
+        'PicUrl'=> $picurl,
+        'Url'=> $url,
+      );
       $news[] = $img;
-    } 
-    $news = array_reverse($news);
+      } 
+      $news = array_reverse($news);
+    }
+   
 
     //get promote!
     if($counts[1]>0)
@@ -353,9 +364,10 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
       }else{
         $url = url('node/'.$node->nid, array('absolute' => TRUE,'alias'=>TRUE));
       }
+      $desc = strlen($node->body[LANGUAGE_NONE][0]['summary'])?truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['summary']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1):truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
       $img = array(
           'Title'=> $node->title,
-          'Description'=> $node->title,
+          'Description'=>$desc,
           'PicUrl'=> file_create_url($node->field_image['und'][0]['uri']),
           'Url'=> $url,
         );
