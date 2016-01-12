@@ -45,7 +45,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
       return $resources;
     }
     if($keyword =='700'&&isset($enabled_resources[$keyword]) && $enabled_resources[$keyword]){
-      $nodes = dale_get_mp_nodes('audio_resource', 100,NULL,array($account->uid,1));
+      $nodes = dale_get_mp_nodes('audio_resource', 100,NULL,array($account->uid,1),NODE_PROMOTED);
       $return_menu = "--------700网络电台--------";
       foreach ($nodes as $key => $node) {   
          $return_menu .="\n【700". $node->nid ."】".$node->title;
@@ -119,7 +119,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
         //http://www.lizhi.fm/api/radio_audios?band=43136&s=0&l=365
         $html = json_decode($node_body);
         $sound_ids = array_reverse($html); 
-        $index = (date('z')-17) % count($sound_ids);
+        $index = (date('z')) % count($sound_ids);
         if (date('i') > 30) {
           $index++;
         }
