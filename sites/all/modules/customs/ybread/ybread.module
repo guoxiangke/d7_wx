@@ -62,7 +62,7 @@ function get_last_node_json($content_type = 'lingming',$title = '灵命日粮',$
       'Title'=> '【'.$title.'】'.$node->title,
       'Description'=> truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 150, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1),
       'PicUrl'=> $picurl,
-      'Url'=> url('lingming', array('absolute' => TRUE,'alias'=>TRUE)),
+      'Url'=> url('node/'.$node->nid, array('absolute' => TRUE,'alias'=>TRUE)),
     );
     $news[] = $img;
   }
