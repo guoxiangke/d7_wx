@@ -33,6 +33,122 @@ function mp_service_callback($account){
 
 function _mp_service_process_text(&$weObj,$account){
 	$ori_keyword = trim($weObj->getRevContent());
+  if($account->uid == 8 && $ori_keyword=='hi'){
+    $openid = $weObj->getRev()->getRevFrom();
+    $user_info = $weObj->getUserInfo($openid);
+    // watchdog('user_info', '<pre>'.print_r($user_info,1), array(), WATCHDOG_NOTICE, 'link');
+    $user_name = $user_info['nickname'];
+    //if 用户不存在，则创建新用户！
+    $mail = $user_info['openid'].'@wechat.bind';
+    $account = user_load_by_mail($mail);
+    if(!$account){
+      // $response = drupal_http_request($user_info['headimgurl']);
+      // if ($response->code == 200){
+      //   $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'_0.jpg');
+      // }
+      $count = 0;
+      while(user_load_by_name($user_name)){
+        // $user_name = $user_name.rand(0, 100);
+        $user_name = $user_info['nickname'].'_'.$count;
+        $count ++;
+      }
+      $pass = $user_info['openid'];
+      $new_user = array(
+        'name' => $user_name,
+        'pass' => $pass,//user_password()
+        'mail' => $mail,
+        'init' => $mail,
+        // 'picture'=> $file->fid,  
+        'status' => 1,
+        'data'  => $user_info,
+        'roles' => array(
+          DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+          6 => 'fwh',
+        ),
+        // 'field_sex' => 1,2男 ＝》 0 男 1 女
+        'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
+        'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
+        
+      );
+      $account = user_save(null, $new_user);
+      if(!$account){
+        // drupal_set_message('账户创建失败！', 'error', FALSE);
+        watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
+      }
+        watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
+        $weObj->text("亲，系统已经为你创建了账户，请再次点击【生成二维码】[握手]\n看见小(qing)永(shao)累(hou)趴(zai)后(shi)[流泪]\n请您等待5-4-3-2-1秒后再次点击！[抱拳]")->reply();  
+        return; 
+    }
+
+    $file_path = DRUPAL_ROOT.'/sites/default/files/QR/';
+    if (!is_dir($file_path)) {
+      mkdir($file_path, 0777, true);
+    }
+    $qr = $file_path.'QR_'.$account->uid.'.jpg';
+    // watchdog('qr', $qr, array(), WATCHDOG_NOTICE, 'link');
+    // $qr_url = 'http://121.41.79.122/mp/sites/default/files/QR_'.$account->uid.'.png';
+    // if(@get_headers($qr_url)[0] == 'HTTP/1.1 404 Not Found'){
+    if(!file_exists($qr)){
+      $weObj->text($user_name."小永正在为您定制二维码，等待3秒后再来获取吧！[握手]")->reply();
+      $return =  $weObj->getQRCode($account->uid,$type=0,$expire=2592000); 
+      $qr_remote = $weObj->getQRUrl($return['ticket']);
+      //TODO
+      $x = 600;
+      $y = 1285;
+      $rh = 100;
+
+      $A = dirname(__FILE__).'/images/dyh_s.jpg';
+      $B = $qr_remote;
+      $im1 = imagecreatefromstring(file_get_contents($A));
+      $im2 = imagecreatefromstring(file_get_contents($B));
+       
+      imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
+      // imageGif($im1);return;
+      // imageGif($im1,'sites/default/files/test.gif');
+      // $x = 60;
+      // $y = 1400;
+      $x = 60;
+      $y = 1350;
+      $rh = 100;
+
+      // $A = $im1;
+      $B = $user_info['headimgurl'];
+      // $im1 = imagecreatefromstring(file_get_contents($A));
+      $image = imagecreatefromstring(file_get_contents($B));
+      $percent = 0.4;
+
+      // 获取新的尺寸
+      // list() = getimagesize($filename);
+      $width = imagesx($image);
+      $height = imagesy($image);
+      $new_width =  $width* $percent;
+      $new_height = $height* $percent;
+
+      // 重新取样
+      $image_p = imagecreatetruecolor($new_width, $new_height);
+      // $image = imagecreatefromjpeg($filename);
+      imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+      $im2 = $image_p;//imagecreatefromstring(file_get_contents($B));
+       
+      imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
+      imagejpeg($im1,'sites/default/files/QR/QR_'.$account->uid.'.jpg');
+      //END
+    }else{
+      set_time_limit(0);
+      $data= array('media'=>'@'.$qr);
+      $return = $weObj->uploadMedia($data,'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
+      // watchdog('return', '<pre>'.print_r($return,1), array(), WATCHDOG_NOTICE, 'link');
+      if(isset($return['media_id'])){
+        $weObj->image($return['media_id'])->reply();
+      }else{
+        $weObj->text("对不起，请再试一次！[握手]")->reply();  
+      }
+      return;
+    }
+    return;
+  }
+  // getQRUrl($ticket) 获取二维码图片地址
   if(in_array(strlen($ori_keyword),array(1437,72,164,1160,407))){
     //评论留言成功！ 审核后会出现在这里哦！72
     //in_array($account->uid, array(1,8,12))&&
@@ -70,76 +186,76 @@ function _mp_service_process_text(&$weObj,$account){
 
 
   // $emoj= array(
-  //   '微笑'=>':)',
-  //   '伤心'=>':~',
-  //   '美女'=>':B',
-  //   '发呆'=>':|',
-  //   '墨镜'=>'8-)',
-  //   '哭'=>':<',
-  //   '羞'=>':$',
-  //   '哑'=>':X',
-  //   '睡'=>':Z',
-  //   '哭'=>':’(',
-  //   '囧'=>':-|',
-  //   '怒'=>':@',
-  //   '调皮'=>':P',
-  //   '笑'=>':D',
-  //   '惊讶'=>':O',
-  //   '难过'=>':(',
-  //   '酷'=>':+',
-  //   '汗'=>'–b',
-  //   '抓狂'=>':Q',
-  //   '吐'=>':T',
-  //   '笑'=>',@P',
-  //   '快乐'=>',@-D',
-  //   '奇'=>':d',
-  //   '傲'=>',@o',
-  //   '饿'=>':g',
-  //   '累'=>'|-)',
-  //   '吓'=>':!',
-  //   '汗'=>':L',
-  //   '高兴'=>':>',
-  //   '闲'=>':,@',
-  //   '努力'=>',@f',
-  //   '骂'=>':-S',
-  //   '疑问'=>'?',
-  //   '秘密'=>',@x',
-  //   '乱'=>',@@',
-  //   '疯'=>':8',
-  //   '哀'=>',@!',
-  //   '鬼'=>'!!!',
-  //   '打击'=>'xx',
-  //   'bye'=>'bye',
-  //   '汗'=>'wipe',
-  //   '抠'=>'dig',
-  //   '鼓掌'=>'handclap',
-  //   '糟糕'=>'&-(',
-  //   '恶搞'=>'B-)',
-  //   '左什'=>'<@',
-  //   '右什'=>'@>',
-  //   '累'=>':-O',
-  //   '看'=>'>-|',
-  //   '很难'=>'P-(',
-  //   '难过'=>':’|',
-  //   '坏'=>'X-)',
-  //   '亲'=>':*',
-  //   '吓'=>'@x',
-  //   '可怜'=>'8*',
-  //   '刀'=>'pd',
-  //   '水果'=>'<W>',
-  //   '酒'=>'beer',
-  //   '篮球'=>'basketb',
-  //   '乒乓'=>'oo',
-  //   '咖啡'=>'coffee',
-  //   '美食'=>'eat',
-  //   '动物'=>'pig',
-  //   '鲜花'=>'rose',
-  //   '枯'=>'fade',
-  //   '唇'=>'showlove',
-  //   '爱'=>'heart',
-  //   '分手'=>'break',
-  //   '生日'=>'cake',
-  //   '电'=>'li',
+    //   '微笑'=>':)',
+    //   '伤心'=>':~',
+    //   '美女'=>':B',
+    //   '发呆'=>':|',
+    //   '墨镜'=>'8-)',
+    //   '哭'=>':<',
+    //   '羞'=>':$',
+    //   '哑'=>':X',
+    //   '睡'=>':Z',
+    //   '哭'=>':’(',
+    //   '囧'=>':-|',
+    //   '怒'=>':@',
+    //   '调皮'=>':P',
+    //   '笑'=>':D',
+    //   '惊讶'=>':O',
+    //   '难过'=>':(',
+    //   '酷'=>':+',
+    //   '汗'=>'–b',
+    //   '抓狂'=>':Q',
+    //   '吐'=>':T',
+    //   '笑'=>',@P',
+    //   '快乐'=>',@-D',
+    //   '奇'=>':d',
+    //   '傲'=>',@o',
+    //   '饿'=>':g',
+    //   '累'=>'|-)',
+    //   '吓'=>':!',
+    //   '汗'=>':L',
+    //   '高兴'=>':>',
+    //   '闲'=>':,@',
+    //   '努力'=>',@f',
+    //   '骂'=>':-S',
+    //   '疑问'=>'?',
+    //   '秘密'=>',@x',
+    //   '乱'=>',@@',
+    //   '疯'=>':8',
+    //   '哀'=>',@!',
+    //   '鬼'=>'!!!',
+    //   '打击'=>'xx',
+    //   'bye'=>'bye',
+    //   '汗'=>'wipe',
+    //   '抠'=>'dig',
+    //   '鼓掌'=>'handclap',
+    //   '糟糕'=>'&-(',
+    //   '恶搞'=>'B-)',
+    //   '左什'=>'<@',
+    //   '右什'=>'@>',
+    //   '累'=>':-O',
+    //   '看'=>'>-|',
+    //   '很难'=>'P-(',
+    //   '难过'=>':’|',
+    //   '坏'=>'X-)',
+    //   '亲'=>':*',
+    //   '吓'=>'@x',
+    //   '可怜'=>'8*',
+    //   '刀'=>'pd',
+    //   '水果'=>'<W>',
+    //   '酒'=>'beer',
+    //   '篮球'=>'basketb',
+    //   '乒乓'=>'oo',
+    //   '咖啡'=>'coffee',
+    //   '美食'=>'eat',
+    //   '动物'=>'pig',
+    //   '鲜花'=>'rose',
+    //   '枯'=>'fade',
+    //   '唇'=>'showlove',
+    //   '爱'=>'heart',
+    //   '分手'=>'break',
+    //   '生日'=>'cake',
+    //   '电'=>'li',
   // );
   // $keyword = str_replace('/:', '', $keyword);
   // $keyword = str_replace($emoj,$text,$keyword);
@@ -199,6 +315,66 @@ function _mp_service_process_event($weObj,$account){
   if(!$event){
     break;
   }
+   // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
+  if($account->uid == 8 && $event['event']=='SCAN'){
+    $uid = $event['key'];
+    // $user = user_load($uid);
+    // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
+    $openid = $weObj->getRev()->getRevFrom();
+    $user_info = $weObj->getUserInfo($openid);
+    $user_name = $user_info['nickname'];
+    //if 用户不存在，则创建新用户！
+    $mail = $user_info['openid'].'@wechat.bind';
+    $account = user_load_by_mail($mail);
+    if(!$account){
+      // $response = drupal_http_request($user_info['headimgurl']);
+      // if ($response->code == 200){
+      //   $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'_0.jpg');
+      // }
+      $count = 0;
+      while(user_load_by_name($user_name)){
+        // $user_name = $user_name.rand(0, 100);
+        $user_name = $user_info['nickname'].'_'.$count;
+        $count ++;
+      }
+      $pass = $user_info['openid'];
+      $new_user = array(
+        'name' => $user_name,
+        'pass' => $pass,//user_password()
+        'mail' => $mail,
+        'init' => $mail,
+        // 'picture'=> $file->fid,  
+        'status' => 1,
+        'data'  => $user_info,
+        'roles' => array(
+          DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+          6 => 'fwh',
+        ),
+        // 'field_sex' => 1,2男 ＝》 0 男 1 女
+        'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
+        'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
+        'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
+        
+      );
+      $account = user_save(null, $new_user);
+      if(!$account){
+        // drupal_set_message('账户创建失败！', 'error', FALSE);
+        watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
+      }
+      watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
+      // $friend_name = db_result(db_query("SELECT name FROM {users} WHERE uid = '%s'", $uid));{".$friend_name."
+      $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都已获得100积分，同时邀请Ta参加活的朋友也将获得5积分，\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n点击【我的活动】菜单，生成您专属的二维码，呼朋唤友，踊跃参与吧[调皮]")->reply();
+      //add points!
+      return; 
+    }else{
+      if($uid == $account->uid){
+        $weObj->text("赶快分享本图片到朋友圈、好友、群、QQ即可邀请他们来参加活动。\n推荐1个您就有100积分的奖励哦！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n呼朋唤友，踊跃参与吧[调皮]")->reply();
+      };
+      $weObj->text("老朋友您好，此次扫描无效。请点击【我的活动】菜单，生成您专属的二维码，来邀请新朋友赚积分赢大奖吧！\n推荐有100积分的奖励哦！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n呼朋唤友，踊跃参与吧[调皮]")->reply();
+      return;
+    }
+    return;
+  }
   if(!isset($event['key'])){
     ga_push_add_event(array(
        'category'        => 'event',
@@ -227,8 +403,72 @@ function _mp_service_process_event($weObj,$account){
   }
 	//add default behavior
   if($event['event']=='subscribe'){
-    $copyright = copyright($account);
-    $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！[握手]').$copyright);
+    if($account->uid == 8){
+      // watchdog($event['key'], strpos($event['key'],'qrscene_'), array(), WATCHDOG_NOTICE, 'link');
+      if(isset($event['key']) && strpos($event['key'],'qrscene_')!==FALSE){
+        $uid = str_replace('qrscene_', '', $event['key']);
+        // $user = user_load($uid);
+        // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
+        $openid = $weObj->getRev()->getRevFrom();
+        $user_info = $weObj->getUserInfo($openid);
+        $user_name = $user_info['nickname'];
+        //if 用户不存在，则创建新用户！
+        $mail = $user_info['openid'].'@wechat.bind';
+        $account = user_load_by_mail($mail);
+        if(!$account){
+          // $response = drupal_http_request($user_info['headimgurl']);
+          // if ($response->code == 200){
+          //   $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'_0.jpg');
+          // }
+          $count = 0;
+          while(user_load_by_name($user_name)){
+            // $user_name = $user_name.rand(0, 100);
+            $user_name = $user_info['nickname'].'_'.$count;
+            $count ++;
+          }
+          $pass = $user_info['openid'];
+          $new_user = array(
+            'name' => $user_name,
+            'pass' => $pass,//user_password()
+            'mail' => $mail,
+            'init' => $mail,
+            // 'picture'=> $file->fid,  
+            'status' => 1,
+            'data'  => $user_info,
+            'roles' => array(
+              DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+              6 => 'fwh',
+            ),
+            // 'field_sex' => 1,2男 ＝》 0 男 1 女
+            'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
+            'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
+            'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
+            
+          );
+          $account = user_save(null, $new_user);
+          if(!$account){
+            // drupal_set_message('账户创建失败！', 'error', FALSE);
+            watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
+          }
+          watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
+            
+          $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：kiddle，CD，图书。。。谢谢参与！")->reply();
+          //add points!
+          return; 
+        }else{
+          if($uid == $account->uid){
+            $weObj->text("请您分享本图片到朋友圈或发给好友或群组即可邀请他们来参加活动。\n推荐100积分的奖励哦！奖品有：kiddle，CD，图书...谢谢参与！")->reply();
+          };
+          $weObj->text("老朋友您好，此次扫描无效，不过小永还是会给您和{".$user->name ."}都加1积分的。请点击【我的活动】菜单，生成您专属的二维码，来邀请新朋友赚积分赢大奖吧！")->reply();
+          return;
+        }
+      }
+    }else{
+      $copyright = copyright($account);
+      $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！[握手]').$copyright);
+    }
+    // [event] => subscribe
+    // [key] => qrscene_1079
   }elseif($event['event']=='WifiConnected'){
     // watchdog('mp_service_pages', 'WifiConnected event trigger!', array(), WATCHDOG_NOTICE, 'link');
     $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎来到我家！[握手]'));
