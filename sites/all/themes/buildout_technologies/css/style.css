@@ -115,6 +115,9 @@
     margin-bottom: 5px;
     text-indent: 0em;
 }
+#content-wrapper li p{
+    text-indent: 0em;
+}
 
 #first-time {
 	display: none;
