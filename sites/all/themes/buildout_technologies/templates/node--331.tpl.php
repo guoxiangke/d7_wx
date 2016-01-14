@@ -103,8 +103,8 @@
 	   		<tr>
 				  <th class="danger">奖券ID</th>
 				  <th class="danger">奖级</th>
-				  <th class="danger">获奖者</th>
-				  <th class="danger">获奖者ID</th>
+				  <th class="danger">抽奖者</th>
+				  <th class="danger">抽奖者ID</th>
 				</tr>
 				<?php 
 					$result = db_select('hd', 'c')
