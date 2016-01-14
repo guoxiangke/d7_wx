@@ -10,11 +10,11 @@ function ybread_page(){
 	$now = 0;
 	$last = 0;
   if(isset($result->nid)){
-	  $now = time();
+	  $now = date('z');
 	  $hour = date('G',time());
-	  $last = $result->created;
+	  $last = date('z',$result->created);
   }
-  if(($now - $last >= 80000 && $hour >= 6)|| !isset($result->nid)) {
+  if(($now - $last >= 1 && $hour >= 6)|| !isset($result->nid)) {
 	  $html = file_get_html('http://simplified-odb.org/today/');
 	  watchdog('ybread-hour1', $hour, array(), WATCHDOG_NOTICE, 'link');
 	  watchdog('ybread-now1', $now - $last, array(), WATCHDOG_NOTICE, 'link');
@@ -76,14 +76,14 @@ function grace365_page(){
 	if(isset($result->nid)) $nid = $result->nid;
 	// dvm($result);
   //dvm(12*60*60);
-	$now = time();
+	$now = date('z');
 	$last = 0;
 	$hour = date('G',time());
   if(isset($result->nid)){
-	  $last = $result->created;
+	  $last = date('z',$result->created);
   }
   if(isset($_POST['link']))
-  if(($now - $last >= 43200 && $hour >= 1 && $_POST['link']) || !isset($result->nid)) {
+  if(($now - $last >= 1 && $_POST['link']) || !isset($result->nid)) {
 	  watchdog('ybread-hour', $hour, array(), WATCHDOG_NOTICE, 'link');
 	  watchdog('ybread-now', $now - $last, array(), WATCHDOG_NOTICE, 'link');
 		// $link = 'http://mp.weixin.qq.com/s?__biz=MzA5NTI4MzM2Mg==&mid=416574017&idx=1&sn=cd31b45978a42bd5265e2aa91a752986&3rd=MzA3MDU4NTYzMw==&scene=6#rd';
