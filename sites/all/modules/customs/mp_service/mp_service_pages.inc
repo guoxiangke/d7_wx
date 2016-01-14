@@ -138,7 +138,7 @@ function _mp_service_process_text(&$weObj,$account){
       set_time_limit(0);
       $data= array('media'=>$qr);
       $return = $weObj->uploadMedia($data,'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
-      watchdog('return', '<pre>'.print_r($return,1), array(), WATCHDOG_NOTICE, 'link');
+      // watchdog('return', '<pre>'.print_r($return,1), array(), WATCHDOG_NOTICE, 'link');
       if(isset($return['media_id'])){
         $weObj->image($return['media_id'])->reply();
       }else{
@@ -370,6 +370,7 @@ function _mp_service_process_event($weObj,$account){
       if($uid == $account->uid){
         $weObj->text("赶快分享本图片到朋友圈、好友、群、QQ即可邀请他们来参加积分有奖活动！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n呼朋唤友，踊跃参与吧[转圈]")->reply();
       };
+        watchdog('老朋友', $account->uid, array(), WATCHDOG_NOTICE, 'error');
       $weObj->text("老朋友您好，此次扫描无效。请点击【活动】→二维码，来邀请新朋友赚积分赢大奖吧！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n呼朋唤友，踊跃参与吧[转圈]")->reply();
       return;
     }
