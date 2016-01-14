@@ -76,7 +76,7 @@ function _mp_service_process_text(&$weObj,$account){
         watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
       }
         watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
-        $weObj->text("亲，系统已经为你创建了账户，请再次点击【生成二维码】[握手]\n看见小(qing)永(shao)累(hou)趴(zai)后(shi)[流泪]\n请您等待5-4-3-2-1秒后再次点击！[抱拳]")->reply();  
+        $weObj->text("恭喜您获得100积分，请点击【活动】→二维码\n看见【请稍后再试】\n(小永累趴后)/:shake\n等3秒后再次点击！[强]")->reply();  
         return; 
     }
 
@@ -97,7 +97,7 @@ function _mp_service_process_text(&$weObj,$account){
       $y = 1285;
       $rh = 100;
 
-      $A = dirname(__FILE__).'/images/dyh_s.jpg';
+      $A = dirname(__FILE__).'/images/fwh_small.jpg';
       $B = $qr_remote;
       $im1 = imagecreatefromstring(file_get_contents($A));
       $im2 = imagecreatefromstring(file_get_contents($B));
@@ -138,7 +138,7 @@ function _mp_service_process_text(&$weObj,$account){
       set_time_limit(0);
       $data= array('media'=>'@'.$qr);
       $return = $weObj->uploadMedia($data,'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
-      // watchdog('return', '<pre>'.print_r($return,1), array(), WATCHDOG_NOTICE, 'link');
+      watchdog('return', '<pre>'.print_r($return,1), array(), WATCHDOG_NOTICE, 'link');
       if(isset($return['media_id'])){
         $weObj->image($return['media_id'])->reply();
       }else{
@@ -363,14 +363,14 @@ function _mp_service_process_event($weObj,$account){
       }
       watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
       // $friend_name = db_result(db_query("SELECT name FROM {users} WHERE uid = '%s'", $uid));{".$friend_name."
-      $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都已获得100积分，同时邀请Ta参加活的朋友也将获得5积分，\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n点击【我的活动】菜单，生成您专属的二维码，呼朋唤友，踊跃参与吧[调皮]")->reply();
+      $weObj->text("恭喜您和好友都已获得100积分,奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n点击【活动】→二维码，呼朋唤友，踊跃参与吧[跳跳]")->reply();
       //add points!
       return; 
     }else{
       if($uid == $account->uid){
-        $weObj->text("赶快分享本图片到朋友圈、好友、群、QQ即可邀请他们来参加活动。\n推荐1个您就有100积分的奖励哦！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n呼朋唤友，踊跃参与吧[调皮]")->reply();
+        $weObj->text("赶快分享本图片到朋友圈、好友、群、QQ即可邀请他们来参加积分有奖活动！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n呼朋唤友，踊跃参与吧[转圈]")->reply();
       };
-      $weObj->text("老朋友您好，此次扫描无效。请点击【我的活动】菜单，生成您专属的二维码，来邀请新朋友赚积分赢大奖吧！\n推荐有100积分的奖励哦！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n呼朋唤友，踊跃参与吧[调皮]")->reply();
+      $weObj->text("老朋友您好，此次扫描无效。请点击【活动】→二维码，来邀请新朋友赚积分赢大奖吧！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kiddle，CD，图书...</a>\n呼朋唤友，踊跃参与吧[转圈]")->reply();
       return;
     }
     return;
@@ -459,7 +459,7 @@ function _mp_service_process_event($weObj,$account){
           if($uid == $account->uid){
             $weObj->text("请您分享本图片到朋友圈或发给好友或群组即可邀请他们来参加活动。\n推荐100积分的奖励哦！奖品有：kiddle，CD，图书...谢谢参与！")->reply();
           };
-          $weObj->text("老朋友您好，此次扫描无效，不过小永还是会给您和{".$user->name ."}都加1积分的。请点击【我的活动】菜单，生成您专属的二维码，来邀请新朋友赚积分赢大奖吧！")->reply();
+          $weObj->text("老朋友您好，此次扫描无效。请点击【活动】→二维码，来邀请新朋友赚积分赢大奖吧！")->reply();
           return;
         }
       }
