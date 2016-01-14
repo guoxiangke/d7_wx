@@ -1135,7 +1135,14 @@ class Wechat
 		curl_setopt($oCurl, CURLOPT_URL, $url);
 		curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1 );
 		curl_setopt($oCurl, CURLOPT_POST,true);
-		curl_setopt($oCurl, CURLOPT_POSTFIELDS,$strPOST);
+		if($post_file){//TODO check version of php! 
+			//PHP Version 5.5.9-1ubuntu4.11 + 
+			//PHP Version 5.6.17-1+deb.sury.org~precise+2
+			$args['media'] = new CurlFile($param['media']);
+			curl_setopt($oCurl, CURLOPT_POSTFIELDS, $args);
+		}else{
+			curl_setopt($oCurl, CURLOPT_POSTFIELDS,$strPOST);
+		}
 		$sContent = curl_exec($oCurl);
 		$aStatus = curl_getinfo($oCurl);
 		curl_close($oCurl);

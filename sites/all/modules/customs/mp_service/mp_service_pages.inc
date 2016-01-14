@@ -136,7 +136,7 @@ function _mp_service_process_text(&$weObj,$account){
       //END
     }else{
       set_time_limit(0);
-      $data= array('media'=>'@'.$qr);
+      $data= array('media'=>$qr);
       $return = $weObj->uploadMedia($data,'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
       watchdog('return', '<pre>'.print_r($return,1), array(), WATCHDOG_NOTICE, 'link');
       if(isset($return['media_id'])){
