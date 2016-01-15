@@ -33,7 +33,8 @@ function mp_service_callback($account){
 
 function _mp_service_process_text(&$weObj,$account){
 	$ori_keyword = trim($weObj->getRevContent());
-  if($account->uid == 8 && in_array($ori_keyword, array('hi','jf','cj'))){
+  if($account->uid == 8 && in_array($ori_keyword, array('qr','jf','cj'))){
+    // $weObj->transfer_customer_service()->reply();
     $openid = $weObj->getRev()->getRevFrom();
     $user_info = $weObj->getUserInfo($openid);
     // watchdog('user_info', '<pre>'.print_r($user_info,1), array(), WATCHDOG_NOTICE, 'link');
@@ -76,7 +77,7 @@ function _mp_service_process_text(&$weObj,$account){
         watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
       }
         watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
-        $weObj->text("恭喜您获得100积分，请点击【活动】→二维码\n看见【请稍后再试】\n(小永累趴后)/:shake\n等3秒后再次点击！[强]")->reply();  
+        $weObj->text("恭喜您获得100积分，请点击【送大奖】→二维码\n看见【请稍后再试】\n(小永累趴后)/:shake\n等5秒后再次点击！[强]")->reply();  
         return; 
     }
     if($ori_keyword == 'jf'){//积分查询
@@ -92,22 +93,23 @@ function _mp_service_process_text(&$weObj,$account){
       if($count){
         $ids = '';
           while($record = $result->fetchAssoc()) {
-            $ids .= ','.$record['id'];
+            $ids .= $record['id'].',';
           }
         $jf = '您已抽奖'.$count.'次，奖券ID分别是：'.$ids;
       }
       ;
-      $weObj->text("您已获得".userpoints_get_current_points($account->uid)."积分，邀请1人100积分！\n满1000积分就可以抽奖1次！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kindle，CD，图书...</a>".$jf)->reply();  
+      $weObj->text("您已获得".userpoints_get_current_points($account->uid)."积分，邀请1人100积分！满1000积分就可以抽奖1次！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]\n".$jf)->reply();  
         return; 
     }
     if($ori_keyword == 'cj'){//抽奖
 
-        // $weObj->text("您抽奖的ID是 ，谢谢参与，！邀请1人100积分！\n满1000积分就可以再次抽奖啦！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kindle，CD，图书...</a>[拳头]")->reply();  
+        // $weObj->text("您抽奖的ID是 ，谢谢参与，！邀请1人100积分！\n满1000积分就可以再次抽奖啦！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮][拳头]")->reply();  
         // return;
       $jf = userpoints_get_current_points($account->uid);
       if($jf<1000){
-         $cj = '您积分是'.$jf.'，不足1000，不可抽奖[可怜]，赶快分享二维码邀请朋友吧[拳头]';
-         $weObj->text($cj."，谢谢参与，！邀请1人100积分！\n满1000积分就可以再次抽奖啦！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kindle，CD，图书...</a>[拳头]")->reply(); 
+         $jr = (1000-$jf)/100;
+         $cj = '您当前积分是'.$jf."，不足1000，不可抽奖[可怜]赶快分享二维码邀请朋友吧！";
+         $weObj->text($cj."再邀请【".$jr."】人可以抽奖啦！[拳头]\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]")->reply(); 
       }else{
         // 积分--1000
         {     
@@ -116,14 +118,24 @@ function _mp_service_process_text(&$weObj,$account){
           
           $award3 = array('4940','1610','3202','1745','553','3059','5279','5834','2609','1669','3264','1475','3297','5485','2985','3062','3247','4042','4669','3494','5597','3539','3807','3301','1499','376','1129','2242','2436','2844','1182','4045','45','2926','4598','3104','2204','4432','5712','3873','1695','1187','1169','4992','671','4154','2054','3918','2195','722','1411','1791','4260','5218','5092','5758','5593','220','2000','2029','3064','3181','73','3109','106','4671','212','2310','3102','5924','182','4797','1110','1350','3788','1781','5504','5841','5698','1698','563','1108','3489','4822','325','2580','4580','5918','2800','579','1946','5863','3760','2019','2971','3865','689','3183','174','3791','3107','356','2588','4217','1706','375','5997','1209','216','5694','2907','778','802','395','5600','1127','2975','4180','1044','5774','4758','2990','5637','2518','5008','2608','382','5697','5790','556','3488','2897','912','75','1113','2617','450','1109','3825','665','803','732','1443','1604','1126','1042','2731','4101','5221','3774','3875','3979','763','3512','496','5771','119','878','5467','5909','1434','2954','2805','2345','3028','3917','4962','3477','5026','2787','4142','5828','3518','5584','1432','4644','625','4162','2744','5846','1936','619','3824','2699','4130','4320','2469','4249','5197','1935','4158','631','4889','962','1917','4879','1937','5394','3904','4723','3535','3732','2240','3118','5164','884','3743','3326','3627','3588','5261','4246','1412','1959','2376','5731','4428','624','4928','363','4781','5251','5743','2533','1168','4621','4469','561','2525','3192','4095','257','5431','1213','5420','314','4956','2745','3941','2544','2006','2187','3955','3964','4562','3686','2391','5186','2613','2753','3966','2170','2004','3709','4703','3171','2330','3731','4854','1826','5111','5793','3039','4530','107','1994','1275','4048','4538','3280','235','2492','1244','4796','177','3635','3982','2790','388','1947','4960','5656','3662','5562','1985','833','3293','839','1195','5118','5949','988','2157','4479','1095','4150','5754','5143','2687','3033','5377','5179','4277','4173','5356','1911','2154','2146','2299','1105','4689','3756','4766','4251','5740','5598','1543','578','793','660','527','1780','2816','5006','2874','966','4759','2016','3653','1792','1393','2832','68','5565','2188','1979','1718','4333','5818','5437','2966','3574','4202','1216','3313','3800','2758','3891','4593','3418','4417','372','233','3422','3246','1199','2181','5262','4852','3972','654','1683','4040','219','3870','18','2202','4295','1754','1638','1260','5327','5840','2476','2640','3640','5233','530','2232','2650','4947','2604','2883','2369','5850','4082','4549','2933','2521','5765','4616','560','5983','2485','1920','4687','4872','3673','132','3000','165','2607','5640','3805','1839','170','36','4489','5116','1372','1485','2489','5453','34','1599','2386','2554','1364','1001','3113','1347','3486','3690','3266','2173','2562','939','2497','2693','3938','2662','5299','3578','466','1138','3747','501','5626','2863','3140','997','4347','5629','4380','1227','2835','934','2591','3835','4046','3937','1321','1736','1202','3493','4297','2140','5990','990','78','2651','288','3655','3116','1425','1402','3617','1051','4264','756','2047','2611','385','991','1612','5331','1925','3166','5971','2138','4486','3340','5350','3755','2877','5801','5488','490','2297','479','2101','1628','2403','302','4793','2373','2440','3279','4079','5779');
         }
-        $result = db_select('hd', 'c')
+        if(date('z')>37){
+         $result = db_select('hd', 'c')
             ->fields('c',array('id'))
             ->condition('uid', 0)
             ->range(0,1)    // Limit the result set by 1 record only
             ->orderRandom() // Sort by random
             ->execute()->fetchAssoc();
+        }else{
+          $result = db_select('hd', 'c')
+            ->fields('c',array('id'))
+            ->condition('uid', 0)
+            ->condition('award', 1,'!=')
+            ->range(0,1)    // Limit the result set by 1 record only
+            ->orderRandom() // Sort by random
+            ->execute()->fetchAssoc();
+        }
         $id = $result['id'];
-        $cj = '';
+        $cj = '四等奖';
         if($id == $award1) $cj = '一等奖';
         if(in_array($id, $award2)) $cj = '二等奖';
         if(in_array($id, $award3)) $cj = '三等奖';
@@ -131,6 +143,7 @@ function _mp_service_process_text(&$weObj,$account){
           ->fields(array(
             'uid' => $account->uid,
             'name' => $account->name,
+            'timestamp' => REQUEST_TIME,
           ))
           ->condition('id', $id)
           ->execute();
@@ -142,7 +155,9 @@ function _mp_service_process_text(&$weObj,$account){
           'description' => '抽奖ID：'.$id,
         );
         userpoints_userpointsapi($params);
-        $weObj->text("您抽奖的ID是".$id.":".$cj."，谢谢参与！邀请1人100积分！\n满1000积分就可以再次抽奖啦！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kindle，CD，图书...</a>[拳头]")->reply(); 
+        $jf = userpoints_get_current_points($account->uid);
+        $jr = (1000-$jf)/100;
+        $weObj->text("恭喜您，获得".$cj."！\n获奖ID:".$id."\n<a href='https://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=401847344&idx=1&sn=e4d35980aac83ddb886217490f792bac&scene=0&previewkey=Y%2BJxXtQNbhOmHOrSGz3dT8NS9bJajjJKzz%2F0By7ITJA%3D&key=41ecb04b0511100340d9afd974989c2139538a99bbd5ccb53385abcd768a2a4db3d28a04c0281e970b9f1d7f35de5b43&ascene=0&uin=MTYyMjI5NjYwMA%3D%3D&devicetype=iMac+MacBookPro11%2C3+OSX+OSX+10.10.5+build(14F1509)&version=11020201&pass_ticket=QO%2BJun55%2FM4xK1dnGR6oU3dLNZrBZEvpGhM8fkvjIUtfIXzCoZQr56DYNGixVFPO'>请点此添加领奖公众号：永不止息领奖</a>\n您还剩余".$jf."积分，在邀请".$jr."人就可以再次抽奖啦！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]"."[拳头]")->reply(); 
 
       }
       return; 
@@ -204,7 +219,7 @@ function _mp_service_process_text(&$weObj,$account){
       //END
     }else{
       set_time_limit(0);
-      $data= array('media'=>$qr);
+      $data= array('media'=>$qr);//'@'.
       $return = $weObj->uploadMedia($data,'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
       // watchdog('return', '<pre>'.print_r($return,1), array(), WATCHDOG_NOTICE, 'link');
       if(isset($return['media_id'])){
@@ -431,15 +446,36 @@ function _mp_service_process_event($weObj,$account){
       }
       watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
       // $friend_name = db_result(db_query("SELECT name FROM {users} WHERE uid = '%s'", $uid));{".$friend_name."
-      $weObj->text("恭喜您和好友都已获得100积分,奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kindle，CD，图书...</a>\n点击【活动】→二维码，呼朋唤友，踊跃参与吧[跳跳]")->reply();
+      $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n点击【送大奖】→二维码，呼朋唤友，踊跃参与吧[跳跳]")->reply();
       //add points!
       return; 
     }else{
       if($uid == $account->uid){
-        $weObj->text("赶快分享本图片到朋友圈、好友、群、QQ即可邀请他们来参加积分有奖活动！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kindle，CD，图书...</a>\n呼朋唤友，踊跃参与吧[转圈]")->reply();
+        $weObj->text("赶快分享本图片到朋友圈、好友、群、QQ即可邀请他们来参加积分有奖活动！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n呼朋唤友，踊跃参与吧[转圈]")->reply();
       };
+      if(!in_array('fwh', $account->roles)){
+        $account->roles['6'] = 'fwh';
+        user_save($account);
+        $params = array(
+          'uid' => $account->uid,
+          'points' => 100,
+          'operation' => 'Insert',
+          'description' => '邀请者ID：'.$uid,
+        );
+        userpoints_userpointsapi($params);
+        $params = array(
+          'uid' => $uid,
+          'points' => 100,
+          'operation' => 'Insert',
+          'description' => '邀请好友：'.$account->name,
+        );
+        userpoints_userpointsapi($params);
+        $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n点击【送大奖】→二维码，呼朋唤友，踊跃参与吧[跳跳]")->reply();
+      }else{
         watchdog('老朋友', $account->uid, array(), WATCHDOG_NOTICE, 'error');
-      $weObj->text("老朋友您好，此次扫描无效。请点击【活动】→二维码，来邀请新朋友赚积分赢大奖吧！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kindle，CD，图书...</a>\n呼朋唤友，踊跃参与吧[转圈]")->reply();
+        $weObj->text("老朋友您好，此次扫描无效。请点击【送大奖】→二维码，来邀请[新朋友]赚积分赢大奖吧！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n呼朋唤友，踊跃参与吧[转圈]")->reply();
+
+      }
       return;
     }
     return;
@@ -521,14 +557,14 @@ function _mp_service_process_event($weObj,$account){
           }
           watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
             
-          $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：kindle，CD，图书。。。谢谢参与！")->reply();
+          $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]"."请点击【送大奖】→二维码\n看见【请稍后再试】\n(小永累趴后)/:shake\n等5秒后再次点击！[强]")->reply();
           //add points!
           return; 
         }else{
           if($uid == $account->uid){
-            $weObj->text("请您分享本图片到朋友圈或发给好友或群组即可邀请他们来参加活动。\n推荐100积分的奖励哦！奖品有：kindle，CD，图书...谢谢参与！")->reply();
+            $weObj->text("请您分享本图片到朋友圈或发给好友或群组即可邀请他们来参加活动。\n推荐100积分的奖励哦！奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]"."谢谢参与！")->reply();
           };
-          $weObj->text("老朋友您好，此次扫描无效。请点击【活动】→二维码，来邀请新朋友赚积分赢大奖吧！")->reply();
+          $weObj->text("老朋友您好，此次扫描无效。请点击【送大奖】→二维码，来邀请[新朋友]赚积分赢大奖吧！")->reply();
           return;
         }
       }
