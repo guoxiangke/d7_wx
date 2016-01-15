@@ -96,7 +96,7 @@
     ?>
   </div>
   <!-- Latest compiled and minified CSS -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
+<?php if($view_mode=='full'):?>
   <div class="panel panel-primary">
 	  <div class="panel-body table-responsive">
 	   <table class="table table-condensed">
@@ -104,7 +104,6 @@
 				  <th class="danger">奖券ID</th>
 				  <th class="danger">奖级</th>
 				  <th class="danger">抽奖者</th>
-				  <th class="danger">抽奖者ID</th>
 				</tr>
 				<?php 
 					$result = db_select('hd', 'c')
@@ -119,8 +118,7 @@
 			        <tr class="<?php if($record['uid']){echo 'success';} else{ echo ($i%2)?'':'success';}?>">
 							  <td><?php echo $record['id'];?></td>
 							  <td><?php echo $record['award'];?>等奖</td>
-							  <td><?php echo $record['name']?:'暂无';?></td>
-							  <td><?php echo $record['uid']?:'暂无';?></td>
+							  <td><?php echo $record['name']?l($record['name'],'user/'.$record['uid']):'暂无';?></td>
 							</tr>
 			        <?php
 			    }
@@ -129,6 +127,6 @@
 	   </table>
 	  </div>
 	</div>
-
+<?php endif;?>
   <?php print render($content['links']); ?> <?php print render($content['comments']); ?> </article>
 <?php endif; ?>
