@@ -111,6 +111,12 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       case 'music':
         if(!isset($wxresources[$keyword]['obj']['hgmusicurl']))
           $wxresources[$keyword]['obj']['hgmusicurl'] = $wxresources[$keyword]['obj']['musicurl'];
+        module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
+        $radios_list = liangyou_audio_list2();
+        $radios_keys = array_keys($radios_list);
+        if(in_array($ori_keyword, $radios_keys)){
+          $ori_keyword = $radios_list[$ori_keyword]['index'];
+        }
         $weObj->music('【'.$ori_keyword.'】'.$wxresources[$keyword]['obj']['title'], $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
         break;
       case 'text':
