@@ -111,6 +111,7 @@
 				    ->fields('c')
 				    ->condition('award', 0,'>')
 				    ->orderBy('award', 'ESC')
+				    ->orderBy('id', 'ESC')
 				    ->execute();
 				    $i=0;
 				  while($record = $result->fetchAssoc()) {
@@ -120,7 +121,7 @@
 							  <td><?php echo $record['id'];?></td>
 							  <td><?php echo $record['award']?:'四';?>等奖</td>
 							  <td><?php echo $record['name']?l($record['name'],'user/'.$record['uid']):'暂无';?></td>
-							  <td><?php echo $record['timestamp']?date('n/d G:i:s',$record['timestamp']+28800):'暂无';?></td>
+							  <td><?php echo $record['timestamp']?date('n/d G:i:s',$record['timestamp']):'暂无';?></td>
 							</tr>
 			        <?php
 			    }
