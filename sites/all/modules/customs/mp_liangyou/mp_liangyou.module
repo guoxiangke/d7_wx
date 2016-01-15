@@ -78,6 +78,9 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    if ($key=='se' && $offset == 0 && date('N')>5) {
 		    	$key = 'bf';
 		    }
+		    if ($key=='bc' && $offset == 0 && date('N')>5) {
+		    	$key = 'rt';
+		    }
 		    if($key=='bv') $key='mw';
 		    if($key=='cc' && $offset == 0) $offset=1;
 	    	// if($key=='603') $keyword='cc1';
