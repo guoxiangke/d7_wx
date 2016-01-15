@@ -4,7 +4,7 @@
  * Hook_wxresources
  */
 function mp_hd_wxresources($resources, $account, $keyword,$weObj){	
-  if($account->uid == 8 && in_array($keyword, array('qr','jf','cj'))){
+  if($account->uid == 8 && in_array($keyword, array('qr','jf','cj','vip'))){
     // $weObj->transfer_customer_service()->reply();
     $openid = $weObj->getRev()->getRevFrom();
     $user_info = $weObj->getUserInfo($openid);
@@ -69,18 +69,15 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         $jf = '您已抽奖'.$count.'次，奖券ID分别是：'.$ids;
       }
       ;
-      $weObj->text("您已获得".userpoints_get_current_points($account->uid)."积分，邀请1人100积分！满1000积分就可以抽奖1次！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]\n".$jf)->reply();  
+      $weObj->text("您已获得".userpoints_get_current_points($account->uid)."积分，邀请1人100积分！满1000积分就可以抽奖1次！\n回复【VIP】可获得为您PS个性宣传图\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]\n".$jf)->reply();  
         return; 
     }
     if($keyword == 'cj'){//抽奖
-
-        // $weObj->text("您抽奖的ID是 ，谢谢参与，！邀请1人100积分！\n满1000积分就可以再次抽奖啦！\n奖品有：<a href='http://www.amazon.cn/dp/B00KDRNYO4'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮][拳头]")->reply();  
-        // return;
       $jf = userpoints_get_current_points($account->uid);
       if($jf<1000){
          $jr = (1000-$jf)/100;
          $cj = '您当前积分是'.$jf."，不足1000，不可抽奖[可怜]赶快分享二维码邀请朋友吧！";
-         $weObj->text($cj."再邀请【".$jr."】人可以抽奖啦！[拳头]\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]")->reply(); 
+         $weObj->text($cj."再邀请【".$jr."】人可以抽奖啦！[拳头]\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]")->reply(); 
       }else{
         // 积分--1000
         {     
@@ -128,20 +125,46 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         userpoints_userpointsapi($params);
         $jf = userpoints_get_current_points($account->uid);
         $jr = (1000-$jf)/100;
-        $weObj->text("恭喜您，获得".$cj."！\n获奖ID:".$id."\n<a href='https://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=401847344&idx=1&sn=e4d35980aac83ddb886217490f792bac&scene=0&previewkey=Y%2BJxXtQNbhOmHOrSGz3dT8NS9bJajjJKzz%2F0By7ITJA%3D&key=41ecb04b0511100340d9afd974989c2139538a99bbd5ccb53385abcd768a2a4db3d28a04c0281e970b9f1d7f35de5b43&ascene=0&uin=MTYyMjI5NjYwMA%3D%3D&devicetype=iMac+MacBookPro11%2C3+OSX+OSX+10.10.5+build(14F1509)&version=11020201&pass_ticket=QO%2BJun55%2FM4xK1dnGR6oU3dLNZrBZEvpGhM8fkvjIUtfIXzCoZQr56DYNGixVFPO'>请点此添加领奖公众号：永不止息领奖</a>\n您还剩余".$jf."积分，在邀请".$jr."人就可以再次抽奖啦！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]"."[拳头]")->reply(); 
+        $weObj->text("恭喜您，获得".$cj."！\n获奖ID:".$id."\n<a href='https://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=401847344&idx=1&sn=e4d35980aac83ddb886217490f792bac&scene=0&previewkey=Y%2BJxXtQNbhOmHOrSGz3dT8NS9bJajjJKzz%2F0By7ITJA%3D&key=41ecb04b0511100340d9afd974989c2139538a99bbd5ccb53385abcd768a2a4db3d28a04c0281e970b9f1d7f35de5b43&ascene=0&uin=MTYyMjI5NjYwMA%3D%3D&devicetype=iMac+MacBookPro11%2C3+OSX+OSX+10.10.5+build(14F1509)&version=11020201&pass_ticket=QO%2BJun55%2FM4xK1dnGR6oU3dLNZrBZEvpGhM8fkvjIUtfIXzCoZQr56DYNGixVFPO'>请点此添加领奖公众号：永不止息领奖</a>\n您还剩余".$jf."积分，在邀请".$jr."人就可以再次抽奖啦！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]"."[拳头]")->reply(); 
 
       }
       return; 
     }
-
-    $file_path = DRUPAL_ROOT.'/sites/default/files/QR/';
+    $file_path = DRUPAL_ROOT.'/sites/default/files/QR/'.date('m').'/';
     if (!is_dir($file_path)) {
       mkdir($file_path, 0777, true);
     }
     $qr = $file_path.'QR_'.$account->uid.'.jpg';
-    // watchdog('qr', $qr, array(), WATCHDOG_NOTICE, 'link');
-    // $qr_url = 'http://121.41.79.122/mp/sites/default/files/QR_'.$account->uid.'.png';
-    // if(@get_headers($qr_url)[0] == 'HTTP/1.1 404 Not Found'){
+    $ptqr = $file_path.$account->uid.'.jpg';
+
+    if($keyword == 'qr'){//普通二维码
+    	if(!file_exists($ptqr)){
+				$weObj->text("小永正在为您定制二维码，请3秒后再来获取吧！[握手]\n回复【VIP】可获得为您PS个性宣传图")->reply();
+     		$return =  $weObj->getQRCode($account->uid,$type=0,$expire=2592000); 
+      	$qr_remote = $weObj->getQRUrl($return['ticket']);
+      	//远程获取文件！begin Create a stream
+        $opts = array(
+          'http'=>array(
+            'method'=>"GET",
+          )
+        );
+      	$file = file_get_contents($qr_remote, false, $context);
+      	file_put_contents($ptqr, $file);
+    	}
+
+    	set_time_limit(0);
+      $data= array('media'=>$ptqr);//'@'.
+      $return = $weObj->uploadMedia($data,'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
+      // watchdog('return', '<pre>'.print_r($return,1), array(), WATCHDOG_NOTICE, 'link');
+      if(isset($return['media_id'])){
+        $weObj->image($return['media_id'])->reply();
+      }else{
+        $weObj->text("活动火爆，系统繁忙，请再试一次！[握手]")->reply();  
+      }
+      return;
+    }
+
+    //生产VIP QR
     if(!file_exists($qr)){
       $weObj->text($user_name."小永正在为您定制二维码，等待3秒后再来获取吧！[握手]")->reply();
       $return =  $weObj->getQRCode($account->uid,$type=0,$expire=2592000); 
@@ -186,7 +209,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
       $im2 = $image_p;//imagecreatefromstring(file_get_contents($B));
        
       imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
-      imagejpeg($im1,'sites/default/files/QR/QR_'.$account->uid.'.jpg');
+      imagejpeg($im1,'sites/default/files/QR/'.date('m').'/QR_'.$account->uid.'.jpg');
       //END
     }else{
       set_time_limit(0);
@@ -196,7 +219,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
       if(isset($return['media_id'])){
         $weObj->image($return['media_id'])->reply();
       }else{
-        $weObj->text("对不起，请再试一次！[握手]")->reply();  
+        $weObj->text("活动火爆，系统繁忙，请再试一次！[握手]")->reply();  
       }
       return;
     }
