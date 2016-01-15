@@ -102,14 +102,16 @@
 	   <table class="table table-condensed">
 	   		<tr>
 				  <th class="danger">奖券ID</th>
-				  <th class="danger">奖级</th>
+				  <th class="danger">奖次</th>
 				  <th class="danger">抽奖者</th>
+				  <th class="danger">抽奖时间</th>
 				</tr>
 				<?php 
 					$result = db_select('hd', 'c')
 				    ->fields('c')
-				    ->condition('award', 0,'>')
-				    ->orderBy('id', 'ESC')
+				    // ->condition('award', 0,'>')
+				    ->condition('uid', 0,'>')
+				    ->orderBy('timestamp', 'DESC')
 				    ->execute();
 				    $i=0;
 				  while($record = $result->fetchAssoc()) {
@@ -117,8 +119,9 @@
 			        ?>
 			        <tr class="<?php if($record['uid']){echo 'success';} else{ echo ($i%2)?'':'success';}?>">
 							  <td><?php echo $record['id'];?></td>
-							  <td><?php echo $record['award'];?>等奖</td>
+							  <td><?php echo $record['award']?:'四';?>等奖</td>
 							  <td><?php echo $record['name']?l($record['name'],'user/'.$record['uid']):'暂无';?></td>
+							  <td><?php echo $record['timestamp']?date('n/d G:i:s',$record['timestamp']+28800):'暂无';?></td>
 							</tr>
 			        <?php
 			    }
