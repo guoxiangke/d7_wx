@@ -148,6 +148,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
             'method'=>"GET",
           )
         );
+        $context = stream_context_create($opts);
       	$file = file_get_contents($qr_remote, false, $context);
       	file_put_contents($ptqr, $file);
     	}
@@ -226,4 +227,72 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
     return;
   }
 
+}
+
+/**
+ * Implements hook_cron().
+ */
+function mp_hd_cron() {
+	$result = db_select('users', 'c')
+    ->fields('c',array('uid'))
+    ->condition('uid', 1141,'>')
+    ->orderBy('uid', 'DESC')
+    ->execute();
+  while($record = $result->fetchAssoc()) {
+		//get account has qr but no VIPqr!!!
+		$file_path = DRUPAL_ROOT.'/sites/default/files/QR/'.date('m').'/';
+	  $vipqr = $file_path.'QR_'.$record['uid'].'.jpg';
+	  $qr = $file_path.$record['uid'].'.jpg';
+	  // dpm($qr);dpm($vipqr);break;
+		if(file_exists($qr)&&!file_exists($vipqr)){
+			//gengrate VIPQR
+			$account = user_load($record['uid']);
+  		watchdog('mp_hd', 'corn gengrate VIPQR for: %name '.$account->uid, array('%name' => $account->name), WATCHDOG_NOTICE, l(t('edit'), 'user/' . $account->uid . '/edit'));
+  		//TODO
+      $x = 600;
+      $y = 1285;
+      $rh = 100;
+
+      $A = dirname(__FILE__).'/images/fwh_small.jpg';
+      // $B = $qr_remote;
+      $B = $qr;
+      $im1 = imagecreatefromstring(file_get_contents($A));
+      $im2 = imagecreatefromstring(file_get_contents($B));
+       
+      imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
+      // imageGif($im1);return;
+      // imageGif($im1,'sites/default/files/test.gif');
+      // $x = 60;
+      // $y = 1400;
+      $x = 60;
+      $y = 1350;
+      $rh = 100;
+
+      // $A = $im1;
+      $B = dirname(__FILE__).'/images/0.jpeg';
+      if($account->data['headimgurl'])
+      	$B = $account->data['headimgurl'];
+      // $im1 = imagecreatefromstring(file_get_contents($A));
+      $image = imagecreatefromstring(file_get_contents($B));
+      $percent = 0.4;
+
+      // 获取新的尺寸
+      // list() = getimagesize($filename);
+      $width = imagesx($image);
+      $height = imagesy($image);
+      $new_width =  $width* $percent;
+      $new_height = $height* $percent;
+
+      // 重新取样
+      $image_p = imagecreatetruecolor($new_width, $new_height);
+      // $image = imagecreatefromjpeg($filename);
+      imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+      $im2 = $image_p;//imagecreatefromstring(file_get_contents($B));
+       
+      imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
+      imagejpeg($im1,'sites/default/files/QR/'.date('m').'/QR_'.$account->uid.'.jpg');
+			break;
+		}
+  }
 }
