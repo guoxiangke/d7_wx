@@ -1,0 +1,6 @@
+name = mp_hd
+description = mp mp_hd
+core = 7.x
+package = A-DEV
+
+dependencies[] = mp_service

@@ -98,7 +98,7 @@ function _mp_service_init_wechat($account){
 function mp_service_keyword_response(&$weObj,$keyword,$account) {
 
   $wxresources = array();  //TODO： get all (enabled)resources/node of account.
-  $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword);
+  $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword,$weObj);
 	$ori_keyword = $keyword;
   $len = strlen($ori_keyword);
   
