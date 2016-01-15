@@ -25,7 +25,7 @@ function wx_swty_resource_response($keyword) {
 		    		// dpm($td->outertext);
 		    		$url = $td->find('a',0)->href;
 		    		$musicurl = 'http://swtychina.com/gb/'. str_replace('../', '', $url);
-	    		  $live_radio = unserialize(drupal_http_request("http://mp.yongbuzhixi.com/get_headers.php?url=$musicurl")->data);
+	    		  $live_radio = unserialize(drupal_http_request("http://wx.yongbuzhixi.com/get_headers.php?url=$musicurl")->data);
 	    		    
     				$musicurl = $live_radio['Location'];
 		    		// ../audio/20140724/2363/download.aspx
