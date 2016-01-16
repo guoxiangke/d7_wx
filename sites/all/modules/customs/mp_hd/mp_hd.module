@@ -113,7 +113,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         $jf = '您已抽奖'.$count.'次，奖券ID分别是：'.$ids;
       }
       ;
-      $weObj->text("您当前有".userpoints_get_current_points($account->uid)."积分，邀请1人100积分！满1000积分就可以抽奖1次！回复VIP可获得为您PS个性宣传图\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n".$jf)->reply();  
+      $weObj->text("您当前有".userpoints_get_current_points($account->uid)."积分，邀请1人100积分！满1000积分就可以抽奖1次！回复VIP可获得为您PS个性宣传图\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n".$jf)->reply();  
         return; 
     }
     if($keyword == 'cj'){//抽奖
@@ -121,7 +121,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
       if($jf<1000){
          $jr = (1000-$jf)/100;
          $cj = '您当前积分是'.$jf."，不足1000，不可抽奖[可怜]赶快分享二维码邀请朋友吧！";
-         $weObj->text($cj."再邀请【".$jr."】人可以抽奖啦！[拳头]\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]")->reply(); 
+         $weObj->text($cj."再邀请【".$jr."】人可以抽奖啦！[拳头]\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."'>kindle，CD，图书...</a>\n回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]")->reply(); 
       }else{
         // 积分--1000
         {     
@@ -170,9 +170,9 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         $jf = userpoints_get_current_points($account->uid);
         $jr = (1000-$jf)/100;
         if($cj == '四等奖'){
-	        $weObj->text("恭喜您，获得".$cj."！获奖ID:".$id."，您还剩余".$jf."积分，在邀请".$jr."人就可以再次抽奖啦！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n回复【VIP】可获得为您PS个性宣传图\n<a href='http://wx.yongbuzhixi.com/node/335'>请点此添加领奖公众号：永不止息领奖</a>\n小永透露：中奖率100%[调皮][拳头]")->reply(); return;
+	        $weObj->text("恭喜您，获得".$cj."！获奖ID:".$id."，您还剩余".$jf."积分，在邀请".$jr."人就可以再次抽奖啦！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."'>kindle，CD，图书...</a>\n回复【VIP】可获得为您PS个性宣传图\n<a href='http://wx.yongbuzhixi.com/node/335'>请点此添加领奖公众号：永不止息领奖</a>\n小永透露：中奖率100%[调皮][拳头]")->reply(); return;
         }
-        $weObj->text("恭喜您，获得".$cj."！获奖ID:".$id."，您还剩余".$jf."积分，在邀请".$jr."人就可以再次抽奖啦！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n回复【VIP】可获得为您PS个性宣传图\n<a href='http://wx.yongbuzhixi.com/node/335'>请点此添加领奖公众号：永不止息领奖</a>\n小永透露：123等级程序系小永开发中，稍后凭兑奖券兑奖[调皮][拳头]")->reply(); return;
+        $weObj->text("恭喜您，获得".$cj."！获奖ID:".$id."，您还剩余".$jf."积分，在邀请".$jr."人就可以再次抽奖啦！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."?t=".time()."'>kindle，CD，图书...</a>\n回复【VIP】可获得为您PS个性宣传图\n<a href='http://wx.yongbuzhixi.com/node/335'>请点此添加领奖公众号：永不止息领奖</a>\n小永透露：123等级程序系小永开发中，稍后凭兑奖券兑奖[调皮][拳头]")->reply(); return;
       }
       return; 
     }
