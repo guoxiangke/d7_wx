@@ -152,6 +152,29 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	  if(isset($enabled_resources['ly2']) && $enabled_resources['ly2']){
 		  require_once('liangyou.inc');
 		  if(is_numeric($keyword) && ($keyword>=600 && $keyword<=652) ) {
+				$orikeyword = $keyword;
+				if(date('N')>5&&$keyword=='612') {//【612】书香园地＝》【614】今夜心未眠
+					$keyword = '614';
+				}
+				if(date('N')>5&&$keyword=='606') {//【606】亲情不断电＝》【605】幸福满家园
+					$keyword = '605';
+				}
+				if(date('N')>5&&$keyword=='609') {//【609】微播出炉=>【610】生活无国界
+					$keyword = '610';
+				}
+				if(date('N')>5&&$keyword=='619') {//【619】拥抱每一天=>【652】燃亮的一生
+					$keyword = '652';
+				}
+				if(date('N')>5&&$keyword=='623') {//【623】齐来颂扬＝》【615】彩虹桥
+					$keyword = '615';
+				}
+				if(date('N')>5&&$keyword=='608') {//【608】绝妙当家＝》【610】生活无国界
+					$keyword = '610';
+				}
+				if(date('N')<=5&&$keyword=='605') {//【605】幸福满家园=>【606】亲情不断电
+					$keyword = '606';
+				}
+				
 		     //USE UPYUN
 		    {
 		 			$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
@@ -159,9 +182,11 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
 						//do nothing!
 					}else{
+						
 						require_once('liangyou_audio_list.php');
 						$liangyou_audio_list = liangyou_audio_list_byindex();
 						if(isset($liangyou_audio_list[$keyword])){
+
 							$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
 							$title = $liangyou_audio_list_info['title'];
 							$code = $liangyou_audio_list_info['code'];
@@ -170,9 +195,10 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		          $objectKey = '/'.$dir_stru .'/'.$code. date('ymd').'.mp3';
 		          $bce_url = '/liangyou/nissigz/'.urlencode($title).'/'.date('Ym').'/'.$code.date('ymd').'.mp3';
 		          $musicurl = 'http://'.CDNLINK.$bce_url.upyun_get_token($objectKey);
+
 		          $temp = @get_headers($musicurl);
 		          if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-									$resources['key_'.$keyword]= array(
+									$resources['key_'.$orikeyword]= array(
 										'type'	=>	'music',
 										'obj'		=> array(
 											'title'	=> $title.'♪',
@@ -236,13 +262,13 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						)
 					);
 		    }else{	    	
-			    $before_keyword = $keyword;
-			    $keyword = $keyword - 601;
+			    // $before_keyword = $keyword;
+			    $keyword = $orikeyword - 601;
 			    // watchdog('keyword '.$before_keyword , $keyword, array(), WATCHDOG_NOTICE, 'link');
 			    $title = str_replace($keyword, '', $urls[$keyword]['title']);
 			    $musicurl = $urls[$keyword]['url'].'?='.$urls[$keyword]['date'].'.mp3';
 			    $desc =  substr($urls[$keyword]['date'], 4).' '.truncate_utf8($urls[$keyword]['desc'], 16, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
-			    $resources['key_'.$before_keyword]= array(
+			    $resources['key_'.$orikeyword]= array(
 						'type'	=>	'music',
 						'obj'		=> array(
 						'title'	=> $title,
@@ -543,10 +569,10 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		$orikeyword = $keyword;
 		$check_keyword = substr($keyword, 0,2);
 		$index = substr($keyword, 2,3);
-		if($check_keyword == 'sd'){
+		if($check_keyword == 'sd' && $account->uid != 8 ){
 			$lysd = get_lysd();
 			if($keyword = 'sd'){
-				$mavmenu = "目录\n";
+				$mavmenu = "----四等奖目录----\n";
 				foreach ($lysd as $key => $value) {
 					$mavmenu .= $key.' sd'.$value['begin'].'-sd'.$value['end']."\n";
 				}
