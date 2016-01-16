@@ -111,6 +111,7 @@
 				    ->fields('c')
 				    // ->condition('award', 0,'>')
 				    ->condition('uid', 0,'>')
+				    ->condition('uid', 1061,'<>')
 				    ->orderBy('timestamp', 'DESC')
 				    ->execute();
 				    $i=0;
