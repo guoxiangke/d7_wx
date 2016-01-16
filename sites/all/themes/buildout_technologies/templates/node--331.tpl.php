@@ -121,8 +121,12 @@
 			        <tr class="<?php if($record['uid']){echo 'success';} else{ echo ($i%2)?'':'success';}?>">
 							  <td><?php echo $record['id'];?></td>
 							  <td><?php echo $record['award']?:'四';?>等奖</td>
-							  <td><?php echo $record['name']?l($record['name'],'user/'.$record['uid']):'暂无';?></td>
-							  <td><?php echo $record['timestamp']?date('n/d G:i:s',$record['timestamp']):'暂无';?></td>
+							  <?php if(user_is_logged_in()):?>
+							  <td><?php echo $record['name']?l($record['name'],'user/'.$record['uid']):'暂无';?></td>	
+							  <?php else:?>
+							  <td><?php echo $record['name']?$record['name']:'暂无';?></td>	
+								<?php endif;?>
+							  <td><?php echo $record['timestamp']?date('n/d G:i',$record['timestamp']):'暂无';?></td>
 							</tr>
 			        <?php
 			    }
