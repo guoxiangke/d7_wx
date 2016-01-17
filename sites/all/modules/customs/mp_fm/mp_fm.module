@@ -14,6 +14,10 @@ function mp_fm_rescources_info(){
       'name' => '700',
       'desc' => '网络电台资源【700】',
     );
+  $rescources[] = array(
+      'name' => 'qjs',
+      'desc' => '每日亲近神【653】',
+    );
   return $rescources;
 }
 /**
@@ -24,6 +28,27 @@ function mp_fm_wxresources($resources, $account, $keyword){
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
+    //每日亲近神【653】 begin
+      if($keyword =='653'&&isset($enabled_resources['qjs']) && $enabled_resources['qjs']){
+        $ym = date('ym');
+        $ymd = date('ymd');
+        $begin = 61;
+        $index = $begin+date('j');
+        $url = 'http://www.tpehoc.org.tw/daily_message/daily_message_'.$ym.'/mp3/'.$ymd.'mat'.$index.'.mp3';
+        $resources['key_'.$keyword]=  array(
+          'type'  =>  'music',
+          'obj'   => array(
+            'title' => '每日亲近神'.$ymd,
+            'desc'  => '点击►收听 公众号：'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新',
+            'musicurl'  => $url,
+            'hgmusicurl'  =>  $url,
+          ),
+        );
+        return $resources;
+      }
+    //每日亲近神【653】 end
+
+
     if(in_array($keyword, array('xl','sl','wz'))){
       require_once('xmly.inc');
       $resources['key_'.$keyword]= array(
