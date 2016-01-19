@@ -76,7 +76,8 @@ function mp_service_permission() {
 function _mp_service_init_wechat($account){
   $weObj = &drupal_static(__FUNCTION__);
   if(!isset($weObj)){
-    module_load_include('php', 'mp_service', 'wechat.class');
+    // module_load_include('php', 'mp_service', 'wechat.class');
+    require_once('wechat.class.php');
     $options = array(
       'token' => variable_get('mp_config_token_'.$account->uid, ""),
       'encodingaeskey'=>variable_get('mp_config_appaes_'.$account->uid, ""),
@@ -127,7 +128,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $weObj->news($new);
         break;
     }
-    ga_push_add_event(array(
+    if($uid>1) ga_push_add_event(array(
        'category'        => $wxresources[$keyword]['type'],
        'action'          => $ori_keyword,
        'label'           => 'wxservice_'.$account->uid,
@@ -139,7 +140,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
   if($ori_keyword == 1 || in_array($ori_keyword, $special_keywords)){
     $copyright = copyright($account);
     $weObj->text($copyright);
-    ga_push_add_event(array(
+    if($uid>1) ga_push_add_event(array(
      'category'        => 'menuGet',
      'action'          => $ori_keyword,
      'label'           => 'wxservice_'.$account->uid,
@@ -162,7 +163,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
 
     /////字数太少，我们为你转人工服务吧！
     // if($len > 15 && $len <= 30){
-    //   ga_push_add_event(array(
+    //   if($uid>1) ga_push_add_event(array(
     //    'category'        => 'wxservice',
     //    'action'          => 'customerservice',
     //    'label'           => $ori_keyword,
@@ -223,7 +224,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $re = firebaseset('wechat/'.$id,$data);
         // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
         //firebaseset end!
-        ga_push_add_event(array(
+        if($uid>1) ga_push_add_event(array(
          'category'        => 'firebaseset',
          'action'          => $ori_keyword,
          'label'           => 'wxservice_'.$account->uid,
@@ -253,7 +254,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       if($before!=$id){
         variable_set('mp_config_wxcomments_wxid', $id);
         _post_wxcomments($user_info,$comment_body,$nid,$id,$pid);
-        ga_push_add_event(array(
+        if($uid>1) ga_push_add_event(array(
          'category'        => 'comments',
          'action'          => $ori_keyword,
          'label'           => 'wxservice_'.$account->uid,

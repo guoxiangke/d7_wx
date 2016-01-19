@@ -9,12 +9,11 @@ function mp_service_callback($account){
   // $menu = $weObj->getMenu();
   // watchdog('menu', '<pre>'.print_r($menu,true), array(), WATCHDOG_NOTICE, 'link');
   // watchdog('wechat_plus_pages', '<pre>'.print_r($weObj->getRev(),true), array(), WATCHDOG_NOTICE, 'link');
-
-  ga_push_add_pageview(array(
-      'location' => url('mp_service/'.$account->uid, array('absolute' => true)),
-      'page'     => variable_get('mp_config_appname_'.$account->uid, "永不止息").'_'.$account->uid,
-      'title'    => '/'.variable_get('mp_config_appid_'.$account->uid, ""),
-  ));
+    if($uid>1) ga_push_add_pageview(array(
+        'location' => 'mp_service/'.$account->uid,//url(, array('absolute' => true)),
+        'page'     => $account->uid,//variable_get('mp_config_appname_'.$account->uid, "永不止息").'_'.$account->uid,
+        'title'    => '/'.$account->name,//variable_get('mp_config_appid_'.$account->uid, ""),
+    ));
   
   $type = $weObj->getRev()->getRevType();
   switch($type){
@@ -32,16 +31,16 @@ function mp_service_callback($account){
 }
 
 function _mp_service_process_text(&$weObj,$account){
-	$ori_keyword = trim($weObj->getRevContent());
-  // getQRUrl($ticket) 获取二维码图片地址
-  if(in_array(strlen($ori_keyword),array(1437,72,164,1160,407))){
-    //评论留言成功！ 审核后会出现在这里哦！72
-    //in_array($account->uid, array(1,8,12))&&
-    $weObj->text("对不起，资源有限，[抱拳]\n如果再复制发送，就把你拉黑！[抱拳]\n如果是误会，请末尾加1后再次发送，谢谢体谅，小永敬上[握手]")->reply();//164
-    return;
-  }
+	$ori_keyword = $weObj->getRevContent();
+  //TODO
+  // if(in_array(strlen($ori_keyword),array(1437,72,164,1160,407))){
+  //   //in_array($account->uid, array(1,8,12))&&
+  //   $weObj->text("对不起，资源有限，[抱拳]\n如果再复制发送，就把你拉黑！[抱拳]\n如果是误会，请末尾加1后再次发送，谢谢体谅，小永敬上[握手]")->reply();//164
+  //   return;
+  // }
   // watchdog('len23', strlen($ori_keyword), array(), WATCHDOG_NOTICE, 'link');
-  $keyword = make_semiangle($ori_keyword);
+
+  //TODO 数据收集！
   if($account->uid == 8 && strpos($ori_keyword,'http://mp.weixin.qq.com/s?__biz=')!==FALSE){
     $openid = $weObj->getRev()->getRevFrom();
     // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
@@ -62,14 +61,10 @@ function _mp_service_process_text(&$weObj,$account){
         return;
     }
   }
+  $keyword = make_semiangle(strtolower($ori_keyword));//include trim;
+  
 
-
-  $search =  array('[',']',"'",'"', "收听",'`','.','○','o','〇',',',':','|',' ','一',);
-  $replace =  array('','','','','', '', '', '0', '0','0','', '','', '', '',); 
-  $keyword = str_replace($search, $replace, $keyword);
-  $keyword = strtolower($keyword);
-
-
+  //TODO emoj
   // $emoj= array(
     //   '微笑'=>':)',
     //   '伤心'=>':~',
@@ -147,14 +142,14 @@ function _mp_service_process_text(&$weObj,$account){
   // watchdog('$keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
   mp_service_keyword_response($weObj,$keyword,$account);
   //default behavior if not hook wxresources_alter!
-  if(!is_array($weObj->Message(''))){
+  if(!$weObj->Message('')){
     module_invoke_all('wxservice_default_msg_alter', $weObj, $keyword,$account);
   }
-  if(!is_array($weObj->Message(''))){
+  if(!$weObj->Message('')){
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
     if($default_keyword){
       mp_service_keyword_response($weObj,$default_keyword,$account);
-      ga_push_add_event(array(
+      if($uid>1) ga_push_add_event(array(
        'category'        => 'default_keyword_resource',
        'action'          => $ori_keyword,
        'label'           => 'wxservice_'.$account->uid,
@@ -176,7 +171,7 @@ function _mp_service_process_text(&$weObj,$account){
         $re = firebaseset('wechat/'.$id,$data);
         // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
         //firebaseset end!
-        ga_push_add_event(array(
+        if($uid>1) ga_push_add_event(array(
          'category'        => 'firebaseset',
          'action'          => $ori_keyword,
          'label'           => 'wxservice_'.$account->uid,
@@ -184,7 +179,7 @@ function _mp_service_process_text(&$weObj,$account){
       }else{
         $copyright = copyright($account);
         $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！[握手]").$copyright);
-        ga_push_add_event(array(
+        if($uid>1) ga_push_add_event(array(
          'category'        => 'copyrightGet',
          'action'          => $ori_keyword,
          'label'           => 'wxservice_'.$account->uid,
@@ -283,7 +278,7 @@ function _mp_service_process_event($weObj,$account){
     return;
   }
   if(!isset($event['key'])){
-    ga_push_add_event(array(
+    if($uid>1) ga_push_add_event(array(
        'category'        => 'event',
        'action'          => $event['event'],
        'label'           => 'wxservice_'.$account->uid,
@@ -295,7 +290,7 @@ function _mp_service_process_event($weObj,$account){
       mp_service_keyword_response($weObj,$event['key'],$account);
     }
     if(!is_array($weObj->Message(''))){ 
-      ga_push_add_event(array(
+      if($uid>1) ga_push_add_event(array(
          'category'        => 'event_'.$event['event'],
          'action'          =>  $event['key'],
          'label'           => 'wxservice_'.$account->uid,
@@ -506,32 +501,39 @@ function _wechat_menu_default_message($event){
 
 // 全角半角转． 
 function make_semiangle($str)    
-{    
-    $arr = array('０' => '0', '１' => '1', '２' => '2', '３' => '3', '４' => '4',    
-                 '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9',    
-                 'Ａ' => 'A', 'Ｂ' => 'B', 'Ｃ' => 'C', 'Ｄ' => 'D', 'Ｅ' => 'E',    
-                 'Ｆ' => 'F', 'Ｇ' => 'G', 'Ｈ' => 'H', 'Ｉ' => 'I', 'Ｊ' => 'J',    
-                 'Ｋ' => 'K', 'Ｌ' => 'L', 'Ｍ' => 'M', 'Ｎ' => 'N', 'Ｏ' => 'O',    
-                 'Ｐ' => 'P', 'Ｑ' => 'Q', 'Ｒ' => 'R', 'Ｓ' => 'S', 'Ｔ' => 'T',    
-                 'Ｕ' => 'U', 'Ｖ' => 'V', 'Ｗ' => 'W', 'Ｘ' => 'X', 'Ｙ' => 'Y',    
-                 'Ｚ' => 'Z', 'ａ' => 'a', 'ｂ' => 'b', 'ｃ' => 'c', 'ｄ' => 'd',    
-                 'ｅ' => 'e', 'ｆ' => 'f', 'ｇ' => 'g', 'ｈ' => 'h', 'ｉ' => 'i',    
-                 'ｊ' => 'j', 'ｋ' => 'k', 'ｌ' => 'l', 'ｍ' => 'm', 'ｎ' => 'n',    
-                 'ｏ' => 'o', 'ｐ' => 'p', 'ｑ' => 'q', 'ｒ' => 'r', 'ｓ' => 's',    
-                 'ｔ' => 't', 'ｕ' => 'u', 'ｖ' => 'v', 'ｗ' => 'w', 'ｘ' => 'x',    
-                 'ｙ' => 'y', 'ｚ' => 'z',    
-                 '（' => '(', '）' => ')', '〔' => '[', '〕' => ']', '【' => '[',    
-                 '】' => ']', '〖' => '[', '〗' => ']', '“' => '[', '”' => ']',    
-                 '‘' => '[', '’' => ']', '｛' => '{', '｝' => '}', '《' => '<',    
-                 '》' => '>',    
-                 '％' => '%', '＋' => '+', '—' => '-', '－' => '-', '～' => '-',    
-                 '：' => ':', '。' => '.', '、' => ',', '，' => '.', '、' => '.',    
-                 '；' => ',', '？' => '?', '！' => '!', '…' => '-', '‖' => '|',    
-                 '”' => '"', '’' => '`', '‘' => '`', '｜' => '|', '〃' => '"',    
-                 '　' => ' ','＄'=>'$','＠'=>'@','＃'=>'#','＾'=>'^','＆'=>'&','＊'=>'*', 
-                 '＂'=>'"'); 
+{
+  // $search =  array('[',']',"'",'"', "收听",'','.','○','o','〇',',',':','|',' ','一',);
+  // $replace =  array('','','','','', '', '', '0', '0','0','', '','', '', '',); 
+  // $keyword = str_replace($search, $replace, $keyword);
+  $arr = array(
+    '○' =>  '0', 'o' =>  '0','〇' =>  '0','一' =>  '', '`' =>  '',
+    ':' =>  '', ' ' => '',
+    '０' => '0', '１' => '1', '２' => '2', '３' => '3', '４' => '4',    
+    '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9',    
+    'Ａ' => 'A', 'Ｂ' => 'B', 'Ｃ' => 'C', 'Ｄ' => 'D', 'Ｅ' => 'E',    
+    'Ｆ' => 'F', 'Ｇ' => 'G', 'Ｈ' => 'H', 'Ｉ' => 'I', 'Ｊ' => 'J',    
+    'Ｋ' => 'K', 'Ｌ' => 'L', 'Ｍ' => 'M', 'Ｎ' => 'N', 'Ｏ' => 'O',    
+    'Ｐ' => 'P', 'Ｑ' => 'Q', 'Ｒ' => 'R', 'Ｓ' => 'S', 'Ｔ' => 'T',    
+    'Ｕ' => 'U', 'Ｖ' => 'V', 'Ｗ' => 'W', 'Ｘ' => 'X', 'Ｙ' => 'Y',    
+    'Ｚ' => 'Z', 'ａ' => 'a', 'ｂ' => 'b', 'ｃ' => 'c', 'ｄ' => 'd',    
+    'ｅ' => 'e', 'ｆ' => 'f', 'ｇ' => 'g', 'ｈ' => 'h', 'ｉ' => 'i',    
+    'ｊ' => 'j', 'ｋ' => 'k', 'ｌ' => 'l', 'ｍ' => 'm', 'ｎ' => 'n',    
+    'ｏ' => 'o', 'ｐ' => 'p', 'ｑ' => 'q', 'ｒ' => 'r', 'ｓ' => 's',    
+    'ｔ' => 't', 'ｕ' => 'u', 'ｖ' => 'v', 'ｗ' => 'w', 'ｘ' => 'x',    
+    'ｙ' => 'y', 'ｚ' => 'z',    
+    '（' => '', '）' => '', '〔' => '', '〕' => '', '【' => '',    
+    '】' => '', '〖' => '', '〗' => '', '“' => '', '”' => '',    
+    '‘' => '', '’' => '', '｛' => '', '｝' => '', '《' => '<',    
+    '》' => '>',    
+    '％' => '%', '＋' => '+', '—' => '-', '－' => '-', '～' => '-',    
+    '：' => ':', '。' => '.', '、' => ',', '，' => ',', '、' => '.',    
+    '；' => ',', '？' => '?', '！' => '!', '…' => '-', '‖' => '',    
+    '”' => '', '’' => '', '‘' => '', '｜' => '', '〃' => '',    
+    '　' => ' ','＄'=>'$','＠'=>'@','＃'=>'#','＾'=>'','＆'=>'&','＊'=>'*', 
+    '＂'=>''
+  ); 
    
-    return strtr($str, $arr);    
+  return strtr($str, $arr);    
 }
 
 function mp_service_comments(){
