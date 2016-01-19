@@ -263,7 +263,10 @@
   	?>
   	<div class="desc-wrapper">
 	    <div class="comment-desc"  data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><span>微信回复【内容@<?php echo $node->nid;?>】 即可留言！</span></div>
-
+	    <?php if($node->nid == 163):?>
+	    	<div><a href="http://ybzx.bj.bcebos.com/careapp.apk"><h3>请点击右上角➹在浏览器中打开☜</h3></a></div>
+	    	<div><a href="http://ybzx.bj.bcebos.com/careapp.apk">↘然后点击这里下载安装安卓版空中辅导手机应用</a></div>
+	    <?php endif;?>
 	    <div class="collapse" id="collapseExample">
 	    	<p class='title'>话题介绍</p>	
 	    	<p id='collapsebody'><?php echo $node->body[LANGUAGE_NONE][0]['safe_value'];?>
