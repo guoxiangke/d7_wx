@@ -9,7 +9,7 @@ function mp_service_callback($account){
   // $menu = $weObj->getMenu();
   // watchdog('menu', '<pre>'.print_r($menu,true), array(), WATCHDOG_NOTICE, 'link');
   // watchdog('wechat_plus_pages', '<pre>'.print_r($weObj->getRev(),true), array(), WATCHDOG_NOTICE, 'link');
-    if($uid>1) ga_push_add_pageview(array(
+    if($account->uid>1) ga_push_add_pageview(array(
         'location' => 'mp_service/'.$account->uid,//url(, array('absolute' => true)),
         'page'     => $account->uid,//variable_get('mp_config_appname_'.$account->uid, "永不止息").'_'.$account->uid,
         'title'    => '/'.$account->name,//variable_get('mp_config_appid_'.$account->uid, ""),
@@ -18,7 +18,7 @@ function mp_service_callback($account){
   $type = $weObj->getRev()->getRevType();
   switch($type){
     case Wechat::MSGTYPE_TEXT:
-      _mp_service_process_text($weObj,$account);
+      _mp_service_process_text($weObj,$account,$weObj->getRevContent());
       break;
     case Wechat::MSGTYPE_EVENT:
       _mp_service_process_event($weObj,$account);
@@ -30,8 +30,7 @@ function mp_service_callback($account){
   exit;
 }
 
-function _mp_service_process_text(&$weObj,$account){
-	$ori_keyword = $weObj->getRevContent();
+function _mp_service_process_text(&$weObj,$account,$ori_keyword){
   //TODO
   // if(in_array(strlen($ori_keyword),array(1437,72,164,1160,407))){
   //   //in_array($account->uid, array(1,8,12))&&
@@ -149,7 +148,7 @@ function _mp_service_process_text(&$weObj,$account){
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
     if($default_keyword){
       mp_service_keyword_response($weObj,$default_keyword,$account);
-      if($uid>1) ga_push_add_event(array(
+      if($account->uid>1) ga_push_add_event(array(
        'category'        => 'default_keyword_resource',
        'action'          => $ori_keyword,
        'label'           => 'wxservice_'.$account->uid,
@@ -171,7 +170,7 @@ function _mp_service_process_text(&$weObj,$account){
         $re = firebaseset('wechat/'.$id,$data);
         // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
         //firebaseset end!
-        if($uid>1) ga_push_add_event(array(
+        if($account->uid>1) ga_push_add_event(array(
          'category'        => 'firebaseset',
          'action'          => $ori_keyword,
          'label'           => 'wxservice_'.$account->uid,
@@ -179,7 +178,7 @@ function _mp_service_process_text(&$weObj,$account){
       }else{
         $copyright = copyright($account);
         $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！[握手]").$copyright);
-        if($uid>1) ga_push_add_event(array(
+        if($account->uid>1) ga_push_add_event(array(
          'category'        => 'copyrightGet',
          'action'          => $ori_keyword,
          'label'           => 'wxservice_'.$account->uid,
@@ -278,7 +277,7 @@ function _mp_service_process_event($weObj,$account){
     return;
   }
   if(!isset($event['key'])){
-    if($uid>1) ga_push_add_event(array(
+    if($account->uid>1) ga_push_add_event(array(
        'category'        => 'event',
        'action'          => $event['event'],
        'label'           => 'wxservice_'.$account->uid,
@@ -290,7 +289,7 @@ function _mp_service_process_event($weObj,$account){
       mp_service_keyword_response($weObj,$event['key'],$account);
     }
     if(!is_array($weObj->Message(''))){ 
-      if($uid>1) ga_push_add_event(array(
+      if($account->uid>1) ga_push_add_event(array(
          'category'        => 'event_'.$event['event'],
          'action'          =>  $event['key'],
          'label'           => 'wxservice_'.$account->uid,
@@ -497,7 +496,6 @@ function _wechat_menu_default_message($event){
   }
   return '';
 }
-
 
 // 全角半角转． 
 function make_semiangle($str)    
