@@ -45,7 +45,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
     // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
     if(in_array($openid, array('oTjEws_LNd8maly0PugxnmFQPdTA','oTjEws-8eAAUqgR4q_ns7pbd0zN8'))){
         $url = url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q=').'grace365';
-        $data = array('link' => $keyword);
+        $data = array('link' => $ori_keyword);
         $options = array(
             'http' => array(
                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
