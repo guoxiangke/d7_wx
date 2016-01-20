@@ -59,7 +59,6 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
 
     $qr = $file_path.'QR_'.$account->uid.'.jpg';
     $ptqr = $file_path.$account->uid.'.jpg';
-
     if(1){//任意程序都生产普通二维码
     	if(!file_exists($ptqr)){
 				$weObj->text("小永正在为您定制二维码，请3-5秒后再来尝试吧！[握手]")->reply();
@@ -79,13 +78,12 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
 	    	set_time_limit(0);
 	      $data= array('media'=>$ptqr);//'@'.
 	      $return = $weObj->uploadMedia($data,'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
-	      // watchdog('return', '<pre>'.print_r($return,1), array(), WATCHDOG_NOTICE, 'link');
 	      if(isset($return['media_id'])){
 	        $weObj->image($return['media_id'])->reply();
 	      }else{
-	        $weObj->text("活动火爆，系统繁忙，请再试一次！[握手]")->reply();  
-      		return;
+	        $weObj->text("活动火爆，系统繁忙，请再试一次！[握手]")->reply();
 	      }
+        return;
 	    }
     }
 
@@ -274,7 +272,7 @@ function mp_hd_cron() {
           )
         ->condition('uid', $account->uid)
         ->execute();
-      continue;
+      break;
     }
 
 		//get account has qr but no VIPqr!!!
