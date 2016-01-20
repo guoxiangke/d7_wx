@@ -9,7 +9,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
     $openid = $weObj->getRev()->getRevFrom();
     $user_info = $weObj->getUserInfo($openid);
     // watchdog('user_info', '<pre>'.print_r($user_info,1), array(), WATCHDOG_NOTICE, 'link');
-    $user_name = $user_info['nickname'];
+    $user_name = $user_info['nickname'].'_hd';
     //if 用户不存在，则创建新用户！
     $mail = $user_info['openid'].'@wechat.bind';
     $account = user_load_by_mail($mail);
@@ -39,7 +39,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         ),
         // 'field_sex' => 1,2男 ＝》 0 男 1 女
         'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
-        'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
+        // 'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
         
       );
       $account = user_save(null, $new_user);
@@ -47,8 +47,8 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         // drupal_set_message('账户创建失败！', 'error', FALSE);
         watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
       }
-        watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
-        $weObj->text("恭喜您获得100积分，请点击【送大奖】→二维码\n看见【请稍后再试】\n(小永累趴后)/:shake\n等5秒后再次点击！[强]")->reply();  
+        // watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
+        $weObj->text("恭喜您获得100积分，请点击【送大奖】→二维码\n看见【请稍后再试】\n(小永累趴后)/:shake\n再次点击！[强]")->reply();  
         return; 
     }
 
@@ -62,7 +62,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
 
     if(1){//任意程序都生产普通二维码
     	if(!file_exists($ptqr)){
-				$weObj->text("小永正在为您定制二维码，请3秒后再来尝试吧！[握手]\n回复【VIP】可获得为您PS个性宣传图")->reply();
+				$weObj->text("小永正在为您定制二维码，请3-5秒后再来尝试吧！[握手]")->reply();
      		$return =  $weObj->getQRCode($account->uid,$type=0,$expire=2592000); 
       	$qr_remote = $weObj->getQRUrl($return['ticket']);
       	//远程获取文件！begin Create a stream
@@ -178,16 +178,21 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
     }
     //生产VIP QR
     if(!file_exists($qr)){
-      $weObj->text($user_name."小永正在为您定制二维码，等待3秒后再来获取吧！[握手]")->reply();
-      $return =  $weObj->getQRCode($account->uid,$type=0,$expire=2592000); 
-      $qr_remote = $weObj->getQRUrl($return['ticket']);
+      $wx_headimgurl = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
+      // watchdog('vip wx_headimgurl', $wx_headimgurl, array(), WATCHDOG_NOTICE, 'link');
+      if(!file_exists($wx_headimgurl)){
+        $weObj->text("小永正在为您ps宣传海报，等待2分钟后再来获取吧！[握手]")->reply();
+        return;
+      }
+      //  =  $weObj->getQRCode($account->uid,$type=0,$expire=2592000); 
+      // $qr_remote = $weObj->getQRUrl($return['ticket']);
       //TODO
       $x = 600;
       $y = 1285;
       $rh = 100;
 
       $A = dirname(__FILE__).'/images/fwh_small.jpg';
-      $B = $qr_remote;
+      $B = $ptqr;/////////
       $im1 = imagecreatefromstring(file_get_contents($A));
       $im2 = imagecreatefromstring(file_get_contents($B));
        
@@ -201,7 +206,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
       $rh = 100;
 
       // $A = $im1;
-      $B = $user_info['headimgurl'];
+      $B = drupal_realpath($account->picture->uri);//$user_info['headimgurl'];
       // $im1 = imagecreatefromstring(file_get_contents($A));
       $image = imagecreatefromstring(file_get_contents($B));
       $percent = 0.4;
@@ -223,7 +228,8 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
       imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
       imagejpeg($im1,'sites/default/files/QR/'.date('m').'/QR_'.$account->uid.'.jpg');
       //END
-    }else{
+    }
+    {
       set_time_limit(0);
       $data= array('media'=>$qr);//'@'.
       $return = $weObj->uploadMedia($data,'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
@@ -252,15 +258,35 @@ function mp_hd_cron() {
     ->orderBy('uid', 'DESC')
     ->execute();
   while($record = $result->fetchAssoc()) {
+    //get which account has no pic!
+    $account = user_load($record['uid']);
+    if(!$account->picture && isset($account->data['headimgurl'])){
+      $response = drupal_http_request($account->data['headimgurl']);
+      if ($response->code == 200){
+        $picture_file = file_save_data($response->data, 'public://users/wx_'. $account->uid.'.jpg');
+      }
+      // $account->picture = $file;
+      file_usage_add($picture_file, 'user', 'user', $account->uid);
+      db_update('users')
+        ->fields(array(
+            'picture' => $picture_file->fid,
+            )
+          )
+        ->condition('uid', $account->uid)
+        ->execute();
+      continue;
+    }
+
 		//get account has qr but no VIPqr!!!
-		$file_path = DRUPAL_ROOT.'/sites/default/files/QR/'.date('m').'/';
+		$file_path = DRUPAL_ROOT.'/sites/default/files/QR/01/';
 	  $vipqr = $file_path.'QR_'.$record['uid'].'.jpg';
 	  $qr = $file_path.$record['uid'].'.jpg';
-	  // dpm($qr);dpm($vipqr);break;
-		if(file_exists($qr)&&!file_exists($vipqr)){
+
+    $wx_headimgurl = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
+
+		if(file_exists($wx_headimgurl) && file_exists($qr) && !file_exists($vipqr)){
 			//gengrate VIPQR
 			$account = user_load($record['uid']);
-  		watchdog('mp_hd', 'corn gengrate VIPQR for: %name '.$account->uid, array('%name' => $account->name), WATCHDOG_NOTICE, l(t('edit'), 'user/' . $account->uid . '/edit'));
   		//TODO
       $x = 600;
       $y = 1285;
@@ -282,9 +308,15 @@ function mp_hd_cron() {
       $rh = 100;
 
       // $A = $im1;
-      $B = dirname(__FILE__).'/images/0.jpeg';
-      if($account->data['headimgurl'])
-      	$B = $account->data['headimgurl'];
+      $B = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
+      watchdog('imgesuri',  $B, array(), WATCHDOG_NOTICE, 'link');
+      if(!file_exists($B)){
+        watchdog('return',  $B, array(), WATCHDOG_NOTICE, 'link');
+        return;
+        $B = dirname(__FILE__).'/images/0.jpeg';
+        if($account->data['headimgurl'])
+          $B = $account->data['headimgurl'];
+      }
       // $im1 = imagecreatefromstring(file_get_contents($A));
       $image = imagecreatefromstring(file_get_contents($B));
       $percent = 0.4;
@@ -304,7 +336,7 @@ function mp_hd_cron() {
       $im2 = $image_p;//imagecreatefromstring(file_get_contents($B));
        
       imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
-      imagejpeg($im1,'sites/default/files/QR/'.date('m').'/QR_'.$account->uid.'.jpg');
+      imagejpeg($im1,'sites/default/files/QR/01/QR_'.$account->uid.'.jpg');
 			break;
 		}
   }

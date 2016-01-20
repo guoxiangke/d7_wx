@@ -201,7 +201,7 @@ function _mp_service_process_event($weObj,$account){
     // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
     $openid = $weObj->getRev()->getRevFrom();
     $user_info = $weObj->getUserInfo($openid);
-    $user_name = $user_info['nickname'];
+    $user_name = $user_info['nickname'].'_hd';
     //if 用户不存在，则创建新用户！
     $mail = $user_info['openid'].'@wechat.bind';
     $account = user_load_by_mail($mail);
@@ -231,7 +231,7 @@ function _mp_service_process_event($weObj,$account){
         ),
         // 'field_sex' => 1,2男 ＝》 0 男 1 女
         'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
-        'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
+        // 'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
         'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
         
       );
@@ -312,7 +312,7 @@ function _mp_service_process_event($weObj,$account){
         // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
         $openid = $weObj->getRev()->getRevFrom();
         $user_info = $weObj->getUserInfo($openid);
-        $user_name = $user_info['nickname'];
+        $user_name = $user_info['nickname'].'_hd';
         //if 用户不存在，则创建新用户！
         $mail = $user_info['openid'].'@wechat.bind';
         $account = user_load_by_mail($mail);
@@ -342,7 +342,7 @@ function _mp_service_process_event($weObj,$account){
             ),
             // 'field_sex' => 1,2男 ＝》 0 男 1 女
             'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
-            'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
+            // 'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
             'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
             
           );
@@ -424,9 +424,11 @@ function wechat_auth($mp_account){
     }
     // $user_name = 'wechat_'.substr($accessData['openid'], 0, 15);
     $user_name = $user_info['nickname'];
+    $count = 0;
     while(user_load_by_name($user_name)){
       // $user_name = $user_name.rand(0, 100);
-      $user_name = $user_info['nickname'].'_'.rand(0, 100);
+      $user_name = $user_info['nickname'].'_'.$count;
+      $count ++;
     }
     $response = drupal_http_request($user_info['headimgurl']);
 
@@ -556,9 +558,11 @@ function mp_service_comments(){
       $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'.jpg');
     }
     $user_name = $user_info['nickname'];
+    $count = 0;
     while(user_load_by_name($user_name)){
       // $user_name = $user_name.rand(0, 100);
-      $user_name = $user_info['nickname'].'_'.rand(0, 100);
+      $user_name = $user_info['nickname'].'_'.$count;
+      $count ++;
     }
     $pass = date('Ymd');
     $new_user = array(
