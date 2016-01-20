@@ -1,6 +1,6 @@
 <?php
-define('UPBUCKETNAME', 'lyaudio');
-define('CDNLINK', UPBUCKETNAME.'.b0.upaiyun.com');
+$upyun_bucket_name = 'lywxaudio';
+$cdnlink = $upyun_bucket_name.'.b0.upaiyun.com';
 /**
  * hook_rescources_info
  */
@@ -105,7 +105,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【ly】';
 		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
 		    //USE UPYUN
-		    {
+	 if(0){
 		 			$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
 					$getheaders = @get_headers($file_key);
 					if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
@@ -120,7 +120,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						$dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
 	          $objectKey = '/'.$dir_stru .'/'.$code. date('ymd').'.mp3';
 	          $bce_url = '/liangyou/nissigz/'.urlencode($title).'/'.date('Ym').'/'.$code.date('ymd').'.mp3';
-	          $musicurl = 'http://'.CDNLINK.$bce_url.upyun_get_token($objectKey);
+	          $musicurl = 'http://'.$cdnlink.$bce_url.upyun_get_token($objectKey);
 	          $temp = @get_headers($musicurl);
 	          if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
 								$resources['key_'.$keyword]= array(
@@ -176,7 +176,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				}
 				
 		     //USE UPYUN
-		    {
+		if(0){
 		 			$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
 					$getheaders = @get_headers($file_key);
 					if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
@@ -194,7 +194,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 							$dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
 		          $objectKey = '/'.$dir_stru .'/'.$code. date('ymd').'.mp3';
 		          $bce_url = '/liangyou/nissigz/'.urlencode($title).'/'.date('Ym').'/'.$code.date('ymd').'.mp3';
-		          $musicurl = 'http://'.CDNLINK.$bce_url.upyun_get_token($objectKey);
+		          $musicurl = 'http://'.$cdnlink.$bce_url.upyun_get_token($objectKey);
 
 		          $temp = @get_headers($musicurl);
 		          if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
@@ -610,34 +610,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			}
 		}
 		//begin bos
-		if(0){
+if(0){
  		date_default_timezone_set('Asia/Shanghai');
- 		if(substr($keyword, 0,6) == '目录'){
- 			$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
-			$getheaders = @get_headers($file_key);
-			if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
-				$resources['key_'.$keyword]= array(
-					'type'	=>	'text',
-					'obj'		=> array(
-						'text'	=>'亲，分发下载还没完成，请稍后再试！',
-					)
-				);
-				return;
-			}
- 			$file = file_get_contents($file_key);
-			$urls = json_decode($file,TRUE);
-			$menu = "回复【】内的汉字，即可获得响应节目[调皮]\n";
-			foreach ($urls as $key => $value) {
-				if(isset($value['bce']) && $value['bce']!='404')
-					$menu .= '【'.$value['title']."】\n";
-			}
-			$resources['key_'.$keyword]= array(
-					'type'	=>	'text',
-					'obj'		=> array(
-						'text'	=> $menu,
-					)
-			);
- 		}
  		if(!isset($resources)){
  			$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
 			$getheaders = @get_headers($file_key);
@@ -657,7 +631,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			foreach ($urls as $key => $value) {
 				if($value['title'] == $keyword){
 					if(!isset($value['bce'])) return;
-					$musicurl = 'http://'.CDNLINK.$value['bce'].upyun_get_token($value['objectKey']);
+					$musicurl = 'http://'.$cdnlink.$value['bce'].upyun_get_token($value['objectKey']);
 					$resources['key_'.$keyword]= array(
 						'type'	=>	'music',
 						'obj'		=> array(
