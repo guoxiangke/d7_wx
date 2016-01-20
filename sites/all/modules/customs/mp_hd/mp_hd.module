@@ -38,9 +38,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
           6 => 'fwh',
         ),
         // 'field_sex' => 1,2男 ＝》 0 男 1 女
-        'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
-        // 'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
-        
+        'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),        
       );
       $account = user_save(null, $new_user);
       if(!$account){

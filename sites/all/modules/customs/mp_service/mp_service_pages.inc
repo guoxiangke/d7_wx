@@ -229,9 +229,7 @@ function _mp_service_process_event($weObj,$account){
           DRUPAL_AUTHENTICATED_RID => 'authenticated user',
           6 => 'fwh',
         ),
-        // 'field_sex' => 1,2男 ＝》 0 男 1 女
         'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
-        // 'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
         'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
         
       );
@@ -340,9 +338,7 @@ function _mp_service_process_event($weObj,$account){
               DRUPAL_AUTHENTICATED_RID => 'authenticated user',
               6 => 'fwh',
             ),
-            // 'field_sex' => 1,2男 ＝》 0 男 1 女
             'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
-            // 'field_headimgurl' => array(LANGUAGE_NONE => array(array('value' => $user_info['headimgurl']))),
             'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
             
           );
