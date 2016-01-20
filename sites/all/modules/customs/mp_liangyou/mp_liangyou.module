@@ -102,7 +102,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    }
 
 		    $string = date('ymd',time()-$offset*24*60*60); 
-		    $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【ly】';
+		    $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【600】';
 		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
 		    //USE UPYUN
 	 if(0){
