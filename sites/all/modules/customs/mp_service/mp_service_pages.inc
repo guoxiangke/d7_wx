@@ -240,7 +240,7 @@ function _mp_service_process_event($weObj,$account){
       }
       // watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
       // $friend_name = db_result(db_query("SELECT name FROM {users} WHERE uid = '%s'", $uid));{".$friend_name."
-      $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]"."\n点击【送大奖】→二维码，呼朋唤友，踊跃参与吧[跳跳]")->reply();
+      $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]"."\n点击【送大奖】→我的海报，呼朋唤友，踊跃参与吧[跳跳]")->reply();
       //add points!
       return; 
     }else{
@@ -264,10 +264,10 @@ function _mp_service_process_event($weObj,$account){
           'description' => '邀请好友：'.$account->name,
         );
         userpoints_userpointsapi($params);
-        $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]回复【VIP】可获得为您PS个性宣传图\n点击【送大奖】→二维码，呼朋唤友，踊跃参与吧[跳跳]")->reply();
+        $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]回复【VIP】可获得为您PS个性宣传图\n点击【送大奖】→我的海报，呼朋唤友，踊跃参与吧[跳跳]")->reply();
       }else{
         watchdog('老朋友', $account->uid, array(), WATCHDOG_NOTICE, 'error');
-        $weObj->text("老朋友您好，此次扫描无效。请点击【送大奖】→二维码，来邀请[新朋友]赚积分赢大奖吧！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n回复【VIP】可获得为您PS个性宣传图\n呼朋唤友，踊跃参与吧[转圈]")->reply();
+        $weObj->text("老朋友您好，此次扫描无效。请点击【送大奖】→我的海报，来邀请[新朋友]赚积分赢大奖吧！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n回复【VIP】可获得为您PS个性宣传图\n呼朋唤友，踊跃参与吧[转圈]")->reply();
 
       }
       return;
@@ -348,14 +348,14 @@ function _mp_service_process_event($weObj,$account){
           }
           // watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
             
-          $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n回复【VIP】可获得为您PS个性宣传图\n请点击【送大奖】→二维码！[强]")->reply();
+          $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n回复【VIP】可获得为您PS个性宣传图\n请点击【送大奖】→我的海报！[强]")->reply();
           //add points!
           return; 
         }else{
           if($uid == $account->uid){
             $weObj->text("请您分享本图片到朋友圈或发给好友或群组即可邀请他们来参加活动。\n推荐100积分的奖励哦！奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]"."谢谢参与！")->reply();
           };
-          $weObj->text("老朋友您好，此次扫描无效。回复【VIP】可获得为您PS个性宣传图\n请点击【送大奖】→二维码，来邀请[新朋友]赚积分赢大奖吧！")->reply();
+          $weObj->text("老朋友您好，此次扫描无效。回复【VIP】可获得为您PS个性宣传图\n请点击【送大奖】→我的海报，来邀请[新朋友]赚积分赢大奖吧！")->reply();
           return;
         }
       }

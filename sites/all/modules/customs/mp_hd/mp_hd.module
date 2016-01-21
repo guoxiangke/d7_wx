@@ -46,7 +46,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
       }
         // watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
-        $weObj->text("恭喜您获得100积分，请点击【送大奖】→二维码\n看见【请稍后再试】\n(小永累趴后)/:shake\n再次点击！[强]")->reply();  
+        $weObj->text("恭喜您获得100积分，请点击【送大奖】→我的海报\n看见【请稍后再试】\n(小永累趴后)/:shake\n再次点击！[强]")->reply();  
         return; 
     }
 
