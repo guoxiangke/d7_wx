@@ -174,7 +174,13 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
     }
     //生产VIP QR
     if(!file_exists($qr)){
-      $wx_headimgurl = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
+      // $wx_headimgurl = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
+      if(isset($account->picture->uri)){
+        $wx_headimgurl = drupal_realpath($account->picture->uri) ;
+      }else{
+        $weObj->text("系统还没有头像啊！正处理您请求，获取头像与二维码中。。。！[握手]")->reply();
+        return;
+      }
       // watchdog('vip wx_headimgurl', $wx_headimgurl, array(), WATCHDOG_NOTICE, 'link');
       if(!file_exists($wx_headimgurl)){
         $weObj->text("小永正在为您ps宣传海报，等待2分钟后再来获取吧！[握手]")->reply();
@@ -250,7 +256,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
 function mp_hd_cron() {
 	$result = db_select('users', 'c')
     ->fields('c',array('uid'))
-    ->condition('uid', 1141,'>')
+    ->condition('uid', 1,'>')
     ->orderBy('uid', 'DESC')
     ->execute();
   while($record = $result->fetchAssoc()) {
@@ -270,6 +276,7 @@ function mp_hd_cron() {
           )
         ->condition('uid', $account->uid)
         ->execute();
+      // watchdog('mp_hd_cron picture', $account->uid, array(), WATCHDOG_NOTICE, 'link');
       break;
     }
 
@@ -278,7 +285,10 @@ function mp_hd_cron() {
 	  $vipqr = $file_path.'QR_'.$record['uid'].'.jpg';
 	  $qr = $file_path.$record['uid'].'.jpg';
 
-    $wx_headimgurl = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
+    // $wx_headimgurl = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
+    if(isset($account->picture->uri)){
+      $wx_headimgurl = drupal_realpath($account->picture->uri) ;
+    }else{return;}
 
 		if(file_exists($wx_headimgurl) && file_exists($qr) && !file_exists($vipqr)){
 			//gengrate VIPQR
@@ -333,6 +343,7 @@ function mp_hd_cron() {
        
       imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
       imagejpeg($im1,'sites/default/files/QR/01/QR_'.$account->uid.'.jpg');
+      // watchdog('mp_hd_cron QR', $vipqr, array(), WATCHDOG_NOTICE, 'link');
 			break;
 		}
   }
