@@ -262,7 +262,7 @@ function mp_hd_cron() {
   while($record = $result->fetchAssoc()) {
     //get which account has no pic!
     $account = user_load($record['uid']);
-    if(!$account->picture && isset($account->data['headimgurl'])){
+    if(!$account->picture && isset($account->data['headimgurl']) && $account->data['headimgurl']){
       $response = drupal_http_request($account->data['headimgurl']);
       if ($response->code == 200){
         $picture_file = file_save_data($response->data, 'public://users/wx_'. $account->uid.'.jpg');
@@ -276,7 +276,6 @@ function mp_hd_cron() {
           )
         ->condition('uid', $account->uid)
         ->execute();
-      // watchdog('mp_hd_cron picture', $account->uid, array(), WATCHDOG_NOTICE, 'link');
       break;
     }
 
