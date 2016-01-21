@@ -179,7 +179,7 @@
 		$('.cover').html('<img src="'+item.cover+'" alt="'+item.album+'">');
 		$('.tag').html('<strong>'+item.title+'</strong><span class="artist">'+item.artist+'</span><span class="album">'+item.album+'</span>');
 
-		$('.audio').removeClass('state-playing').eq(i).addClass('state-playing');
+		// $('.audio').removeClass('state-playing').eq(i).addClass('state-playing');
 		audio = newaudio[0];
 		audio.volume = $('.mute').hasClass('enable') ? 0 : volume;
 		audio.addEventListener('progress', beforeLoad, false);
