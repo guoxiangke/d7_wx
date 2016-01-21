@@ -97,10 +97,10 @@
         $url = file_create_url($node->field_mp3_file[LANGUAGE_NONE][0]['uri']);
     if(isset($node->field_mp3url[LANGUAGE_NONE][0]))
         $url = $node->field_mp3url[LANGUAGE_NONE][0]['value'];
-      if(isset($url) && $view_mode=='full'){
+    if(isset($url) && $view_mode=='full'){
     ?>    
    <div class="audio-wrapper">
-        <div id="demo" class="audio state-playing" role="application" aria-label="media player">
+        <div id="demo" class="audio state-stop" role="application" aria-label="media player">
             <div class="play-control control">
                 <button class="play button" role="button" aria-label="play" tabindex="0"></button>
             </div>
@@ -152,7 +152,7 @@
         var ended=function(){pause();audio.currentTime=0;playCounts++;if(continous==true)isPlaying=true;if(repeat==1){play();}else{if(shuffle==='true'){shufflePlay();}else{if(repeat==2){switchTrack(++currentTrack);}else{if(currentTrack<playlist.length)switchTrack(++currentTrack);}}}}
         var beforeLoad=function(){var buffered=audio.buffered;var loaded;if(buffered.length){loaded=100*buffered.end(0)/audio.duration;$('.loaded').attr('style','width: '+loaded.toFixed(0)+'%');}}
         var afterLoad=function(){if(autoplay==true)play();}
-        var loadMusic=function(i){var item=playlist[i],newaudio=$('<audio>').html('<source src="'+item.mp3+'"><source src="'+item.ogg+'">').appendTo('#player');$('.details .title').html(item.title);$('.cover').html('<img src="'+item.cover+'" alt="'+item.album+'">');$('.tag').html('<strong>'+item.title+'</strong><span class="artist">'+item.artist+'</span><span class="album">'+item.album+'</span>');$('.audio').removeClass('state-playing').eq(i).addClass('state-playing');audio=newaudio[0];audio.volume=$('.mute').hasClass('enable')?0:volume;audio.addEventListener('progress',beforeLoad,false);audio.addEventListener('durationchange',beforeLoad,false);audio.addEventListener('canplay',afterLoad,false);audio.addEventListener('ended',ended,false);}
+        var loadMusic=function(i){var item=playlist[i],newaudio=$('<audio>').html('<source src="'+item.mp3+'"><source src="'+item.ogg+'">').appendTo('#player');$('.details .title').html(item.title);$('.cover').html('<img src="'+item.cover+'" alt="'+item.album+'">');$('.tag').html('<strong>'+item.title+'</strong><span class="artist">'+item.artist+'</span><span class="album">'+item.album+'</span>');audio=newaudio[0];audio.volume=$('.mute').hasClass('enable')?0:volume;audio.addEventListener('progress',beforeLoad,false);audio.addEventListener('durationchange',beforeLoad,false);audio.addEventListener('canplay',afterLoad,false);audio.addEventListener('ended',ended,false);}
         loadMusic(currentTrack);$('.play-control button').on('click',function(){if($(this).parents('.audio').hasClass('state-playing')){$(this).parents('.audio').removeClass('state-playing');pause();}else{$(this).parents('.audio').addClass('state-playing');play();}});$('.rewind').on('click',function(){if(shuffle==='true'){shufflePlay();}else{switchTrack(--currentTrack);}});$('.fastforward').on('click',function(){if(shuffle==='true'){shufflePlay();}else{switchTrack(++currentTrack);}});$('#playlist li').each(function(i){var _i=i;$(this).on('click',function(){switchTrack(_i);});});if(shuffle==='true')$('.shuffle').addClass('enable');if(repeat==1){$('.repeat').addClass('once');}else if(repeat==2){$('.repeat').addClass('all');}
         $('.repeat').on('click',function(){if($(this).hasClass('once')){repeat=localStorage.repeat=2;$(this).removeClass('once').addClass('all');}else if($(this).hasClass('all')){repeat=localStorage.repeat=0;$(this).removeClass('all');}else{repeat=localStorage.repeat=1;$(this).addClass('once');}});$('.shuffle').on('click',function(){if($(this).hasClass('enable')){shuffle=localStorage.shuffle='false';$(this).removeClass('enable');}else{shuffle=localStorage.shuffle='true';$(this).addClass('enable');}});})(jQuery);
     </script>
