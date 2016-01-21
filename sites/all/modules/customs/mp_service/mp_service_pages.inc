@@ -238,7 +238,7 @@ function _mp_service_process_event($weObj,$account){
         // drupal_set_message('账户创建失败！', 'error', FALSE);
         watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
       }
-      watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
+      // watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
       // $friend_name = db_result(db_query("SELECT name FROM {users} WHERE uid = '%s'", $uid));{".$friend_name."
       $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]"."\n点击【送大奖】→二维码，呼朋唤友，踊跃参与吧[跳跳]")->reply();
       //add points!
@@ -344,10 +344,9 @@ function _mp_service_process_event($weObj,$account){
           );
           $account = user_save(null, $new_user);
           if(!$account){
-            // drupal_set_message('账户创建失败！', 'error', FALSE);
             watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
           }
-          watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
+          // watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
             
           $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n回复【VIP】可获得为您PS个性宣传图\n请点击【送大奖】→二维码！[强]")->reply();
           //add points!

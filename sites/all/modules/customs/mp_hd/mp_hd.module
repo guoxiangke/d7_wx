@@ -305,7 +305,7 @@ function mp_hd_cron() {
 
       // $A = $im1;
       $B = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
-      watchdog('imgesuri',  $B, array(), WATCHDOG_NOTICE, 'link');
+      // watchdog('imgesuri',  $B, array(), WATCHDOG_NOTICE, 'link');
       if(!file_exists($B)){
         watchdog('return',  $B, array(), WATCHDOG_NOTICE, 'link');
         return;
