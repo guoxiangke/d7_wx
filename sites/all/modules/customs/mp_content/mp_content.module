@@ -36,8 +36,9 @@ function mp_content_wxresources($resources, $account, $keyword){
     if ($keyword == 'lm'||$keyword =='灵命'||$keyword =='美文'||$keyword =='tw'||$keyword =='图文') {      
       if(isset($enabled_resources['mp_contents']) && $enabled_resources['mp_contents']){      
           if($keyword == 'lm'||$keyword =='灵命'){
-            $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
-            $news = (array)json_decode($lingming);
+            // $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
+            // $news = (array)json_decode($lingming);
+            $news = get_last_node_json('lingming','灵命日粮',1,1);
           }else{
             $nodes = dale_get_mp_nodes('article',3,NULL,array(1,$account->uid,'1013'));
             $news = array();
@@ -77,10 +78,10 @@ function mp_content_wxresources($resources, $account, $keyword){
               $news[] = $img;
             }
             // $news = array_reverse($news);
-            $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
-            array_push($news,(array)json_decode($lingming));
-            $lingming = file_get_contents('http://wx.yongbuzhixi.com/grace365/json');
-            array_push($news,(array)json_decode($lingming));
+            // $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
+            array_push($news,get_last_node_json('lingming','灵命日粮',1));
+            // $lingming = file_get_contents('http://wx.yongbuzhixi.com/grace365/json');
+            array_push($news,get_last_node_json('grace365','恩典365',1));
           }
           $resources['key_'.$keyword]= array(
           'type'  =>  'news',

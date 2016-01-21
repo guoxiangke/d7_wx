@@ -39,10 +39,9 @@ function ybread_menu() {
 /**
  * Implements get_last_node().
  */
-function get_last_node_json($content_type = 'lingming',$title = '灵命日粮',$count=1) {
-  $query = "SELECT n.nid nid, n.created created FROM {node} n  WHERE n.type = :type order by n.created desc limit 0, $count";
+function get_last_node_json($content_type = 'lingming',$title = '灵命日粮',$return=0) {
+  $query = "SELECT n.nid nid, n.created created FROM {node} n  WHERE n.type = :type order by n.created desc limit 0, 1";
   $result = db_query($query, array(':type' => $content_type));
-  $news = array();
   while($record = $result->fetchAssoc()) {
     $nid = $record['nid'];
     $node = node_load($nid);//TODO:fast query!
@@ -64,9 +63,10 @@ function get_last_node_json($content_type = 'lingming',$title = '灵命日粮',$
       'PicUrl'=> $picurl,
       'Url'=> url('node/'.$node->nid, array('absolute' => TRUE,'alias'=>TRUE)),
     );
-    $news[] = $img;
   }
-  // dpm($news);
+  if($return){
+    return $img;
+  }
   header('Content-Type: application/json');
   print json_encode($img);
   drupal_exit();
