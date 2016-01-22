@@ -187,7 +187,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						// $dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
 				    $path = '/'.date('Y').'/'.$code.'/'.$code. date('ymd').'.mp3';
 				    $musicurl = 'http://'.$cdnlink.$path.upyun_get_token($path);
-				    watchdog('$musicurl', $musicurl, array(), WATCHDOG_NOTICE, 'link');
 				    $temp = @get_headers($musicurl);
 				    if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
 								$resources['key_'.$orikeyword]= array(
