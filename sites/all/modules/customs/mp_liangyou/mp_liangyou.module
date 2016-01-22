@@ -393,7 +393,16 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			if(in_array($first, $temp) && $second>0 && $second<10 ){
 				$third = substr($keyword, 2,2);
 				$mav = get_ly_mav();
-				$mav = $mav[$first.$second];
+				if(isset($mav[$first.$second])){
+					$mav = $mav[$first.$second];
+				}else{
+					return $resources['key_'.$keyword]= array(
+							'type'	=>	'text',
+							'obj'		=> array(
+								'text'	=> "[大哭]编码有误，请回复a0、b0、c0...f0查看目录哦！",
+							)
+						);
+				}
 				$level = (($mav['level'] == 1)?'本科课程':'进深课程');
 				if($third>0&&$third<=$mav['count']){
 					//24 => 001
@@ -425,12 +434,12 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					$cdn = 'http://lts33.b0.upaiyun.com/';
 					
 
-				$etime = time()+864000; // 授权十天后过期
-				$key = 'ly729';   // token 防盗链密钥
-				$path = '/'.$path; // 图片相对路径
-				$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+					$etime = time()+864000; // 授权十天后过期
+					$key = 'ly729';   // token 防盗链密钥
+					$path = '/'.$path; // 图片相对路径
+					$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
 
-				$link = $cdn . urlencode($path).'?_upt='.$sign;
+					$link = $cdn . urlencode($path).'?_upt='.$sign;
 
 					if($mav['pdf']>0){
 						$resources['key_'.$keyword]= array(
@@ -673,7 +682,7 @@ function mp_bbn_response($keyword,$account,$change_keyword=NULL){
 		$bbn = mp_get_bbn($keyword);
 		$musicurl = $bbn[$keyword]['musicurl'];
 		$title = $bbn[$keyword]['title'];
-		$desc = '点击►收听 公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").truncate_utf8($bbns[$keyword]['description'], 12, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
+		$desc = '点击►收听 公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新';
 		$resources['key_'.$change_keyword]= array(
 			'type'	=>	'music',
 			'obj'		=> array(
