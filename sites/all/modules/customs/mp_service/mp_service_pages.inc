@@ -162,7 +162,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
         $data = array();
         $data['headimgurl'] = $user_info['headimgurl'].'.png';
         $data['province'] = $user_info['province'].' '.$user_info['city'];
-        $data['nickname'] = $user_info['nickname'];
+        $data['nickname'] = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
         $data['openid'] = $openid;
         $data['content'] = $keyword;
         $data['time'] = $weObj->getRevCtime(); //1444450304
@@ -201,7 +201,8 @@ function _mp_service_process_event($weObj,$account){
     // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
     $openid = $weObj->getRev()->getRevFrom();
     $user_info = $weObj->getUserInfo($openid);
-    $user_name = $user_info['nickname'].'_hd';
+    $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+    $user_name = $ori_user_name;
     //if 用户不存在，则创建新用户！
     $mail = $user_info['openid'].'@wechat.bind';
     $account = user_load_by_mail($mail);
@@ -213,7 +214,7 @@ function _mp_service_process_event($weObj,$account){
       $count = 0;
       while(user_load_by_name($user_name)){
         // $user_name = $user_name.rand(0, 100);
-        $user_name = $user_info['nickname'].'_'.$count;
+        $user_name = $ori_user_name.'_'.$count;
         $count ++;
       }
       $pass = $user_info['openid'];
@@ -310,7 +311,8 @@ function _mp_service_process_event($weObj,$account){
         // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
         $openid = $weObj->getRev()->getRevFrom();
         $user_info = $weObj->getUserInfo($openid);
-        $user_name = $user_info['nickname'].'_hd';
+        $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+        $user_name = $ori_user_name;
         //if 用户不存在，则创建新用户！
         $mail = $user_info['openid'].'@wechat.bind';
         $account = user_load_by_mail($mail);
@@ -322,7 +324,7 @@ function _mp_service_process_event($weObj,$account){
           $count = 0;
           while(user_load_by_name($user_name)){
             // $user_name = $user_name.rand(0, 100);
-            $user_name = $user_info['nickname'].'_'.$count;
+            $user_name = $ori_user_name.'_'.$count;
             $count ++;
           }
           $pass = $user_info['openid'];
@@ -418,11 +420,12 @@ function wechat_auth($mp_account){
       drupal_goto('user/'.$user->uid.'/wechat');
     }
     // $user_name = 'wechat_'.substr($accessData['openid'], 0, 15);
-    $user_name = $user_info['nickname'];
+    $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+    $user_name = $ori_user_name;
     $count = 0;
     while(user_load_by_name($user_name)){
       // $user_name = $user_name.rand(0, 100);
-      $user_name = $user_info['nickname'].'_'.$count;
+      $user_name = $ori_user_name.'_'.$count;
       $count ++;
     }
     $response = drupal_http_request($user_info['headimgurl']);
@@ -552,11 +555,12 @@ function mp_service_comments(){
     if ($response->code == 200){
       $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'.jpg');
     }
-    $user_name = $user_info['nickname'];
+    $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+    $user_name = $ori_user_name;
     $count = 0;
     while(user_load_by_name($user_name)){
       // $user_name = $user_name.rand(0, 100);
-      $user_name = $user_info['nickname'].'_'.$count;
+      $user_name = $ori_user_name.'_'.$count;
       $count ++;
     }
     $pass = date('Ymd');

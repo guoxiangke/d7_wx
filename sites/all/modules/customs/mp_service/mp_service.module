@@ -214,7 +214,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $data = array();
         $data['headimgurl'] = $user_info['headimgurl'].'.png';
         $data['province'] = $user_info['province'].' '.$user_info['city'];
-        $data['nickname'] = $user_info['nickname'];
+        $data['nickname'] = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
         $data['openid'] = $openid;
         $data['content'] = $ori_keyword;
         $data['time'] = $weObj->getRevCtime(); //1444450304
@@ -417,4 +417,35 @@ function _post_wxcomments($user_info,$keyword,$nid,$id,$pid){
   $result = curl_exec($ch);
   //close connection
   curl_close($ch);
+}
+
+/**
+ *  Retern the processed text which the none utf8 characters has been replaced.
+ * @url https://www.drupal.org/project/strip_utf8mb4
+ * @param string $text_data
+ * @param string $replace_text
+ *
+ * @return string
+ */
+function mp_strip_utf8mb4_for_text_fields($text_data, $replace_text ='') {
+  $replacements_done = array();
+  // Strip overly long 2 byte sequences, as well as characters
+  //  above U+10000 and replace with $replace_text
+  $processed_text_data = preg_replace('/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]' .
+    '|[\x00-\x7F][\x80-\xBF]+' .
+    '|([\xC0\xC1]|[\xF0-\xFF])[\x80-\xBF]*' .
+    '|[\xC2-\xDF]((?![\x80-\xBF])|[\x80-\xBF]{2,})' .
+    '|[\xE0-\xEF](([\x80-\xBF](?![\x80-\xBF]))|(?![\x80-\xBF]{2})|[\x80-\xBF]{3,})/S',
+    $replace_text, $text_data, -1, $replacements_done[]);
+
+  // Strip overly long 3 byte sequences and UTF-16 surrogates and replace with $replace_text
+  $processed_text_data = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]' .
+                                          '|\xED[\xA0-\xBF][\x80-\xBF]/S', $replace_text, $processed_text_data, -1, $replacements_done[]);
+  
+  if (array_sum($replacements_done) > 0) {
+    $message = t('Unsupported characters in your text were replaced with "!replacement"', array('!replacement' => $replace_text));
+    drupal_set_message($message, 'warning', FALSE);
+  }
+
+  return $processed_text_data;
 }
