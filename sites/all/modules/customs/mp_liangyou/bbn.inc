@@ -214,41 +214,42 @@ function bbn_audio_list(){
 	return $bbn;
 }
 
-function bbn_url($keyword){
+function mp_get_bbn($keyword){
 	$bbns = bbn_audio_list();
 	$bbn = $bbns[$keyword];
 	$url_pre = 'http://bbnradio.org.edgesuite.net/BBNOnDemand/chinese/';
-	$weekday = date('N')-1;	
-	if($bbn['day'] == 1) {// only sunday!!
-		$code =str_replace('0', '6', $bbn['code']);
-		return $url_pre.$code.'.m4a?q='.date('ymd');
+	$weekday = date('N')-1;
+	switch ($bbn['day']) {
+		case '1':// only sunday!!
+			$code =str_replace('0', '6', $bbn['code']);
+			break;
+		
+		case '7':// every day!!
+			$code =str_replace('0', $weekday, $bbn['code']);
+			break;
+		
+		case '5':// work day
+			if (date('N')>=6){
+				$weekday = date('N')/2?0:1;
+			}
+			$code =str_replace('0', $weekday, $bbn['code']);
+			break;
+
+		case '67':// weekend
+			if (date('N')<6){
+				$weekday = date('N')/2?5:6;
+			}
+			$code =str_replace('0', $weekday, $bbn['code']);
+			break;
+
+		case '16':// weekend
+			if (date('N')==7){
+				$weekday = 3;
+			}
+			$code =str_replace('0', $weekday, $bbn['code']);
+			break;
 	}
-	if($bbn['day'] == 7) {// every day!!
-		$code =str_replace('0', $weekday, $bbn['code']);
-		return $url_pre.$code.'.m4a?q='.date('ymd');
-	}
-	if($bbn['day'] == 5) {// work day
-		if (date('N')>=6){
-			$weekday = date('N')/2?0:1;
-		}
-		$code =str_replace('0', $weekday, $bbn['code']);
-		return $url_pre.$code.'.m4a?q='.date('ymd');		 
-	}	
-	if($bbn['day'] == 67) {// weekend
-		if (date('N')<6){
-			$weekday = date('N')/2?5:6;
-		}
-		$code =str_replace('0', $weekday, $bbn['code']);
-		return $url_pre.$code.'.m4a?q='.date('ymd');
-	}
-	if($bbn['day'] == 16) {
-		if (date('N')==7){
-			$weekday = 3;
-		}
-		$code =str_replace('0', $weekday, $bbn['code']);
-		return $url_pre.$code.'.m4a?q='.date('ymd');		 
-	}
-	return $url_pre.$code.'.m4a?q='.date('ymd');
+	return array($keyword=>array('musicurl'=>$url_pre.$code.'.m4a?q='.date('ymd'),'title'=>$bbns[$keyword]['title']));
 }
 
 function bbn_audio_menu(){

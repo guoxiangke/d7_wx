@@ -670,9 +670,9 @@ function mp_bbn_response($keyword,$account,$change_keyword=NULL){
 			)
 		);
  	}else{
-		$musicurl = bbn_url($keyword);
-		$bbns = bbn_audio_list();
-		$title = $bbns[$keyword]['title'];
+		$bbn = mp_get_bbn($keyword);
+		$musicurl = $bbn[$keyword]['musicurl'];
+		$title = $bbn[$keyword]['title'];
 		$desc = '点击►收听 公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").truncate_utf8($bbns[$keyword]['description'], 12, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
 		$resources['key_'.$change_keyword]= array(
 			'type'	=>	'music',
