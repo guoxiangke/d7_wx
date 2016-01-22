@@ -10,6 +10,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
     $user_info = $weObj->getUserInfo($openid);
     // watchdog('user_info', '<pre>'.print_r($user_info,1), array(), WATCHDOG_NOTICE, 'link');  
     $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+    $user_name = $ori_user_name;
     //if 用户不存在，则创建新用户！
     $mail = $user_info['openid'].'@wechat.bind';
     $account = user_load_by_mail($mail);
