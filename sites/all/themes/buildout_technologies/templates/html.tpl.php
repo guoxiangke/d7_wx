@@ -24,6 +24,10 @@
   <?php print $page_top; ?>
   <?php print $page; ?>
   <?php print $page_bottom; ?>
-</body>
+  <div class="container">
+    <div class="row">
+      <div class="hideonmobile d-copyright"><p>京ICP备15024539号&nbsp;<img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/copy_rignt_24.png" style="height:16px; width:13px" /> <a href="http://wx.yongbuzhixi.com/node/373">免责声明</a></p></div>
+    </div>
+  </div></body>
 
 </html>

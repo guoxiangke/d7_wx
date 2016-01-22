@@ -63,6 +63,9 @@
 	#header{
 		display: none;
 	}
+	.hideonmobile{
+		display: none;
+	}
 	#main-menu {
 		display: none;
 	  padding-bottom: 10px;

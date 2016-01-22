@@ -3,6 +3,10 @@
 /*@import url(//fonts.useso.com/css?family=Source+Sans+Pro:300,400,700,300italic);*/
 
 /* GLOBAL ********************************* */
+.d-copyright{
+	text-align: center;
+	font-size: 12px;
+}
 .node-audio_resource-form .form-textarea-wrapper textarea,
 .node-fm77-form .form-textarea-wrapper textarea{
 	min-height: 120px;
