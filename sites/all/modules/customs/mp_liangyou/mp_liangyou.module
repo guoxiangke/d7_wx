@@ -422,7 +422,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					$cdn = 'http://lts33.b0.upaiyun.com/';
 					
 
-				$etime = time()+3600; // 授权十分钟后过期
+				$etime = time()+864000; // 授权十天后过期
 				$key = 'ly729';   // token 防盗链密钥
 				$path = '/'.$path; // 图片相对路径
 				$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
@@ -549,7 +549,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				$cdn = 'http://lts33.b0.upaiyun.com/';
 
 
-				$etime = time()+3600; // 授权十分钟后过期
+				$etime = time()+864000; // 授权十天后过期
 				$key = 'ly729';   // token 防盗链密钥
 				$path = '/'.$link; // 图片相对路径
 				$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
