@@ -305,6 +305,8 @@ function _mp_service_process_event($weObj,$account){
   if($event['event']=='subscribe'){
     if($account->uid == 8){
       // watchdog($event['key'], strpos($event['key'],'qrscene_'), array(), WATCHDOG_NOTICE, 'link');
+      // [event] => subscribe
+      // [key] => qrscene_1079
       if(isset($event['key']) && strpos($event['key'],'qrscene_')!==FALSE){
         $uid = str_replace('qrscene_', '', $event['key']);
         // $user = user_load($uid);
@@ -361,12 +363,9 @@ function _mp_service_process_event($weObj,$account){
           return;
         }
       }
-    }else{
-      $copyright = copyright($account);
-      $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！[握手]').$copyright);
     }
-    // [event] => subscribe
-    // [key] => qrscene_1079
+    $copyright = copyright($account);
+    $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！[握手]').$copyright);
   }elseif($event['event']=='WifiConnected'){
     // watchdog('mp_service_pages', 'WifiConnected event trigger!', array(), WATCHDOG_NOTICE, 'link');
     $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎来到我家！[握手]'));
