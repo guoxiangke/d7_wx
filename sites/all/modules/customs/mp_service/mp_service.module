@@ -134,7 +134,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     return;
   }
   //menuGet....
-  $special_keywords = array('?','1');
+  $special_keywords = array('?','1','0');
   if(in_array($ori_keyword, $special_keywords)){
     $copyright = copyright($account);
     $weObj->text($copyright);
