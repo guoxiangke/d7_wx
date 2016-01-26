@@ -225,12 +225,12 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         while($record = $result->fetchAssoc()) {
           $i++;
           if($i==$count){
-          	$ids .= $record['id'];
+          	$ids .= $record['id'].'_'.$account->uid;
           }else{
-          	$ids .= $record['id'].';';	
+          	$ids .= $record['id'].'_'.$account->uid."\n";	
           }
         }
-        $jf = '您已抽奖'.$count.'次，奖券ID分别是：'.$ids;
+        $jf = '您已抽奖'.$count.'次，兑奖码分别是：'.$ids;
       }
       ;
       $weObj->text("您当前有".userpoints_get_current_points($account->uid)."积分，邀请1人100积分！满1000积分就可以抽奖1次！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n".$jf)->reply();  
@@ -290,9 +290,9 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         $jf = userpoints_get_current_points($account->uid);
         $jr = (1000-$jf)/100;
         if($cj == '四等奖'){
-	        $weObj->text('恭喜您，获得四等奖！获奖ID:'.$id.'，您还剩余'.$jf.'积分，在邀请'.$jr."人就可以再次抽奖啦！\n<a href='http://wx.yongbuzhixi.com/node/335'>我要领奖</a>[拳头]")->reply(); return;
+	        $weObj->text("恭喜您，获得四等奖！兑奖码:\n".$id.'_'.$account->uid."\n您还剩余".$jf.'积分，在邀请'.$jr."人就可以再次抽奖啦！\n<a href='http://wx.yongbuzhixi.com/node/335'>我要领奖</a>[拳头]")->reply(); return;
         }
-        $weObj->text('恭喜您，获得'.$cj.'！获奖ID:'.$id.'，您还剩余'.$jf.'积分，在邀请'.$jr."人就可以再次抽奖啦！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."?t=".time()."'>kindle，CD，图书...</a>\n小永透露：领奖程序系小永还在开发中，稍后凭兑奖券兑奖[调皮][拳头]")->reply(); return;
+        $weObj->text('恭喜您，获得'.$cj.'！:'.$id.'，您还剩余'.$jf.'积分，在邀请'.$jr."人就可以再次抽奖啦！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."?t=".time()."'>kindle，CD，图书...</a>\n[调皮][拳头]")->reply(); return;
       }
       return; 
     }
