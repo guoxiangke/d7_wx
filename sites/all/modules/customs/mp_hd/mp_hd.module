@@ -52,7 +52,7 @@ function mp_hd_form_alter(&$form, &$form_state, $form_id) {
 }
 function hd_webform_submit($form, &$form_state) {
   $code = $form_state['input']['submitted']['code'];
-  $ids = explode('_', $code);
+  $ids = explode('#', $code);
   if($ids&&isset($ids['1'])){
     if(is_numeric($ids['0'])){
       $result = db_select('hd', 'c')
@@ -81,7 +81,7 @@ function hd_webform_submit($form, &$form_state) {
 }
 function hd_webform_validate($form, &$form_state) {
   $code = $form_state['values']['submitted']['code'];
-  $ids = explode('_', $code);
+  $ids = explode('#', $code);
   if($ids&&isset($ids['1'])){
     if(is_numeric($ids['0'])){
       $result = db_select('hd', 'c')
@@ -91,7 +91,7 @@ function hd_webform_validate($form, &$form_state) {
         ->orderBy('award', 'ESC')
         ->execute()->fetchAssoc();
       if(!$result) {
-        form_set_error('code', '1对不起，兑奖码错误!请搜索关注公众号【永不止息】点击{我要抽奖}获得兑奖码！');
+        form_set_error('code', '<a href="http://mp.weixin.qq.com/s?__biz=MzAwNjI4MDAxNA==&mid=404918050&idx=1&sn=aab295c6717f1e0255a8c46330fcef88#rd">1对不起，兑奖码错误!请点此关注公众号【永不止息】点击{我要抽奖}获得兑奖码！</a>');
       }else{
         if($result['award'] ==3 && $form_state['build_info']['form_id']!='webform_client_form_401'){
           form_set_error('code', '对不起，您走错门了，'.l('请点此领取3等奖！','node/401'));//4
@@ -104,10 +104,10 @@ function hd_webform_validate($form, &$form_state) {
         }
       }
     }else{
-      form_set_error('code', '2对不起，兑奖码错误!请搜索关注公众号【永不止息】点击{我要抽奖}获得兑奖码！');
+      form_set_error('code', '<a href="http://mp.weixin.qq.com/s?__biz=MzAwNjI4MDAxNA==&mid=404918050&idx=1&sn=aab295c6717f1e0255a8c46330fcef88#rd">2对不起，兑奖码错误!请点此关注公众号【永不止息】点击{我要抽奖}获得兑奖码！</a>');
     }
   }else{
-    form_set_error('code', '3对不起，兑奖码错误!请搜索关注公众号【永不止息】点击{我要抽奖}获得兑奖码！');
+    form_set_error('code', '<a href="http://mp.weixin.qq.com/s?__biz=MzAwNjI4MDAxNA==&mid=404918050&idx=1&sn=aab295c6717f1e0255a8c46330fcef88#rd">3对不起，兑奖码错误!请点此关注公众号【永不止息】点击{我要抽奖}获得兑奖码！</a>');
   }
 }
 
@@ -225,9 +225,9 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         while($record = $result->fetchAssoc()) {
           $i++;
           if($i==$count){
-          	$ids .= $record['id'].'_'.$account->uid;
+          	$ids .= $record['id'].'#'.$account->uid;
           }else{
-          	$ids .= $record['id'].'_'.$account->uid."\n";	
+          	$ids .= $record['id'].'#'.$account->uid."\n";	
           }
         }
         $jf = '您已抽奖'.$count.'次，兑奖码分别是：'.$ids;
@@ -289,10 +289,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         userpoints_userpointsapi($params);
         $jf = userpoints_get_current_points($account->uid);
         $jr = (1000-$jf)/100;
-        if($cj == '四等奖'){
-	        $weObj->text("恭喜您，获得四等奖！兑奖码:\n".$id.'_'.$account->uid."\n您还剩余".$jf.'积分，在邀请'.$jr."人就可以再次抽奖啦！\n<a href='http://wx.yongbuzhixi.com/node/335'>我要领奖</a>[拳头]")->reply(); return;
-        }
-        $weObj->text('恭喜您，获得'.$cj.'！:'.$id.'，您还剩余'.$jf.'积分，在邀请'.$jr."人就可以再次抽奖啦！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."?t=".time()."'>kindle，CD，图书...</a>\n[调皮][拳头]")->reply(); return;
+        $weObj->text("恭喜您，获得".$cj."！\n兑奖码:".$id.'#'.$account->uid."\n<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=402092274&idx=1&sn=fb5eedc11776f1db8c15ecc159c74ea7#rd'>关注领奖号领奖</a>\n您还剩余".$jf.'积分，在邀请'.$jr."人就可以再次抽奖啦！[拳头]")->reply(); return;
       }
       return; 
     }
