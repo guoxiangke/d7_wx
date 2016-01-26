@@ -52,7 +52,7 @@
 		<?php
 
 			$js_radio = array();
-		  $ids = explode('_', arg(1));
+		  $ids = explode('#', arg(1));
 		  if($ids&&isset($ids['1'])){
 		    if(is_numeric($ids['0'])){
 		      $result = db_select('hd', 'c')
@@ -70,28 +70,57 @@
 		    }
 		  }
 		if($result) {
-			$pre = 'http://lyradio.b0.upaiyun.com/ybzx/cd/';
-			$cds = array(
-				'1'=>array('count'=>15,'title'=>'生命改变的祝福'),
-				'2'=>array('count'=>10,'title'=>'活出彩虹'),
-				'3'=>array('count'=>14,'title'=>'精神健康'),
-				'4'=>array('count'=>15,'title'=>'活出彩虹'),
-				'5'=>array('count'=>9,'title'=>'千头万绪家中来'),
-				'6'=>array('count'=>7,'title'=>'交友恋爱婚姻'),
-			);
-			$cd = $cds[arg(2)];
-			$i=1;
-			while ( $i<= $cd['count']) {
-					$index = str_pad($i,2,"0",STR_PAD_LEFT);
-					$js_radio['title'] = '第'.$index.'集';
-					$js_radio['artist'] = $cd['title'];
-					$js_radio['album'] = $result['name'].' !,这是您的3等奖礼物！<br/>永不止息，需要有你，谢谢参与！';
-					$js_radio['cover'] = 'http://ly.yongbuzhixi.com/fm/img/ybzx320.jpg';
-					$js_radio['mp3'] = $pre.urlencode($cd['title']).'/'.$index.'.mp3';
-					$js_radio['ogg'] = '';
-					$js_radios[]= $js_radio;
-				$i++;
+			if($result['award']==0){//4等级sd卡内容
+				 module_load_include('inc', 'mp_liangyou', 'liangyou');
+				 $lysd = get_lysd();
+				 foreach ($lysd as $title => $sd) {
+				 	if(strpos($sd['title'],arg(2)) !== false){
+				 		$j=1;
+				 		for ($i=$sd['begin']; $i <= $sd['end'] ; $i++) { 
+				 			$link = $sd['title'].'/'.str_pad($i, 3,'0',STR_PAD_LEFT).'.mp3';
+							$etime = time()+360000; // 授权
+							$key = 'ly729';   // token 防盗链密钥
+							$path = '/lysd/'.$link; // 图片相对路径
+							$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+							$link = 'http://ly729.b0.upaiyun.com/lysd/'.urlencode($link).'?_upt='.$sign;
+
+							$js_radio['title'] = '第'.$j++.'集';
+							$js_radio['artist'] = $sd['title'];
+							$js_radio['album'] = $result['name'].' !,这是您的4等奖礼物！<br/>永不止息，需要有你，谢谢参与！';
+							$js_radio['cover'] = 'http://ly.yongbuzhixi.com/fm/img/ybzx320.jpg';
+							$js_radio['mp3'] = $link;
+							$js_radio['ogg'] = '';
+							$js_radios[]= $js_radio;
+				 		} 
+						break;
+				 	}
+				 }
+			}else{//3等级cd
+				$pre = 'http://lyradio.b0.upaiyun.com/ybzx/cd/';
+				$cds = array(
+					'1'=>array('count'=>15,'title'=>'生命改变的祝福'),
+					'2'=>array('count'=>10,'title'=>'活出彩虹'),
+					'3'=>array('count'=>14,'title'=>'精神健康'),
+					'4'=>array('count'=>15,'title'=>'活出彩虹'),
+					'5'=>array('count'=>9,'title'=>'千头万绪家中来'),
+					'6'=>array('count'=>7,'title'=>'交友恋爱婚姻'),
+				);
+				$cd = $cds[arg(2)];
+				$i=1;
+				while ( $i<= $cd['count']) {
+						$index = str_pad($i,2,"0",STR_PAD_LEFT);
+						$js_radio['title'] = '第'.$index.'集';
+						$js_radio['artist'] = $cd['title'];
+						$js_radio['album'] = $result['name'].' !,这是您的3等奖礼物！<br/>永不止息，需要有你，谢谢参与！';
+						$js_radio['cover'] = 'http://ly.yongbuzhixi.com/fm/img/ybzx320.jpg';
+						$js_radio['mp3'] = $pre.urlencode($cd['title']).'/'.$index.'.mp3';
+						$js_radio['ogg'] = '';
+						$js_radios[]= $js_radio;
+					$i++;
+				}
 			}
+
+
 		}
 			$playlist = json_encode($js_radios);
 		?>
@@ -276,6 +305,7 @@
 		audio.addEventListener('durationchange', beforeLoad, false);
 		audio.addEventListener('canplay', afterLoad, false);
 		audio.addEventListener('ended', ended, false);
+		var degree = 0;
 	}
 
 	loadMusic(currentTrack);

@@ -28,10 +28,10 @@ function mp_hd_page_cdplayer($ids){
           drupal_goto('node/386');
         }
         if($result['award'] ==0){//4
-          drupal_goto('node/335');
+          // drupal_goto('node/335');
         }
         drupal_set_title('hi｛'.$result['name'].'｝恭喜您参加推荐有奖，获得'.($result['award']?$result['award']:4).'等奖！永不止息，需要有你！');
-        return 'hi';
+        return 'hi';  
       }else{
         return drupal_access_denied();
       }
@@ -72,7 +72,7 @@ function hd_webform_submit($form, &$form_state) {
           // drupal_set_message('3对不起，兑奖码错误!', 'status', FALSE);
         }
         if($result['award'] ==0){//4
-          // drupal_goto('node/335');
+          drupal_goto('hd/'.$code .'/'.$form_state['input']['submitted']['choose']);
           // drupal_set_message('4对不起，兑奖码错误!', 'status', FALSE);
         }
       }
