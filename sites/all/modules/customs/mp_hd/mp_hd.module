@@ -1,9 +1,133 @@
 <?php
+/**
+ * Implements hook_menu().
+ */
+function mp_hd_menu() {
+  $items = array();
+  $items['hd/%'] = array(
+    'title' => 'CD播放器',
+    'page callback' => 'mp_hd_page_cdplayer',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+function mp_hd_page_cdplayer($ids){
+  $ids = explode('_', $ids);
+  if($ids&&isset($ids['1'])){
+    if(is_numeric($ids['0'])){
+      $result = db_select('hd', 'c')
+        ->fields('c')//
+        ->condition('id', $ids['0'])
+        ->condition('uid', $ids['1'])
+        ->orderBy('award', 'ESC')
+        ->execute()->fetchAssoc();
+      if($result) {
+        if($result['award'] ==2 || $result['award'] ==1){
+          drupal_goto('node/386');
+        }
+        if($result['award'] ==0){//4
+          drupal_goto('node/335');
+        }
+        drupal_set_title('hi｛'.$result['name'].'｝恭喜您参加推荐有奖，获得'.($result['award']?$result['award']:4).'等奖！永不止息，需要有你！');
+        return 'hi';
+      }else{
+        return drupal_access_denied();
+      }
+    }
+  }
+  return '对不起，请问您有获奖暗号吗？';
+}
 
+
+/**
+ * Implements hook_form_alter().
+ */
+function mp_hd_form_alter(&$form, &$form_state, $form_id) {
+  if(in_array($form_id, array('webform_client_form_386','webform_client_form_401','webform_client_form_335'))){
+    $form['#validate'][] = 'hd_webform_validate';
+    $form['#submit'][] = 'hd_webform_submit';
+  }
+}
+function hd_webform_submit($form, &$form_state) {
+  $code = $form_state['input']['submitted']['code'];
+  $ids = explode('_', $code);
+  if($ids&&isset($ids['1'])){
+    if(is_numeric($ids['0'])){
+      $result = db_select('hd', 'c')
+        ->fields('c')//
+        ->condition('id', $ids['0'])
+        ->condition('uid', $ids['1'])
+        ->orderBy('award', 'ESC')
+        ->execute()->fetchAssoc();
+        // dpm($result);
+      if($result) {
+        if($result['award'] ==2 || $result['award'] ==1){
+          // drupal_goto('node/386');
+          drupal_set_message('12对不起，兑奖码错误!', 'status', FALSE);
+        }
+        if($result['award'] ==3){//4
+          drupal_goto('hd/'.$code .'/'.$form_state['input']['submitted']['sdj']);
+          // drupal_set_message('3对不起，兑奖码错误!', 'status', FALSE);
+        }
+        if($result['award'] ==0){//4
+          // drupal_goto('node/335');
+          // drupal_set_message('4对不起，兑奖码错误!', 'status', FALSE);
+        }
+      }
+    }
+  }
+}
+function hd_webform_validate($form, &$form_state) {
+  $code = $form_state['values']['submitted']['code'];
+  $ids = explode('_', $code);
+  if($ids&&isset($ids['1'])){
+    if(is_numeric($ids['0'])){
+      $result = db_select('hd', 'c')
+        ->fields('c')//
+        ->condition('id', $ids['0'])
+        ->condition('uid', $ids['1'])
+        ->orderBy('award', 'ESC')
+        ->execute()->fetchAssoc();
+      if(!$result) {
+        form_set_error('code', '1对不起，兑奖码错误!请搜索关注公众号【永不止息】点击{我要抽奖}获得兑奖码！');
+      }else{
+        if($result['award'] ==3 && $form_state['build_info']['form_id']!='webform_client_form_401'){
+          form_set_error('code', '对不起，您走错门了，'.l('请点此领取3等奖！','node/401'));//4
+        }
+        if($result['award'] ==0 && $form_state['build_info']['form_id']!='webform_client_form_335'){
+          form_set_error('code', '对不起，您走错门了，'.l('请点此领取4等奖！','node/335'));//4
+        }
+        if($result['award'] ==2 && $form_state['build_info']['form_id']!='webform_client_form_386'){
+          form_set_error('code', '对不起，您走错门了，'.l('请点此领取2等奖！','node/386'));//12
+        }
+      }
+    }else{
+      form_set_error('code', '2对不起，兑奖码错误!请搜索关注公众号【永不止息】点击{我要抽奖}获得兑奖码！');
+    }
+  }else{
+    form_set_error('code', '3对不起，兑奖码错误!请搜索关注公众号【永不止息】点击{我要抽奖}获得兑奖码！');
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function mp_hd_preprocess_page(&$variables) {
+  drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/jquery-ui-v1.9.2.min.js');
+  // drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/fm.rotate.js');
+  // drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/hd_fm_player.js', array('scope' => 'footer', 'weight' => 5,));
+  drupal_add_css(drupal_get_path('theme', 'buildout_technologies').'/css/stylesheets/hd_fmplayer.css');
+}
 /**
  * Hook_wxresources
  */
 function mp_hd_wxresources($resources, $account, $keyword,$weObj){	
+  if($account->uid == 12){
+    // && in_array($keyword, array('ydj','edj','sdj'))
+
+  }
   if($account->uid == 8 && in_array($keyword, array('qr','jf','cj','vip'))){
     // $weObj->transfer_customer_service()->reply();
     $openid = $weObj->getRev()->getRevFrom();
