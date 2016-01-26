@@ -5,7 +5,7 @@
 function mp_hd_menu() {
   $items = array();
   $items['hd/%'] = array(
-    'title' => 'CD播放器',
+    'title' => '奖品播放器',
     'page callback' => 'mp_hd_page_cdplayer',
     'page arguments' => array(1),
     'access arguments' => array('access content'),
