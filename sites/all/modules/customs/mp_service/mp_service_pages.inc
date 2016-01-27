@@ -61,7 +61,11 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
     }
   }
   $keyword = make_semiangle(strtolower($ori_keyword));//include trim;
-  
+
+  if($account->uid == 1417){
+    mp_lywx_keyword_response($weObj,$keyword,$account);
+    return;
+  }  
 
   //TODO emoj
   // $emoj= array(

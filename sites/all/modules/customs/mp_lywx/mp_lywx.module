@@ -1,0 +1,136 @@
+<?php
+function lywx_menu(){
+return 
+'生活智慧
+101：微播出炉
+102：书香园地
+103：今夜心未眠
+104：绝妙当家
+105：生活无国界
+106：零点零距离
+107：i-Radio爱广播
+关怀辅导
+201：空中辅导
+202：无限飞行号
+203：i关怀心磁场
+婚恋家庭
+301：恋爱季节
+302：幸福满家园
+303：亲情不断电
+304：欢乐卡恰碰
+诗歌音乐
+401：齐来颂扬
+402：彩虹桥
+403：长夜的牵引
+慕道探索
+501：生命的福音
+502：现代人的希望
+生命成长
+601：旷野吗哪
+602：生命的四季
+603：拥抱每一天
+604：施恩座前
+605：这一刻，清心
+606：空中崇拜
+607：燃亮的一生
+608：佳美脚踪
+609：真理之光
+610：生根建造
+611：给力人生
+612：信仰百宝箱
+613：空中门训
+学习真道
+701：真道分解
+702：圣言盛宴
+703：聆听主道
+704：经动人心
+705：好牧人
+706：善牧良言
+707：真理与柱石
+708：生活之光
+栽培训练
+801：晨曦讲座
+802：良院精选
+803：良友圣经学院（基础课程）
+804：良友圣经学院（本科文凭课程）（第一套）
+805：良友圣经学院（本科文凭课程）（第二套）
+806：良友圣经学院（进深文凭课程）（第一套）
+807：良友圣经学院（进深文凭课程）（第二套）
+808：接棒人
+中英双语
+901：蓝天绿洲
+902：天路导向
+903：天路导向（粤语）
+少数民族
+1001：恩典与真理（回民广播）
+1002：	爱在人间（云南话';
+}
+
+function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
+	module_load_include('php', 'mp_liangyou', 'liangyou_audio_list'); 
+	$liangyou_audio_list = liangyou_audio_list_bylywxindex();
+	if(in_array($keyword, array_keys($liangyou_audio_list))){
+		$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
+		$title = $liangyou_audio_list_info['title'];
+		$code = $liangyou_audio_list_info['code'];
+
+		// http://lywxaudio.b0.upaiyun.com/2016/zz/zz160205.mp3
+		// $dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
+
+		$upyun_bucket_name = 'lywxaudio';
+		$cdnlink = $upyun_bucket_name.'.b0.upaiyun.com';
+		$offset=0;
+		while ($offset <= 10) {
+			$date = date('ymd',time()-$offset*86400);
+			$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
+			$musicurl = 'http://'.$cdnlink.$path.upyun_get_token($path);
+			$temp = @get_headers($musicurl);
+			if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
+				$title = '【'.$keyword.'】'.$title;
+				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").($offset?$date:' 每日更新');
+		    $weObj->music($title , $desc, $musicurl, $musicurl)->reply();
+	    	break;
+			}
+			$offset++;
+		}
+	}else{
+		$weObj->text(lywx_menu())->reply();
+	}
+
+ //  $wxresources = array();  //TODO： get all (enabled)resources/node of account.
+ //  $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword,$weObj);
+	// $ori_keyword = $keyword;
+  
+	// $keyword = 'key_'.$keyword;//1001 => 0 selution.
+ //  // watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
+ //  // watchdog('ori_keyword', $ori_keyword, array(), WATCHDOG_NOTICE, 'link');
+ //  // watchdog('mp_service', '<pre>'.print_r($wxresources,TRUE), array(), WATCHDOG_NOTICE, 'link');
+ //  if(isset($wxresources[$keyword])){    
+ //    switch ($wxresources[$keyword]['type']) {
+ //      case 'music':
+ //        if(!isset($wxresources[$keyword]['obj']['hgmusicurl']))
+ //          $wxresources[$keyword]['obj']['hgmusicurl'] = $wxresources[$keyword]['obj']['musicurl'];
+ //        module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
+ //        $radios_list = liangyou_audio_list2();
+ //        $radios_keys = array_keys($radios_list);
+ //        if(in_array($ori_keyword, $radios_keys)){
+ //          $ori_keyword = $radios_list[$ori_keyword]['index'];
+ //        }
+ //        $weObj->music('【'.$ori_keyword.'】'.$wxresources[$keyword]['obj']['title'], $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
+ //        break;
+ //      case 'text':
+ //        $weObj->text($wxresources[$keyword]['obj']['text']);
+ //        break;    
+ //      case 'news': 
+ //        $new = $wxresources[$keyword]['obj'];
+ //        $weObj->news($new);
+ //        break;
+ //    }
+ //    if($account->uid>1) ga_push_add_event(array(
+ //       'category'        => $wxresources[$keyword]['type'],
+ //       'action'          => $ori_keyword,
+ //       'label'           => 'wxservice_'.$account->uid,
+ //     ));
+ //    return;
+ //  }
+}

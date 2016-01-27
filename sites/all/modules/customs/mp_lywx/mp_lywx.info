@@ -1,0 +1,7 @@
+name = mp_lywx
+description = mp mp_lywx
+core = 7.x
+package = A-DEV
+
+dependencies[] = mp_service
+dependencies[] = mp_liangyou
