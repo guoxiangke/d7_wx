@@ -71,7 +71,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 	$liangyou_audio_list = liangyou_audio_list_bylywxindex();
 	if(in_array($keyword, array_keys($liangyou_audio_list))){
 		$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
-		$title = $liangyou_audio_list_info['title'];
+		$ori_title = $liangyou_audio_list_info['title'];
 		$code = $liangyou_audio_list_info['code'];
 
 		// http://lywxaudio.b0.upaiyun.com/2016/zz/zz160205.mp3
@@ -86,15 +86,26 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 			$musicurl = 'http://'.$cdnlink.$path.upyun_get_token($path);
 			$temp = @get_headers($musicurl);
 			if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-				$title = '【'.$keyword.'】'.$title;
+				$title = '【'.$keyword.'】'.$ori_title;
 				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").($offset?$date:' 每日更新');
 		    $weObj->music($title , $desc, $musicurl, $musicurl)->reply();
+
+				ga_push_add_event(array(
+			   'category'        => 'lywxaudio',
+			   'action'          => $ori_title,
+			   'label'           => 'offset_'.$offset,
+			  ));
 	    	break;
 			}
 			$offset++;
 		}
 	}else{
 		$weObj->text(lywx_menu())->reply();
+		ga_push_add_event(array(
+	   'category'        => 'lywxother',
+	   'action'          => $keyword,
+	   'label'           => 'menu get',
+	  ));
 	}
 
  //  $wxresources = array();  //TODO： get all (enabled)resources/node of account.
