@@ -1,7 +1,9 @@
 <?php
 function lywx_menu(){
 return 
-'生活智慧
+'输入以下数字代号，可以收听良友电台相关的节目：
+ 
+生活智慧
 101：微播出炉
 102：书香园地
 103：今夜心未眠
@@ -9,22 +11,27 @@ return
 105：生活无国界
 106：零点零距离
 107：i-Radio爱广播
+ 
 关怀辅导
 201：空中辅导
 202：无限飞行号
 203：i关怀心磁场
+ 
 婚恋家庭
 301：恋爱季节
 302：幸福满家园
 303：亲情不断电
 304：欢乐卡恰碰
+ 
 诗歌音乐
 401：齐来颂扬
 402：彩虹桥
 403：长夜的牵引
+ 
 慕道探索
 501：生命的福音
 502：现代人的希望
+ 
 生命成长
 601：旷野吗哪
 602：生命的四季
@@ -39,6 +46,7 @@ return
 611：给力人生
 612：信仰百宝箱
 613：空中门训
+ 
 学习真道
 701：真道分解
 702：圣言盛宴
@@ -48,22 +56,20 @@ return
 706：善牧良言
 707：真理与柱石
 708：生活之光
-栽培训练
-801：晨曦讲座
-802：良院精选
-803：良友圣经学院（基础课程）
-804：良友圣经学院（本科文凭课程）（第一套）
-805：良友圣经学院（本科文凭课程）（第二套）
-806：良友圣经学院（进深文凭课程）（第一套）
-807：良友圣经学院（进深文凭课程）（第二套）
-808：接棒人
+ 
 中英双语
-901：蓝天绿洲
-902：天路导向
-903：天路导向（粤语）
+801：蓝天绿洲
+802：天路导向
+803：天路导向（粤语）
+ 
 少数民族
-1001：恩典与真理（回民广播）
-1002：	爱在人间（云南话';
+901：恩典与真理（回民广播）
+902：爱在人间（云南话）
+ 
+栽培训练
+1001：接棒人
+1002：晨曦讲座
+1003：良院精选';
 }
 
 function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
@@ -80,7 +86,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 		$upyun_bucket_name = 'lywxaudio';
 		$cdnlink = $upyun_bucket_name.'.b0.upaiyun.com';
 		$offset=0;
-		while ($offset <= 10) {
+		while ($offset <= 7) {
 			$date = date('ymd',time()-$offset*86400);
 			$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
 			$musicurl = 'http://'.$cdnlink.$path.upyun_get_token($path);
@@ -95,9 +101,18 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 			   'action'          => $ori_title,
 			   'label'           => 'offset_'.$offset,
 			  ));
-	    	break;
+	    	return;
 			}
 			$offset++;
+		}
+
+		{
+			$weObj->text(lywx_menu())->reply();
+			ga_push_add_event(array(
+		   'category'        => 'lywxother',
+		   'action'          => $keyword,
+		   'label'           => 'menu get',
+		  ));
 		}
 	}else{
 		$weObj->text(lywx_menu())->reply();
