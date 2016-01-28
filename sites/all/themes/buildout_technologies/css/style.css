@@ -3,6 +3,21 @@
 /*@import url(//fonts.useso.com/css?family=Source+Sans+Pro:300,400,700,300italic);*/
 
 /* GLOBAL ********************************* */
+.content p.data-ul::after{
+	content: "▶";
+	font-size: 12px;
+	color: #000;
+}
+.content p.data-ul-open::after{
+	content: "▼";
+	font-size: 12px;
+	color: #000;
+}
+.content p+ul{
+	margin-left: 4em;
+	display:none;
+}
+
 .d-copyright{
 	text-align: center;
 	font-size: 12px;

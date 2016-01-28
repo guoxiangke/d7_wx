@@ -16,5 +16,22 @@
     		$('.praise_num').html(( parseInt($('.praise_num').html())-1));
     	}
     });
+
+    $('.content p').each(function(){
+    if($(this).next('ul').length){
+         $(this).addClass('data-ul');
+    }
+    });
+    $('p').click(function(){
+        if($(this).next('ul').length && $(this).next('ul').is(':visible')){
+          $(this).next('ul').slideUp();
+          $(this).toggleClass('data-ul-open');
+        }else{
+          $(this).next('ul').slideDown();
+          $(this).toggleClass('data-ul-open');
+        }
+      }
+    );
+
   });
 })(jQuery);
