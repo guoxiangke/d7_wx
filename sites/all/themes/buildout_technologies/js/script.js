@@ -23,12 +23,14 @@
     }
     });
     $('p').click(function(){
-        if($(this).next('ul').length && $(this).next('ul').is(':visible')){
-          $(this).next('ul').slideUp();
-          $(this).toggleClass('data-ul-open');
-        }else{
-          $(this).next('ul').slideDown();
-          $(this).toggleClass('data-ul-open');
+        if($(this).next('ul').length){
+          if($(this).next('ul').is(':visible')){
+            $(this).next('ul').slideUp();
+            $(this).toggleClass('data-ul-open');
+          }else{
+            $(this).next('ul').slideDown();
+            $(this).toggleClass('data-ul-open');
+          }
         }
       }
     );
