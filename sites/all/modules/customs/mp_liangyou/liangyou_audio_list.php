@@ -3,6 +3,7 @@
 function liangyou_audio_list_bytitle(){
 	$audios = liangyou_audio_list2();
 	foreach ($audios as $code => $audio) {
+    $audios[$code]['code'] = $code;
 		$audios[$audio['title']] = $audios[$code];
 		unset($audios[$code]); 
 	}
@@ -43,7 +44,7 @@ function liangyou_audio_list2(){
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>601,
-      'lywx'=>109,
+      'lywx'=>202,
       'category'=>'关怀辅导',
       'desc'=>'在这里，有与你遭遇相连的他和她；在这里，有渴望关心残疾人的你和我；在这里，有神与我们同飞行。突破身体心灵缺陷，发掘生命蕴藏的更美本质，一起登上属于你和我的《无限飞行号》',
       ),
