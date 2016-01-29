@@ -22,8 +22,6 @@ function mp_service_callback($account){
       break;
     case Wechat::MSGTYPE_EVENT:
       _mp_service_process_event($weObj,$account);
-      // TODO
-      // module_invoke_all('wxservice_event_alter', $weObj);
       break;	  
   }
   $weObj->reply();
@@ -198,87 +196,11 @@ function _mp_service_process_event($weObj,$account){
   if(!$event){
     break;
   }
-   // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
-  if($account->uid == 8 && $event['event']=='SCAN'){
-    $uid = $event['key'];
-    // $user = user_load($uid);
-    // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
-    $openid = $weObj->getRev()->getRevFrom();
-    $user_info = $weObj->getUserInfo($openid);
-    $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
-    $user_name = $ori_user_name;
-    //if 用户不存在，则创建新用户！
-    $mail = $user_info['openid'].'@wechat.bind';
-    $account = user_load_by_mail($mail);
-    if(!$account){
-      // $response = drupal_http_request($user_info['headimgurl']);
-      // if ($response->code == 200){
-      //   $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'_0.jpg');
-      // }
-      $count = 0;
-      while(user_load_by_name($user_name)){
-        // $user_name = $user_name.rand(0, 100);
-        $user_name = $ori_user_name.'_'.$count;
-        $count ++;
-      }
-      $pass = $user_info['openid'];
-      $new_user = array(
-        'name' => $user_name,
-        'pass' => $pass,//user_password()
-        'mail' => $mail,
-        'init' => $mail,
-        // 'picture'=> $file->fid,  
-        'status' => 1,
-        'data'  => $user_info,
-        'roles' => array(
-          DRUPAL_AUTHENTICATED_RID => 'authenticated user',
-          6 => 'fwh',
-        ),
-        'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
-        'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
-        
-      );
-      $account = user_save(null, $new_user);
-      if(!$account){
-        // drupal_set_message('账户创建失败！', 'error', FALSE);
-        watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
-      }
-      // watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
-      // $friend_name = db_result(db_query("SELECT name FROM {users} WHERE uid = '%s'", $uid));{".$friend_name."
-      $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]"."\n点击【送大奖】→我的海报，呼朋唤友，踊跃参与吧[跳跳]")->reply();
-      //add points!
-      return; 
-    }else{
-      if($uid == $account->uid){
-        $weObj->text("赶快分享本图片到朋友圈、好友、群、QQ即可邀请他们来参加积分有奖活动！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n回复【VIP】可获得为您PS个性宣传图\n呼朋唤友，踊跃参与吧[转圈]")->reply();
-      };
-      if(!in_array('fwh', $account->roles)){
-        $account->roles['6'] = 'fwh';
-        user_save($account);
-        $params = array(
-          'uid' => $account->uid,
-          'points' => 100,
-          'operation' => 'Insert',
-          'description' => '邀请者ID：'.$uid,
-        );
-        userpoints_userpointsapi($params);
-        $params = array(
-          'uid' => $uid,
-          'points' => 100,
-          'operation' => 'Insert',
-          'description' => '邀请好友：'.$account->name,
-        );
-        userpoints_userpointsapi($params);
-        $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]回复【VIP】可获得为您PS个性宣传图\n点击【送大奖】→我的海报，呼朋唤友，踊跃参与吧[跳跳]")->reply();
-      }else{
-        watchdog('老朋友', $account->uid, array(), WATCHDOG_NOTICE, 'error');
-        $weObj->text("老朋友您好，此次扫描无效。请点击【送大奖】→我的海报，来邀请[新朋友]赚积分赢大奖吧！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n回复【VIP】可获得为您PS个性宣传图\n呼朋唤友，踊跃参与吧[转圈]")->reply();
 
-      }
-      return;
-    }
-    return;
-  }
+  // TODO
+  module_invoke_all('wxservice_event_alter', $weObj,$event,$account);
+  if(is_array($weObj->Message(''))){return;}
+
   if(!isset($event['key'])){
     if($account->uid>1) ga_push_add_event(array(
        'category'        => 'event',
@@ -290,19 +212,6 @@ function _mp_service_process_event($weObj,$account){
       //MP menu!
     }else{
       mp_service_keyword_response($weObj,$event['key'],$account);
-    }
-    if(!is_array($weObj->Message(''))){ 
-      if($account->uid>1) ga_push_add_event(array(
-         'category'        => 'event_'.$event['event'],
-         'action'          =>  $event['key'],
-         'label'           => 'wxservice_'.$account->uid,
-      ));
-    }else{
-      if($event['event']=='CLICK'){
-        //MP menu!
-      }else{
-        watchdog('no! track event!', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
-      }
     }
   }
 	//add default behavior
