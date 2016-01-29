@@ -214,3 +214,13 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
  //    return;
  //  }
 }
+
+
+/**
+ * Hook_wxservice_event_alter
+ */
+function mp_lywx_wxservice_event_alter($weObj,$event,$account){
+	if($event['event']=='subscribe'){
+    $weObj->text("亲爱的朋友，你好！感谢你关注良友电台官方订阅号“良友知音”！\n".lywx_menu())->reply();
+	}
+}
