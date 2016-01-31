@@ -122,6 +122,14 @@ function mp_fm_wxresources($resources, $account, $keyword){
         // watchdog('index', $index, array(), WATCHDOG_NOTICE, 'link');
         $sound_id = trim($sound_ids[$index]);
         // watchdog('sound_id', $sound_id, array(), WATCHDOG_NOTICE, 'link');
+        if(!$sound_id) {
+          $resources['key_'.$keyword]= array(
+            'type'  =>  'text',
+            'obj'   => array(
+              'text'  => "啊呜，出错啦！没有那么多集啊，亲！",
+            )
+          );return $resources;
+        }
         $json = file_get_contents('http://www.ximalaya.com/tracks/'.$sound_id.'.json');
         // $json = file_get_contents(getcwd().'/sites/all/modules/customs/mp_fm/test.json');
         $json = json_decode($json);

@@ -487,7 +487,7 @@ function liangyou_audio_list2(){
       'lywx'=>605,
       'category'=>'生命成长',
       ),
-    'jckc'=>array(
+    'jckc2'=>array(
       'title' =>'良友圣经学院（基础课程）',
       'bce' => 0,
       'txly'=>'http://www.txly1.net/program/1njck8-3b2p4g',
@@ -625,7 +625,7 @@ function liangyou_audio_list2(){
       'txly'=>'http://www.txly1.net/program/1njcik-3b2p14?',
       'prefix'=>$prefix['33'],
       'day'=>'17',//????
-      'index'=>621,
+      'index'=>692,
       'lywx'=>707,
       'category'=>'学习真道',
       'desc'=>'透过经卷研读，陪伴你建立真理基础，栽培你灵命成长，帮助你活出信仰',

@@ -50,109 +50,34 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	// watchdog('mp_liangyoukeyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
-		$upyun_bucket_name = 'lywxaudio';
-		$cdnlink = $upyun_bucket_name.'.b0.upaiyun.com';
-		// http://lywxaudio.b0.upaiyun.com/2016/zz/zz160205.mp3
-  	//ee bv se gv
-	  if(1||(isset($enabled_resources['ly']) && $enabled_resources['ly'])){
-		  require_once('liangyou.inc');
-		 	if($keyword == 'ly' || $keyword == '良友' ){
-				$resources['key_'.$keyword]= array(
+		// 600-652 stream ly
+		$cdnlink = 'http://lywxaudio.b0.upaiyun.com';
+	  if(isset($enabled_resources['ly2']) && $enabled_resources['ly2']){
+			if($keyword == 600){
+			 	$resources['key_'.$keyword] = array(
 					'type'	=>	'text',
 					'obj'		=> array(
-						'text'	=> ly_get_menu(),
+						'text'	=> ly_stream_menu(),
 					)
 				);
 				return $resources;
-		 	}
-		  $radios_list = liangyou_audio_list();
-		  $radios_keys = array_keys($radios_list);
-			// bc1
-		  $key = substr($keyword, 0,2); 
-		  if(in_array($key, $radios_keys)) {
-		    $offset = 0;
-		    if(strlen($keyword)>2) {
-		      $offset = substr($keyword, 2,1);
-		      if(!is_numeric($offset)) $offset = 0;
-		    }
-		    //se->bf
-		    if ($key=='se' && $offset == 0 && date('N')>5) {
-		    	$key = 'bf';
-		    }
-		    if ($key=='bc' && $offset == 0 && date('N')>5) {
-		    	$key = 'rt';
-		    }
-		    if($key=='bv') $key='mw';
-		    if($key=='cc' && $offset == 0) $offset=1;
-	    	// if($key=='603') $keyword='cc1';
-		    if ($key=='bf' && $offset == 0 && date('N')<=5) {
-		    	$keyword = '416';
-		    	return mp_bbn_response($keyword,$account,$key);
-		    }
-		    //6,7播出的节目
-		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='67' && $offset == 0 && date('N')<=5) {
-		    	$offset = date('N');
-		    }
-		    //7周日播出
-		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='7' && $offset == 0 && date('N')<=6) {
-		    	$offset = date('N');
-		    }
-		    //周1-5播出
-		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='5' && $offset == 0 && date('N')>=6) {
-		    	$offset = date('N')%2+1;
-		    }
-
-		    $string = date('ymd',time()-$offset*24*60*60); 
-		    $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【600】';
-		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
-		    //USE UPYUN
-	  		{
-		 			{
-						require_once('liangyou_audio_list.php');
-						$liangyou_audio_list = liangyou_audio_list2();
-						$liangyou_audio_list_info = $liangyou_audio_list[$key];
-						$title = $liangyou_audio_list_info['title'];
-						$code = $key;
-						// http://lywxaudio.b0.upaiyun.com/2016/zz/zz160205.mp3
-						// $dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
-	          $path = '/'.date('Y').'/'.$code.'/'.$code. date('ymd').'.mp3';
-	          $musicurl = 'http://'.$cdnlink.$path.upyun_get_token($path);
-	          $temp = @get_headers($musicurl);
-	          if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-								$resources['key_'.$keyword]= array(
-									'type'	=>	'music',
-									'obj'		=> array(
-										'title'	=> $title.'♪',
-										'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
-										'musicurl'	=>	$musicurl,
-										'hgmusicurl'	=>	$musicurl,
-									),
-								);
-								return $resources;
-	          }else{
-	          	//本节目暂无上传，请稍后再试！
-	          }
-					}
-		    }//UPYUN END
-		  	$resources['key_'.$keyword]= array(
-					'type'	=>	'music',
-					'obj'		=> array(
-						'title'	=> $radios_list[$key]['name'],
-						'desc'	=>	$desc,
-						'musicurl'	=>	$url,
-						'hgmusicurl'	=>	$url,
-					),
-				);
 			}
-	  }
-
-		// 600-652 stream ly
-	  if(isset($enabled_resources['ly2']) && $enabled_resources['ly2']){
-		  require_once('liangyou.inc');
-		  if(is_numeric($keyword) && ($keyword>=600 && $keyword<=652) ) {
+		  if(is_numeric($keyword) && ($keyword>600 && $keyword<=652) ) {
+		  	if($keyword>=641 && $keyword<=645){
+				 	$resources['key_'.$keyword] = array(
+						'type'	=>	'text',
+						'obj'		=> array(
+							'text'	=> '改版开发中，敬请期待！',
+						)
+					);
+					return $resources;
+		  	}
 				$orikeyword = $keyword;
 				if(date('N')>5&&$keyword=='612') {//【612】书香园地＝》【614】今夜心未眠
 					$keyword = '614';
+				}
+				if(date('N')>5&&$keyword=='604') {//【604】炼爱季节＝》【605】幸福满家园
+					$keyword = '605';
 				}
 				if(date('N')>5&&$keyword=='606') {//【606】亲情不断电＝》【605】幸福满家园
 					$keyword = '605';
@@ -182,109 +107,116 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
 						$title = $liangyou_audio_list_info['title'];
 						$code = $liangyou_audio_list_info['code'];
-
-						// http://lywxaudio.b0.upaiyun.com/2016/zz/zz160205.mp3
-						// $dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
-				    $path = '/'.date('Y').'/'.$code.'/'.$code. date('ymd').'.mp3';
-				    $musicurl = 'http://'.$cdnlink.$path.upyun_get_token($path);
-				    $temp = @get_headers($musicurl);
-				    if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
+						$offset=0;
+						while ($offset <= 7) {
+							$date = date('ymd',time()-$offset*86400);
+							$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
+							$musicurl = $cdnlink.$path.upyun_get_token($path);
+							$temp = @get_headers($musicurl);
+							if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
+								// $title = $title;
+								$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").($offset?$date:' 每日更新');
 								$resources['key_'.$orikeyword]= array(
 									'type'	=>	'music',
 									'obj'		=> array(
 										'title'	=> $title.'♪',
-										'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
+										'desc'	=> $desc,
 										'musicurl'	=>	$musicurl,
 										'hgmusicurl'	=>	$musicurl,
 									),
 								);
 								return $resources;
-				    }
-					}
-					}
-		    	//UPYUN END
-		    $file_path = DRUPAL_ROOT.'/sites/default/files/cron/lycloudjson/';
-		    // if (!is_dir($file_path)) {
-		    //   mkdir($file_path, 0777, true);
-		    // }
-		    // $file_key = dirname(__FILE__).'/'.date('Ymd').'.json';
-		    $file_key = drupal_realpath('public://cron/lycloudjson/'.date('Ymd').'.json') ;
-		    if(!file_exists($file_key))  {
-					$radios = ly_stream_source();
-					foreach ($radios as $key => $radio) {
-					  // $url = $radio['url'];
-					  // $title = $radio['title'];
-					  $url = $radio;
-					  $title = $key;
-
-					  $html = file_get_html($url);
-					  if(!$html) { 
-					  	watchdog('mp_liangyou', 'lost audio:'.$title, array(), WATCHDOG_NOTICE, 'error');
-					  	continue;
-					  }
-					  $url = $html->find('#div_playlist li', 0);
-
-					  $title_get = $html->find('#div_playlist li .mp3_title', 0)->plaintext;
-					  $mp3_description = $html->find('#div_playlist li .mp3_description', 0)->plaintext;
-					  $dates = explode('-', $title_get);
-					  $data[] = array(
-					    'title' => $title,
-					    'date' => $dates[1],
-					    'url'   =>  $url->attr['data-stream'],
-					    'desc'  => $mp3_description,
-					    );
-					  // break;
-					}
-					// var_dump($data);
-					$file = json_encode($data);
-					if(!is_null($file)){
-					  file_put_contents( $file_key , $file );
-					  // $file_key = dirname(__FILE__).'/'.date('Ymd',time()-86400).'.json';
-					  // if(file_exists($file_key))
-					  // 	unlink($file_key);
-					  // watchdog('mp_liangyou', 'Success download ly audio list from stream', array(), WATCHDOG_NOTICE, 'link');
+							}
+							$offset++;
+						}
 					}
 				}
+		    //UPYUN END
+		    if(0){
+			    $file_path = DRUPAL_ROOT.'/sites/default/files/cron/lycloudjson/';
+			    // if (!is_dir($file_path)) {
+			    //   mkdir($file_path, 0777, true);
+			    // }
+			    // $file_key = dirname(__FILE__).'/'.date('Ymd').'.json';
+			    $file_key = drupal_realpath('public://cron/lycloudjson/'.date('Ymd').'.json') ;
+			    if(!file_exists($file_key))  {
+						$radios = ly_stream_source();
+						foreach ($radios as $key => $radio) {
+						  // $url = $radio['url'];
+						  // $title = $radio['title'];
+						  $url = $radio;
+						  $title = $key;
 
-		    $file = file_get_contents($file_key);
-		    $urls = json_decode($file,TRUE);
-		    if($keyword == 600){
-		     	$resources['key_'.$keyword] = array(
-						'type'	=>	'text',
-						'obj'		=> array(
-						'text'	=> ly_stream_menu(),
-						)
-					);
-		    }else{	    	
-			    // $before_keyword = $keyword;
-			    $keyword = $orikeyword - 601;
-			    // watchdog('keyword '.$before_keyword , $keyword, array(), WATCHDOG_NOTICE, 'link');
-			    $title = str_replace($keyword, '', $urls[$keyword]['title']);
-			    $musicurl = $urls[$keyword]['url'].'?='.$urls[$keyword]['date'].'.mp3';
-			    $desc =  substr($urls[$keyword]['date'], 4).' '.truncate_utf8($urls[$keyword]['desc'], 16, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
-			    $resources['key_'.$orikeyword]= array(
-						'type'	=>	'music',
-						'obj'		=> array(
-						'title'	=> $title,
-						'desc'	=>	$desc,
-						'musicurl'	=>	$musicurl,
-						'hgmusicurl'	=>	$musicurl,
-						),
-					);
-					// watchdog('resources ', print_r($resources,TRUE), array(), WATCHDOG_NOTICE, 'link');
-		    }
+						  $html = file_get_html($url);
+						  if(!$html) { 
+						  	watchdog('mp_liangyou', 'lost audio:'.$title, array(), WATCHDOG_NOTICE, 'error');
+						  	continue;
+						  }
+						  $url = $html->find('#div_playlist li', 0);
+
+						  $title_get = $html->find('#div_playlist li .mp3_title', 0)->plaintext;
+						  $mp3_description = $html->find('#div_playlist li .mp3_description', 0)->plaintext;
+						  $dates = explode('-', $title_get);
+						  $data[] = array(
+						    'title' => $title,
+						    'date' => $dates[1],
+						    'url'   =>  $url->attr['data-stream'],
+						    'desc'  => $mp3_description,
+						    );
+						  // break;
+						}
+						// var_dump($data);
+						$file = json_encode($data);
+						if(!is_null($file)){
+						  file_put_contents( $file_key , $file );
+						  // $file_key = dirname(__FILE__).'/'.date('Ymd',time()-86400).'.json';
+						  // if(file_exists($file_key))
+						  // 	unlink($file_key);
+						  // watchdog('mp_liangyou', 'Success download ly audio list from stream', array(), WATCHDOG_NOTICE, 'link');
+						}
+					}
+
+			    $file = file_get_contents($file_key);
+			    $urls = json_decode($file,TRUE);
+			    if($keyword == 600){
+			     	$resources['key_'.$keyword] = array(
+							'type'	=>	'text',
+							'obj'		=> array(
+							'text'	=> ly_stream_menu(),
+							)
+						);
+			    }else{	    	
+				    // $before_keyword = $keyword;
+				    $keyword = $orikeyword - 601;
+				    // watchdog('keyword '.$before_keyword , $keyword, array(), WATCHDOG_NOTICE, 'link');
+				    $title = str_replace($keyword, '', $urls[$keyword]['title']);
+				    $musicurl = $urls[$keyword]['url'].'?='.$urls[$keyword]['date'].'.mp3';
+				    $desc =  substr($urls[$keyword]['date'], 4).' '.truncate_utf8($urls[$keyword]['desc'], 16, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
+				    $resources['key_'.$orikeyword]= array(
+							'type'	=>	'music',
+							'obj'		=> array(
+							'title'	=> $title,
+							'desc'	=>	$desc,
+							'musicurl'	=>	$musicurl,
+							'hgmusicurl'	=>	$musicurl,
+							),
+						);
+						// watchdog('resources ', print_r($resources,TRUE), array(), WATCHDOG_NOTICE, 'link');
+			    }
+					return $resources;
+				}
 		  }
 	  }
 	  //523
 	  if(isset($enabled_resources['523']) && $enabled_resources['523'])
 	 	if($keyword == '523'){
-	      $title = '在天父怀中';
-	      $str = date('md');
-	      //http://audio1.liangyou.net/files/media/ly_daily/2013Daily_130114.mp3
-	      $musicurl = 'http://inhim.qiniudn.com/2013Daily_13'.$str.'.mp3';
-	      $desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新 ".date('md');
-	      $url = $musicurl;
-	      $resources['key_'.$keyword]= array(
+      $title = '在天父怀中';
+      $str = date('md');
+      //http://audio1.liangyou.net/files/media/ly_daily/2013Daily_130114.mp3
+      $musicurl = 'http://inhim.qiniudn.com/2013Daily_13'.$str.'.mp3';
+      $desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新 ".date('md');
+      $url = $musicurl;
+      $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
 				'obj'		=> array(
 					'title'	=> $title.'♫',
@@ -293,6 +225,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					'hgmusicurl'	=>	$url,
 				),
 			);
+			return $resources;
 	 	}
 
 	  //365||366
@@ -317,9 +250,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					'hgmusicurl'	=>	$url,
 				),
 			);
+			return $resources;
 	  }
-
-
 
     //圣经广播网 400-435
     if(isset($enabled_resources['400']) && $enabled_resources['400'])
@@ -346,6 +278,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						'hgmusicurl'	=>	$musicurl,
 					),
 				);
+				return $resources;
 	    }
 	    //122501 http://www.ysqm.org/stream/ch-
 	    if($keyword == '1225') {
@@ -365,17 +298,18 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						'hgmusicurl'	=>	$musicurl,
 					),
 				);
+				return $resources;
 	    }
  		}
 
- 		if(isset($enabled_resources['swty']) && $enabled_resources['swty']){
- 			if(substr($keyword, 0,2) == 'ty' || substr($keyword, 0,4) == 'swty' || $keyword == '世外桃源') {
-	 			require_once('swty.inc');
-	 			$resources['key_'.$keyword] = wx_swty_resource_response($keyword);
-	 		}
- 		}
+ 		// if(isset($enabled_resources['swty']) && $enabled_resources['swty']){
+ 		// 	if(substr($keyword, 0,2) == 'ty' || substr($keyword, 0,4) == 'swty' || $keyword == '世外桃源') {
+	 	// 		require_once('swty.inc');
+	 	// 		$resources['key_'.$keyword] = wx_swty_resource_response($keyword);
+	 	// 	}
+ 		// }
+ 		require_once('liangyou.inc');
 		//a1 b1 c1 d1 e1 f1-f9
-
 		if(isset($enabled_resources['mav']) && $enabled_resources['mav']){
 			// $keyword = 'd11';
 			$first = substr($keyword, 0,1);
@@ -480,94 +414,104 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		// 用户回复【基础课程】或【jckc】可得到基础课程8科按顺序排列的节目，8*24+1(pdf)=200天循环一次。
 		// 每个科目，比如事奉装备，用户回复【事奉装备】或【sfzb】获得当天节目，25天一循环，收听14课可以回复【sfzb14】
 		//begin new 良友圣经学院
-	if(isset($enabled_resources['jckc']) && $enabled_resources['jckc']){
-		if($keyword == '基础' || $keyword == 'jc'){
-			$mav = get_ly_jckc();
-			$mavmenu = "良院基础课程目录\n";
-			foreach ($mav as $key => $value) {
-				$mavmenu .= "【J".$value['order']."】".$value['title']."\n";//"【".strtoupper($key)."】".
-			}
-			$mavmenu .="回复【J11】，即可获得第一课[强]";
-			$resources['key_'.$keyword]= array(
-				'type'	=>	'text',
-				'obj'		=> array(
-				'text'	=> $mavmenu,
-				)
-			);
-		}
-
-		$temp_keyword = $keyword;
-		if($keyword == '基础课程' || $keyword == 'jckc'){
-			$index_day = date('z');
-			$total = 25;
-			$index1 = $index_day%200;//200天一循环！
-			// dvm($index1);
-			// dvm($index1%25,'课');
-			// dvm(ceil($index1/25),'单元');
-			$course_id = $index1%$total;//课
-			$course_index = ceil($index1/$total);//单元
-			$temp_keyword = 'j'.$course_index.$course_id;//326 j1514
-			// watchdog('course_id', $course_id, array(), WATCHDOG_NOTICE, 'link');
-			// watchdog('course_index', $course_index, array(), WATCHDOG_NOTICE, 'link');
-			// watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
-		}
-
-		//J11 J124 J21 J224...
-		$first = substr($temp_keyword, 0,1);//J
-		$second = substr($temp_keyword, 1,1);//1-8
-		$temp = array('j');
-		$level = '基础课程';
-		
-		if(in_array($first, $temp) && $second>0 && $second<10 ){
-			$third = substr($temp_keyword, 2,2);
-			$mav = get_ly_jckc();
-			$mav = $mav[$second];
-			if($third>0&&$third<=$mav['max']){
-				//24 => 001
-				$count = $mav['max'];
-				$index = str_pad($third, 2,'0',STR_PAD_LEFT);
-
-
-				$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['prefex'].$index.'.mp3';
-
-				$etime = time()+3600; // 授权十分钟后过期
-				$key = 'ly729';   // token 防盗链密钥
-				$path = '/'.$link; // 图片相对路径
-				$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-				
-				$cdn = 'http://lts33.b0.upaiyun.com/';
-				$link = $cdn . urlencode($link).'?_upt='.$sign;
-				$resources['key_'.$keyword]= array(
-					'type'	=>	'music',
-					'obj'		=> array(
-						'title'	=> $mav['title'].'-'.$index,
-						'desc'	=>	"良友圣经学院 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
-						'musicurl'	=>	$link,
-						'hgmusicurl'	=>	$link,
-					),
-				);
-			}else{
-				//编码对，编号不对！
-				$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
-				$cdn = 'http://lts33.b0.upaiyun.com/';
-
-
-				$etime = time()+864000; // 授权十天后过期
-				$key = 'ly729';   // token 防盗链密钥
-				$path = '/'.$link; // 图片相对路径
-				$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-
-				$link = $cdn . urlencode($path).'?_upt='.$sign;
+		if(isset($enabled_resources['jckc']) && $enabled_resources['jckc']){
+			if($keyword == '基础' || $keyword == 'jc'){
+				$mav = get_ly_jckc();
+				$mavmenu = "良院基础课程目录\n";
+				foreach ($mav as $key => $value) {
+					$mavmenu .= "【J".$value['order']."】".$value['title']."\n";//"【".strtoupper($key)."】".
+				}
+				$mavmenu .="回复【J11】，即可获得第一课[强]";
 				$resources['key_'.$keyword]= array(
 					'type'	=>	'text',
 					'obj'		=> array(
-						'text'	=> "恭喜您，良友圣经学院 $level 《".$mav['title']."》已结束！\n回复J".($second+1)."1学习下一门课程[强]\n".'<a href="http://ly.yongbuzhixi.com/pdfviewer/web/?pdf='.$link.'">查看'.$mav['title'].'讲义</a>',
+					'text'	=> $mavmenu,
 					)
 				);
-			}	
+				return $resources;
+			}
+
+			$temp_keyword = $keyword;
+			if($keyword == '基础课程' || $keyword == 'jckc'){
+				$index_day = date('z');
+				$total = 25;
+				$index1 = $index_day%200;//200天一循环！
+				// dvm($index1);
+				// dvm($index1%25,'课');
+				// dvm(ceil($index1/25),'单元');
+				$course_id = $index1%$total;//课
+				$course_index = ceil($index1/$total);//单元
+				$temp_keyword = 'j'.$course_index.$course_id;//326 j1514
+				// watchdog('course_id', $course_id, array(), WATCHDOG_NOTICE, 'link');
+				// watchdog('course_index', $course_index, array(), WATCHDOG_NOTICE, 'link');
+				// watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
+			}
+
+			//J11 J124 J21 J224...
+			$first = substr($temp_keyword, 0,1);//J
+			$second = substr($temp_keyword, 1,1);//1-8
+			$temp = array('j');
+			$level = '基础课程';
+			
+			if(in_array($first, $temp) && $second>0 && $second<10 ){
+				$third = substr($temp_keyword, 2,2);
+				$mav = get_ly_jckc();
+				if(!isset($mav[$second])){
+					$resources['key_'.$keyword]= array(
+						'type'	=>	'text',
+						'obj'		=> array(
+							'text'	=> "啊呜，指令不对，出错啦！请回复【jc】或【基础】查看指令！",
+						)
+					);return $resources;
+				}
+				$mav = $mav[$second];
+				if($third>0&&$third<=$mav['max']){
+					//24 => 001
+					$count = $mav['max'];
+					$index = str_pad($third, 2,'0',STR_PAD_LEFT);
+
+
+					$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['prefex'].$index.'.mp3';
+
+					$etime = time()+3600; // 授权十分钟后过期
+					$key = 'ly729';   // token 防盗链密钥
+					$path = '/'.$link; // 图片相对路径
+					$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+					
+					$cdn = 'http://lts33.b0.upaiyun.com/';
+					$link = $cdn . urlencode($link).'?_upt='.$sign;
+					$resources['key_'.$keyword]= array(
+						'type'	=>	'music',
+						'obj'		=> array(
+							'title'	=> $mav['title'].'-'.$index,
+							'desc'	=>	"良友圣经学院 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
+							'musicurl'	=>	$link,
+							'hgmusicurl'	=>	$link,
+						),
+					);return $resources;
+				}else{
+					//编码对，编号不对！
+					$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
+					$cdn = 'http://lts33.b0.upaiyun.com/';
+
+
+					$etime = time()+864000; // 授权十天后过期
+					$key = 'ly729';   // token 防盗链密钥
+					$path = '/'.$link; // 图片相对路径
+					$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+
+					$link = $cdn . urlencode($path).'?_upt='.$sign;
+					$resources['key_'.$keyword]= array(
+						'type'	=>	'text',
+						'obj'		=> array(
+							'text'	=> "恭喜您，良友圣经学院 $level 《".$mav['title']."》已结束！\n回复J".($second+1)."1学习下一门课程[强]\n".'<a href="http://ly.yongbuzhixi.com/pdfviewer/web/?pdf='.$link.'">查看'.$mav['title'].'讲义</a>',
+						)
+					);return $resources;
+				}
+			}
+			// 
+			//end of new 良友圣经学院
 		}
-		//end of new 良友圣经学院
-	}
 		//begin lysd sd1-sd999
 		$orikeyword = $keyword;
 		$check_keyword = substr($keyword, 0,2);
@@ -585,6 +529,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					'text'	=> $mavmenu,
 					)
 				);
+				return $resources;
 			}
 			if(is_numeric($index)){
 				foreach ($lysd as $key => $value) {
@@ -607,47 +552,97 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 								'hgmusicurl'	=>	$link,
 							),
 						);
-						break;
+						return $resources;break;
 					}
 				}
 			}
 		}
-		//begin bos
-if(0){
- 		if(!isset($resources)){
- 			$file_key = 'http://ly.yongbuzhixi.com/cron/nissigz/json/'.date('Ym').'/'.date('Ymd') . '.json';
-			$getheaders = @get_headers($file_key);
-			if(isset($getheaders)&&$getheaders[0] == 'HTTP/1.1 404 Not Found'){
-				$resources['key_'.$keyword]= array(
-					'type'	=>	'text',
-					'obj'		=> array(
-						'text'	=>'亲，分发下载还没完成，请稍后再试！',
-					)
-				);
-				return;
-			}
- 			$file = file_get_contents($file_key);
-			$urls = json_decode($file,TRUE);
 
-			if(count($urls))
-			foreach ($urls as $key => $value) {
-				if($value['title'] == $keyword){
-					if(!isset($value['bce'])) return;
-					$musicurl = 'http://'.$cdnlink.$value['bce'].upyun_get_token($value['objectKey']);
-					$resources['key_'.$keyword]= array(
-						'type'	=>	'music',
-						'obj'		=> array(
-							'title'	=> $value['title'].'♪',
-							'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
-							'musicurl'	=>	$musicurl,
-							'hgmusicurl'	=>	$musicurl,
-						),
-					);
-					break;
-				}
+
+  	//ee bv se gv
+	  {//||(isset($enabled_resources['ly']) && $enabled_resources['ly'])
+		  $radios_list = liangyou_audio_list();
+		  $radios_keys = array_keys($radios_list);
+			// bc1
+		  $key = $check_keyword; 
+
+		  if(in_array($key, $radios_keys)) {
+		    $offset = 0;
+		    if(strlen($keyword)>2) {
+		      $offset = substr($keyword, 2,1);
+		      if(!is_numeric($offset)) $offset = 0;
+		    }
+		    //se->bf
+		    if ($key=='se' && $offset == 0 && date('N')>5) {
+		    	$key = 'bf';
+		    }
+		    if ($key=='bc' && $offset == 0 && date('N')>5) {
+		    	$key = 'rt';
+		    }
+		    if($key=='bv') $key='mw';
+		    if($key=='cc' && $offset == 0) $offset=1;
+	    	// if($key=='603') $keyword='cc1';
+		    if ($key=='bf' && $offset == 0 && date('N')<=5) {
+		    	$keyword = '416';
+		    	return mp_bbn_response($keyword,$account,$key);
+		    }
+		    //6,7播出的节目
+		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='67' && $offset == 0 && date('N')<=5) {
+		    	$offset = date('N');
+		    }
+		    //7周日播出
+		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='7' && $offset == 0 && date('N')<=6) {
+		    	$offset = date('N');
+		    }
+		    //周1-5播出
+		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='5' && $offset == 0 && date('N')>=6) {
+		    	$offset = date('N')%2+1;
+		    }
+
+		    $string = date('ymd',time()-$offset*24*60*60); 
+		    $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【600】';
+		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
+		    //USE UPYUN
+	  		{
+		 			{
+						require_once('liangyou_audio_list.php');
+						$liangyou_audio_list = liangyou_audio_list2();
+						$liangyou_audio_list_info = $liangyou_audio_list[$key];
+						$title = $liangyou_audio_list_info['title'];
+						$code = $key;
+						// http://lywxaudio.b0.upaiyun.com/2016/zz/zz160205.mp3
+						// $dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
+	          $path = '/'.date('Y').'/'.$code.'/'.$code. date('ymd').'.mp3';
+	          $musicurl = $cdnlink.$path.upyun_get_token($path);
+	          $temp = @get_headers($musicurl);
+	          if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
+								$resources['key_'.$keyword]= array(
+									'type'	=>	'music',
+									'obj'		=> array(
+										'title'	=> $title.'♪',
+										'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
+										'musicurl'	=>	$musicurl,
+										'hgmusicurl'	=>	$musicurl,
+									),
+								);
+								return $resources;
+	          }else{
+	          	//本节目暂无上传，请稍后再试！
+	          }
+					}
+		    }//UPYUN END
+		  	$resources['key_'.$keyword]= array(
+					'type'	=>	'music',
+					'obj'		=> array(
+						'title'	=> $radios_list[$key]['name'],
+						'desc'	=>	$desc,
+						'musicurl'	=>	$url,
+						'hgmusicurl'	=>	$url,
+					),
+				);
+				return $resources;
 			}
- 		}//end bos
- 	}
+	  }
 
 	}
 	return $resources;
@@ -696,4 +691,64 @@ function mp_bbn_response($keyword,$account,$change_keyword=NULL){
 function upyun_get_token($path, $etime = 86400, $key = 'ly729'){
 	$etime = time()+$etime; // 授权1分钟后过期
 	return '?_upt='. substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+}
+
+
+function ly_stream_menu(){
+  return '▶良友广播节目单
+  ----------------------------------------------
+  【601】无限飞行号
+  【602】心磁场
+  【603】空中辅导
+  【604】恋爱季节
+  【605】幸福满家园
+  【606】亲情不断电
+  【607】欢乐卡恰碰
+  【608】绝妙当家
+  【609】微播出炉
+  【610】生活无国界
+  【611】零点零距离
+  【612】书香园地
+  【613】爱广播
+  【614】今夜心未眠
+  【615】彩虹桥
+  【616】长夜的牵引
+  【617】现代人的希望
+  【618】生命的四季
+  【619】拥抱每一天
+  【620】旷野吗哪
+  【621】真道分解
+  【622】圣言盛宴
+  【623】齐来颂扬
+  【624】施恩座前
+  【625】真理之光
+  【626】接棒人
+  【627】聆听主道
+  【628】空中崇拜
+  【629】善牧良言
+  【630】好牧人
+  【631】经动人心
+  【632】佳美脚踪
+  【633】蓝天绿洲
+  【634】给力人生
+  【635】空中门训
+  【636】生根建造
+  【637】信仰百宝箱
+  【638】生活之光
+  【639】生命的福音
+  【640】清心
+  【641】良院基础
+  【642】良院本科一
+  【643】良院本科二
+  【644】良院进深一
+  【645】良院进深二
+  【646】晨曦讲座
+  【647】良院精选
+  【648】天路导向
+  【649】天路导向2
+  【650】恩典与真理
+  【651】爱在人间
+  【652】燃亮的一生
+   回复【】内容[调皮]不带中括号
+   点击►收听[抱拳]';
 }
