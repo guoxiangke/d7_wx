@@ -117,7 +117,6 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 
 	$liangyou_audio_list = liangyou_audio_list_bytitle();
 	if(in_array($keyword, array_keys($liangyou_audio_list))){
-		watchdog('keyword4', $keyword, array(), WATCHDOG_NOTICE, 'link');
 		$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
 		$ori_title = $keyword;//$liangyou_audio_list_info['title'];
 		$code = $liangyou_audio_list_info['code'];
