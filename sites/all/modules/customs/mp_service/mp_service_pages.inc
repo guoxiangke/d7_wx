@@ -265,14 +265,14 @@ function _mp_service_process_event($weObj,$account){
           }
           // watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
             
-          $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n回复【VIP】可获得为您PS个性宣传图\n请点击【送大奖】→我的海报！[强]")->reply();
+          $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n请点击【送大奖】→我的海报！[强]")->reply();
           //add points!
           return; 
         }else{
           if($uid == $account->uid){
-            $weObj->text("请您分享本图片到朋友圈或发给好友或群组即可邀请他们来参加活动。\n推荐100积分的奖励哦！奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]"."谢谢参与！")->reply();
+            $weObj->text("请您分享本图片到朋友圈或发给好友或群组即可邀请他们来参加活动。\n推荐100积分的奖励哦！奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."谢谢参与！")->reply();
           };
-          $weObj->text("老朋友您好，此次扫描无效。回复【VIP】可获得为您PS个性宣传图\n请点击【送大奖】→我的海报，来邀请[新朋友]赚积分赢大奖吧！")->reply();
+          $weObj->text("老朋友您好，此次扫描无效。\n请点击【送大奖】→我的海报，来邀请[新朋友]赚积分赢大奖吧！")->reply();
           return;
         }
       }
@@ -416,7 +416,7 @@ function make_semiangle($str)
   // $replace =  array('','','','','', '', '', '0', '0','0','', '','', '', '',); 
   // $keyword = str_replace($search, $replace, $keyword);
   $arr = array(
-    '○' =>  '0', 'o' =>  '0','〇' =>  '0','一' =>  '', '`' =>  '',
+    '○' =>  '0','〇' =>  '0', '`' =>  '',
     ':' =>  '', ' ' => '',
     '０' => '0', '１' => '1', '２' => '2', '３' => '3', '４' => '4',    
     '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9',    

@@ -175,7 +175,7 @@ function liangyou_audio_list2(){
       'category'=>'生活智慧',
       ),
     'ir'=>array(
-      'title' =>'i-Radio爱广播',
+      'title' =>'iradio爱广播',
       'bce' => 0,
       'txly'=>'http://www.txly1.net/program/1njchu-3b2ozo',
       'prefix'=>$prefix['32'],
@@ -477,7 +477,7 @@ function liangyou_audio_list2(){
       'category'=>'慕道探索',
       ),
     'mp'=>array(
-      'title' =>'这一刻，清心',
+      'title' =>'这一刻,清心',
       'bce' => 1,
       'txly'=>'http://www.txly1.net/program/1njcld-3b2p6q',
       'prefix'=>$prefix['32'],
