@@ -158,7 +158,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 	//   ));
 	// }
 
-	$allowkeywords = array('消息');
+	$allowkeywords = array('消息','?');
 	if(preg_match('/^([a-zA-Z])+/', $keyword)||in_array($keyword, $allowkeywords)){
     $img = array(
       'Title'=>"收听节目代号",
