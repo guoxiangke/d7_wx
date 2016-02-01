@@ -32,10 +32,23 @@ function ybread_menu() {
     'type' => MENU_CALLBACK,
     'access callback' => TRUE,
   );
+  $items['ctoday'] = array(
+    'title' => '每日箴言',
+    'page callback' => 'ctoday_page',
+    'type' => MENU_CALLBACK,
+    // 'menu_name'=> 'main-menu',
+    'access callback' => TRUE,
+    'file' => 'ybread.page.inc',
+  );
+ $items['ctoday/json'] = array(
+    'page callback' => 'get_last_node_json',
+    'page arguments' => array(0,'每日箴言'),
+    'type' => MENU_CALLBACK,
+    'access callback' => TRUE,
+  );
 
   return $items;
 }
-
 /**
  * Implements get_last_node().
  */

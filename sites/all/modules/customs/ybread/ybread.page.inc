@@ -16,8 +16,6 @@ function ybread_page(){
   }
   if(($now - $last >= 1 && $hour >= 6)|| !isset($result->nid)) {
 	  $html = file_get_html('http://simplified-odb.org/today/');
-	  watchdog('ybread-hour1', $hour, array(), WATCHDOG_NOTICE, 'link');
-	  watchdog('ybread-now1', $now - $last, array(), WATCHDOG_NOTICE, 'link');
 		// get title
 		$node = new stdClass();
 		$node->type = $content_type;
@@ -66,8 +64,92 @@ function ybread_page(){
   return drupal_render($node_view);
 }
 
+function ctoday_page(){
+	$content_type = 'ctoday';
+	// get latest node.
+	$query = "SELECT n.nid nid, n.created created FROM {node} n  WHERE n.type = :type order by n.created desc limit 0,1";
+	$result = db_query($query, array(':type' => $content_type))->fetch();
+	// dvm($result->nid);
+  //dvm(12*60*60);
+	$now = 0;
+	$last = 0;
+  if(isset($result->nid)){
+	  $now = date('z');
+	  $hour = date('G',time());
+	  $last = date('z',$result->created);
+  }
+  
+  if(($now - $last >= 1 && $hour >= 6) || !isset($result->nid)) {
+
+		// get title
+		$node = new stdClass();
+		$node->type = $content_type;
+		node_object_prepare($node);
+		$node->uid = '1'; //uid of love.
+		//get title
+	  if(isset($result->nid)){
+	  	$temp_nid = $result->nid;
+			$temp_node = node_load($temp_nid);
+		}
+
+		{
+			$html = file_get_html('http://production.lifejiezou.com/taxonomy/term/1309');
+		  $node->title = $html->find('.field-name-title h2', 0)->plaintext;
+			if((isset($result->nid)&&($temp_node->title != $node->title)) || !isset($result->nid)){	
+				//get title	
+				$link = $html->find('.node-audio h2 a', 0)->href;
+				$html = file_get_html('http://production.lifejiezou.com'.$link);
+			  // $node->title = trim($html->find('h1#page-title', 0)->plaintext);
+			  $audio_link = $html->find('.mediaelement-download-link a', 0)->href;
+			  $field_image = $html->find('.field-name-field-image a', 0)->href;
+			  // get body
+			  $body = $html->find('.field-name-body', 0)->outertext;
+				$body = strip_tags($body,'<span><p><section>');
+				$body = preg_replace('/style="(.*?)"/', '', $body);
+				$body = preg_replace('/class="(.*?)"/', '', $body);
+				$body = preg_replace('/label="(.*?)"/', '', $body);
+				$body = preg_replace('/<p><em>.+/', '', $body);
+				$body = str_replace('，支持各大应用平台APP下载新浪微博：普世佳音授权微信号：耶稣基督圣经福音，wxbible', '', $body);
+				$body = str_replace('如需转载请注明：', '', $body);
+
+
+			  // $body = $html->find('.verse-box', 0)->outertext;
+			  // $body .= $html->find('.entry-content .post-content', 0)->plaintext;
+			  // $body .= $html->find('.entry-content .poem-box', 0)->outertext;
+			  // $body .= $html->find('.entry-content .thought-box', 0)->outertext;
+			  $node->body[LANGUAGE_NONE][0]['value'] = $body;//trim($tempbody->plaintext);
+			  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
+			  $node->language = LANGUAGE_NONE;
+			  // dpm($node);
+			 	// Try to set your custom field
+			  // $html = file_get_html('http://ya-mi.org/');
+			  // $picture = $html->find('#content .entry-thumbnail img', 0);
+			  $pic_url = $field_image;
+		    $response = drupal_http_request($pic_url);
+		    if ($response->code == 200){
+					// $file_path = DRUPAL_ROOT.'/sites/default/files/ctoday/';
+					// if (!is_dir($file_path)) {
+					// mkdir($file_path, 0777, true);
+					// }
+		      $file = file_save_data($response->data, 'public://ctoday/'.date('Ymd').'.jpg');
+		    }
+				$node->field_image[LANGUAGE_NONE][0]['fid']=$file->fid;
+			  $node->field_mp3url[LANGUAGE_NONE][0]['value'] = $audio_link;
+			  // dpm($node);
+			  node_save($node);
+		  	$nid = $node->nid;
+		  	watchdog('ctoday', 'created ctoday '.$nid, array(), WATCHDOG_NOTICE, 'link');
+			}
+	  }
+  }else{
+  	$nid = $result->nid;
+  }
+	$node = node_load($nid);
+  $node_view = node_view($node); //drupal_render($node_view).;
+  return drupal_render($node_view);
+}
+
 function grace365_page(){
-	date_default_timezone_set('Asia/Shanghai');
 	$content_type = 'grace365';
 	// get latest node.
 	$query = "SELECT n.nid nid, n.created created FROM {node} n  WHERE n.type = :type order by n.created desc limit 0,1";

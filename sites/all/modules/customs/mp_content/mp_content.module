@@ -79,9 +79,10 @@ function mp_content_wxresources($resources, $account, $keyword){
             }
             // $news = array_reverse($news);
             // $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
-            array_push($news,get_last_node_json('lingming','灵命日粮',1));
+            array_push($news,get_last_node_json('lingming','620',1));
             // $lingming = file_get_contents('http://wx.yongbuzhixi.com/grace365/json');
-            array_push($news,get_last_node_json('grace365','恩典365',1));
+            array_push($news,get_last_node_json('grace365','365',1));
+            array_push($news,get_last_node_json('ctoday','421',1));
           }
           $resources['key_'.$keyword]= array(
           'type'  =>  'news',
