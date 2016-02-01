@@ -60,11 +60,11 @@ return
 中英双语
 801：蓝天绿洲
 802：天路导向
-803：天路导向（粤语）
+803：天路导向粤
  
 少数民族
-901：恩典与真理（回民广播）
-902：爱在人间（云南话）
+901：恩典与真理
+902：爱在人间
  
 栽培训练
 1001：接棒人
@@ -79,7 +79,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 		$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
 		$ori_title = $liangyou_audio_list_info['title'];
 		$code = $liangyou_audio_list_info['code'];
-
+		$lywx = $liangyou_audio_list_info['lywx'];
 		// http://lywxaudio.b0.upaiyun.com/2016/zz/zz160205.mp3
 		// $dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
 
@@ -92,8 +92,8 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 			$musicurl = 'http://'.$cdnlink.$path.upyun_get_token($path);
 			$temp = @get_headers($musicurl);
 			if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-				$title = '【'.$keyword.'】'.$ori_title;
-				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").($offset?$date:' 每日更新');
+				$title = '【'.$lywx.'】'.$ori_title;
+				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' '.$date;
 		    $weObj->music($title , $desc, $musicurl, $musicurl)->reply();
 
 				ga_push_add_event(array(
@@ -121,7 +121,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 		$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
 		$ori_title = $keyword;//$liangyou_audio_list_info['title'];
 		$code = $liangyou_audio_list_info['code'];
-
+		$lywx = $liangyou_audio_list_info['lywx'];
 		// http://lywxaudio.b0.upaiyun.com/2016/zz/zz160205.mp3
 		// $dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
 
@@ -134,8 +134,8 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 			$musicurl = 'http://'.$cdnlink.$path.upyun_get_token($path);
 			$temp = @get_headers($musicurl);
 			if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-				$title = '【'.$code.'】'.$ori_title;
-				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").($offset?$date:' 每日更新');
+				$title = '【'.$lywx.'】'.$ori_title;
+				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' '.$date;
 		    $weObj->music($title , $desc, $musicurl, $musicurl)->reply();
 
 				ga_push_add_event(array(
@@ -148,28 +148,42 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 			$offset++;
 		}
 	}
-	$allowkeywords = array('节目','听节目');
-	if(in_array($keyword, $allowkeywords)){
-		$weObj->text(lywx_menu())->reply();
-		ga_push_add_event(array(
-	   'category'        => 'lywxother',
-	   'action'          => $keyword,
-	   'label'           => 'menu get',
-	  ));
-	}
+	// $allowkeywords = array('节目','听节目','?');
+	// if(in_array($keyword, $allowkeywords)){
+	// 	$weObj->text(lywx_menu())->reply();
+	// 	ga_push_add_event(array(
+	//    'category'        => 'lywxother',
+	//    'action'          => $keyword,
+	//    'label'           => 'menu get',
+	//   ));
+	// }
 
 	$allowkeywords = array('消息');
 	if(preg_match('/^([a-zA-Z])+/', $keyword)||in_array($keyword, $allowkeywords)){
     $img = array(
-      'Title'=>"说好的消息呢？还在建设中...",
-      'Description'=>"\n不可以使用微信官方后台的消息，具体参考微信文档！鱼与熊掌不可兼得！\n这是一个没有图文的图文",
-      'PicUrl'=>'',
-      'Url'=>variable_get('mp_config_default_url_'.$account->uid, ""),
+      'Title'=>"收听节目代号",
+      'Description'=>"欢迎收听我们的节目！知音‧牵手‧同行 ※ 为你送上精彩节目和活动！",
+      'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrYWM3MRmbJhVNEeuao0rG8Iyp2so7XhcKwLGqaKKZeIGD9LiclOZbGwbpYP2tGyex188qaKU1t8BWg/0?wx_fmt=jpeg',
+      'Url'=>'http://mp.weixin.qq.com/s?__biz=MzI1MDE0NzM5Ng==&mid=401924143&idx=1&sn=9e7a4f6f8390b6a807060b99e9975c4a#rd',
+    );
+    $news[] = $img;
+    $img = array(
+      'Title'=>"良友电台网站链接",
+      'Description'=>"欢迎收听我们的节目！知音‧牵手‧同行 ※ 为你送上精彩节目和活动！",
+      'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrYWM3MRmbJhVNEeuao0rG8ICvBficvriakUDNGCBIzwQIOCvEQ8SXkvCPpBfkfLMPdNc3XQ3UkyRibDA/0?wx_fmt=jpeg',
+      'Url'=>'http://mp.weixin.qq.com/s?__biz=MzI1MDE0NzM5Ng==&mid=401923760&idx=1&sn=768de843daf54c7fa4e66903e516db86#rd',
+    );
+    $news[] = $img;
+    $img = array(
+      'Title'=>"联络良友电台",
+      'Description'=>"欢迎收听我们的节目！知音‧牵手‧同行 ※ 为你送上精彩节目和活动！",
+      'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrYWM3MRmbJhVNEeuao0rG8IknoqbEyOqd7vYuUXF2nqUJEPqRZibo10tru4GASTbXM1q5ia2d5u7hicA/0?wx_fmt=jpeg',
+      'Url'=>'http://mp.weixin.qq.com/s?__biz=MzI1MDE0NzM5Ng==&mid=401923513&idx=1&sn=7834a54dbe4463796daf2773743fcead#rd',
     );
     $news[] = $img;
     $weObj->news($news)->reply();
 	}else{
-		$weObj->text('说好的节目呢？！没定义其他文字回复，小永只能先这样给个回复了，不然你会以为XXX@网主，小永建议回复菜单列表！先征得您的同意')->reply();
+		$weObj->text(lywx_menu())->reply();
 		ga_push_add_event(array(
 	   'category'        => 'lywxother',
 	   'action'          => $keyword,

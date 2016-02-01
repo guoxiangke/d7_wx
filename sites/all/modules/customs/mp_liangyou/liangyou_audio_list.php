@@ -271,7 +271,7 @@ function liangyou_audio_list2(){
       'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>621,
-      'lywx'=>133,
+      'lywx'=>701,
       'category'=>'学习真道',
       'desc'=>'透过经卷研读，陪伴你建立真理基础，栽培你灵命成长，帮助你活出信仰',
       ),
@@ -477,7 +477,7 @@ function liangyou_audio_list2(){
       'category'=>'慕道探索',
       ),
     'mp'=>array(
-      'title' =>'这一刻清心',
+      'title' =>'这一刻，清心',
       'bce' => 1,
       'txly'=>'http://www.txly1.net/program/1njcld-3b2p6q',
       'prefix'=>$prefix['32'],
@@ -576,7 +576,7 @@ function liangyou_audio_list2(){
       'desc'=>'中英双语:以主题信息讲座的方式，配以诗歌、祷告、内容简介和扼要总结，让信息传达更清晰，使记忆更深刻。逐句英译中讲道方式，灵性造就的同时，英文水平也得到操练与提高',
       ),
     'cwa'=>array(
-      'title' =>'天路导向（粤语）',
+      'title' =>'天路导向粤',
       'bce' => 0,
       'txly'=>'http://www.txly1.net/program/1njcj2-3b2p24',
       'prefix'=>$prefix['32'],
@@ -587,7 +587,7 @@ function liangyou_audio_list2(){
       'desc'=>'中英双语:天路导向（粤语）以主题信息讲座的方式，配以诗歌、祷告、内容简介和扼要总结，让信息传达更清晰，使记忆更深刻。逐句英译中讲道方式，灵性造就的同时，英文水平也得到操练与提高',
       ),
     'gt'=>array(
-      'title' =>'恩典与真理（回民广播）',
+      'title' =>'恩典与真理',
       'bce' => 1,
       'txly'=>'http://www.txly1.net/program/1njcj0-3b2p20',
       'prefix'=>$prefix['32'],
@@ -598,7 +598,7 @@ function liangyou_audio_list2(){
       'desc'=>'少数民族:恩典与真理（回民）《恩典与真理》，引导你走上正义之路。愿你得着真主给你的色俩麦提和瑞孜给，因沙安拉。',
       ),
     'ynf'=>array(
-      'title' =>'爱在人间（云南话）',
+      'title' =>'爱在人间',
       'bce' => 1,
       'txly'=>'http://www.txly1.net/program/1njcj1-3b2p22',
       'prefix'=>$prefix['32'],
@@ -619,12 +619,12 @@ function liangyou_audio_list2(){
       'category'=>'生命成长',
       'desc'=>'与你分享宣教士的生平和服侍，让我们一同体会信仰的生命力，盼望你与我们一起多关心宣教，一同活出燃亮的生命！',
       ),
-    'xx'=>array(
+    'tp'=>array(
       'title' =>'真理与柱石',
       'bce' => 0,
       'txly'=>'http://www.txly1.net/program/1njcik-3b2p14?',
       'prefix'=>$prefix['33'],
-      'day'=>'17',//????
+      'day'=>'5',//????
       'index'=>692,
       'lywx'=>707,
       'category'=>'学习真道',
