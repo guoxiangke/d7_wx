@@ -33,13 +33,10 @@ function mp_content_wxresources($resources, $account, $keyword){
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
     //灵命日粮
-    if ($keyword == 'lm'||$keyword =='灵命'||$keyword =='美文'||$keyword =='tw'||$keyword =='图文') {      
+    if ($keyword =='tw'||$keyword =='图文') {      
       if(isset($enabled_resources['mp_contents']) && $enabled_resources['mp_contents']){      
-          if($keyword == 'lm'||$keyword =='灵命'){
-            // $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
-            // $news = (array)json_decode($lingming);
-            $news = get_last_node_json('lingming','灵命日粮',1,1);
-          }else{
+          //TODO: json +cron
+          {
             $nodes = dale_get_mp_nodes('article',3,NULL,array(1,$account->uid,'1013'));
             $news = array();
             $count = 0;
@@ -77,12 +74,10 @@ function mp_content_wxresources($resources, $account, $keyword){
                 );
               $news[] = $img;
             }
-            // $news = array_reverse($news);
-            // $lingming = file_get_contents('http://wx.yongbuzhixi.com/lingming/json');
             array_push($news,get_last_node_json('lingming','620',1));
-            // $lingming = file_get_contents('http://wx.yongbuzhixi.com/grace365/json');
             array_push($news,get_last_node_json('grace365','365',1));
             array_push($news,get_last_node_json('ctoday','421',1));
+
           }
           $resources['key_'.$keyword]= array(
           'type'  =>  'news',

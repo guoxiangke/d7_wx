@@ -40,6 +40,7 @@ function ybread_page(){
 			  $picture = $html->find('#content .entry-thumbnail img', 0);
 			  $pic_url = $picture->attr['src'];
 		    $response = drupal_http_request($pic_url);
+		    watchdog('pic_url', $pic_url, array(), WATCHDOG_NOTICE, 'link');
 		    if ($response->code == 200){
 		      $file = file_save_data($response->data, 'public://lingming/'.date('Ymd').'.jpg');
 		    }
