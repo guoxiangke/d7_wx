@@ -477,7 +477,7 @@ function liangyou_audio_list2(){
       'category'=>'慕道探索',
       ),
     'mp'=>array(
-      'title' =>'这一刻,清心',
+      'title' =>'这一刻清心',
       'bce' => 1,
       'txly'=>'http://www.txly1.net/program/1njcld-3b2p6q',
       'prefix'=>$prefix['32'],
