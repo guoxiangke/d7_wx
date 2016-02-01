@@ -275,6 +275,7 @@ function copyright($account){
      if(isset($enabled_resources[$key]) && $enabled_resources[$key])  
       $res .= $value."\n";
     }
+    if($account->uid==973) $res='';//小永好，当一个新用户关注我们公众号的时候，除了出现我在公众云设置的“您好，谢谢关注！输入任意文字即看到首页。”之外，还有【FM】的信息，是否可以把【FM】的信息去掉？
     $foot = variable_get('wechat_foot_message_'.$account->uid, "回复【】内容给我试试吧[调皮]");
     $copy = variable_get('wechat_copy_message_'.$account->uid, "本资源有主内公众云提供") ;
     $res .= $foot;
