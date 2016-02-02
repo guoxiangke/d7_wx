@@ -9,11 +9,11 @@ function mp_service_callback($account){
   // $menu = $weObj->getMenu();
   // watchdog('menu', '<pre>'.print_r($menu,true), array(), WATCHDOG_NOTICE, 'link');
   // watchdog('wechat_plus_pages', '<pre>'.print_r($weObj->getRev(),true), array(), WATCHDOG_NOTICE, 'link');
-    if($account->uid>1) ga_push_add_pageview(array(
-        'location' => 'mp_service/'.$account->uid,//url(, array('absolute' => true)),
-        'page'     => $account->uid,//variable_get('mp_config_appname_'.$account->uid, "永不止息").'_'.$account->uid,
-        'title'    => '/'.$account->name,//variable_get('mp_config_appid_'.$account->uid, ""),
-    ));
+  // if($account->uid>1) ga_push_add_pageview(array(
+  //     'location' => 'mp_service/'.$account->uid,//url(, array('absolute' => true)),
+  //     'page'     => $account->uid,//variable_get('mp_config_appname_'.$account->uid, "永不止息").'_'.$account->uid,
+  //     'title'    => '/'.$account->name,//variable_get('mp_config_appid_'.$account->uid, ""),
+  // ));
   
   $type = $weObj->getRev()->getRevType();
   switch($type){
