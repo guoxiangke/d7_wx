@@ -62,17 +62,93 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				);
 				return $resources;
 			}
+			$orikeyword = $keyword;
 		  if(is_numeric($keyword) && ($keyword>600 && $keyword<=652) ) {
 		  	if($keyword>=641 && $keyword<=645){
-				 	$resources['key_'.$keyword] = array(
-						'type'	=>	'text',
-						'obj'		=> array(
-							'text'	=> '改版开发中，敬请期待！',
-						)
-					);
-					return $resources;
+		    // if(0)
+			    {
+			    	require_once('liangyou.inc');
+				    $file_path = DRUPAL_ROOT.'/sites/default/files/cron/lycloudjson/';
+				    // if (!is_dir($file_path)) {
+				    //   mkdir($file_path, 0777, true);
+				    // }
+				    // $file_key = dirname(__FILE__).'/'.date('Ymd').'.json';
+				    $file_key = drupal_realpath('public://cron/lycloudjson/'.date('Ymd').'.json') ;
+				    if(!file_exists($file_key))  {
+							$radios = ly_stream_source();
+							foreach ($radios as $key => $radio) {
+							  // $url = $radio['url'];
+							  // $title = $radio['title'];
+							  $url = $radio;
+							  $title = $key;
+
+							  $html = file_get_html($url);
+							  if(!$html) { 
+							  	watchdog('mp_liangyou', 'lost audio:'.$title, array(), WATCHDOG_NOTICE, 'error');
+							  	continue;
+							  }
+							  $url = $html->find('#div_playlist li', 0);
+
+							  $title_get = $html->find('#div_playlist li .mp3_title', 0)->plaintext;
+							  $mp3_description = $html->find('#div_playlist li .mp3_description', 0)->plaintext;
+							  $dates = explode('-', $title_get);
+							  $data[] = array(
+							    'title' => $title,
+							    'date' => $dates[1],
+							    'url'   =>  $url->attr['data-stream'],
+							    'desc'  => $mp3_description,
+							    );
+							  // break;
+							}
+							// var_dump($data);
+							$file = json_encode($data);
+							if(!is_null($file)){
+							  file_put_contents( $file_key , $file );
+							  // $file_key = dirname(__FILE__).'/'.date('Ymd',time()-86400).'.json';
+							  // if(file_exists($file_key))
+							  // 	unlink($file_key);
+							  watchdog('mp_liangyou', 'Success download ly audio list from stream', array(), WATCHDOG_NOTICE, 'link');
+							}
+						}
+
+				    $file = file_get_contents($file_key);
+				    $urls = json_decode($file,TRUE);
+				    if($keyword == 600){
+				     	$resources['key_'.$keyword] = array(
+								'type'	=>	'text',
+								'obj'		=> array(
+								'text'	=> ly_stream_menu(),
+								)
+							);
+				    }else{	    	
+					    // $orikeyword = $keyword;
+					    $keyword = $orikeyword - 601;
+					    // watchdog('keyword '.$before_keyword , $keyword, array(), WATCHDOG_NOTICE, 'link');
+					    $title = str_replace($keyword, '', $urls[$keyword]['title']);
+					    $musicurl = $urls[$keyword]['url'].'?='.$urls[$keyword]['date'].'.mp3';
+					    $desc =  substr($urls[$keyword]['date'], 4).' '.truncate_utf8($urls[$keyword]['desc'], 16, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
+					    $resources['key_'.$orikeyword]= array(
+								'type'	=>	'music',
+								'obj'		=> array(
+								'title'	=> $title,
+								'desc'	=>	$desc,
+								'musicurl'	=>	$musicurl,
+								'hgmusicurl'	=>	$musicurl,
+								),
+							);
+							// watchdog('resources ', print_r($resources,TRUE), array(), WATCHDOG_NOTICE, 'link');
+				    }
+						return $resources;
+					}
+
+				 	// $resources['key_'.$keyword] = array(
+					// 	'type'	=>	'text',
+					// 	'obj'		=> array(
+					// 		'text'	=> '改版开发中，敬请期待！',
+					// 	)
+					// );
+					// return $resources;
 		  	}
-				$orikeyword = $keyword;
 				if(date('N')>5&&$keyword=='612') {//【612】书香园地＝》【614】今夜心未眠
 					$keyword = '614';
 				}
@@ -132,79 +208,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					}
 				}
 		    //UPYUN END
-		    if(0){
-			    $file_path = DRUPAL_ROOT.'/sites/default/files/cron/lycloudjson/';
-			    // if (!is_dir($file_path)) {
-			    //   mkdir($file_path, 0777, true);
-			    // }
-			    // $file_key = dirname(__FILE__).'/'.date('Ymd').'.json';
-			    $file_key = drupal_realpath('public://cron/lycloudjson/'.date('Ymd').'.json') ;
-			    if(!file_exists($file_key))  {
-						$radios = ly_stream_source();
-						foreach ($radios as $key => $radio) {
-						  // $url = $radio['url'];
-						  // $title = $radio['title'];
-						  $url = $radio;
-						  $title = $key;
-
-						  $html = file_get_html($url);
-						  if(!$html) { 
-						  	watchdog('mp_liangyou', 'lost audio:'.$title, array(), WATCHDOG_NOTICE, 'error');
-						  	continue;
-						  }
-						  $url = $html->find('#div_playlist li', 0);
-
-						  $title_get = $html->find('#div_playlist li .mp3_title', 0)->plaintext;
-						  $mp3_description = $html->find('#div_playlist li .mp3_description', 0)->plaintext;
-						  $dates = explode('-', $title_get);
-						  $data[] = array(
-						    'title' => $title,
-						    'date' => $dates[1],
-						    'url'   =>  $url->attr['data-stream'],
-						    'desc'  => $mp3_description,
-						    );
-						  // break;
-						}
-						// var_dump($data);
-						$file = json_encode($data);
-						if(!is_null($file)){
-						  file_put_contents( $file_key , $file );
-						  // $file_key = dirname(__FILE__).'/'.date('Ymd',time()-86400).'.json';
-						  // if(file_exists($file_key))
-						  // 	unlink($file_key);
-						  // watchdog('mp_liangyou', 'Success download ly audio list from stream', array(), WATCHDOG_NOTICE, 'link');
-						}
-					}
-
-			    $file = file_get_contents($file_key);
-			    $urls = json_decode($file,TRUE);
-			    if($keyword == 600){
-			     	$resources['key_'.$keyword] = array(
-							'type'	=>	'text',
-							'obj'		=> array(
-							'text'	=> ly_stream_menu(),
-							)
-						);
-			    }else{	    	
-				    // $before_keyword = $keyword;
-				    $keyword = $orikeyword - 601;
-				    // watchdog('keyword '.$before_keyword , $keyword, array(), WATCHDOG_NOTICE, 'link');
-				    $title = str_replace($keyword, '', $urls[$keyword]['title']);
-				    $musicurl = $urls[$keyword]['url'].'?='.$urls[$keyword]['date'].'.mp3';
-				    $desc =  substr($urls[$keyword]['date'], 4).' '.truncate_utf8($urls[$keyword]['desc'], 16, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
-				    $resources['key_'.$orikeyword]= array(
-							'type'	=>	'music',
-							'obj'		=> array(
-							'title'	=> $title,
-							'desc'	=>	$desc,
-							'musicurl'	=>	$musicurl,
-							'hgmusicurl'	=>	$musicurl,
-							),
-						);
-						// watchdog('resources ', print_r($resources,TRUE), array(), WATCHDOG_NOTICE, 'link');
-			    }
-					return $resources;
-				}
 		  }
 	  }
 	  //523

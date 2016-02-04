@@ -620,19 +620,25 @@ function mp_hd_cron() {
     $account = user_load($record['uid']);
     if(!$account->picture && isset($account->data['headimgurl']) && $account->data['headimgurl']){
       $response = drupal_http_request($account->data['headimgurl']);
+      $picture_file = NULL;
       if ($response->code == 200){
         $picture_file = file_save_data($response->data, 'public://users/wx_'. $account->uid.'.jpg');
       }
       // $account->picture = $file;
-      file_usage_add($picture_file, 'user', 'user', $account->uid);
-      db_update('users')
-        ->fields(array(
-            'picture' => $picture_file->fid,
+      if($picture_file){
+        file_usage_add($picture_file, 'user', 'user', $account->uid);
+        db_update('users')
+          ->fields(array(
+              'picture' => $picture_file->fid,
+              )
             )
-          )
-        ->condition('uid', $account->uid)
-        ->execute();
-      break;
+          ->condition('uid', $account->uid)
+          ->execute();
+        break;
+      }else{
+        // watchdog('mp_hd', 'NULL pic file corn for uid '.$account->uid, array(), WATCHDOG_NOTICE, 'link');
+        break;
+      }
     }
 
 		//get account has qr but no VIPqr!!!
@@ -640,7 +646,7 @@ function mp_hd_cron() {
 	  $vipqr = $file_path.'QR_'.$record['uid'].'.jpg';
 	  $qr = $file_path.$record['uid'].'.jpg';
 
-    // $wx_headimgurl = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
+    $wx_headimgurl = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
     if(isset($account->picture->uri)){
       $wx_headimgurl = drupal_realpath($account->picture->uri) ;
     }else{return;}
@@ -666,10 +672,10 @@ function mp_hd_cron() {
       $y = 1350;
       $rh = 100;
       // $A = $im1;
-      $B = drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
+      $B = $wx_headimgurl;//drupal_realpath('public://users/wx_'. $account->uid.'.jpg') ;
       // watchdog('imgesuri',  $B, array(), WATCHDOG_NOTICE, 'link');
       if(!file_exists($B)){
-        watchdog('return',  $B, array(), WATCHDOG_NOTICE, 'link');
+        watchdog('file_exists not have B return',  $B, array(), WATCHDOG_NOTICE, 'link');
         return;
         $B = dirname(__FILE__).'/images/0.jpeg';
         if($account->data['headimgurl'])
