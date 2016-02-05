@@ -1,0 +1,190 @@
+
+/*dev*/
+html body.admin-menu{
+	margin-top: 0 !important; 
+}
+html body .row{
+	background-color: #fff;
+}
+
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /*height: 100%*/
+}
+.layer_menu {
+  z-index: 1;
+  background: #fff;
+  width: 315px
+}
+
+.layer_content {
+  z-index: 100;
+  margin-left: 0
+}
+
+.layer_content.menu-open {
+    margin-left: 315px;
+		-moz-transition: all 0.3s ease-out;  /* FF4+ */
+    -o-transition: all 0.3s ease-out;  /* Opera 10.5+ */
+    -webkit-transition: all 0.3s ease-out;  /* Saf3.2+, Chrome */
+    -ms-transition: all 0.3s ease-out;  /* IE10 */
+    transition: all 0.3s ease-out;  
+}
+
+.menu-open .toggleMainMenu{
+    margin-left: 315px;
+}
+@media screen and (max-width: 765px){
+	.layer_menu {
+	    width: 243px;
+	}
+	.layer_content.menu-open {
+    margin-left: 243px;
+	}
+	.menu-open .toggleMainMenu{
+    margin-left: 243px;
+	}
+	.toggleMainMenu>div {
+    width: 62px;
+    padding: 0;
+	}
+	.toggleMainMenu>div {
+    width: 62px;
+    padding: 0;
+	}
+	.navbar-nav{
+		margin: 0;
+	}
+}
+
+#main_menu {
+    background: #fff;
+    text-transform: uppercase;
+    position: relative;
+}
+
+#main_menu li a,.layer_menu a {
+    font-size: 22px;
+    text-decoration: none;
+    color: #64656b;
+    background: #fff url(http://educationaboveall.org/img/design/ico-arw-brown-right.png) no-repeat 90% 50%;
+    display: block;
+    border-top: 1px solid #edebe2;
+    padding: 1em 2em 1em 1em
+}
+
+#main_menu li a:hover {
+    background-color: #f7f2e4;
+    -webkit-transition: background-color 500ms linear;
+    -moz-transition: background-color 500ms linear;
+    -o-transition: background-color 500ms linear;
+    -ms-transition: background-color 500ms linear;
+    transition: background-color 500ms linear;
+}
+
+#main_menu li.active a {
+    color: #fff;
+    background: #30313a url(http://educationaboveall.org/img/design/ico-arw-white-right.png) no-repeat 90% 50%;
+    border-top: 1px solid #30313a
+}
+#layer_content .col-sm-3{
+	padding-left: 0;
+}
+
+.toggleMainMenu {
+	display: none;
+  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 199;
+  color: #fff;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  width: 62px;
+}
+
+.animAll{
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out
+}
+
+.animSlide {
+    -webkit-transition: all .7s ease-in-out;
+    -moz-transition: all .7s ease-in-out;
+    -o-transition: all .7s ease-in-out;
+    transition: all .7s ease-in-out
+}
+
+.animeLeft {
+    -webkit-transition: left .3s ease-in-out;
+    -moz-transition: left .3s ease-in-out;
+    -o-transition: left .3s ease-in-out;
+    transition: left .3s ease-in-out
+}
+
+.toggleMainMenu .menu_tooltip {
+    opacity: 0;
+    display: inline-block;
+    line-height: 1.4em;
+    margin-top: -.7em;
+    background: url(http://educationaboveall.org/img/design/menu_tooltip.png) no-repeat left center;
+    color: #31343b;
+    padding: .1em .75em .1em 1.5em;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-left: .5em;
+    margin-top: 1.9em
+}
+
+.toggleMainMenu .menu_tooltip.on {
+    opacity: 1
+}
+
+.toggleMainMenu>div {
+    overflow: hidden;
+    left: 0;
+    float: left;
+    background: #04BE02 url(http://educationaboveall.org/img/design/menu_close.png) no-repeat;
+    background-position: -50% 50%;
+    font-size: 16px;
+    opacity: .7;
+    padding: 0 1em;
+    text-align: center;
+    height: 62px;
+    line-height: 62px;
+}
+.menu-open .toggleMainMenu>div {
+    left: 150px;
+    background-position: 50% 50%;
+}
+.menu-open .toggleMainMenu>div span {
+    left: 150px;
+}
+.toggleMainMenu>div span {
+    position: relative;
+    left: 0;
+}
+
+@media (min-width: 768px) {
+  .navbar-nav,
+  .navbar-nav > li {
+     float: none; 
+  }
+}
+@media screen and (max-width: 1450px){
+	#main_menu li a, .layer_menu a {
+	    font-size: 16px;
+	}
+	.navbar-nav > li > a{
+		line-height: 18px;
+	}
+}
+#page-header{
+  display: none;
+}
