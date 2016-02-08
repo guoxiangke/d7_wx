@@ -132,7 +132,7 @@
     text-indent: 2em;
 }
 .content p+ul {
-    margin-left: 3em;
+    margin-left: 5em;
     display: none;
 }
 #content-wrapper blockquote p{
