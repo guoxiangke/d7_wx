@@ -90,19 +90,10 @@ h3 a{
 .desc-wrapper{
   background: #FFF;
 }
-#comments{
-  background-color: #eee;
-}
 .page-node .content-body .field{
   margin-bottom: 0;
 }
 
-.indented .col-xs-10 .content{
-  background-color: #fff;
-}
-.indented .col-xs-10 .content:before{
-  border-color: transparent #fff;
-}
 div[class|="edit-author"],#edit-author--2,.form-item-comment-body-und-0-value label{
   display: none;
 }
@@ -113,7 +104,7 @@ div[class|="edit-author"],#edit-author--2,.form-item-comment-body-und-0-value la
 }
 .col-xs-10 pre {
   display: block;
-   padding: 0px; 
+   padding: 10px; 
   margin: 0;
   font-size: 12px;
   word-wrap: break-word;
@@ -133,4 +124,7 @@ div[class|="edit-author"],#edit-author--2,.form-item-comment-body-und-0-value la
 }
 .user-picture a{
   float: right;
+}
+#comments .indented {
+  padding-left:2em;
 }

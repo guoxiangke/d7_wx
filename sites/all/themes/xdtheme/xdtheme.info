@@ -27,7 +27,6 @@ stylesheets[all][] = bootstrap/css/bootstrap.min.css
 stylesheets[all][] = font-awesome/css/font-awesome.min.css
 stylesheets[all][] = css/wxcomments.css
 stylesheets[all][] = css/style.css
-
 stylesheets[all][] = css/media_query.css
 stylesheets[all][] = css/xd.css
 

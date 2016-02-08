@@ -9,7 +9,7 @@
  * Implements HOOK_preprocess_THEME()
  * @param $variables
  */
-function xdtheme_preprocess_page(&$vars) { 
+function xdtheme_preprocess_page(&$vars) {
   $vars['nodeuid'] = 1;
   if (isset($vars['node'])) {
     $vars['theme_hook_suggestions'][] = 'page__'. str_replace('_', '--', $vars['node']->type);
@@ -25,7 +25,6 @@ function xdtheme_preprocess_page(&$vars) {
       $vars['wx_term'] = $wx_author == '未知'?$term_name:$wx_author;
       $vars['nodeuid'] = $vars['node']->uid;
     // }
-    drupal_add_css(drupal_get_path('theme', 'buildout_technologies').'/css/wxcomments.css',array('group'=>CSS_THEME));
   }
 }
 /**
