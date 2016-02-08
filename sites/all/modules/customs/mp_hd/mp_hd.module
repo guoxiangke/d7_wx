@@ -115,10 +115,12 @@ function hd_webform_validate($form, &$form_state) {
  * Implements hook_preprocess_page().
  */
 function mp_hd_preprocess_page(&$variables) {
-  drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/jquery-ui-v1.9.2.min.js');
-  // drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/fm.rotate.js');
-  // drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/hd_fm_player.js', array('scope' => 'footer', 'weight' => 5,));
-  drupal_add_css(drupal_get_path('theme', 'xdtheme').'/css/stylesheets/hd_fmplayer.css');
+  if(arg(0)=='hd'){
+    drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/jquery-ui-v1.9.2.min.js');
+    // drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/fm.rotate.js');
+    // drupal_add_js(drupal_get_path('theme', 'buildout_technologies').'/js/hd_fm_player.js', array('scope' => 'footer', 'weight' => 5,));
+    drupal_add_css(drupal_get_path('theme', 'xdtheme').'/css/stylesheets/hd_fmplayer.css');
+  }
 }
 /**
  * Hook_wxresources

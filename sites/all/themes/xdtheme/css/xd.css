@@ -3,9 +3,6 @@
 html body.admin-menu{
 	margin-top: 0 !important; 
 }
-html body .row{
-	background-color: #fff;
-}
 
 .layer {
   position: absolute;
@@ -58,6 +55,13 @@ html body .row{
 	.navbar-nav{
 		margin: 0;
 	}
+  aside.col-sm-3{
+    display: none;
+  }
+  .footer{
+    margin-top: 0;
+  }
+
 }
 
 #main_menu {
