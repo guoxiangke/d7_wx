@@ -11,6 +11,8 @@
  */
 function xdtheme_preprocess_page(&$vars) {
   $vars['nodeuid'] = 1;
+  $vars['nodenid'] = 196;
+  $count = 0;
   if (isset($vars['node'])) {
     $vars['theme_hook_suggestions'][] = 'page__'. str_replace('_', '--', $vars['node']->type);
     // if($vars['node']->type == 'article' || $vars['node']->type == 'fm77' ){
@@ -24,8 +26,39 @@ function xdtheme_preprocess_page(&$vars) {
       }
       $vars['wx_term'] = $wx_author == '未知'?$term_name:$wx_author;
       $vars['nodeuid'] = $vars['node']->uid;
+      $vars['nodenid'] = $vars['node']->nid;
     // }
+      
+    $node = $vars['node'];
+    $widgets = rate_get_active_widgets('node', $node->type);
+    foreach ($widgets as $widget) {
+      $votingapi_results = votingapi_select_results(array(
+        'entity_type' => 'node',
+        'entity_id' => $node->nid,
+        'tag' => $widget->tag,
+        'value_type' => $widget->value_type,
+      ));
+      $average = 0;
+      $sum = 0;
+      $votingapi_functions = array('count', 'average', 'sum');
+
+      foreach ($votingapi_results as $result) {
+        if (!in_array($result['function'], $votingapi_functions)) { //custom options, need to tally these together to get a total count
+          $count += $result['value'];
+        }
+        else {
+          ${$result['function']} = $result['value'];
+        }
+      }
+    }
+
   }
+
+
+  //https://www.drupal.org/node/1031670#comment-4838426
+  // $results = rate_get_results('node', $vars['nodenid'], 1);
+  // dpm($results);
+  drupal_add_js(array('xdtheme' => array('ratecount' => $count,'nodenid'=>$vars['nodenid'],'nodeuid'=>$vars['nodeuid'])), 'setting');
 }
 /**
 * Previous / Next function for nodes, ordered by node creation date

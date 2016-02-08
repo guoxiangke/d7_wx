@@ -6,9 +6,9 @@
     $('#statistics_counter').html(number);
 
    	// number -= Math.floor(Math.random() * (number - 0));
-    number = $('.rate-number-up-down-rating').text();
+    // number = $('.rate-number-up-down-rating').text();
     // console.log(number);
-    $('.praise_num').html(number);
+    $('.praise_num').html(Drupal.settings.xdtheme.ratecount);
 
     $('#praise').click(function(){
     	$('.icon_praise_gray').toggleClass('praised');

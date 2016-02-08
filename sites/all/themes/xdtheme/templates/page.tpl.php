@@ -85,7 +85,7 @@
 </div>
 
 <script type="text/javascript">
-	(function ( $ ) { 
+	(function($) {
 		$('.toggleMainMenu').click(function(e){
 			e.preventDefault();
 			$('#layer_content').toggleClass('menu-open');
