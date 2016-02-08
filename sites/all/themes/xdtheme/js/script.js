@@ -5,7 +5,9 @@
     var number = parseInt(text.replace(/[^0-9\.]/g, ''), 10);
     $('#statistics_counter').html(number);
 
-   	number -= Math.floor(Math.random() * (number - 0));
+   	// number -= Math.floor(Math.random() * (number - 0));
+    number = $('.rate-number-up-down-rating').text();
+    // console.log(number);
     $('.praise_num').html(number);
 
     $('#praise').click(function(){
@@ -36,4 +38,15 @@
     );
 
   });
+
+  Drupal.behaviors.xdtheme = {
+    attach: function (context, settings) {
+      $('#praise').click(function(){
+        $('#rate-button-1').trigger('click');
+        $('.rate-widget-1').hide();
+      });
+      $('.rate-widget-1').hide();
+    }
+  }
+
 })(jQuery);
