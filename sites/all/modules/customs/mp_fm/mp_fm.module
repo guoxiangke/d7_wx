@@ -43,7 +43,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
           $begin = 1;
           $var = 'mark';
         }
-        $index = str_pad($begin+date('j'),2,"0",STR_PAD_LEFT);
+        $index = str_pad($begin+(date('j')-7),2,"0",STR_PAD_LEFT);
         $url = 'http://www.tpehoc.org.tw/daily_message/daily_message_'.$ym.'/mp3/'.$ymd.$var.$index.'.mp3';
         $resources['key_'.$keyword]=  array(
           'type'  =>  'music',

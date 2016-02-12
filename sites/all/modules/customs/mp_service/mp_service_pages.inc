@@ -38,7 +38,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
   // watchdog('len23', strlen($ori_keyword), array(), WATCHDOG_NOTICE, 'link');
 
   //TODO 数据收集！
-  if($account->uid == 8 && strpos($ori_keyword,'http://mp.weixin.qq.com/s?__biz=')!==FALSE){
+  if($account->uid == 8 && strpos($ori_keyword,'mp.weixin.qq.com/s?__biz=')!==FALSE){
     $openid = $weObj->getRev()->getRevFrom();
     // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
     if(in_array($openid, array('oTjEws_LNd8maly0PugxnmFQPdTA','oTjEws-8eAAUqgR4q_ns7pbd0zN8'))){

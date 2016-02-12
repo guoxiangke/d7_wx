@@ -80,7 +80,7 @@ function ctoday_page(){
 	  $last = date('z',$result->created);
   }
   
-  if(($now - $last >= 1 && $hour >= 6) || !isset($result->nid)) {
+  if(($now - $last >= 1 && $hour >= 12) || !isset($result->nid)) {
 
 		// get title
 		$node = new stdClass();
