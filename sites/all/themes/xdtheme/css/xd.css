@@ -62,6 +62,9 @@ html body.admin-menu{
     margin-top: 0;
   }
 
+  h1.page-header{
+    display: none;
+  }
 }
 
 #main_menu {
