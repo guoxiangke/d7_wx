@@ -89,10 +89,10 @@
   <?php endif; ?>
   <div class="content"<?php print $content_attributes; ?>>
     <?php
-      // 
+      //
 
       $field_updated  = db_query('SELECT field_updated_value FROM {field_data_field_updated} WHERE entity_id = :nid', array(':nid' => $node->nid))->fetchField();
-      
+
       if(isset($node->book['bid'])){
         if($node->book['bid'] =='183'){
           echo '<img typeof="foaf:Image" src="/sites/default/files/styles/sc900_500/public/field/image/22791549504_048814b027_k.jpg?itok=ST4XuKTu" width="900" height="500" alt="">';
@@ -105,10 +105,15 @@
           hide($content['field_image']);
         }
       }
-      
+  if($view_mode=='full' && isset($node->field_video_url[LANGUAGE_NONE][0])){
+    $vid = $node->field_video_url[LANGUAGE_NONE][0]['value'];
+  ?>
+  <iframe frameborder="0" width="100%" height="250px" src="http://v.qq.com/iframe/player.html?vid=<?php echo $vid;?>&tiny=0&auto=0" allowfullscreen></iframe>
+  <?php
+  }
 
   if($view_mode=='full' && isset($node->field_mp3url[LANGUAGE_NONE][0])){
-    ?>    
+    ?>
    <div class="audio-wrapper">
         <div id="demo" class="audio state-playing" role="application" aria-label="media player">
             <div class="play-control control">
@@ -176,11 +181,11 @@
   </div>
   <?php print render($content['links']); ?>
   <?php if($view_mode == 'full'):?>
-    <?php 
+    <?php
       include('prev-next-post.php');
       include('wx_bottom.php');
     ?>
   <?php endif;?>
-  <?php print render($content['comments']); ?> 
+  <?php print render($content['comments']); ?>
 </article>
 <?php endif; ?>
