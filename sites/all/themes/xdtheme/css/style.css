@@ -33,7 +33,7 @@
 	display: none;
 }
 .prev-next-post {
-	padding-top: 10px	
+	padding-top: 10px
 }
 .prev-next-post .group {
 	float: right;
@@ -47,12 +47,12 @@
 
 .prev-next-post .previous a {
   background: #2f9833;
-  color: white; 
+  color: white;
 }
 
 .prev-next-post .group a:hover {
   background: #2f9833;
-  color: white; 
+  color: white;
 }
 
 
@@ -148,7 +148,7 @@
 }
 #header-bottom{
 	background: #fff;
-	
+
 }
 .field-name-field-mp3-img{
   padding-top: 50px;
@@ -161,7 +161,7 @@ img.ybzx-avatar{
   margin-bottom: 10px;
   line-height: 1.4;
   font-weight: 400;
-  font-size: 24px;	
+  font-size: 24px;
   color: #4d4f53;
 }
 #wx-header .authors {
@@ -179,7 +179,7 @@ body {
 	background: #fff;
 	font-size: 18px;
 	line-height: 25px;
-	color: #787b80;	
+	color: #555;
 	font-family: 'Source Sans Pro', sans-serif;
 	font-weight: 400;
 	min-width: 300px;
@@ -485,7 +485,7 @@ h1, h2, h3, h4, h5, h6 {
     background-image: linear-gradient(to bottom,#44b549 0,#44b549 100%);
     border-color: #44b549;
     color: #fff
-    
+
 	  display: inline-block;
     overflow: visible;
     padding: 0 10px;
@@ -867,13 +867,13 @@ input.form-submit {
 /* ----- Responsive ------------------ */
 
 @media (min-width: 1200px) {
-	
+
 
 
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
-	
+
 	.flex-caption {
 		top: 60px;
 	}
@@ -885,7 +885,7 @@ input.form-submit {
 	.footer-menu {
 		display: none;
 	}
-	
+
 	#header, #main-menu, #header-bottom, #main, #footer {
 		padding-left: 20px;
 		padding-right: 20px;
@@ -905,7 +905,7 @@ input.form-submit {
 	.extra {
 		overflow: visible;
 	}
-	
+
 
 	#block-views-theme-info-block {
 		margin-right: 0;
