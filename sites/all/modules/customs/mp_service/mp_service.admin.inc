@@ -55,7 +55,7 @@ function mp_service_settings_form(){
     '#type' => 'checkbox',
     '#title' => '已认证',
     '#description' => '(如果您的公众号已认证，请勾选)',
-    '#default_value' => variable_get('mp_config_certified_'.$user->uid, ""),    
+    '#default_value' => variable_get('mp_config_certified_'.$user->uid, ""),
   );
   $form['config']['submit_config'] = array(
     '#type' => 'submit',
@@ -65,7 +65,7 @@ function mp_service_settings_form(){
 
   $update_menu = FALSE;
   if(variable_get('mp_config_certified_'.$user->uid, "")) $update_menu = TRUE;
-  if ($update_menu) {    
+  if ($update_menu) {
     $form['update_menu'] = array(
       '#type' => 'fieldset',
       '#title' => '更新菜单',
@@ -131,7 +131,7 @@ function mp_service_settings_form(){
     '#description' => '本功能与自动回复资源互斥！',
     '#default_value' => variable_get('wechat_multi_message_'.$user->uid, ""),
     '#required' => false,
-    
+
   );
   $form['default_message']['multi_message_count'] = array(
     '#type' => 'textfield',
@@ -168,7 +168,7 @@ function mp_service_settings_form(){
   $form['rescources']['rescources_info'] = array(
     '#type' => 'checkboxes',
     '#options' => $options,
-    '#default_value' => variable_get('wechat_resources_'.$user->uid, array()), 
+    '#default_value' => variable_get('wechat_resources_'.$user->uid, array()),
     '#title' => '开启以下资源',
     '#description' => '用户回复【 】内的关键字，会得到相应的内容。',
   );
@@ -177,6 +177,49 @@ function mp_service_settings_form(){
     '#value' => t('Update'),
     '#submit' => array('wechat_admin_update_rescources_submit'),
   );
+  if($user->uid==255){
+    $form['lts33'] = array(
+      '#type' => 'fieldset',
+      '#title' => '良院同步播放',
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+    );
+    $form['lts33']['jc1'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('wechat_resources_lts33_jc1', 'vhe'),
+      '#title' => '基础1',
+    );
+    $form['lts33']['jc2'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('wechat_resources_lts33_jc2', 'vhe'),
+      '#title' => '基础2',
+    );
+    $form['lts33']['bk1'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('wechat_resources_lts33_bk1', 'vhe'),
+      '#title' => '本科1',
+    );
+    $form['lts33']['bk2'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('wechat_resources_lts33_bk2', 'vhe'),
+      '#title' => '本科2',
+    );
+    $form['lts33']['js1'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('wechat_resources_lts33_js1', 'vhe'),
+      '#title' => '进深1',
+    );
+    $form['lts33']['js2'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('wechat_resources_lts33_js2','vhe'),
+      '#title' => '进深2',
+    );
+    $form['lts33']['submit_lts33'] = array(
+      '#type' => 'submit',
+      '#value' => t('Update'),
+      '#submit' => array('wechat_admin_lts33_rescources_submit'),
+    );
+  }
   return $form;
 }
 
@@ -188,20 +231,27 @@ function wechat_admin_update_rescources_submit($form, &$form_state){
   global $user;
   variable_set('wechat_resources_'.$user->uid, $form_state['values']['rescources_info']);
 }
-
+function wechat_admin_lts33_rescources_submit($form, &$form_state){
+  variable_set('wechat_resources_lts33_bk1', $form_state['values']['jc1']);
+  variable_set('wechat_resources_lts33_bk2', $form_state['values']['jc2']);
+  variable_set('wechat_resources_lts33_bk1', $form_state['values']['bk1']);
+  variable_set('wechat_resources_lts33_bk2', $form_state['values']['bk2']);
+  variable_set('wechat_resources_lts33_js1', $form_state['values']['js1']);
+  variable_set('wechat_resources_lts33_js2', $form_state['values']['js2']);
+}
 
 /**
  * save wechat setting config
  */
 function wechat_admin_config_submit($form, &$form_state){
-	global $user;  
+	global $user;
   variable_set('mp_config_appname_'.$user->uid, $form_state['values']['config_appname']);
   // variable_set('mp_config_appmenuid_'.$user->uid, $form_state['values']['config_appmenuid']);
   variable_set('mp_config_token_'.$user->uid, $form_state['values']['config_token']);
   variable_set('mp_config_appid_'.$user->uid, $form_state['values']['config_appid']);
   variable_set('mp_config_appsecret_'.$user->uid, $form_state['values']['config_appsecret']);
   variable_set('mp_config_appaes_'.$user->uid, $form_state['values']['config_appaes']);
-  variable_set('mp_config_certified_'.$user->uid, $form_state['values']['config_certified']); 
+  variable_set('mp_config_certified_'.$user->uid, $form_state['values']['config_certified']);
   drupal_set_message('设置成功！您的URL（服务器地址）是：'.url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q=').'mp_service/'.$user->uid, 'error', FALSE);
   drupal_set_message('请拷贝并粘贴到公众平台官网上，选择一种任意加密方式，点击提交！', 'warning', FALSE);
 }
@@ -320,11 +370,11 @@ function _mp_new_menu($user){
   $newmenu = array(
     'button' => $mp_menu,
   );
-  return $newmenu;   
+  return $newmenu;
 
 
 
-  $bid = 18;  
+  $bid = 18;
   $node = node_load($bid);
   $mlid = $node->book['mlid'];//510
   $query = db_select('menu_links', 'ml', array('fetch' => PDO::FETCH_ASSOC));
@@ -350,7 +400,7 @@ function _mp_new_menu($user){
         'name' => $node->title,
         'key' => $node->field_wechat_key_url[LANGUAGE_NONE]['0']['value'],
       );
-    }       
+    }
     if($item['depth'] == 3){
       $mp_menu[$item['plid']]['sub_button'][]= array(
         'type' => $node->field_wechat_menu_type[LANGUAGE_NONE]['0']['value'],
@@ -366,7 +416,7 @@ function _mp_new_menu($user){
   $newmenu = array(
     'button' => $new_menu,
   );
-  return $newmenu;   
+  return $newmenu;
 }
 
 
@@ -382,8 +432,8 @@ function mp_service_bind_form(){
     '#type' => 'checkbox',
     '#title' => '是否绑定',
     '#description' => '请在【微信客户端】点击下面的按钮',
-    '#value' => strstr($user->init,'@wechat.bind')?1:0, 
-    '#attributes' =>array('disabled'=>'disabled'),   
+    '#value' => strstr($user->init,'@wechat.bind')?1:0,
+    '#attributes' =>array('disabled'=>'disabled'),
   );
   $form['config']['submit_config'] = array(
     '#type' => 'submit',
