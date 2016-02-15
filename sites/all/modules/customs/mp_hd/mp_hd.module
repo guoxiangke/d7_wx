@@ -31,7 +31,7 @@ function mp_hd_page_cdplayer($ids){
           // drupal_goto('node/335');
         }
         drupal_set_title('hi｛'.$result['name'].'｝恭喜您参加推荐有奖，获得'.($result['award']?$result['award']:4).'等奖！永不止息，需要有你！');
-        return 'hi';  
+        return 'hi';
       }else{
         return drupal_access_denied();
       }
@@ -125,7 +125,7 @@ function mp_hd_preprocess_page(&$variables) {
 /**
  * Hook_wxresources
  */
-function mp_hd_wxresources($resources, $account, $keyword,$weObj){	
+function mp_hd_wxresources($resources, $account, $keyword,$weObj){
   if($account->uid == 12){
     // && in_array($keyword, array('ydj','edj','sdj'))
 
@@ -134,7 +134,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
     // $weObj->transfer_customer_service()->reply();
     $openid = $weObj->getRev()->getRevFrom();
     $user_info = $weObj->getUserInfo($openid);
-    // watchdog('user_info', '<pre>'.print_r($user_info,1), array(), WATCHDOG_NOTICE, 'link');  
+    // watchdog('user_info', '<pre>'.print_r($user_info,1), array(), WATCHDOG_NOTICE, 'link');
     $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
     $user_name = $ori_user_name;
     //if 用户不存在，则创建新用户！
@@ -157,7 +157,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         'pass' => $pass,//user_password()
         'mail' => $mail,
         'init' => $mail,
-        // 'picture'=> $file->fid,  
+        // 'picture'=> $file->fid,
         'status' => 1,
         'data'  => $user_info,
         'roles' => array(
@@ -165,7 +165,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
           6 => 'fwh',
         ),
         // 'field_sex' => 1,2男 ＝》 0 男 1 女
-        'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),        
+        'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
       );
       $account = user_save(null, $new_user);
       if(!$account){
@@ -180,7 +180,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
        'action'          => $keyword,
        'label'           => '账户创建！',
       ));
-      return; 
+      return;
     }
 
     $file_path = DRUPAL_ROOT.'/sites/default/files/QR/01/';
@@ -192,7 +192,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
     {//任意程序都生产普通二维码
     	if(!file_exists($ptqr)){
 				$weObj->text("小永正在为您定制二维码，请3-5秒后再来尝试吧！[握手]")->reply();
-     		$return =  $weObj->getQRCode($account->uid,$type=0,$expire=2592000); 
+     		$return =  $weObj->getQRCode($account->uid,$type=0,$expire=2592000);
       	$qr_remote = $weObj->getQRUrl($return['ticket']);
       	//远程获取文件！begin Create a stream
         $opts = array(
@@ -250,26 +250,26 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
           if($i==$count){
           	$ids .= $record['id'].'#'.$account->uid;
           }else{
-          	$ids .= $record['id'].'#'.$account->uid."\n";	
+          	$ids .= $record['id'].'#'.$account->uid."\n";
           }
         }
         $jf = '您已抽奖'.$count.'次，兑奖码分别是：'.$ids;
       }
       ;
-      $weObj->text("您当前有".userpoints_get_current_points($account->uid)."积分，邀请1人100积分！满1000积分就可以抽奖1次！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n".$jf)->reply();  
+      $weObj->text("您当前有".userpoints_get_current_points($account->uid)."积分，邀请1人100积分！满1000积分就可以抽奖1次！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n".$jf)->reply();
       ga_push_add_event(array(
        'category'        => 'mp_hd',
        'action'          => $keyword,
        'label'           => 'getJF',
       ));
-      return; 
+      return;
     }
     if($keyword == 'cj'){//抽奖
       $jf = userpoints_get_current_points($account->uid);
       if($jf<1000){
          $jr = (1000-$jf)/100;
          $cj = '您当前积分是'.$jf."，不足1000，不可抽奖[可怜]赶快分享二维码邀请朋友吧！";
-         $weObj->text($cj."再邀请【".$jr."】人可以抽奖啦！[拳头]\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]")->reply(); 
+         $weObj->text($cj."再邀请【".$jr."】人可以抽奖啦！[拳头]\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]")->reply();
           ga_push_add_event(array(
            'category'        => 'mp_hd',
            'action'          => $keyword,
@@ -277,10 +277,10 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
           ));
       }else{
         // 积分--1000
-        {     
+        {
           $award1 = 4535;
           $award2 = array('2768','215','2532','899','1942','4324','2412','4389','3596','4440','4256','1649','5957','4800','347','2892','189','2508','5028','1700','2071','5132','1580','770','3796','636','4080','24','4686','5171','1107','1454','5386','3639','2352','1327','1962','4763','5715','5558','3203','3971','1206','3160','2771','1553','51','2959','4060','5079');
-          
+
           $award3 = array('4940','1610','3202','1745','553','3059','5279','5834','2609','1669','3264','1475','3297','5485','2985','3062','3247','4042','4669','3494','5597','3539','3807','3301','1499','376','1129','2242','2436','2844','1182','4045','45','2926','4598','3104','2204','4432','5712','3873','1695','1187','1169','4992','671','4154','2054','3918','2195','722','1411','1791','4260','5218','5092','5758','5593','220','2000','2029','3064','3181','73','3109','106','4671','212','2310','3102','5924','182','4797','1110','1350','3788','1781','5504','5841','5698','1698','563','1108','3489','4822','325','2580','4580','5918','2800','579','1946','5863','3760','2019','2971','3865','689','3183','174','3791','3107','356','2588','4217','1706','375','5997','1209','216','5694','2907','778','802','395','5600','1127','2975','4180','1044','5774','4758','2990','5637','2518','5008','2608','382','5697','5790','556','3488','2897','912','75','1113','2617','450','1109','3825','665','803','732','1443','1604','1126','1042','2731','4101','5221','3774','3875','3979','763','3512','496','5771','119','878','5467','5909','1434','2954','2805','2345','3028','3917','4962','3477','5026','2787','4142','5828','3518','5584','1432','4644','625','4162','2744','5846','1936','619','3824','2699','4130','4320','2469','4249','5197','1935','4158','631','4889','962','1917','4879','1937','5394','3904','4723','3535','3732','2240','3118','5164','884','3743','3326','3627','3588','5261','4246','1412','1959','2376','5731','4428','624','4928','363','4781','5251','5743','2533','1168','4621','4469','561','2525','3192','4095','257','5431','1213','5420','314','4956','2745','3941','2544','2006','2187','3955','3964','4562','3686','2391','5186','2613','2753','3966','2170','2004','3709','4703','3171','2330','3731','4854','1826','5111','5793','3039','4530','107','1994','1275','4048','4538','3280','235','2492','1244','4796','177','3635','3982','2790','388','1947','4960','5656','3662','5562','1985','833','3293','839','1195','5118','5949','988','2157','4479','1095','4150','5754','5143','2687','3033','5377','5179','4277','4173','5356','1911','2154','2146','2299','1105','4689','3756','4766','4251','5740','5598','1543','578','793','660','527','1780','2816','5006','2874','966','4759','2016','3653','1792','1393','2832','68','5565','2188','1979','1718','4333','5818','5437','2966','3574','4202','1216','3313','3800','2758','3891','4593','3418','4417','372','233','3422','3246','1199','2181','5262','4852','3972','654','1683','4040','219','3870','18','2202','4295','1754','1638','1260','5327','5840','2476','2640','3640','5233','530','2232','2650','4947','2604','2883','2369','5850','4082','4549','2933','2521','5765','4616','560','5983','2485','1920','4687','4872','3673','132','3000','165','2607','5640','3805','1839','170','36','4489','5116','1372','1485','2489','5453','34','1599','2386','2554','1364','1001','3113','1347','3486','3690','3266','2173','2562','939','2497','2693','3938','2662','5299','3578','466','1138','3747','501','5626','2863','3140','997','4347','5629','4380','1227','2835','934','2591','3835','4046','3937','1321','1736','1202','3493','4297','2140','5990','990','78','2651','288','3655','3116','1425','1402','3617','1051','4264','756','2047','2611','385','991','1612','5331','1925','3166','5971','2138','4486','3340','5350','3755','2877','5801','5488','490','2297','479','2101','1628','2403','302','4793','2373','2440','3279','4079','5779');
         }
         if(date('z')>37){
@@ -322,7 +322,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         userpoints_userpointsapi($params);
         $jf = userpoints_get_current_points($account->uid);
         $jr = (1000-$jf)/100;
-        $weObj->text("恭喜您，获得".$cj."！\n兑奖码:".$id.'#'.$account->uid."\n<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=402092274&idx=1&sn=fb5eedc11776f1db8c15ecc159c74ea7#rd'>关注领奖号领奖</a>\n您还剩余".$jf.'积分，在邀请'.$jr."人就可以再次抽奖啦！[拳头]")->reply(); 
+        $weObj->text("恭喜您，获得".$cj."！\n兑奖码:".$id.'#'.$account->uid."\n<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=402092274&idx=1&sn=fb5eedc11776f1db8c15ecc159c74ea7#rd'>关注领奖号领奖</a>\n您还剩余".$jf.'积分，在邀请'.$jr."人就可以再次抽奖啦！[拳头]")->reply();
         ga_push_add_event(array(
          'category'        => 'mp_hd',
          'action'          => $keyword,
@@ -330,7 +330,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         ));
         return;
       }
-      return; 
+      return;
     }
     //生产VIP QR
     if(!file_exists($qr)){
@@ -356,7 +356,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         ));
         return;
       }
-      //  =  $weObj->getQRCode($account->uid,$type=0,$expire=2592000); 
+      //  =  $weObj->getQRCode($account->uid,$type=0,$expire=2592000);
       // $qr_remote = $weObj->getQRUrl($return['ticket']);
       //TODO
       $x = 600;
@@ -367,7 +367,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
       $B = $ptqr;/////////
       $im1 = imagecreatefromstring(file_get_contents($A));
       $im2 = imagecreatefromstring(file_get_contents($B));
-       
+
       imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
       // imageGif($im1);return;
       // imageGif($im1,'sites/default/files/test.gif');
@@ -396,7 +396,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
       imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
 
       $im2 = $image_p;//imagecreatefromstring(file_get_contents($B));
-       
+
       imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
       imagejpeg($im1,'sites/default/files/QR/'.date('m').'/QR_'.$account->uid.'.jpg');
       //END
@@ -414,7 +414,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
          'label'           => '宣传海报GET',
         ));
       }else{
-        $weObj->text("活动火爆，系统繁忙，请再试一次！[握手]")->reply();  
+        $weObj->text("活动火爆，系统繁忙，请再试一次！[握手]")->reply();
         ga_push_add_event(array(
          'category'        => 'mp_hd',
          'action'          => $keyword,
@@ -433,11 +433,11 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
  * Hook_wxservice_event_alter
  */
 function mp_hd_wxservice_event_alter($weObj,$event,$account){
-  // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
+  // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
   if($account->uid == 8 && $event['event']=='SCAN'){
     $uid = $event['key'];
     // $user = user_load($uid);
-    // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
+    // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
     $openid = $weObj->getRev()->getRevFrom();
     $user_info = $weObj->getUserInfo($openid);
     $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
@@ -462,7 +462,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
         'pass' => $pass,//user_password()
         'mail' => $mail,
         'init' => $mail,
-        // 'picture'=> $file->fid,  
+        // 'picture'=> $file->fid,
         'status' => 1,
         'data'  => $user_info,
         'roles' => array(
@@ -471,7 +471,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
         ),
         'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
         'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
-        
+
       );
       $account = user_save(null, $new_user);
       if(!$account){
@@ -487,7 +487,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
        'action'          => 'event',
        'label'           => '账户创建！',
       ));
-      return; 
+      return;
     }else{
       if($uid == $account->uid){
         $weObj->text("赶快分享本图片到朋友圈、好友、群、QQ即可邀请他们来参加积分有奖活动！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n回复【VIP】可获得为您PS个性宣传图\n呼朋唤友，踊跃参与吧[转圈]")->reply();
@@ -542,7 +542,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
     if(isset($event['key']) && strpos($event['key'],'qrscene_')!==FALSE){
       $uid = str_replace('qrscene_', '', $event['key']);
       // $user = user_load($uid);
-      // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
+      // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
       $openid = $weObj->getRev()->getRevFrom();
       $user_info = $weObj->getUserInfo($openid);
       $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
@@ -567,7 +567,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
           'pass' => $pass,//user_password()
           'mail' => $mail,
           'init' => $mail,
-          // 'picture'=> $file->fid,  
+          // 'picture'=> $file->fid,
           'status' => 1,
           'data'  => $user_info,
           'roles' => array(
@@ -576,13 +576,13 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
           ),
           'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
           'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
-          
+
         );
         $account = user_save(null, $new_user);
         if(!$account){
           watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
         }
-          
+
         $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n请点击【送大奖】→我的海报！[强]")->reply();
         ga_push_add_event(array(
          'category'        => 'mp_hd',
@@ -590,7 +590,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
          'label'           => '新朋友邀请成功',
         ));
         //add points!
-        return; 
+        return;
       }else{
         if($uid == $account->uid){
           $weObj->text("请您分享本图片到朋友圈或发给好友或群组即可邀请他们来参加活动。\n推荐100积分的奖励哦！奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."谢谢参与！")->reply();
@@ -604,7 +604,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
         return;
       }
     }
-  
+
   }
 }
 
@@ -620,9 +620,11 @@ function mp_hd_cron() {
   while($record = $result->fetchAssoc()) {
     //get which account has no pic!
     $account = user_load($record['uid']);
-    if(!$account->picture && isset($account->data['headimgurl']) && $account->data['headimgurl']){
+    if(0&&!$account->picture && isset($account->data['headimgurl']) && $account->data['headimgurl']){
+      set_time_limit(0);
       $response = drupal_http_request($account->data['headimgurl']);
       $picture_file = NULL;
+
       if ($response->code == 200){
         $picture_file = file_save_data($response->data, 'public://users/wx_'. $account->uid.'.jpg');
       }
@@ -636,10 +638,11 @@ function mp_hd_cron() {
             )
           ->condition('uid', $account->uid)
           ->execute();
+        watchdog('mp_hd', 'cron pic file corn for uid '.$account->uid, array(), WATCHDOG_NOTICE, 'link');
         break;
       }else{
-        // watchdog('mp_hd', 'NULL pic file corn for uid '.$account->uid, array(), WATCHDOG_NOTICE, 'link');
-        break;
+        watchdog('mp_hd', 'NULL pic file corn for uid '.$account->uid, array(), WATCHDOG_NOTICE, 'link');
+        continue;
       }
     }
 
@@ -664,7 +667,7 @@ function mp_hd_cron() {
       $B = $qr;
       $im1 = imagecreatefromstring(file_get_contents($A));
       $im2 = imagecreatefromstring(file_get_contents($B));
-       
+
       imagecopymerge($im1, $im2, $x, $y, 0, 0, imagesx($im2), imagesy($im2), $rh);
       // imageGif($im1);return;
       // imageGif($im1,'sites/default/files/test.gif');
