@@ -14,7 +14,7 @@ function mp_service_callback($account){
   //     'page'     => $account->uid,//variable_get('mp_config_appname_'.$account->uid, "永不止息").'_'.$account->uid,
   //     'title'    => '/'.$account->name,//variable_get('mp_config_appid_'.$account->uid, ""),
   // ));
-  
+
   $type = $weObj->getRev()->getRevType();
   switch($type){
     case Wechat::MSGTYPE_TEXT:
@@ -22,7 +22,7 @@ function mp_service_callback($account){
       break;
     case Wechat::MSGTYPE_EVENT:
       _mp_service_process_event($weObj,$account);
-      break;	  
+      break;
   }
   $weObj->reply();
   exit;
@@ -63,7 +63,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
   if($account->uid == 1417){
     mp_lywx_keyword_response($weObj,$keyword,$account);
     return;
-  }  
+  }
 
   //TODO emoj
   // $emoj= array(
@@ -191,7 +191,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
   }
 }
 
-function _mp_service_process_event($weObj,$account){	
+function _mp_service_process_event($weObj,$account){
 	$event = $weObj->getRevEvent();
   if(!$event){
     break;
@@ -223,11 +223,12 @@ function _mp_service_process_event($weObj,$account){
       if(isset($event['key']) && strpos($event['key'],'qrscene_')!==FALSE){
         $uid = str_replace('qrscene_', '', $event['key']);
         // $user = user_load($uid);
-        // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');  
+        // watchdog('SCANinfo', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
         $openid = $weObj->getRev()->getRevFrom();
         $user_info = $weObj->getUserInfo($openid);
         $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
         $user_name = $ori_user_name;
+        $user_info['nickname'] = $ori_user_name;
         //if 用户不存在，则创建新用户！
         $mail = $user_info['openid'].'@wechat.bind';
         $account = user_load_by_mail($mail);
@@ -248,7 +249,7 @@ function _mp_service_process_event($weObj,$account){
             'pass' => $pass,//user_password()
             'mail' => $mail,
             'init' => $mail,
-            // 'picture'=> $file->fid,  
+            // 'picture'=> $file->fid,
             'status' => 1,
             'data'  => $user_info,
             'roles' => array(
@@ -257,17 +258,17 @@ function _mp_service_process_event($weObj,$account){
             ),
             'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
             'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
-            
+
           );
           $account = user_save(null, $new_user);
           if(!$account){
             watchdog('mp_service_pages', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
           }
           // watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
-            
+
           $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n请点击【送大奖】→我的海报！[强]")->reply();
           //add points!
-          return; 
+          return;
         }else{
           if($uid == $account->uid){
             $weObj->text("请您分享本图片到朋友圈或发给好友或群组即可邀请他们来参加活动。\n推荐100积分的奖励哦！奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."谢谢参与！")->reply();
@@ -301,7 +302,7 @@ function wechat_auth($mp_account){
   $onerror = isset($_GET['onerror']) ? $_GET['onerror'] : '';
   $destination = isset($_GET['destination']) ? $_GET['destination'] : '';
   $code = isset($_GET['code']) ? $_GET['code'] : '';
-  
+
   // error
   if((!$state) || (!$code)){ // error
     die('啊哦，出错啦，请告知小永微信：649294139!');
@@ -334,17 +335,17 @@ function wechat_auth($mp_account){
     // $user_name = 'wechat_'.substr($accessData['openid'], 0, 15);
     $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
     $user_name = $ori_user_name;
+    $user_info['nickname'] = $ori_user_name;
     $count = 0;
     while(user_load_by_name($user_name)){
       // $user_name = $user_name.rand(0, 100);
       $user_name = $ori_user_name.'_'.$count;
       $count ++;
     }
-    $response = drupal_http_request($user_info['headimgurl']);
-
-    if ($response->code == 200){
-      $file = file_save_data($response->data, 'public://users/'. $user_name.'.jpg');
-    }
+    // $response = drupal_http_request($user_info['headimgurl']);
+    // if ($response->code == 200){
+    //   $file = file_save_data($response->data, 'public://users/'. $user_name.'.jpg');
+    // }
     $pass = date('Ymd');
     $mail = $user_info['openid'].'@wechat.bind';
     $new_user = array(
@@ -352,7 +353,7 @@ function wechat_auth($mp_account){
       'pass' => $pass,//user_password()
       'mail' => $mail,
       'init' => $mail,
-      'picture'=> $file->fid,  
+      // 'picture'=> $file->fid,
       'status' => 1,
       'data'  => $user_info,
     );
@@ -365,8 +366,8 @@ function wechat_auth($mp_account){
     drupal_set_message('恭喜您成功注册！请'.l('修改','user/'.$account->uid.'/edit').'您的邮箱和初始密码:'.$pass, 'status', FALSE);
     _wechat_user_login($account->uid);
 
-    ////create user end  
-  
+    ////create user end
+
    // also save user wechat information.
     $wechat_user = array(
       'uid' => $user->uid,
@@ -409,41 +410,41 @@ function _wechat_menu_default_message($event){
   return '';
 }
 
-// 全角半角转． 
-function make_semiangle($str)    
+// 全角半角转．
+function make_semiangle($str)
 {
   // $search =  array('[',']',"'",'"', "收听",'','.','○','o','〇',',',':','|',' ','一',);
-  // $replace =  array('','','','','', '', '', '0', '0','0','', '','', '', '',); 
+  // $replace =  array('','','','','', '', '', '0', '0','0','', '','', '', '',);
   // $keyword = str_replace($search, $replace, $keyword);
   $arr = array(
     '○' =>  '0','〇' =>  '0', '`' =>  '',
     ':' =>  '', ' ' => '',
-    '０' => '0', '１' => '1', '２' => '2', '３' => '3', '４' => '4',    
-    '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9',    
-    'Ａ' => 'A', 'Ｂ' => 'B', 'Ｃ' => 'C', 'Ｄ' => 'D', 'Ｅ' => 'E',    
-    'Ｆ' => 'F', 'Ｇ' => 'G', 'Ｈ' => 'H', 'Ｉ' => 'I', 'Ｊ' => 'J',    
-    'Ｋ' => 'K', 'Ｌ' => 'L', 'Ｍ' => 'M', 'Ｎ' => 'N', 'Ｏ' => 'O',    
-    'Ｐ' => 'P', 'Ｑ' => 'Q', 'Ｒ' => 'R', 'Ｓ' => 'S', 'Ｔ' => 'T',    
-    'Ｕ' => 'U', 'Ｖ' => 'V', 'Ｗ' => 'W', 'Ｘ' => 'X', 'Ｙ' => 'Y',    
-    'Ｚ' => 'Z', 'ａ' => 'a', 'ｂ' => 'b', 'ｃ' => 'c', 'ｄ' => 'd',    
-    'ｅ' => 'e', 'ｆ' => 'f', 'ｇ' => 'g', 'ｈ' => 'h', 'ｉ' => 'i',    
-    'ｊ' => 'j', 'ｋ' => 'k', 'ｌ' => 'l', 'ｍ' => 'm', 'ｎ' => 'n',    
-    'ｏ' => 'o', 'ｐ' => 'p', 'ｑ' => 'q', 'ｒ' => 'r', 'ｓ' => 's',    
-    'ｔ' => 't', 'ｕ' => 'u', 'ｖ' => 'v', 'ｗ' => 'w', 'ｘ' => 'x',    
-    'ｙ' => 'y', 'ｚ' => 'z',    
-    '（' => '', '）' => '', '〔' => '', '〕' => '', '【' => '',    
-    '】' => '', '〖' => '', '〗' => '', '“' => '', '”' => '',    
-    '‘' => '', '’' => '', '｛' => '', '｝' => '', '《' => '<',    
-    '》' => '>',    
-    '％' => '%', '＋' => '+', '—' => '-', '－' => '-', '～' => '-',    
-    '：' => ':', '。' => '.', '、' => ',', '，' => ',', '、' => '.',    
-    '；' => ',', '？' => '?', '！' => '!', '…' => '-', '‖' => '',    
-    '”' => '', '’' => '', '‘' => '', '｜' => '', '〃' => '',    
-    '　' => ' ','＄'=>'$','＠'=>'@','＃'=>'#','＾'=>'','＆'=>'&','＊'=>'*', 
+    '０' => '0', '１' => '1', '２' => '2', '３' => '3', '４' => '4',
+    '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9',
+    'Ａ' => 'A', 'Ｂ' => 'B', 'Ｃ' => 'C', 'Ｄ' => 'D', 'Ｅ' => 'E',
+    'Ｆ' => 'F', 'Ｇ' => 'G', 'Ｈ' => 'H', 'Ｉ' => 'I', 'Ｊ' => 'J',
+    'Ｋ' => 'K', 'Ｌ' => 'L', 'Ｍ' => 'M', 'Ｎ' => 'N', 'Ｏ' => 'O',
+    'Ｐ' => 'P', 'Ｑ' => 'Q', 'Ｒ' => 'R', 'Ｓ' => 'S', 'Ｔ' => 'T',
+    'Ｕ' => 'U', 'Ｖ' => 'V', 'Ｗ' => 'W', 'Ｘ' => 'X', 'Ｙ' => 'Y',
+    'Ｚ' => 'Z', 'ａ' => 'a', 'ｂ' => 'b', 'ｃ' => 'c', 'ｄ' => 'd',
+    'ｅ' => 'e', 'ｆ' => 'f', 'ｇ' => 'g', 'ｈ' => 'h', 'ｉ' => 'i',
+    'ｊ' => 'j', 'ｋ' => 'k', 'ｌ' => 'l', 'ｍ' => 'm', 'ｎ' => 'n',
+    'ｏ' => 'o', 'ｐ' => 'p', 'ｑ' => 'q', 'ｒ' => 'r', 'ｓ' => 's',
+    'ｔ' => 't', 'ｕ' => 'u', 'ｖ' => 'v', 'ｗ' => 'w', 'ｘ' => 'x',
+    'ｙ' => 'y', 'ｚ' => 'z',
+    '（' => '', '）' => '', '〔' => '', '〕' => '', '【' => '',
+    '】' => '', '〖' => '', '〗' => '', '“' => '', '”' => '',
+    '‘' => '', '’' => '', '｛' => '', '｝' => '', '《' => '<',
+    '》' => '>',
+    '％' => '%', '＋' => '+', '—' => '-', '－' => '-', '～' => '-',
+    '：' => ':', '。' => '.', '、' => ',', '，' => ',', '、' => '.',
+    '；' => ',', '？' => '?', '！' => '!', '…' => '-', '‖' => '',
+    '”' => '', '’' => '', '‘' => '', '｜' => '', '〃' => '',
+    '　' => ' ','＄'=>'$','＠'=>'@','＃'=>'#','＾'=>'','＆'=>'&','＊'=>'*',
     '＂'=>''
-  ); 
-   
-  return strtr($str, $arr);    
+  );
+
+  return strtr($str, $arr);
 }
 
 function mp_service_comments(){
@@ -462,13 +463,13 @@ function mp_service_comments(){
   if(!$account){
     // watchdog('create user '.$mail, 'message', array(), WATCHDOG_NOTICE, 'link');
     // create $user;
-    $response = drupal_http_request($user_info['headimgurl']);
-
-    if ($response->code == 200){
-      $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'.jpg');
-    }
+    // $response = drupal_http_request($user_info['headimgurl']);
+    // if ($response->code == 200){
+    //   $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'.jpg');
+    // }
     $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
     $user_name = $ori_user_name;
+    $user_info['nickname'] = $ori_user_name;
     $count = 0;
     while(user_load_by_name($user_name)){
       // $user_name = $user_name.rand(0, 100);
@@ -481,7 +482,7 @@ function mp_service_comments(){
       'pass' => $pass,//user_password()
       'mail' => $mail,
       'init' => $mail,
-      'picture'=> $file->fid,  
+      // 'picture'=> $file->fid,
       'status' => 1,
       'data'  => $user_info,
       'roles' => array(
@@ -499,7 +500,7 @@ function mp_service_comments(){
   }
   // check comment ID
   {
-    
+
 
     // dpm($nid,'nid');
     // dpm($pid,'pid');
@@ -507,9 +508,9 @@ function mp_service_comments(){
     $comment = new stdClass();
     $comment->nid = $nid; // nid of a node you want to attach a comment to
     $comment->cid = 0; // leave it as is
-    $comment->pid = $pid; // parent comment id, 0 if none 
+    $comment->pid = $pid; // parent comment id, 0 if none
     $comment->uid = $account->uid; // user's id, who left the comment
-    
+
     $comment->mail = $mail;//
     // $comment->thread = '01/'; // OPTIONAL. If you need comments to be threaded you can fill this value. Otherwise omit it.
     $comment->name = $account->name;//; // If user is authenticated you can omit this field, it will be auto-populated, if the user is anonymous and you want to name him somehow, input his name here
@@ -518,7 +519,7 @@ function mp_service_comments(){
     $comment->created = time(); // OPTIONAL. You can set any time you want here. Useful for backdated comments creation.
     $comment->is_anonymous = 0; // leave it as is
     $comment->homepage = ''; // you can add homepage URL here
-    
+
     $status = COMMENT_PUBLISHED;
     if($nid == '163') $status = COMMENT_NOT_PUBLISHED;
     if($pid != 0) $status = COMMENT_PUBLISHED;
@@ -526,17 +527,17 @@ function mp_service_comments(){
     $comment->language = LANGUAGE_NONE; // The same as for a node
     // $keyword = substr($keyword, 2);
     $subject = truncate_utf8($comment_body, 15, $wordsafe = FALSE, $add_ellipsis = FALSE, $min_wordsafe_length = 1);
-    $comment->subject = $subject; 
-    
+    $comment->subject = $subject;
+
     // $comment->signature = '';//$wechat_user_info['contact_info']['signature'] ;
-    
-    // $comment->signature_format = 'filtered_html'; 
+
+    // $comment->signature_format = 'filtered_html';
     $comment->comment_body[$comment->language][0]['value'] = $comment_body; // Everything here is pretty much like with a node
-    $comment->comment_body[$comment->language][0]['format'] = 'filtered_html'; 
+    $comment->comment_body[$comment->language][0]['format'] = 'filtered_html';
     // $comment->field_custom_field_name[LANGUAGE_NONE][0]['value'] = 'Some value'; // OPTIONAL. If your comment has a custom field attached it can added as simple as this // preparing a comment for a save
      // saving a comment
     ///////////end
-    if($comment = comment_submit($comment)) { // Prepare node for saving                      
+    if($comment = comment_submit($comment)) { // Prepare node for saving
       comment_save($comment);
         // return $comment;
     }
