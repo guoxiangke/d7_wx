@@ -723,7 +723,7 @@ function mp_lts_wxresources($resources, $account, $keyword){
       $update = '';
       if($count===FALSE) {
         $count = date('z')%$total;//按顺序循环播出，每天一集！
-        $update = '每日更新';
+        $update = ' 每日更新';
       }
       $rep = str_pad($count, 2,'0',STR_PAD_LEFT);
       $link = 'new/'.$level.'/'.$mav['title'].'/ma'.$mav['prefex'].$rep.'.mp3';
