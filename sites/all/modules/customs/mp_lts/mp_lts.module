@@ -749,7 +749,7 @@ function mp_lts_wxresources($resources, $account, $keyword){
         'type'  =>  'music',
         'obj'   => array(
           'title' => $mav['title'].'-'.$rep,
-          'desc'  =>  "点击►收听".$update." 良院".str_replace('课程', '', $level) ." 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息"),
+          'desc'  =>  "点击►收听".$update." 良院".str_replace('课程', '', $level) ." 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' 技术支持:'.($account->uid==255?'永不止息':'主内公众云'),
           'musicurl'  =>  $link,
           'hgmusicurl'  =>  $link,
         ),
