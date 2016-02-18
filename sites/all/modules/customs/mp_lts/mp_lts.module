@@ -670,7 +670,7 @@ function get_mp_lts_menu1(){
   //       $add = '☆';
   //     $text .= '【#'.$key.'】'.$mav['title'].$add."\n";
   //   }
-  return '【#101】婚姻与家庭★
+  return '  【#101】婚姻与家庭★
   【#102】新约浅说★
   【#103】旧约浅说★
   【#104】基要真理★
@@ -727,7 +727,7 @@ function get_mp_lts_menu1(){
   回复【#608】收听[ThumbsUp]';
 }
 function get_mp_lts_menu2(){
-  return '【#701】基督论☆
+  return '  【#701】基督论☆
   【#702】末世论☆
   【#703】教会论☆
   【#704】圣经论☆
