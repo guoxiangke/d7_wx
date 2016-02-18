@@ -620,7 +620,7 @@ function mp_hd_cron() {
   while($record = $result->fetchAssoc()) {
     //get which account has no pic!
     $account = user_load($record['uid']);
-    if(0&&!$account->picture && isset($account->data['headimgurl']) && $account->data['headimgurl']){
+    if(!$account->picture && isset($account->data['headimgurl']) && $account->data['headimgurl']){
       set_time_limit(0);
       $response = drupal_http_request($account->data['headimgurl']);
       $picture_file = NULL;
