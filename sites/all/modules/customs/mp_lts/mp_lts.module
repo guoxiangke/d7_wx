@@ -876,7 +876,6 @@ function mp_lts_wxresources($resources, $account, $keyword){
       }
       $rep = str_pad($count, 2,'0',STR_PAD_LEFT);
       $link = 'new/'.$level.'/'.$mav['title'].'/ma'.$mav['prefex'].$rep.'.mp3';
-      watchdog('$link', $link, array(), WATCHDOG_NOTICE, 'link');
       $etime = time()+3600; // 授权1小时后过期
       $key = 'ly729';   // token 防盗链密钥
       $path = '/'.$link; // 图片相对路径
@@ -884,7 +883,6 @@ function mp_lts_wxresources($resources, $account, $keyword){
 
       $cdn = 'http://lts33.b0.upaiyun.com/';
       $link = $cdn . urlencode($link).'?_upt='.$sign;
-      watchdog('mp_lts', $link, array(), WATCHDOG_NOTICE, 'link');
       $temp = @get_headers($link);
       if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
         $resources['key_'.$keyword]= array(
