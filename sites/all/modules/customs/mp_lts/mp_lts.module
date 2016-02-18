@@ -657,7 +657,107 @@ function  get_mp_ltsma(){
   );
 }
 
-
+function get_mp_lts_menu1(){
+  //   $mavs = get_mp_ltsma();
+  //   watchdog('mp_lts', $index, array(), WATCHDOG_NOTICE, 'link');
+  // if($index==100){
+  //   $text = '';
+  //   $add = '★';
+  //   foreach ($mavs as $key => $mav) {
+  //     // if($mav['level']=='本科课程')
+  //     //   $add = '✿';
+  //     if($mav['level']!='进深课程') continue;
+  //       $add = '☆';
+  //     $text .= '【#'.$key.'】'.$mav['title'].$add."\n";
+  //   }
+  return '【#101】婚姻与家庭★
+  【#102】新约浅说★
+  【#103】旧约浅说★
+  【#104】基要真理★
+  【#105】基本研经法★
+  【#106】耶稣生平★
+  【#107】信仰与生活★
+  【#108】事奉装备★
+  【#201】新约综览✿
+  【#202】旧约综览✿
+  【#203】基督教教义✿
+  【#204】解经与研经✿
+  【#301】摩西五经✿
+  【#302】旧约历史书(I)✿
+  【#303】旧约历史书(II)✿
+  【#304】诗歌智慧书(I)✿
+  【#305】诗歌智慧书(II)✿
+  【#306】先知书(I)✿
+  【#307】先知书(II)✿
+  【#308】约翰福音✿
+  【#309】使徒行传✿
+  【#310】保罗书信(I)✿
+  【#311】保罗书信(II)✿
+  【#312】普通书信✿
+  【#313】罗马书✿
+  【#314】启示录✿
+  【#401】教会历史✿
+  【#402】讲道学✿
+  【#403】基督工人操守✿
+  【#404】异端与极端✿
+  【#405】教会行政✿
+  【#406】圣灵论✿
+  【#407】基督教伦理学✿
+  【#501】差传导论✿
+  【#502】教会增长✿
+  【#503】本土差传✿
+  【#601】圣经背景✿
+  【#602】路加福音✿
+  【#603】基督教与科学✿
+  【#604】基督教教育✿
+  【#605】主日学教学法✿
+  【#606】教导与牧养✿
+  【#607】基督化家庭✿
+  【#608】婚姻辅导✿
+  【#609】灵修、默想与应用✿
+  【#610】苦难与罪恶✿
+  【#611】青少年事工✿
+  【#612】讲道实习✿
+  【#613】神迹奇事✿
+  【#614】教会复兴运动✿
+  【#615】圣经教师训练✿
+  【#616】单身事工✿
+  【#617】中国教会史✿
+   ★基础课程 ✿本科课程 ☆进深课程
+  回复【#608】收听[ThumbsUp]';
+}
+function get_mp_lts_menu2(){
+  return '【#701】基督论☆
+  【#702】末世论☆
+  【#703】教会论☆
+  【#704】圣经论☆
+  【#705】神论☆
+  【#706】救恩论☆
+  【#707】启示论☆
+  【#801】圣经神学☆
+  【#802】旧约神学☆
+  【#803】新约神学☆
+  【#804】创世记☆
+  【#805】以赛亚书☆
+  【#806】但以理书☆
+  【#807】哥林多前书☆
+  【#808】哥林多后书☆
+  【#809】加拉太书☆
+  【#810】以弗所书☆
+  【#811】教牧书信☆
+  【#812】希伯来书☆
+  【#813】圣经文学导论☆
+  【#901】释经与讲道☆
+  【#902】领袖训练I☆
+  【#903】领袖训练II☆
+  【#904】教牧学☆
+  【#905】教牧辅导☆
+  【#906】崇拜学☆
+  【#907】差传神学☆
+  【#908】进深讲道学☆
+  【#100】基础课程+本科课程 ☆进深课程
+  回复【#702】收听[ThumbsUp]';
+};
 /**
  * hook_wxrescources
  */
@@ -670,16 +770,62 @@ function mp_lts_wxresources($resources, $account, $keyword){
       if(substr($keyword, 0, 1)!='#')return;
       $subkey = str_replace('#', '', $keyword);
       $index = substr($subkey, 0, 3);//101-999
-      if(!($index>=101&&$index<=999))return;
+      if(!($index>=100&&$index<=999))return;
+
       $mavs = get_mp_ltsma();
-      if(!in_array($index, array_keys($mavs))){
-        //error!编码超出范围！暂时没有，敬请期待！
-        return $resources['key_'.$keyword]= array(
+      if(substr($index, 1)==='00'){
+        if($index==100){
+          $resources['key_'.$keyword]= array(
+              'type'  =>  'text',
+              'obj'   => array(
+                'text'  => get_mp_lts_menu1(),
+              )
+            );
+          return $resources;
+        }
+        if($index==700){
+          $resources['key_'.$keyword]= array(
+              'type'  =>  'text',
+              'obj'   => array(
+                'text'  => get_mp_lts_menu2(),
+              )
+            );
+          return $resources;
+        }
+
+        $num = substr($index,0,1);
+        $begin = $num.'00';
+        $end = $num.'99';
+        $text = '';
+        $add = '★';
+        foreach ($mavs as $key => $mav) {
+          if($key>$begin&&$key<=$end) {
+            if($mav['level']=='本科课程')
+              $add = '✿';
+            if($mav['level']=='进深课程')
+              $add = '☆';
+            $text .= '【#'.$key.'】'.$mav['title'].$add."\n";
+          }
+        }
+        $resources['key_'.$keyword]= array(
             'type'  =>  'text',
             'obj'   => array(
-              'text'  => "[大哭]编码有误，回复【#1010】到【#9080】查看目录！",
+              'text'  => $text."【#100】★基础课程✿本科课程\n【#700】☆进深课程\n回复【#".$num."01】收听\n回复【#".$num."010】查看讲义！[ThumbsUp]",
             )
           );
+        return $resources;
+
+      }
+
+      if(!in_array($index, array_keys($mavs))){
+        //error!编码超出范围！暂时没有，敬请期待！
+        $resources['key_'.$keyword]= array(
+            'type'  =>  'text',
+            'obj'   => array(
+              'text'  => "[大哭]编码有误，回复【#100】查看目录！",
+            )
+          );
+        return $resources;
       }
       $mav = $mavs["$index"];
       $total = $mav['count'];
@@ -715,7 +861,7 @@ function mp_lts_wxresources($resources, $account, $keyword){
         $resources['key_'.$keyword]= array(
             'type'  =>  'text',
             'obj'   => array(
-              'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】",
+              'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》安卓用户讲义</a>",
             )
           );
         return $resources;
