@@ -42,20 +42,8 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
     $openid = $weObj->getRev()->getRevFrom();
     // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
     if(in_array($openid, array('oTjEws_LNd8maly0PugxnmFQPdTA','oTjEws-8eAAUqgR4q_ns7pbd0zN8'))){
-        $url = url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q=').'grace365';
-        $data = array('link' => $ori_keyword);
-        $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
-                'content' => http_build_query($data),
-            ),
-        );
-        $context  = stream_context_create($options);
-        file_get_contents($url, false, $context);
-        // watchdog('result', '<pre>'.print_r($result,1), array(), WATCHDOG_NOTICE, 'link');
-        $weObj->text("今日<a href='http://wx.yongbuzhixi.com/grace365'>恩典365</a>已发布成功！谢谢您杨弟兄！[握手]")->reply();
-        return;
+      mp_getwxcontent($ori_keyword,$weObj);
+      return;
     }
   }
   $keyword = make_semiangle(strtolower($ori_keyword));//include trim;

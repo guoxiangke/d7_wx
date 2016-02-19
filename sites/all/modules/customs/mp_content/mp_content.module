@@ -33,14 +33,14 @@ function mp_content_wxresources($resources, $account, $keyword){
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
     //灵命日粮
-    if ($keyword =='tw'||$keyword =='图文') {      
-      if(isset($enabled_resources['mp_contents']) && $enabled_resources['mp_contents']){      
+    if ($keyword =='tw'||$keyword =='图文') {
+      if(isset($enabled_resources['mp_contents']) && $enabled_resources['mp_contents']){
           //TODO: json +cron
           {
             $nodes = dale_get_mp_nodes('article',3,NULL,array(1,$account->uid,'1013'));
             $news = array();
             $count = 0;
-            foreach ($nodes as $key => $node) {       
+            foreach ($nodes as $key => $node) {
               if(isset($node->field_image2['und'][0]['uri'])){
                 $picurl = file_create_url($node->field_image2['und'][0]['uri']);
               }elseif(isset($node->field_image['und'][0]['uri'])){
@@ -51,18 +51,18 @@ function mp_content_wxresources($resources, $account, $keyword){
                   $default_img_fid  = $info['settings']['default_image'];
                   $default_img_file = file_load($default_img_fid);
                 }
-                $picurl = file_create_url($default_img_file->uri);  
+                $picurl = file_create_url($default_img_file->uri);
               }
               if($count == 0){//第一个不用2图
                 if(isset($node->field_image['und'][0]['uri'])){
-                  $picurl = file_create_url($node->field_image['und'][0]['uri']);   
+                  $picurl = file_create_url($node->field_image['und'][0]['uri']);
                 }else{//default img!!
                   $info = field_info_instance('node', 'field_image', 'article');
                   if (!empty($info) && $info['settings']['default_image'] > 0){
                     $default_img_fid  = $info['settings']['default_image'];
                     $default_img_file = file_load($default_img_fid);
                   }
-                  $picurl = file_create_url($default_img_file->uri);  
+                  $picurl = file_create_url($default_img_file->uri);
                 }
               }
               $count++;
@@ -130,7 +130,7 @@ function mp_content_wxresources($resources, $account, $keyword){
               // watchdog($offset, 'offset'.$total, array(), WATCHDOG_NOTICE, 'link');
               $node = node_load($nids[$offset]->nid);
               // watchdog($offset.' '.$node->title, $node->nid, array(), WATCHDOG_NOTICE, 'link');
-              if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value'])) 
+              if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value']))
                 $musicurl =  $node->field_mp3url[LANGUAGE_NONE][0]['value'];
               if(!isset($musicurl)){
                 //TODO $node->field_mp3_file
@@ -159,14 +159,14 @@ function mp_content_wxresources($resources, $account, $keyword){
           }else{//77
           //TODO 是否需要共享资源？
           if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
-            $nodes = dale_get_mp_nodes('fm77',1,NULL);  
+            $nodes = dale_get_mp_nodes('fm77',1,NULL);
           }else{
             $nodes = dale_get_mp_nodes('fm77',1,NULL,array($account->uid));
           }
           if (count($nodes))
           foreach ($nodes as $key => $node) {
             $musicurl = NULL;
-            if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value'])) 
+            if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value']))
               $musicurl =  $node->field_mp3url[LANGUAGE_NONE][0]['value'];
             if(!$musicurl){
               //TODO $node->field_mp3_file
@@ -180,19 +180,19 @@ function mp_content_wxresources($resources, $account, $keyword){
                 'musicurl'  =>  $musicurl,
                 'hgmusicurl'  =>  $musicurl,
               ),
-            );            
+            );
           }
           }
           //TODO 是否需要共享资源？
           if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
-            $nodes = dale_get_mp_nodes('fm77',1,NULL);  
+            $nodes = dale_get_mp_nodes('fm77',1,NULL);
           }else{
             $nodes = dale_get_mp_nodes('fm77',1,NULL,array($account->uid));
           }
           if (count($nodes))
           foreach ($nodes as $key => $node) {
             $musicurl = NULL;
-            if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value'])) 
+            if(isset($node->field_mp3url[LANGUAGE_NONE][0]['value']))
               $musicurl =  $node->field_mp3url[LANGUAGE_NONE][0]['value'];
             if(!$musicurl){
               //TODO $node->field_mp3_file
@@ -206,7 +206,7 @@ function mp_content_wxresources($resources, $account, $keyword){
                 'musicurl'  =>  $musicurl,
                 'hgmusicurl'  =>  $musicurl,
               ),
-            );            
+            );
           }
       }
     }
@@ -249,7 +249,7 @@ function dale_get_mp_nodes_count($type = 'article', $number = 0, $tid = NULL, $u
     $query->condition('n.uid', $uids,'IN');
   if($number!=0)
      $query->range(0, $number);
-  
+
   if($return) return $query
     ->fields('n', array('nid'))
     ->orderBy('n.created', 'DESC')
@@ -261,7 +261,7 @@ function dale_get_mp_nodes_count($type = 'article', $number = 0, $tid = NULL, $u
     ->orderBy('n.created', $order)
     ->addTag('node_access')
     ->execute();
-  
+
   return $result->rowCount();
 }
 
@@ -280,7 +280,7 @@ function dale_get_mp_nodes($type = 'article', $number = 3, $tid = NULL, $uids = 
     $query->condition('n.uid', $uids,'IN');
   if($number!=0)
      $query->range(0, $number);
-  
+
   $nids = $query
     ->fields('n', array('nid'))
     ->orderBy('n.created', $order)
@@ -324,14 +324,14 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
         $count++;
         if($count == count($nodes)){//第一个不用2图
         if(isset($node->field_image['und'][0]['uri'])){
-          $picurl = file_create_url($node->field_image['und'][0]['uri']);   
+          $picurl = file_create_url($node->field_image['und'][0]['uri']);
         }else{//default img!!
           $info = field_info_instance('node', 'field_image', 'article');
           if (!empty($info) && $info['settings']['default_image'] > 0){
             $default_img_fid  = $info['settings']['default_image'];
             $default_img_file = file_load($default_img_fid);
           }
-          $picurl = file_create_url($default_img_file->uri);  
+          $picurl = file_create_url($default_img_file->uri);
         }
         }
         $desc = strlen($node->body[LANGUAGE_NONE][0]['summary'])?truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['summary']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1):truncate_utf8(strip_tags($node->body[LANGUAGE_NONE][0]['value']), 54, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
@@ -342,16 +342,16 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
           'Url'=> $url,
         );
         $news[] = $img;
-      } 
+      }
       $news = array_reverse($news);
     }
-   
+
 
     //get promote!
     if($counts[1]>0)
       $nodes2 = dale_get_mp_nodes('article',$counts[1],NULL,array($account->uid),NODE_PROMOTED);
     if(isset($nodes2))
-    foreach ($nodes2 as $key => $node) {     
+    foreach ($nodes2 as $key => $node) {
       if(!empty($node->field_redirect_link['und'][0]['value'])){
         $url = $node->field_redirect_link['und'][0]['value'];
       }else{
@@ -390,4 +390,98 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
     }
     $weObj->news($news)->reply();
   }
+}
+
+function mp_getwxcontent($link,$weObj=NULL){
+  // $html = file_get_contents($link);
+  // $html = str_get_html($html);
+  $html = file_get_html($link);
+  $ori_title = $html->find('title',0)->plaintext;
+
+  $search =  array('&nbsp;');
+  $replace =  array(' ');
+  $ori_title = str_replace($search, $replace, $ori_title);
+  $mp_contents = variable_get('mp_contents_'.date('W'), array());
+  if(in_array($ori_title, $mp_contents)){
+    if(isset($weObj))
+      $weObj->text("本文章已发布过！谢谢！[握手]")->reply();
+  }
+  if($html->find('.video_iframe',0)){
+    $video_url = $html->find('.video_iframe',0)->getAttribute('data-src');
+    preg_match('/vid=\S+?&/',$video_url,$video_url);
+    $video_url = 'https://v.qq.com/iframe/player.html?'.str_replace('&', '', $video_url[0]);
+    // dpm($video_url);//https://v.qq.com/iframe/player.html?vid=r01794fedmo
+  }
+  if($html->find('mpvoice',0)){
+    $voice_url = 'http://res.wx.qq.com/voice/getvoice?mediaid='.$html->find('mpvoice',0)->voice_encode_fileid;
+  }
+
+  $body = $html->find('#js_content',0)->outertext;
+  $body = strip_tags($body,'<span><p><ul><li><ol><br><section>');
+  $body = preg_replace('/style="(.*?)"/', '', $body);
+  $body = preg_replace('/class="(.*?)"/', '', $body);
+  $body = preg_replace('/label="(.*?)"/', '', $body);
+  $field_user_name = $html->find('#post-user',0)->plaintext;
+
+
+  $title = $ori_title;
+  $node = new stdClass();
+  $node->type = 'article';
+  if(strpos($ori_title, '恩典365')!==FALSE){
+    $node->type = 'grace365';
+    // get title
+    $search =  array('&nbsp;','〔恩典365〕','(附文字版)','/','【恩典365】');
+    $replace =  array(' ','','','','',);
+    $title = str_replace($search, $replace, $ori_title);
+  // get $body
+    $begin = strpos($body, '恩典365 365天') + strlen('恩典365 365天 ');
+    if(!$begin){
+      watchdog('ybread', 'no 365', array(), WATCHDOG_NOTICE, 'link');
+      return 'error!';
+    }
+    $end = strpos($body, '恩典365微信公众');
+    $body = substr($body,$begin,$end-$begin);
+  }else{
+    $tid = 46;
+  }
+  node_object_prepare($node);
+  //get title
+  $uid = '1'; //uid of love.
+  if(isset($weObj)){
+    $openid = $weObj->getRev()->getRevFrom();
+    $user_info = $weObj->getUserInfo($openid);
+    $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+    $user_name = $ori_user_name;
+    $user_info['nickname'] = $ori_user_name;
+    //if 用户不存在，则创建新用户！
+    $mail = $user_info['openid'].'@wechat.bind';
+    $account = user_load_by_mail($mail);
+    if($account){
+      $uid = $account->uid;
+    }
+  }
+  $node->uid = $uid;
+  $node->title = $title;
+  $node->field_title[LANGUAGE_NONE][0]['value'] = $ori_title;//原文标题
+  $node->field_sourcex[LANGUAGE_NONE][0]['value'] = $field_user_name;//文章来源
+  $node->field_link[LANGUAGE_NONE][0]['value'] = $link;//原文链接
+  $node->field_user_name[LANGUAGE_NONE][0]['value'] = $field_user_name;//原文作者
+
+  $node->body[LANGUAGE_NONE][0]['value'] = $body;//trim($tempbody->plaintext);
+  if(isset($voice_url))
+    $node->field_mp3url[LANGUAGE_NONE][0]['value']=$voice_url;
+  if(isset($video_url))
+    $node->field_video_url[LANGUAGE_NONE][0]['value']=$video_url;
+  if(isset($tid))
+    $node->field_term[LANGUAGE_NONE][0]['tid']=$tid;
+  $node->language = LANGUAGE_NONE;
+  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
+  // dpm($node);
+  node_save($node);
+  $mp_contents[]  = $ori_title;
+  variable_set('mp_contents_'.date('W'), $mp_contents);
+
+  if(isset($weObj))
+    $weObj->text("<a href='http://wx.yongbuzhixi.com/node/".$node->nid."'>".$node->title."</a>已发布成功！谢谢！[握手]")->reply();
+  watchdog('ybread', 'created articles form wx'.$node->nid, array(), WATCHDOG_NOTICE, 'link');
 }

@@ -26,7 +26,7 @@ function ybread_page(){
 	  if(isset($result->nid)){
 	  	$temp_nid = $result->nid;
 			$temp_node = node_load($temp_nid);
-			if($temp_node->title != $node->title){	
+			if($temp_node->title != $node->title){
 			  // get body
 			  $tempbody = $html->find('.entry-content', 0);
 			  $body = $html->find('.verse-box', 0)->outertext;
@@ -79,7 +79,7 @@ function ctoday_page(){
 	  $hour = date('G',time());
 	  $last = date('z',$result->created);
   }
-  
+
   if(($now - $last >= 1 && $hour >= 12) || !isset($result->nid)) {
 
 		// get title
@@ -96,8 +96,8 @@ function ctoday_page(){
 		{
 			$html = file_get_html('http://production.lifejiezou.com/taxonomy/term/1309');
 		  $node->title = $html->find('.field-name-title h2', 0)->plaintext;
-			if((isset($result->nid)&&($temp_node->title != $node->title)) || !isset($result->nid)){	
-				//get title	
+			if((isset($result->nid)&&($temp_node->title != $node->title)) || !isset($result->nid)){
+				//get title
 				$link = $html->find('.node-audio h2 a', 0)->href;
 				$html = file_get_html('http://production.lifejiezou.com'.$link);
 			  // $node->title = trim($html->find('h1#page-title', 0)->plaintext);
@@ -165,7 +165,7 @@ function grace365_page(){
   if(isset($result->nid)){
 	  $last = date('z',$result->created);
   }
-  if(isset($_POST['link']))
+  if(0&&isset($_POST['link']))
   if(($now - $last >= 1 && $_POST['link']) || !isset($result->nid)) {
 	  watchdog('ybread-hour', $hour, array(), WATCHDOG_NOTICE, 'link');
 	  watchdog('ybread-now', $now - $last, array(), WATCHDOG_NOTICE, 'link');
@@ -176,7 +176,7 @@ function grace365_page(){
 		$html = str_get_html($html);
 		$ori_title = $html->find('title',0)->plaintext;
 		$search =  array('&nbsp;','〔恩典365〕','(附文字版)','/','【恩典365】');
-	  $replace =  array(' ','','','','',); 
+	  $replace =  array(' ','','','','',);
 	  $title = str_replace($search, $replace, $ori_title);
  		if(isset($result->nid)){
 	  	$temp_nid = $result->nid;
@@ -187,7 +187,7 @@ function grace365_page(){
 				preg_match('/vid=\S+?&/',$video_url,$video_url);
 			  $video_url = 'https://v.qq.com/iframe/player.html?'.str_replace('&', '', $video_url[0]);
 				// dpm($video_url);//https://v.qq.com/iframe/player.html?vid=r01794fedmo
-				
+
 				$voice_url = 'http://res.wx.qq.com/voice/getvoice?mediaid='.$html->find('mpvoice',0)->voice_encode_fileid;
 				// watchdog('voice_url', '<pre>'.print_r($voice_url,1), array(), WATCHDOG_NOTICE, 'link');
 				// watchdog('ori_title', '<pre>'.print_r($ori_title,1), array(), WATCHDOG_NOTICE, 'link');
@@ -197,12 +197,12 @@ function grace365_page(){
 				$body = preg_replace('/style="(.*?)"/', '', $body);
 				$body = preg_replace('/class="(.*?)"/', '', $body);
 				$body = preg_replace('/label="(.*?)"/', '', $body);
-				
+
 				$begin = strpos($body, '恩典365 365天') + strlen('恩典365 365天 ');
 				if(!$begin){
 					watchdog('ybread', 'no 365', array(), WATCHDOG_NOTICE, 'link');
 					return 'error!';
-				} 
+				}
 				$end = strpos($body, '恩典365微信公众');
 				$body = substr($body,$begin,$end-$begin);
 				// get title
