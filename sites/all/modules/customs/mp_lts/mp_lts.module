@@ -316,7 +316,7 @@ function  get_mp_ltsma(){
       'author'=>'黄雅格',
     ),
     '604'=>array(
-      'title'=>'基督教教育',//X无X
+      'title'=>'基督教教育(制作中)',
       'prefex'=>'ved1',
       'count'=>24,
       'level'=>'本科课程',
@@ -453,7 +453,7 @@ function  get_mp_ltsma(){
       'author'=>'吕路加',
     ),
     '704'=>array(
-      'title'=>'圣经论',//没有！
+      'title'=>'圣经论(制作中)',//没有！
       'prefex'=>'v??0',
       'count'=>24,
       'level'=>'进深课程',
@@ -709,7 +709,7 @@ function get_mp_lts_menu1(){
   【#601】圣经背景✿
   【#602】路加福音✿
   【#603】基督教与科学✿
-  【#604】基督教教育✿
+  【#604】基督教教育(制作中)
   【#605】主日学教学法✿
   【#606】教导与牧养✿
   【#607】基督化家庭✿
@@ -731,7 +731,7 @@ function get_mp_lts_menu2(){
   return '  【#701】基督论☆
   【#702】末世论☆
   【#703】教会论☆
-  【#704】圣经论☆
+  【#704】圣经论(制作中)
   【#705】神论☆
   【#706】救恩论☆
   【#707】启示论☆
@@ -863,7 +863,7 @@ function mp_lts_wxresources($resources, $account, $keyword){
         $resources['key_'.$keyword]= array(
             'type'  =>  'text',
             'obj'   => array(
-              'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》安卓用户讲义</a>",
+              'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》带阅读器的讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》点此查看讲义</a>",
             )
           );
         return $resources;
