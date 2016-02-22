@@ -437,6 +437,7 @@ function mp_getwxcontent($link,$weObj=NULL){
   $node->type = 'article';
   if(strpos($ori_title, '恩典365')!==FALSE){
     $node->type = 'grace365';
+    $node->promote = 1;
     // get title
     $search =  array('&nbsp;','〔恩典365〕','(附文字版)','/','【恩典365】');
     $replace =  array(' ','','','','',);
