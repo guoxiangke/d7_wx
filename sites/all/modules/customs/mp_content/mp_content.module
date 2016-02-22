@@ -421,10 +421,18 @@ function mp_getwxcontent($link,$weObj=NULL){
   $body = preg_replace('/style="(.*?)"/', '', $body);
   $body = preg_replace('/class="(.*?)"/', '', $body);
   $body = preg_replace('/label="(.*?)"/', '', $body);
+  $body = str_replace('<p>&nbsp;</p>', '', $body);
+  $body = str_replace('<p><br /></p>', '', $body);
+
+  if(strpos($body, 'MUSTARD SEED')!==FALSE){
+    $begin = 0;
+    $end = strpos($body, 'MUSTARD SEED');;
+    $body = substr($body,$begin,$end-$begin);
+  }
   $field_user_name = $html->find('#post-user',0)->plaintext;
 
 
-  $title = $ori_title;
+  $title = str_replace('&quot;', '"', $ori_title);
   $node = new stdClass();
   $node->type = 'article';
   if(strpos($ori_title, '恩典365')!==FALSE){
@@ -482,6 +490,6 @@ function mp_getwxcontent($link,$weObj=NULL){
   variable_set('mp_contents_'.date('W'), $mp_contents);
 
   if(isset($weObj))
-    $weObj->text("<a href='http://wx.yongbuzhixi.com/node/".$node->nid."'>".$node->title."</a>已发布成功！谢谢！[握手]")->reply();
+    $weObj->text("<a href='http://wx.yongbuzhixi.com/node/".$node->nid."'>".$node->title."</a>已发布成功！谢谢！[握手]\n<a href='http://wx.yongbuzhixi.com/node/".$node->nid."/edit'>编辑</a>")->reply();
   watchdog('ybread', 'created articles form wx'.$node->nid, array(), WATCHDOG_NOTICE, 'link');
 }

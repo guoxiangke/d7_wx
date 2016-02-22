@@ -35,6 +35,7 @@ function ybread_page(){
 			  $body .= $html->find('.entry-content .thought-box', 0)->outertext;
 			  $node->body[LANGUAGE_NONE][0]['value'] = $body;//trim($tempbody->plaintext);
 			  $node->language = LANGUAGE_NONE;
+			  $node->promote = 1;
 			 	// Try to set your custom field
 			  // $html = file_get_html('http://ya-mi.org/');
 			  $picture = $html->find('#content .entry-thumbnail img', 0);
@@ -121,6 +122,7 @@ function ctoday_page(){
 			  $node->body[LANGUAGE_NONE][0]['value'] = $body;//trim($tempbody->plaintext);
 			  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
 			  $node->language = LANGUAGE_NONE;
+			  $node->promote = 1;
 			  // dpm($node);
 			 	// Try to set your custom field
 			  // $html = file_get_html('http://ya-mi.org/');
@@ -211,6 +213,7 @@ function grace365_page(){
 				node_object_prepare($node);
 				//get title
 				$node->uid = '1'; //uid of love.
+				$node->promote = 1;
 			  $node->title = $title;
 			  $node->body[LANGUAGE_NONE][0]['value'] = $body;//trim($tempbody->plaintext);
 			  $node->field_mp3url[LANGUAGE_NONE][0]['value']=$voice_url;
