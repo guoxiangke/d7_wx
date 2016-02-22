@@ -28,7 +28,7 @@ function xdtheme_preprocess_page(&$vars) {
       $vars['nodeuid'] = $vars['node']->uid;
       $vars['nodenid'] = $vars['node']->nid;
     // }
-      
+
     $node = $vars['node'];
     $widgets = rate_get_active_widgets('node', $node->type);
     foreach ($widgets as $widget) {
@@ -67,40 +67,8 @@ function xdtheme_preprocess_page(&$vars) {
 * @param $node_types:  array of node types to query
 *
 * @return array
-* 
+*
 */
-function dale_prev_next_node($current_node = NULL, $node_types = array()) {
-    // make node object if only node id given
-    if (!is_object($current_node)) { $current_node = node_load($current_node->nid); }
-
-    // make an array if string value was given
-    if (!is_array($node_types)) { $node_types = array($node_types); }
-
-    // previous
-    $prev = db_select('node', 'n')
-    ->fields('n',array('nid','title','created'))
-    ->condition('n.status', 1,'=')
-    ->condition('n.type', $node_types,'IN')
-    ->condition('n.created', $current_node->created,'<')
-    ->orderBy('created','DESC')
-    ->range(0,1)
-    ->execute()
-    ->fetchAssoc();
-
-    // next or false if none
-    $next = db_select('node', 'n')
-    ->fields('n',array('nid','title','created'))
-    ->condition('n.status', 1,'=')
-    ->condition('n.type', $node_types,'IN')
-    ->condition('n.created', $current_node->created,'>')
-    ->orderBy('created','ASC')
-    ->range(0,1)
-    ->execute()
-    ->fetchAssoc();
-
-    return array('prev' => $prev, 'next' => $next);
-}
-
 function xdtheme_preprocess_comment(&$variables) {
   // Let's say you want to have a custom template like comment--custom-TYPE.tpl.php
   // e.g. for an article content type, the template file will be comment--custom-article.tpl.php

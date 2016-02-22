@@ -89,22 +89,21 @@
   <?php endif; ?>
   <div class="content"<?php print $content_attributes; ?>>
     <?php
-      //
-
-      $field_updated  = db_query('SELECT field_updated_value FROM {field_data_field_updated} WHERE entity_id = :nid', array(':nid' => $node->nid))->fetchField();
-
-      if(isset($node->book['bid'])){
-        if($node->book['bid'] =='183'){
-          echo '<img typeof="foaf:Image" src="/sites/default/files/styles/sc900_500/public/field/image/22791549504_048814b027_k.jpg?itok=ST4XuKTu" width="900" height="500" alt="">';
-          hide($content['field_image']);
-        }
-      }else{
-        if($field_updated != '1'){
-          print render($content['field_image']);
-        }else{
-          hide($content['field_image']);
-        }
+    $field_updated  = db_query('SELECT field_updated_value FROM {field_data_field_updated} WHERE entity_id = :nid', array(':nid' => $node->nid))->fetchField();
+    if(isset($node->book['bid'])){
+      if($node->book['bid']>0){
+        $book_node = node_load($node->book['bid']);
+        $img = file_create_url($book_node->field_image[LANGUAGE_NONE][0]['uri']);
+        echo '<img typeof="foaf:Image" src="'.$img.'" width="100%" alt="">';
+        hide($content['field_image']);
       }
+    }else{
+      if($field_updated != '1'){
+        print render($content['field_image']);
+      }else{
+        hide($content['field_image']);
+      }
+    }
   if($view_mode=='full' && isset($node->field_video_url[LANGUAGE_NONE][0])){
     $vid = $node->field_video_url[LANGUAGE_NONE][0]['value'];
   ?>

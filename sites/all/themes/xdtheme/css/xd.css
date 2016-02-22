@@ -1,7 +1,7 @@
 
 /*dev*/
 html body.admin-menu{
-	margin-top: 0 !important; 
+	margin-top: 0 !important;
 }
 
 .layer {
@@ -28,7 +28,7 @@ html body.admin-menu{
     -o-transition: all 0.3s ease-out;  /* Opera 10.5+ */
     -webkit-transition: all 0.3s ease-out;  /* Saf3.2+, Chrome */
     -ms-transition: all 0.3s ease-out;  /* IE10 */
-    transition: all 0.3s ease-out;  
+    transition: all 0.3s ease-out;
 }
 
 .menu-open .toggleMainMenu{
@@ -77,7 +77,7 @@ html body.admin-menu{
     font-size: 22px;
     text-decoration: none;
     color: #64656b;
-    background: #fff url(http://educationaboveall.org/img/design/ico-arw-brown-right.png) no-repeat 90% 50%;
+    background: #fff url(../images/ico-arw-brown-right.png) no-repeat 90% 50%;
     display: block;
     border-top: 1px solid #edebe2;
     padding: 1em 2em 1em 1em
@@ -94,7 +94,7 @@ html body.admin-menu{
 
 #main_menu li.active a {
     color: #fff;
-    background: #30313a url(http://educationaboveall.org/img/design/ico-arw-white-right.png) no-repeat 90% 50%;
+    background: #30313a url(../images/ico-arw-white-right.png) no-repeat 90% 50%;
     border-top: 1px solid #30313a
 }
 #layer_content .col-sm-3{
@@ -140,7 +140,7 @@ html body.admin-menu{
     display: inline-block;
     line-height: 1.4em;
     margin-top: -.7em;
-    background: url(http://educationaboveall.org/img/design/menu_tooltip.png) no-repeat left center;
+    background: url(../images/menu_tooltip.png) no-repeat left center;
     color: #31343b;
     padding: .1em .75em .1em 1.5em;
     font-size: 12px;
@@ -157,7 +157,7 @@ html body.admin-menu{
     overflow: hidden;
     left: 0;
     float: left;
-    background: #04BE02 url(http://educationaboveall.org/img/design/menu_close.png) no-repeat;
+    background: #04BE02 url(../images/menu_close.png) no-repeat;
     background-position: -50% 50%;
     font-size: 16px;
     opacity: .7;
@@ -181,7 +181,7 @@ html body.admin-menu{
 @media (min-width: 768px) {
   .navbar-nav,
   .navbar-nav > li {
-     float: none; 
+     float: none;
   }
 }
 @media screen and (max-width: 1450px){
