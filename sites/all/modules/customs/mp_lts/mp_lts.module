@@ -1,4 +1,19 @@
 <?php
+/**
+ * hook_rescources_info
+ */
+function mp_lts_rescources_info(){
+  $rescources[] = array(
+    'name' => 'mav',
+    'desc' => '良友圣经学院【#100】',
+  );
+  $rescources[] = array(
+    'name' => 'jckc',
+    'desc' => '良院基础课程【jc】',
+  );
+  return $rescources;
+}
+
 function  get_mp_ltsma(){
   return array(
     '101'=>array(

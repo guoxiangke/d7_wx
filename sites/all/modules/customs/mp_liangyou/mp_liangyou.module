@@ -31,14 +31,6 @@ function mp_liangyou_rescources_info(){
  //    'name' => 'swty',
  //    'desc' =>	'世外桃源【ty】',
  //  );
-	$rescources[] = array(
-    'name' => 'mav',
-    'desc' =>	'良友圣经学院【a0】~【g0】',
-  );
-	$rescources[] = array(
-    'name' => 'jckc',
-    'desc' =>	'良院基础课程【jc】',
-  );
   return $rescources;
 }
 
@@ -83,7 +75,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 							  $title = $key;
 
 							  $html = file_get_html($url);
-							  if(!$html) { 
+							  if(!$html) {
 							  	watchdog('mp_liangyou', 'lost audio:'.$title, array(), WATCHDOG_NOTICE, 'error');
 							  	continue;
 							  }
@@ -120,7 +112,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 								'text'	=> ly_stream_menu(),
 								)
 							);
-				    }else{	    	
+				    }else{
 					    // $orikeyword = $keyword;
 					    $keyword = $orikeyword - 601;
 					    // watchdog('keyword '.$before_keyword , $keyword, array(), WATCHDOG_NOTICE, 'link');
@@ -173,7 +165,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				if(date('N')<=5&&$keyword=='605') {//【605】幸福满家园=>【606】亲情不断电
 					$keyword = '606';
 				}
-				
+
 				//USE UPYUN
 				{
 					require_once('liangyou_audio_list.php');
@@ -289,7 +281,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	      require_once('ysqm.inc');
 	      $ysqm = get_ysqm();
 	      $title = $ysqm[(int)$str];
-	      $musicurl = 'http://bibles.qiniudn.com/ysqm/ch-'.$str.'.mp3';        
+	      $musicurl = 'http://bibles.qiniudn.com/ysqm/ch-'.$str.'.mp3';
 	      $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 《耶稣全貌》';
 	      $hgmusicurl = $musicurl;
 	      $resources['key_'.$keyword]= array(
@@ -338,8 +330,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					if($count<9)
 						$count = '0'.$count;
 					$rep = str_pad($third, 2,'0',STR_PAD_LEFT);
-					$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['prefex'].$rep.'.mp3';	
-					
+					$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['prefex'].$rep.'.mp3';
+
 					$etime = time()+3600; // 授权十分钟后过期
 					$key = 'ly729';   // token 防盗链密钥
 					$path = '/'.$link; // 图片相对路径
@@ -360,7 +352,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					//编码对，编号不对！
 					$path = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
 					$cdn = 'http://lts33.b0.upaiyun.com/';
-					
+
 
 					$etime = time()+864000; // 授权十天后过期
 					$key = 'ly729';   // token 防盗链密钥
@@ -455,7 +447,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			$second = substr($temp_keyword, 1,1);//1-8
 			$temp = array('j');
 			$level = '基础课程';
-			
+
 			if(in_array($first, $temp) && $second>0 && $second<10 ){
 				$third = substr($temp_keyword, 2,2);
 				$mav = get_ly_jckc();
@@ -480,7 +472,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					$key = 'ly729';   // token 防盗链密钥
 					$path = '/'.$link; // 图片相对路径
 					$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-					
+
 					$cdn = 'http://lts33.b0.upaiyun.com/';
 					$link = $cdn . urlencode($link).'?_upt='.$sign;
 					$resources['key_'.$keyword]= array(
@@ -512,7 +504,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					);return $resources;
 				}
 			}
-			// 
+			//
 			//end of new 良友圣经学院
 		}
 		//begin lysd sd1-sd999
@@ -567,7 +559,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		  $radios_list = liangyou_audio_list();
 		  $radios_keys = array_keys($radios_list);
 			// bc1
-		  $key = $check_keyword; 
+		  $key = $check_keyword;
 
 		  if(in_array($key, $radios_keys)) {
 		    $offset = 0;
@@ -602,7 +594,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		    	$offset = date('N')%2+1;
 		    }
 
-		    $string = date('ymd',time()-$offset*24*60*60); 
+		    $string = date('ymd',time()-$offset*24*60*60);
 		    $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【600】';
 		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
 		    //USE UPYUN
