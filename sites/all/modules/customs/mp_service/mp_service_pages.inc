@@ -41,7 +41,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
   if($account->uid == 8 && strpos($ori_keyword,'mp.weixin.qq.com/s?__biz=')!==FALSE){
     $openid = $weObj->getRev()->getRevFrom();
     // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
-    if(in_array($openid, array('oTjEws_LNd8maly0PugxnmFQPdTA','oTjEws-8eAAUqgR4q_ns7pbd0zN8'))){
+    if(in_array($openid, array('oTjEwsxl5srb_PgAw7e1xvNp3xk4','oTjEws_LNd8maly0PugxnmFQPdTA','oTjEws-8eAAUqgR4q_ns7pbd0zN8'))){
       mp_getwxcontent($ori_keyword,$weObj);
       return;
     }
