@@ -93,9 +93,11 @@
     if(isset($node->book['bid'])){
       if($node->book['bid']>0){
         $book_node = node_load($node->book['bid']);
-        $img = file_create_url($book_node->field_image[LANGUAGE_NONE][0]['uri']);
-        echo '<img typeof="foaf:Image" src="'.$img.'" width="100%" alt="">';
-        hide($content['field_image']);
+        if(isset($book_node->field_image[LANGUAGE_NONE])){
+          $img = file_create_url($book_node->field_image[LANGUAGE_NONE][0]['uri']);
+          echo '<img typeof="foaf:Image" src="'.$img.'" width="100%" alt="">';
+          hide($content['field_image']);
+        }
       }
     }else{
       if($field_updated != '1'){
