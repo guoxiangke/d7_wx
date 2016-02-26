@@ -153,9 +153,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				if(date('N')>5&&$keyword=='609') {//【609】微播出炉=>【610】生活无国界
 					$keyword = '610';
 				}
-				if(date('N')>5&&$keyword=='619') {//【619】拥抱每一天=>【652】燃亮的一生
-					$keyword = '652';
-				}
 				if(date('N')>5&&$keyword=='623') {//【623】齐来颂扬＝》【615】彩虹桥
 					$keyword = '615';
 				}
