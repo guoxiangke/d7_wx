@@ -5,7 +5,7 @@ function liangyou_audio_list_bytitle(){
 	foreach ($audios as $code => $audio) {
     $audios[$code]['code'] = $code;
 		$audios[$audio['title']] = $audios[$code];
-		unset($audios[$code]); 
+		unset($audios[$code]);
 	}
 	return $audios;
 }
@@ -15,7 +15,7 @@ function liangyou_audio_list_byindex(){
   foreach ($audios as $code => $audio) {
     $audios[$code]['code'] = $code;
     $audios[$audio['index']] = $audios[$code];
-    unset($audios[$code]); 
+    unset($audios[$code]);
   }
   return $audios;
 }
@@ -25,7 +25,7 @@ function liangyou_audio_list_bylywxindex(){
   foreach ($audios as $code => $audio) {
     $audios[$code]['code'] = $code;
     $audios[$audio['lywx']] = $audios[$code];
-    unset($audios[$code]); 
+    unset($audios[$code]);
   }
   return $audios;
 }
@@ -486,61 +486,6 @@ function liangyou_audio_list2(){
       'desc'=>'这一刻，清心',
       'lywx'=>605,
       'category'=>'生命成长',
-      ),
-    'jckc2'=>array(
-      'title' =>'良友圣经学院（基础课程）',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njck8-3b2p4g',
-      'prefix'=>$prefix['32'],
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
-      'index'=>641,
-      'lywx'=>803,
-      'category'=>'栽培训练',
-      'desc'=>'良院（基础课程）为装备教会义工而设，适合初信者和预备报读本科文凭课程的信徒收听',
-      ),
-    'a0'=>array(
-      'title' =>'良院本科一',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njck9-3b2p4i',
-      'prefix'=>$prefix['32'],
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
-      'index'=>642,
-      'lywx'=>804,
-      'category'=>'栽培训练',
-      'desc'=>'良院（本科一套）为装备服侍教会的领袖而设，适合传道人修读',
-      ),
-    'b0'=>array(
-      'title' =>'良院本科二',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcka-3b2p4k',
-      'prefix'=>$prefix['32'],
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
-      'index'=>643,
-      'lywx'=>805,
-      'category'=>'栽培训练',
-      'desc'=>'良院（本科二套）为装备服侍教会的领袖而设，适合传道人修读',
-      ),
-    'c0'=>array(
-      'title' =>'良院进深一',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njckb-3b2p4m',
-      'prefix'=>$prefix['32'],
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
-      'index'=>644,
-      'lywx'=>806,
-      'category'=>'栽培训练',
-      'desc'=>'良院（进深一套）适合本科毕业生或传道人修读',
-      ),
-    'f0'=>array(
-      'title' =>'良院进深二',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njckc-3b2p4o',
-      'prefix'=>$prefix['32'],
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
-      'index'=>645,
-      'lywx'=>807,
-      'category'=>'栽培训练',
-      'desc'=>'良院（进深二套）适合本科毕业生或传道人修读',
       ),
     'ds'=>array(
       'title' =>'晨曦讲座',
