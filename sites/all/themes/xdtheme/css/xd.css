@@ -195,3 +195,7 @@ html body.admin-menu{
 #page-header{
   display: none;
 }
+
+input.webform-calendar{
+  width: auto;
+}
