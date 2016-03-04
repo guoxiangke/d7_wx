@@ -4,7 +4,7 @@
  */
 function mp_fm_rescources_info(){
   // $nodes = dale_get_mp_nodes('audio_resource', 100);
-  // foreach ($nodes as $key => $node) {    
+  // foreach ($nodes as $key => $node) {
   //   $rescources[] = array(
   //     'name' => '700' . $node->nid,
   //     'desc' => $node->title.'【700'. $node->nid .'】',
@@ -33,17 +33,19 @@ function mp_fm_wxresources($resources, $account, $keyword){
     //http://www.tpehoc.org.tw/daily_message/daily_message_1602/mp3/160202mat63.mp3
     //http://www.tpehoc.org.tw/daily_message/daily_message_1602/mp3/160207mark01.mp3
     //http://www.tpehoc.org.tw/daily_message/daily_message_1602/mp3/160209mark03.mp3
+    //http://www.tpehoc.org.tw/daily_message/daily_message_1603/mp3/160303mark26.mp3
 
       if($keyword =='653'&&isset($enabled_resources['qjs']) && $enabled_resources['qjs']){
         $ym = date('ym');
         $ymd = date('ymd');
-        $begin = 92;
-        $var = 'mat';
-        if(date('j')>=7) {
+        $begin = 23;
+        $var = 'mark';
+        $index = str_pad($begin+date('j'),2,"0",STR_PAD_LEFT);
+        if(date('j')>=12) {
           $begin = 1;
-          $var = 'mark';
+          $var = 'luke';
+          $index = str_pad($begin+(date('j')-12),2,"0",STR_PAD_LEFT);
         }
-        $index = str_pad($begin+(date('j')-7),2,"0",STR_PAD_LEFT);
         $url = 'http://www.tpehoc.org.tw/daily_message/daily_message_'.$ym.'/mp3/'.$ymd.$var.$index.'.mp3';
         $resources['key_'.$keyword]=  array(
           'type'  =>  'music',
@@ -82,7 +84,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
     if($keyword =='700'&&isset($enabled_resources[$keyword]) && $enabled_resources[$keyword]){
       $nodes = dale_get_mp_nodes('audio_resource', 100,NULL,array($account->uid,1),NODE_PROMOTED);
       $return_menu = "--------700网络电台--------";
-      foreach ($nodes as $key => $node) {   
+      foreach ($nodes as $key => $node) {
          $return_menu .="\n【700". $node->nid ."】".$node->title;
       }
       $resources['key_'.$keyword]= array(
@@ -114,10 +116,10 @@ function mp_fm_wxresources($resources, $account, $keyword){
         $html = str_replace('">', '', $html );
         $sound_ids = explode(',', $html);
         if($field_order == '1')//倒序排列的节目！
-          $sound_ids = array_reverse($sound_ids); 
+          $sound_ids = array_reverse($sound_ids);
         // watchdog('field_order', '<pre>'.print_r($sound_ids,1), array(), WATCHDOG_NOTICE, 'link');
-        
-        $index = (date('z')) % count($sound_ids)-1; 
+
+        $index = (date('z')) % count($sound_ids)-1;
         if ($field_updated == '1'){
           $index = 0;//已经更新完成的节目！每次都是获得第一个！
         }
@@ -127,7 +129,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
         if(isset($offsets['1'])){
           if(is_numeric($offsets['1']))
             $offset = $offsets['1'];
-        } 
+        }
         $index = $index + $offset % count($sound_ids);
         // watchdog('index', $index, array(), WATCHDOG_NOTICE, 'link');
         $sound_id = trim($sound_ids[$index]);
@@ -157,16 +159,16 @@ function mp_fm_wxresources($resources, $account, $keyword){
 
       //70034
       if($field_audio_type == 'lizhi'){
-        
-        $node_body = db_query('SELECT body_value FROM {field_data_body} WHERE entity_id = :nid', array(':nid' => $nid))->fetchField();   
+
+        $node_body = db_query('SELECT body_value FROM {field_data_body} WHERE entity_id = :nid', array(':nid' => $nid))->fetchField();
         //http://www.lizhi.fm/api/radio_audios?band=43136&s=0&l=365
         $html = json_decode($node_body);
-        $sound_ids = array_reverse($html); 
+        $sound_ids = array_reverse($html);
         $index = (date('z')) % count($sound_ids);
         if (date('i') > 30) {
           $index++;
         }
-        $json = $sound_ids[$index];        
+        $json = $sound_ids[$index];
         $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【700】';
         $resources['key_'.$keyword]= array(
           'type'  =>  'music',
