@@ -1,8 +1,8 @@
 <?php
 function lywx_menu(){
-return 
+return
 '输入以下数字代号，可以收听良友电台相关的节目：
- 
+
 生活智慧
 101：微播出炉
 102：书香园地
@@ -11,27 +11,27 @@ return
 105：生活无国界
 106：零点零距离
 107：iradio爱广播
- 
+
 关怀辅导
 201：空中辅导
 202：无限飞行号
 203：i关怀心磁场
- 
+
 婚恋家庭
 301：恋爱季节
 302：幸福满家园
 303：亲情不断电
 304：欢乐卡恰碰
- 
+
 诗歌音乐
 401：齐来颂扬
 402：彩虹桥
 403：长夜的牵引
- 
+
 慕道探索
 501：生命的福音
 502：现代人的希望
- 
+
 生命成长
 601：旷野吗哪
 602：生命的四季
@@ -46,7 +46,7 @@ return
 611：给力人生
 612：信仰百宝箱
 613：空中门训
- 
+
 学习真道
 701：真道分解
 702：圣言盛宴
@@ -56,16 +56,16 @@ return
 706：善牧良言
 707：真理与柱石
 708：生活之光
- 
+
 中英双语
 801：蓝天绿洲
 802：天路导向
 803：天路导向粤
- 
+
 少数民族
 901：恩典与真理
 902：爱在人间
- 
+
 栽培训练
 1001：接棒人
 1002：晨曦讲座
@@ -73,7 +73,7 @@ return
 }
 
 function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
-	module_load_include('php', 'mp_liangyou', 'liangyou_audio_list'); 
+	module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
 	$liangyou_audio_list = liangyou_audio_list_bylywxindex();
 	if(in_array($keyword, array_keys($liangyou_audio_list))){
 		$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
@@ -106,7 +106,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 			$offset++;
 		}
 		{
-			$weObj->text('awo!erro!')->reply();
+			$weObj->text('亲爱的知音人，请一次只发一个节目代码，谢谢!')->reply();
 			ga_push_add_event(array(
 		   'category'        => 'lywxother',
 		   'action'          => $keyword,
@@ -193,12 +193,12 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
  //  $wxresources = array();  //TODO： get all (enabled)resources/node of account.
  //  $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword,$weObj);
 	// $ori_keyword = $keyword;
-  
+
 	// $keyword = 'key_'.$keyword;//1001 => 0 selution.
  //  // watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
  //  // watchdog('ori_keyword', $ori_keyword, array(), WATCHDOG_NOTICE, 'link');
  //  // watchdog('mp_service', '<pre>'.print_r($wxresources,TRUE), array(), WATCHDOG_NOTICE, 'link');
- //  if(isset($wxresources[$keyword])){    
+ //  if(isset($wxresources[$keyword])){
  //    switch ($wxresources[$keyword]['type']) {
  //      case 'music':
  //        if(!isset($wxresources[$keyword]['obj']['hgmusicurl']))
@@ -213,8 +213,8 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
  //        break;
  //      case 'text':
  //        $weObj->text($wxresources[$keyword]['obj']['text']);
- //        break;    
- //      case 'news': 
+ //        break;
+ //      case 'news':
  //        $new = $wxresources[$keyword]['obj'];
  //        $weObj->news($new);
  //        break;
