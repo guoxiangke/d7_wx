@@ -1,0 +1,6 @@
+name = lyopen
+description = liangyou open
+core = 7.x
+package = A-DEV
+
+dependencies[] = mp_liangyou

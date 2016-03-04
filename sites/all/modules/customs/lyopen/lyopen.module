@@ -1,0 +1,75 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function lyopen_menu() {
+  $items = array();
+  $items['lyopen/get/%/%'] = array(
+    'page callback' => 'lyopen_get',
+    'page arguments' => array(2,3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function lyopen_get($index=604,$max=7){
+  module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
+  $radios = liangyou_audio_list_byindex();
+//   生活智慧
+//   【609】微播出炉
+//   【612】书香园地
+//   【614】今夜心未眠
+//   【608】绝妙当家
+//   【610】生活无国界
+//   【611】零点零距离
+//   【619】拥抱每一天
+// 婚恋家庭
+//   【604】恋爱季节
+//   【605】幸福满家园
+//   【606】亲情不断电
+//   【607】欢乐卡恰碰
+
+//   【616】长夜的牵引
+//   【631】经动人心
+  $allow_index = array('604','605','606','607','608','609','610','611','612','614','616','619','631');
+
+  if(!in_array($index, $allow_index)) drupal_access_denied();//not allow!
+
+  $radio = $radios[$index];
+  $upyun_bucket_name = 'lywxaudio';
+  $cdnlink = $upyun_bucket_name.'.b0.upaiyun.com';
+  $offset=0;
+  // $max = 7;
+  $js_radios = array();
+  $code = $radio['code'];
+  while ($offset <= 30) {
+    $date = date('ymd',time()-$offset*86400);
+    $path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
+    $musicurl = 'http://'.$cdnlink.$path.upyun_get_token($path,864000);
+    $temp = @get_headers($musicurl);
+    if(count($js_radios)>=$max) break;
+    if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
+      // $radio_url = $musicurl;
+      $js_radio['title'] = $radio['title'];
+      // $js_radio['index'] = $index;
+      $js_radio['date'] = $date;
+      $js_radio['category'] = $radio['category'];
+      $js_radio['mp3'] = $musicurl;
+      $js_radios[]= $js_radio;
+      // break;
+    }
+    $offset++;
+  }
+  // dpm($js_radios);
+  // return 'nothing';
+  // $playlist = json_encode($js_radios);
+  ga_push_add_event(array(
+   'category'        => 'lyopen',
+   'action'          => $index,
+   'label'           => $radio['title'],
+  ));
+  header('Content-Type: application/json');
+  print json_encode($js_radios);
+  drupal_exit();
+}
