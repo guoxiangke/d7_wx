@@ -98,7 +98,7 @@
     if(isset($node->field_mp3url[LANGUAGE_NONE][0]))
         $url = $node->field_mp3url[LANGUAGE_NONE][0]['value'];
     if(isset($url) && $view_mode=='full'){
-    ?>    
+    ?>
    <div class="audio-wrapper">
         <div id="demo" class="audio state-stop" role="application" aria-label="media player">
             <div class="play-control control">
@@ -171,19 +171,6 @@
       <?php
       if($node->field_image2){
         print render($content['field_image2']);
-      }else{
-        $temp_user = user_load($uid);
-        print theme_image_style(
-                  array(
-                      'style_name' => 'large',
-                      'path' => $temp_user->picture->uri,
-                      'width' => NULL,
-                      'height' => NULL, 
-                      'attributes' => array(
-                          'class' => 'ybzx-avatar',
-                      )            
-                  )
-              );
       }
       ?>
       </div>
@@ -193,10 +180,10 @@
   </div>
   <?php print render($content['links']); ?>
   <?php if($view_mode == 'full'):?>
-    <?php 
+    <?php
       include('prev-next-post.php');
       include('wx_bottom.php');
     ?>
   <?php endif;?>
-  <?php print render($content['comments']); ?> 
+  <?php print render($content['comments']); ?>
 </article>
