@@ -1,0 +1,203 @@
+/* THEME OPTIONS ************************** */
+body {
+	margin: 0;
+	font-family: Helvetica, Arial, "Hiragino Sans GB", sans-serif;
+	font-size: 14px;
+	line-height: 20px;
+	color: #555555;
+	background-color: white;
+}
+/*@import url(//fonts.useso.com/css?family=Source+Sans+Pro:300,400,700,300italic);*/
+.field-name-field-image img{
+	max-width: 100%;
+}
+/* GLOBAL ********************************* */
+.content p.data-ul::after{
+	content: "▶";
+	font-size: 12px;
+	color: #000;
+}
+.content p.data-ul-open::after{
+	content: "▼";
+	font-size: 12px;
+	color: #000;
+}
+.content p+ul{
+	display:none;
+}
+
+.d-copyright{
+	text-align: center;
+	font-size: 12px;
+}
+/*logo top begin*/
+
+@media screen and (max-width: 768px){
+	.navbar-header{
+	  top: 0;
+	  left: 0;
+	  height: 45px;
+	  background: white;
+	  box-shadow: 0 1px 4px #eeeeee;
+	  position: fixed;
+	  right: 0;
+	  margin-bottom: 0;
+	  z-index: 1010;
+	}
+	.navbar-header .navbar-brand{
+	  font-size: 14px;
+	  color: #555;
+	  font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+	}
+	#navbar{
+	  background-color: #fff;
+	  border-color: #fff;
+	  margin: 0;
+	}
+	#navbar .navbar-nav{
+		margin: 0;
+	}
+	.navbar-default .navbar-collapse{
+		position: fixed;
+    border: none;
+    box-shadow: none;
+    z-index: 1011;
+		margin-top: 43px;
+    margin-left: -16px;
+    padding-left: 0px;
+	  min-width: 160px;
+	  background-color: #fff;
+	  padding-right: 0;
+	}
+	.navbar-default .navbar-nav>.active>a,
+	.navbar-default .navbar-nav>.active>a:focus,
+	.navbar-default .navbar-nav>.active>a:hover{
+		padding: 13px 13px 13px 15px;
+    color: white;
+    text-align: left;
+    background-color: #e78170;
+    text-shadow: 0 1px 0 #b9351f;
+    margin-left: 0;
+    font-size: 16px;
+    margin-left: 0;
+	}
+	.navbar-default .navbar-nav>li>a{
+		padding: 13px 13px 13px 15px;
+    color: white;
+    text-align: left;
+    background-color: #e78170;
+    text-shadow: 0 1px 0 #b9351f;
+    margin-left: 0;
+    font-size: 16px;
+    margin-left: 0;
+	}
+
+
+	a.logo {
+	  font-size: 18px;
+	  color: white;
+	  padding: 10px;
+	  line-height: 25px;
+	  text-align: center;
+	}
+	.navbar .logo{
+	  margin: 0;
+	  padding-left: 15px;
+	}
+	.container>.navbar-header{
+		margin: 0;
+	}
+	.navbar>.container .navbar-brand{
+		margin-left: 0;
+	}
+	a.logo:hover, a.logo:focus{
+	  outline: none;
+	  color: white;
+	  box-shadow: none;
+	  text-decoration: none;
+	}
+	a.shrink  {
+	    background-color: #e78170;
+	    text-shadow: 0 1px 0 #b9351f;
+	}
+
+	#navbar .login{
+		float: right !important;
+	}
+
+
+	.page-header{
+		display: none;
+	}
+	section.col-sm-9{
+		padding-top: 25px;
+	}
+}
+
+/*end*/
+a {
+    color: #555555;
+    text-decoration: none;
+}
+a:hover,a:focus {
+    color: black;
+    text-decoration: underline
+}
+/*index row begin!*/
+.js-row-article-list img{
+	max-height: 100px;
+}
+.js-row-article-list {
+  position: relative;
+  width: 100%;
+  padding-right: 2px;
+  padding-bottom: 17px;
+  margin: 0 0 17px;
+  border-bottom: 1px dashed #d9d9d9;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+.js-row-article-list .title {
+    margin-top: 0;
+    margin-bottom: 10px;
+    margin-left: 0;
+    display: inherit;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+.js-row-article-list .list-top {
+    margin-bottom: 8px 0;
+    font-size: 12px;
+}
+.js-row-article-list .list-footer {
+    font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 20px;
+}
+.js-row-article-list .list-top .time {
+    margin-left: 3px;
+    color: #717171;
+}
+
+.blue-link a{
+    color: #4094c7
+}
+
+.blue-link a:hover {
+    color: #075b8d
+}
+
+.blue-link a.active,.blue-link a:active,.blue-link a:focus {
+    color: #075b8d
+}
+
+.blue-link.disabled,.blue-link.disabled:hover,.blue-link.disabled:focus,.blue-link.disabled:active,.blue-link.disabled.active,.blue-link[disabled],.blue-link[disabled]:hover,.blue-link[disabled]:focus,.blue-link[disabled]:active,.blue-link[disabled].active {
+    cursor: not-allowed;
+    color: #999999
+}
+.js-row-article-list .list-footer,
+.js-row-article-list .list-footer>a{
+    color: #999999;
+}

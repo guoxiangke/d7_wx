@@ -1,0 +1,136 @@
+body .field-name-comment-body{
+  font-size: 14px;
+}
+h3 a{
+  font-size: 14px;
+}
+.comment-wrapper{
+  padding: 15px;
+}
+.node .submitted{
+  margin-bottom: 0;
+}
+.comment-container{
+  border-bottom: 1px dotted #666;
+}
+#comments{
+  padding-top: 0px;
+  margin-top: 0px;
+}
+.page-node .content-body .field-name-comment-body{
+  margin-bottom: 0;
+}
+.comment-padding{
+  padding-top: 5px;
+}
+.col-xs-10 .content{
+  padding: 0;
+  background-color: #b2e281;
+  display: inline-block;
+  text-align: left;
+  font-size: 14px;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+.col-xs-10 .content:before{
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 6px;
+  border-style: solid;
+  border-width: 8px 10px 8px 0;
+  border-color: transparent #b2e281;
+  display: block;
+  width: 0;
+  z-index: 1;
+}
+.img-circle img{
+  border-radius: 50%;
+  width: 50px;
+  overflow: hidden;
+  max-height: 50px;
+}
+.node-wxcomments{
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Helvetica Neue', Helvetica, 'Hiragino Sans GB', 'Microsoft YaHei', 微软雅黑, Arial, sans-serif;
+}
+.col-xs-10{
+  position: relative;
+}
+.comment-desc{
+  padding: 8px 36px;
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+  font-size: 14px;
+}
+.desc-wrapper{
+  padding: 10px 20px;
+}
+#collapsebody{
+  border: 1px solid #999;
+  padding: 10px;
+  border-radius: 5px;
+  position: relative;
+  padding-bottom: 5px;
+}
+.desc-wrapper .title{
+  position: relative;
+  top: 20px;
+  background: #FFF;
+  display: block;
+  width: 20%;
+  z-index: 10;
+  left: 22px;
+  color: green;
+  font-weight: bold;
+}
+.desc-wrapper{
+  background: #FFF;
+}
+.page-node .content-body .field{
+  margin-bottom: 0;
+}
+
+div[class|="edit-author"],#edit-author--2,.form-item-comment-body-und-0-value label{
+  display: none;
+}
+
+.desc-wrapper .comment-desc {
+  background:url('../images/gsj.png') no-repeat center left;
+  background-size: 38px 38px;
+}
+.col-xs-10 pre {
+  display: block;
+   padding: 10px;
+  margin: 0;
+  font-size: 12px;
+  word-wrap: break-word;
+  white-space: pre;
+  white-space: pre-wrap;
+   background:transparent;
+  border:none;
+  -webkit-border-radius: none;
+  -moz-border-radius: none;
+   border-radius: none;
+}
+.col-xs-10 ul.links{
+  display: block;
+}
+.comment .col-xs-2{
+  padding-right: 0;
+}
+.user-picture a{
+  float: right;
+}
+#comments .indented {
+  padding-left:2em;
+}
+.node-type-wxcomments #wx-header{
+  display: none;
+}
+#layer_content .main-container{
+  background-color: #FFF;
+}

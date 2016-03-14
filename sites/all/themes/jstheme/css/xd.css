@@ -1,0 +1,116 @@
+
+/*dev*/
+html body.admin-menu{
+	margin-top: 0 !important;
+}
+.nav-tabs{
+  /*display: none;*/
+}
+
+@media screen and (max-width: 765px){
+}
+
+
+@media (min-width: 768px) {
+}
+@media screen and (max-width: 1450px){
+}
+p br{
+  line-height: 60px;
+}
+body{
+  font-size: 16px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+h1.page-header{
+  font-family: Georgia, "Times New Roman", Times, "Kai", "Kaiti SC", "KaiTi", "BiauKai", "楷体", "楷体_GB2312", serif;
+}
+.main-container .row{
+  max-width: 730px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.page-header{
+  border: none;
+  padding-bottom: 10px;
+  margin-bottom: 0;
+}
+.node .field-name-body{
+  padding-top: 10px;
+}
+.node .field-name-body p{
+  margin-bottom: 25px;
+  margin-top: 0;
+}
+b, strong {
+  font-weight: bold;
+}
+p{
+  text-align: justify;
+  text-justify: inter-ideograph;
+  word-break: initial;
+  word-break: break-word;
+      display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+        color: #2f2f2f;
+    font-weight: normal;
+    line-height: 1.7;
+}
+.node .field-name-body p.data-ul{
+  margin-bottom: 0;
+}
+/*lingming style*/
+.verse-box,.poem-box,.thought-box {
+  padding: 10px;
+}
+
+.poem-box {
+  text-align: center;
+  font-family: Georgia, "Times New Roman", Times, "Kai", "Kaiti SC", "KaiTi", "BiauKai", "楷体", "楷体_GB2312", serif;
+}
+.poem-box br{
+  line-height: 1.7;
+}
+
+.thought-box {
+  text-align: center;
+  color: #00AEEF;
+}
+
+.verse-box {
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  background-color: whitesmoke;
+  border-left: 4px solid #999999;
+  word-break: break-word;
+  font-size: 15px;
+  font-weight: 100;
+  line-height: 30px;
+}
+
+.verse-box:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 3em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+/*footer link*/
+#block-block-1 p{
+  text-align: center;
+}
+.footer {
+  padding-top: 0;
+}
+
+/*index list*/
+p.list-top{
+  margin-top: 0;
+}
+.js-row-article-list .col-xs-3{
+  padding: 0;
+}
