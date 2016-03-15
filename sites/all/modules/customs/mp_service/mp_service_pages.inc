@@ -42,6 +42,10 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
     $openid = $weObj->getRev()->getRevFrom();
     // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
     if(in_array($openid, array('oTjEwsxl5srb_PgAw7e1xvNp3xk4','oTjEws_LNd8maly0PugxnmFQPdTA','oTjEws-8eAAUqgR4q_ns7pbd0zN8'))){
+      if(strlen($ori_keyword)>255){
+        $ori_keyword = substr($ori_keyword, 0, strpos( $ori_keyword,'&devicetype'));
+        // $weObj->text('链接太长了！请检查删除后边的再试！');return;
+      }
       mp_getwxcontent($ori_keyword,$weObj);
       return;
     }
