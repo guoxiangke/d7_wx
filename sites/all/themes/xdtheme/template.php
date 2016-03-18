@@ -92,7 +92,7 @@ function xdtheme_preprocess_comment_wrapper(&$variables) {
 * @return array
 *
 */
-function dale_prev_next_node($current_node = NULL, $node_types = array()) {
+function wxjs_prev_next_node($current_node = NULL, $node_types = array()) {
     // make node object if only node id given
     if (!is_object($current_node)) { $current_node = node_load($current_node->nid); }
 

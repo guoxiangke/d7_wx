@@ -90,8 +90,12 @@
       <?php if (!empty($site_name)): ?>
         <a class="name hidden-sm navbar-brand" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>"><?php print $site_name; ?></a>
       <?php endif; ?>
-      <a class="login visible-xs visible-sm navbar-brand" data-signin-link="true" data-toggle="modal" href="/sign_in"><i class="fa fa-sign-in glyphicon glyphicon-log-in"></i> 登录
-      </a>
+
+          <?php if (user_is_anonymous()): ?>
+            <a class="login visible-xs visible-sm navbar-brand" data-toggle="modal" href="http://wx.yongbuzhixi.com?q=/user/login"><i class="fa fa-sign-in glyphicon glyphicon-log-in"></i> 登录</a>
+          <?php else: ?>
+            <a class="login visible-xs visible-sm navbar-brand" data-toggle="modal" href="http://wx.yongbuzhixi.com?q=/user/logout"><i class="fa fa-sign-out glyphicon glyphicon-log-out"></i> 退出</a>
+          <?php endif; ?>
     </div>
 
     <?php if (!empty($primary_nav) || !empty($secondary_nav) || !empty($page['navigation'])): ?>

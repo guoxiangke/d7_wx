@@ -23,6 +23,7 @@
  *
  * @ingroup views_templates
  */
+// dpm($fields);
 ?>
 <div class="col-xs-9 col-sm-9">
   <p class=list-top>
@@ -52,8 +53,15 @@
   </div>
 </div>
 <div class="col-xs-3 col-sm-3">
+  <?php if($fields['field_image2']->content):?>
   <?php print $fields['field_image2']->wrapper_prefix; ?>
     <?php print $fields['field_image2']->label_html; ?>
     <?php print $fields['field_image2']->content; ?>
   <?php print $fields['field_image2']->wrapper_suffix; ?>
+  <?php else:?>
+  <?php print $fields['field_image']->wrapper_prefix; ?>
+    <?php print $fields['field_image']->label_html; ?>
+    <?php print $fields['field_image']->content; ?>
+  <?php print $fields['field_image']->wrapper_suffix; ?>
+  <?php endif;?>
 </div>

@@ -1,5 +1,5 @@
 <?php
-$relate_node = dale_prev_next_node($node, array($node->type));
+$relate_node = wxjs_prev_next_node($node, array($node->type));
 if($relate_node['prev']){
 	$prev = l('« 上一篇','node/'.$relate_node['prev']['nid']);
 }else{
@@ -11,11 +11,11 @@ if($relate_node['next']){
 	$next = '<a href="###">没有了</a>';
 }
 ?>
-<div class="prev-next-post clearfix"> 
-  <div class="group previous"> 
+<div class="prev-next-post clearfix">
+  <div class="group previous">
     <?php echo $prev;?>
   </div>
-  <div class="group next"> 
+  <div class="group next">
     <?php echo $next;?>
   </div>
 </div>
