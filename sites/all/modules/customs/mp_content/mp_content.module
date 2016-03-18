@@ -398,23 +398,23 @@ function mp_getwxcontent($link,$weObj=NULL){
   $html = file_get_html($link);
   $ori_title = $html->find('title',0)->plaintext;
 
-  // $html = file_get_contents($html);
-  preg_match('/var nickname = "(\S+)"/',  $ori_html , $matchs);
-  $nickname = $matchs[1];//生活无国界
   preg_match('/var user_name = "(\S+)"/',  $ori_html , $matchs);
   $user_name = $matchs[1];//gh_01f807be5d1b
-  preg_match('/var fakeid   = "(\S+)"/',  $ori_html , $matchs);
-  $fakeid = $matchs[1];//MTYyMjI5NjYwMA==
-  preg_match('/hd_head_img : "(\S+)0"/',  $ori_html , $matchs);
-  $hd_head_img = $matchs[1];//http://wx.qlogo.cn/mmhead/Q3auHgzwzM61GZDBsZt7uZVk3iacQ5YUsWS2hTrSXs0Vul6NYU3Hh3A/0
-  $wechat_profile_qrcode = 'https://mp.weixin.qq.com/mp/qrcode?scene=10000005&size=502&__biz='.$fakeid;//https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=MjM5MTA4MzQ0MA==
-  $wechat_profile_account = $html->find('.profile_meta .profile_meta_value',0)->plaintext;//shenghuowuguojie
-  $wechat_profile_intro = $html->find('.profile_meta .profile_meta_value',1)->plaintext;
-  //小心，听了会上瘾！
   // $wechat_profile_nickname = $html->find('.profile_nickname',0)->plaintext;
   // $wechat_profile_qrcode = $html->find('#js_profile_qrcode_img',0)->src;
   $mpwechats = variable_get('mp_contents_mpwechats', array());
   if(!in_array($user_name, $mpwechats)){
+    // $html = file_get_contents($html);
+    preg_match('/var nickname = "(\S+)"/',  $ori_html , $matchs);
+    $nickname = $matchs[1];//生活无国界
+    preg_match('/var fakeid   = "(\S+)"/',  $ori_html , $matchs);
+    $fakeid = $matchs[1];//MTYyMjI5NjYwMA==
+    preg_match('/hd_head_img : "(\S+)0"/',  $ori_html , $matchs);
+    $hd_head_img = $matchs[1];//http://wx.qlogo.cn/mmhead/Q3auHgzwzM61GZDBsZt7uZVk3iacQ5YUsWS2hTrSXs0Vul6NYU3Hh3A/0
+    $wechat_profile_qrcode = 'https://mp.weixin.qq.com/mp/qrcode?scene=10000005&size=502&__biz='.$fakeid;//https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=MjM5MTA4MzQ0MA==
+    $wechat_profile_account = $html->find('.profile_meta .profile_meta_value',0)->plaintext;//shenghuowuguojie
+    $wechat_profile_intro = $html->find('.profile_meta .profile_meta_value',1)->plaintext;
+    //小心，听了会上瘾！
     save_mpwechat_node($nickname,$user_name,$hd_head_img,$wechat_profile_qrcode,$wechat_profile_account,$wechat_profile_intro,$link);
     $mpwechats[] = $user_name;
     variable_set('mp_contents_mpwechats', $mpwechats);
