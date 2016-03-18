@@ -393,10 +393,34 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
 }
 
 function mp_getwxcontent($link,$weObj=NULL){
-  // $html = file_get_contents($link);
-  // $html = str_get_html($html);
+  $ori_html = file_get_contents($link);
+  $html = str_get_html($ori_html);
   $html = file_get_html($link);
   $ori_title = $html->find('title',0)->plaintext;
+
+  // $html = file_get_contents($html);
+  preg_match('/var nickname = "(\S+)"/',  $ori_html , $matchs);
+  $nickname = $matchs[1];//生活无国界
+  preg_match('/var user_name = "(\S+)"/',  $ori_html , $matchs);
+  $user_name = $matchs[1];//gh_01f807be5d1b
+  preg_match('/var fakeid   = "(\S+)"/',  $ori_html , $matchs);
+  $fakeid = $matchs[1];//MTYyMjI5NjYwMA==
+  preg_match('/hd_head_img : "(\S+)0"/',  $ori_html , $matchs);
+  $hd_head_img = $matchs[1];//http://wx.qlogo.cn/mmhead/Q3auHgzwzM61GZDBsZt7uZVk3iacQ5YUsWS2hTrSXs0Vul6NYU3Hh3A/0
+  $wechat_profile_qrcode = 'https://mp.weixin.qq.com/mp/qrcode?scene=10000005&size=502&__biz='.$fakeid;//https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=MjM5MTA4MzQ0MA==
+  $wechat_profile_account = $html->find('.profile_meta .profile_meta_value',0)->plaintext;//shenghuowuguojie
+  $wechat_profile_intro = $html->find('.profile_meta .profile_meta_value',1)->plaintext;
+  //小心，听了会上瘾！
+  // $wechat_profile_nickname = $html->find('.profile_nickname',0)->plaintext;
+  // $wechat_profile_qrcode = $html->find('#js_profile_qrcode_img',0)->src;
+  $mpwechats = variable_get('mp_contents_mpwechats', array());
+  if(!in_array($user_name, $mpwechats)){
+    save_mpwechat_node($nickname,$user_name,$hd_head_img,$wechat_profile_qrcode,$wechat_profile_account,$wechat_profile_intro,$link);
+    $mpwechats[] = $user_name;
+    variable_set('mp_contents_mpwechats', $mpwechats);
+    $weObj->text("登记公众号成功，要发布文章请再试一次！谢谢！[握手]")->reply();
+    return;
+  }
 
   $search =  array('&nbsp;');
   $replace =  array(' ');
@@ -493,4 +517,34 @@ function mp_getwxcontent($link,$weObj=NULL){
   if(isset($weObj))
     $weObj->text("<a href='http://wx.yongbuzhixi.com/node/".$node->nid."'>".$node->title."</a>已发布成功！谢谢！[握手]\n<a href='http://wx.yongbuzhixi.com/node/".$node->nid."/edit'>编辑</a>")->reply();
   watchdog('ybread', 'created articles form wx'.$node->nid, array(), WATCHDOG_NOTICE, 'link');
+}
+
+function save_mpwechat_node($nickname,$user_name,$hd_head_img,$wechat_profile_qrcode,$wechat_profile_account,$wechat_profile_intro,$link){
+  $node = new stdClass();
+  $node->type = 'mpwechat';
+  $node->uid = 1;
+  $node->title = str_replace('&nbsp;', '', $nickname);
+  $node->field_link[LANGUAGE_NONE][0]['value'] = $link;//原文链接
+
+  // $response = drupal_http_request($hd_head_img);
+  // watchdog('pic_url1', $hd_head_img, array(), WATCHDOG_NOTICE, 'link');
+  // if ($response->code == 200){
+  //   $file = file_save_data($response->data, 'public://images/mpwechat/logo/'.$user_name.'.jpg');
+  // }
+  // $node->field_image[LANGUAGE_NONE][0]['fid']=$file->fid;
+  // $response = drupal_http_request($wechat_profile_qrcode);
+  // watchdog('pic_url2', $hd_head_img, array(), WATCHDOG_NOTICE, 'link');
+  // if ($response->code == 200){
+  //   $file = file_save_data($response->data, 'public://images/mpwechat/qrcode/'.$user_name.'.jpg');
+  // }
+  // $node->field_image2[LANGUAGE_NONE][0]['fid']=$file->fid;
+
+  $node->field_link[LANGUAGE_NONE][0]['value']=$hd_head_img;
+  $node->field_link[LANGUAGE_NONE][1]['value']=$wechat_profile_qrcode;
+  $node->body[LANGUAGE_NONE][0]['value'] = $wechat_profile_intro;
+  $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
+  $node->language = LANGUAGE_NONE;
+  // dpm($node);
+  watchdog($nickname, 'create mpwechat account!', array(), WATCHDOG_NOTICE, 'link');
+  node_save($node);
 }
