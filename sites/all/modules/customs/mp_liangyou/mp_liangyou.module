@@ -55,7 +55,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				return $resources;
 			}
 			$orikeyword = $keyword;
-		  if(is_numeric($keyword) && ($keyword>600 && $keyword<=652) ) {
+		  if(is_numeric($keyword) && ($keyword>600 && $keyword<=655) ) {
 		  	if($keyword>=641 && $keyword<=645){
 		    // if(0)
 			    {
