@@ -236,4 +236,13 @@ function mp_lywx_wxservice_event_alter($weObj,$event,$account){
 	if($account->uid == 1417 && $event['event']=='subscribe'){
     $weObj->text("亲爱的朋友，你好！感谢你关注良友电台官方订阅号“良友知音”！\n".lywx_menu())->reply();
 	}
+	if($account->uid == 1417){
+
+    if($event['event']=='VIEW'){
+      //MP menu!
+    }else{
+    	mp_lywx_keyword_response($weObj,$event['key'],$account);
+    }
+    return;
+  }
 }
