@@ -90,22 +90,22 @@ function _mp_service_init_wechat($account){
 }
 
 /**
- * 
+ *
  * //get keyword
  * //return resources[keyword]
  * //switch (type) news
  */
-	
+
 function mp_service_keyword_response(&$weObj,$keyword,$account) {
   $wxresources = array();  //TODO： get all (enabled)resources/node of account.
   $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword,$weObj);
 	$ori_keyword = $keyword;
-  
+
 	$keyword = 'key_'.$keyword;//1001 => 0 selution.
   // watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
   // watchdog('ori_keyword', $ori_keyword, array(), WATCHDOG_NOTICE, 'link');
   // watchdog('mp_service', '<pre>'.print_r($wxresources,TRUE), array(), WATCHDOG_NOTICE, 'link');
-  if(isset($wxresources[$keyword])){    
+  if(isset($wxresources[$keyword])){
     switch ($wxresources[$keyword]['type']) {
       case 'music':
         if(!isset($wxresources[$keyword]['obj']['hgmusicurl']))
@@ -116,12 +116,17 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         if(in_array($ori_keyword, $radios_keys)){
           $ori_keyword = $radios_list[$ori_keyword]['index'];
         }
+
+        $liangyou_audio_list = liangyou_audio_list_bytitle();
+        if(in_array($ori_keyword, array_keys($liangyou_audio_list))){
+          $ori_keyword = $liangyou_audio_list[$ori_keyword]['index'];
+        }
         $weObj->music('【'.$ori_keyword.'】'.$wxresources[$keyword]['obj']['title'], $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
         break;
       case 'text':
         $weObj->text($wxresources[$keyword]['obj']['text']);
-        break;    
-      case 'news': 
+        break;
+      case 'news':
         $new = $wxresources[$keyword]['obj'];
         $weObj->news($new);
         break;
@@ -157,7 +162,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     //真理之光 ＝ 12
     //长夜的牵引 ＝ 15
     //婚姻的意义留言内容==27
-    
+
 
     /////字数太少，我们为你转人工服务吧！
     // if($len > 15 && $len <= 30){
@@ -181,7 +186,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       // }
       $openid = $weObj->getRev()->getRevFrom();
       $user_info = $weObj->getUserInfo($openid);
-     
+
       $comment_body = $ori_keyword;
       //微信回复【内容@106】 即可留言！
       // $comment_body = '@113.我没有单身的恩赐.等了很多年另一半还没出现.我问神.神一直没回应我. ';
@@ -272,7 +277,7 @@ function copyright($account){
     $enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
     $res ='';
     foreach ($options as $key => $value) {
-     if(isset($enabled_resources[$key]) && $enabled_resources[$key])  
+     if(isset($enabled_resources[$key]) && $enabled_resources[$key])
       $res .= $value."\n";
     }
     if($account->uid==973) $res='';//小永好，当一个新用户关注我们公众号的时候，除了出现我在公众云设置的“您好，谢谢关注！输入任意文字即看到首页。”之外，还有【FM】的信息，是否可以把【FM】的信息去掉？
@@ -354,7 +359,7 @@ function firebaseset($path,$value){//
   $firebase = new \Firebase\FirebaseLib($DEFAULT_URL, $DEFAULT_TOKEN);
 
   // --- storing an array ---
-  // $test = array( 
+  // $test = array(
   //     "nick_name" => "love_ybzx",
   //     "content" => "lamp test!",
   // );
@@ -384,7 +389,7 @@ function firebaseset($path,$value){//
 
   // --- reading the stored string ---
   // $name = $firebase->get($DEFAULT_PATH . '/name/contact001');
-  // 
+  //
 }
 
 function _post_wxcomments($user_info,$keyword,$nid,$id,$pid){
@@ -442,7 +447,7 @@ function mp_strip_utf8mb4_for_text_fields($text_data, $replace_text ='') {
   // Strip overly long 3 byte sequences and UTF-16 surrogates and replace with $replace_text
   $processed_text_data = preg_replace('/\xE0[\x80-\x9F][\x80-\xBF]' .
                                           '|\xED[\xA0-\xBF][\x80-\xBF]/S', $replace_text, $processed_text_data, -1, $replacements_done[]);
-  
+
   if (array_sum($replacements_done) > 0) {
     $message = t('Unsupported characters in your text were replaced with "!replacement"', array('!replacement' => $replace_text));
     drupal_set_message($message, 'warning', FALSE);

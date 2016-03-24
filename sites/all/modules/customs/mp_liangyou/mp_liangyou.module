@@ -55,6 +55,12 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				return $resources;
 			}
 			$orikeyword = $keyword;
+
+			require_once('liangyou_audio_list.php');
+			$liangyou_audio_list = liangyou_audio_list_bytitle();
+			if(in_array($keyword, array_keys($liangyou_audio_list))){
+				$keyword = $liangyou_audio_list[$keyword]['index'];
+			}
 		  if(is_numeric($keyword) && ($keyword>600 && $keyword<=655) ) {
 		  	if($keyword>=641 && $keyword<=645){
 		    // if(0)
@@ -165,7 +171,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 
 				//USE UPYUN
 				{
-					require_once('liangyou_audio_list.php');
 					$liangyou_audio_list = liangyou_audio_list_byindex();
 					if(isset($liangyou_audio_list[$keyword])){
 
