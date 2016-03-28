@@ -169,6 +169,31 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					$keyword = '606';
 				}
 
+				if($keyword=='603'){
+					$liangyou_audio_list = liangyou_audio_list_byindex();
+					$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
+					$title = $liangyou_audio_list_info['title'];
+					$code = $liangyou_audio_list_info['code'];
+					$offset=7;
+					$date = date('ymd',time()-$offset*86400);
+					$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
+					$musicurl = $cdnlink.$path.upyun_get_token($path);
+					// $temp = @get_headers($musicurl);
+					// if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
+						// $title = $title;
+						$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新';
+						$resources['key_'.$orikeyword]= array(
+							'type'	=>	'music',
+							'obj'		=> array(
+								'title'	=> $title.'♪',
+								'desc'	=> $desc,
+								'musicurl'	=>	$musicurl,
+								'hgmusicurl'	=>	$musicurl,
+							),
+						);
+						return $resources;
+					// }
+				}
 				//USE UPYUN
 				{
 					$liangyou_audio_list = liangyou_audio_list_byindex();
