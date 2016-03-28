@@ -133,8 +133,28 @@ body {
 
 /*end*/
 a {
-    color: #555555;
-    text-decoration: none;
+  color: #555555;
+  text-decoration: none;
+}
+article a{
+  text-decoration: underline;
+}
+article ul li{
+  margin: 10px 0;
+}
+article .user-picture,
+article .submitted{
+  display: inline-block;
+  float: left;
+}
+article .user-picture img {
+    border-radius: 50%;
+    width: 50px;
+    overflow: hidden;
+    max-height: 50px;
+}
+.prev-next-post a{
+  text-decoration: none;
 }
 a:hover,a:focus {
     color: black;
