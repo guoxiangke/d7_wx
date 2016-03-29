@@ -1,0 +1,6 @@
+name = ga_push_agent
+description = ga_push
+core = 7.x
+package = A-DEV
+
+dependencies[] = ga_push

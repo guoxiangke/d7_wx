@@ -1,0 +1,56 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function gapushagent_menu() {
+  $items = array();
+  $items['gapushagent'] = array(
+    'page callback' => 'gapushagent_in',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+/**
+ * [gapushagent description]
+ * @param  [type] $type      [description]
+ * @param  [type] $push_data [description]
+ * @return [type]            [description]
+ */
+function gapushagent($type,$data){
+  // POST data
+  $data = drupal_json_encode($data);
+  $push_data = 'type='.$type.'&data='.$data;
+  $url = 'http://wxstaging.yongbuzhixi.com/gapushagent';
+  $options = array(
+    'method' => 'POST',
+    'data' => $push_data,
+    'headers' => array('Content-Type' => 'application/x-www-form-urlencoded'),
+  );
+  $result = drupal_http_request($url, $options);
+  dpm($result);
+}
+/**
+ * [gapushagent_in description]
+ * @see ga_push_add_ecommerce()
+ * @see ga_push_add_event()
+ * @see ga_push_add_pageview()
+ * @see ga_push_add_social()
+ * @return [type] [description]
+ */
+function gapushagent_in(){
+  $push_data = drupal_json_decode($_POST['data']);
+  $type = $_POST['type'];
+  switch ($type) {
+    case 'event':
+      ga_push_add_event($push_data);
+      break;
+    case 'pageview':
+      ga_push_add_pageview($push_data);
+      break;
+    default:
+      # code...
+      break;
+  }
+}
