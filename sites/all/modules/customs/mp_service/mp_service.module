@@ -131,7 +131,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $weObj->news($new);
         break;
     }
-    if($account->uid>1) ga_push_add_event(array(
+    if($account->uid>1) gapushagent('event',array(
        'category'        => $wxresources[$keyword]['type'],
        'action'          => $ori_keyword,
        'label'           => 'wxservice_'.$account->uid,
@@ -143,7 +143,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
   if(in_array($ori_keyword, $special_keywords)){
     $copyright = copyright($account);
     $weObj->text($copyright);
-    if($account->uid>1) ga_push_add_event(array(
+    if($account->uid>1) gapushagent('event',array(
      'category'        => 'resourceGet',
      'action'          => $ori_keyword,
      'label'           => 'wxservice_'.$account->uid,
@@ -166,7 +166,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
 
     /////字数太少，我们为你转人工服务吧！
     // if($len > 15 && $len <= 30){
-    //   if($account->uid>1) ga_push_add_event(array(
+    //   if($account->uid>1) gapushagent('event',array(
     //    'category'        => 'wxservice',
     //    'action'          => 'customerservice',
     //    'label'           => $ori_keyword,
@@ -227,7 +227,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $re = firebaseset('wechat/'.$id,$data);
         // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
         //firebaseset end!
-        if($account->uid>1) ga_push_add_event(array(
+        if($account->uid>1) gapushagent('event',array(
          'category'        => 'firebaseset',
          'action'          => $ori_keyword,
          'label'           => 'wxservice_'.$account->uid,
@@ -257,7 +257,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       if($before!=$id){
         variable_set('mp_config_wxcomments_wxid', $id);
         _post_wxcomments($user_info,$comment_body,$nid,$id,$pid);
-        if($account->uid>1) ga_push_add_event(array(
+        if($account->uid>1) gapushagent('event',array(
          'category'        => 'comments',
          'action'          => $ori_keyword,
          'label'           => 'wxservice_'.$account->uid,
