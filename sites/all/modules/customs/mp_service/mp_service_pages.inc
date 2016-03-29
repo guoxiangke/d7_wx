@@ -142,7 +142,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
     $default_keyword = variable_get('mp_config_default_re_'.$account->uid, "");
     if($default_keyword){
       mp_service_keyword_response($weObj,$default_keyword,$account);
-      if($account->uid>1) ga_push_add_event(array(
+      if($account->uid>1) gapushagent('event',array(
        'category'        => 'default_keyword_resource',
        'action'          => $ori_keyword,
        'label'           => 'wxservice_'.$account->uid,
@@ -164,7 +164,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
         $re = firebaseset('wechat/'.$id,$data);
         // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
         //firebaseset end!
-        if($account->uid>1) ga_push_add_event(array(
+        if($account->uid>1) gapushagent('event',array(
          'category'        => 'firebaseset',
          'action'          => $ori_keyword,
          'label'           => 'wxservice_'.$account->uid,
@@ -172,7 +172,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
       }else{
         $copyright = copyright($account);
         $weObj->text(variable_get('wechat_default_message_'.$account->uid, "您好，谢谢您的反馈！[握手]").$copyright);
-        if($account->uid>1) ga_push_add_event(array(
+        if($account->uid>1) gapushagent('event',array(
          'category'        => 'copyrightGet',
          'action'          => $ori_keyword,
          'label'           => 'wxservice_'.$account->uid,
@@ -194,7 +194,7 @@ function _mp_service_process_event($weObj,$account){
   if(is_array($weObj->Message(''))){return;}
 
   if(!isset($event['key'])){
-    if($account->uid>1) ga_push_add_event(array(
+    if($account->uid>1) gapushagent('event',array(
        'category'        => 'event',
        'action'          => $event['event'],
        'label'           => 'wxservice_'.$account->uid,
