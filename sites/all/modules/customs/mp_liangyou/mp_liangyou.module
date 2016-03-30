@@ -41,19 +41,26 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
-  	if($keyword == 'ly'){
+  	if($keyword == 'ly'||$keyword == '良友'){
   		$file_key = drupal_realpath('public://cron/txly2/'.date('Ymd').'.json');
   		$data = json_decode(file_get_contents($file_key),true);
-  		$str = '';
+  		$news = array();
+      $str = '';
   		foreach ($data as $key => $radio) {
-  			$str .= '【'.$radio['index'].'】'.$radio['desc']."\n";
+  			if($radio['index'] =='604') continue;
+  			$str .= '【'.$radio['index'].'】'.$radio['title'].'=>'.$radio['desc']."\n";
   		}
-			$resources['key_'.$keyword] = array(
-				'type'	=>	'text',
-				'obj'		=> array(
-					'text'	=> $str,
-				)
-			);
+  		$img = array(
+            'Title'=> '【今日良友节目概览】',
+            'Description'=> $str."\n永不止息，需要有你\n回复【】内编号即可收听[加油]！",
+            'PicUrl'=> 'http://www.yongbuzhixi.com/sites/all/themes/b3/images/family_2-min.png',
+            'Url'=> 'http://ly.yongbuzhixi.com',
+          );
+      $news[] = $img;
+		 	$resources['key_'.$keyword]= array(
+        'type'  =>  'news',
+        'obj'   =>  $news,
+        );
 			return $resources;
   	}
 		// 600-652 stream ly
