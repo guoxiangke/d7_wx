@@ -39,9 +39,23 @@ function mp_liangyou_rescources_info(){
  */
 function mp_liangyou_wxresources($resources, $account, $keyword){
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
-	// watchdog('mp_liangyoukeyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
+  	if($keyword == 'ly'){
+  		$file_key = drupal_realpath('public://cron/txly2/'.date('Ymd').'.json');
+  		$data = json_decode(file_get_contents($file_key),true);
+  		$str = '';
+  		foreach ($data as $key => $radio) {
+  			$str .= '【'.$radio['index'].'】'.$radio['desc']."\n";
+  		}
+			$resources['key_'.$keyword] = array(
+				'type'	=>	'text',
+				'obj'		=> array(
+					'text'	=> $str,
+				)
+			);
+			return $resources;
+  	}
 		// 600-652 stream ly
 		$cdnlink = 'http://lywxaudio.b0.upaiyun.com';
 	  if(isset($enabled_resources['ly2']) && $enabled_resources['ly2']){

@@ -26,6 +26,7 @@ function mp_cron_cron() {
       $dates = explode('-', $title_get);
       $data[] = array(
         'code'  => $code,
+        'index'  => $radio['index'],
         'title' => $title,
         'date' => $dates[1],
         'desc'  => $mp3_description,
