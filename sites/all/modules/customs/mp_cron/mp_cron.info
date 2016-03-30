@@ -1,0 +1,6 @@
+name = mp cron
+description = mp cron
+core = 7.x
+package = A-DEV
+
+dependencies[] = mp_liangyou

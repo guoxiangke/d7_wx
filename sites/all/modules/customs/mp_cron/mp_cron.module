@@ -1,0 +1,79 @@
+<?php
+/**
+ * Implements hook_cron().
+ */
+function mp_cron_cron() {
+  module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
+  $radios = liangyou_audio_list2();
+  //20160330.json
+  $file_path = DRUPAL_ROOT.'/sites/default/files/cron/lycloudjson/';
+  if (!is_dir($file_path)) {
+    mkdir($file_path, 0777, true);
+  }
+  $file_key = drupal_realpath('public://cron/lycloudjson/'.date('Ymd').'.json') ;
+  if(!file_exists($file_key))  {
+    foreach ($radios as $code => $radio) {
+      $title = $radio['title'];
+      $url = 'http://txly2.net/'.$code;
+      $html = file_get_html($url);
+      if(!$html) {
+        watchdog('mp_liangyou', 'lost audio:'.$title, array(), WATCHDOG_NOTICE, 'error');
+        continue;
+      }
+      if(!isset($html->find('.ss-title p', 0)->plaintext)) continue;
+      $mp3_description = $html->find('.ss-title p', 0)->plaintext;
+      $title_get = $html->find('.ss-title a', 1)->plaintext;
+      $dates = explode('-', $title_get);
+      $data[] = array(
+        'code'  => $code,
+        'title' => $title,
+        'date' => $dates[1],
+        'desc'  => $mp3_description,
+        );
+      // break;
+    }
+    $file = json_encode($data);
+    if(!is_null($file)){
+      file_put_contents( $file_key , $file );
+      watchdog('mp_liangyou', 'Success download ly audio list from txly2', array(), WATCHDOG_NOTICE, 'link');
+    }
+  }
+  // each code.json
+  foreach ($radios as $code => $radio) {
+    $file_key = drupal_realpath('public://cron/lycloudjson/'.$code.'.json');
+    if(!file_exists($file_key))  {
+      $url = 'http://txly2.net/'.$code;
+      // $url = 'http://txly2.net/sg';
+      $html = file_get_html($url);
+      if(!$html) {
+        watchdog('mp_cron', '!file_get_html:'.$code, array(), WATCHDOG_NOTICE, 'error');
+        continue;
+      }
+      if(!isset($html->find('.ss-title p', 0)->plaintext)) return;
+      $mp3_description = $html->find('.ss-title p', 0)->plaintext;
+      $title_get = $html->find('.ss-title a', 1)->plaintext;
+      $dates = explode('-', $title_get);
+      $data[$dates[1]] = $mp3_description;
+      $file = json_encode($data);
+      file_put_contents( $file_key , $file );
+    }else{
+      $data = json_decode(file_get_contents($file_key),true);
+      if(isset($data[date('Ymd')])) continue; //20160330
+      $url = 'http://txly2.net/'.$code;
+      $html = file_get_html($url);
+      if(!$html) {
+        watchdog('mp_cron', '!file_get_html:'.$code, array(), WATCHDOG_NOTICE, 'error');
+        continue;
+      }
+      if(!isset($html->find('.ss-title p', 0)->plaintext)) return;
+      $mp3_description = $html->find('.ss-title p', 0)->plaintext;
+      $title_get = $html->find('.ss-title a', 1)->plaintext;
+      $dates = explode('-', $title_get);
+      $data[$dates[1]] = $mp3_description;
+      $file = json_encode($data);
+      file_put_contents( $file_key , $file );
+      continue;
+    }
+  }
+  // return $resources;
+}
