@@ -110,17 +110,6 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       case 'music':
         if(!isset($wxresources[$keyword]['obj']['hgmusicurl']))
           $wxresources[$keyword]['obj']['hgmusicurl'] = $wxresources[$keyword]['obj']['musicurl'];
-        // module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
-        // $radios_list = liangyou_audio_list2();
-        // $radios_keys = array_keys($radios_list);
-        // if(in_array($ori_keyword, $radios_keys)){
-        //   $ori_keyword = $radios_list[$ori_keyword]['index'];
-        // }
-
-        // $liangyou_audio_list = liangyou_audio_list_bytitle();
-        // if(in_array($ori_keyword, array_keys($liangyou_audio_list))){
-        //   $ori_keyword = $liangyou_audio_list[$ori_keyword]['index'];
-        // }
         $title = $wxresources[$keyword]['obj']['title'];
         if(strpos($wxresources[$keyword]['obj']['title'], '【')!=FALSE){
           $title = '【'.$ori_keyword.'】'.$wxresources[$keyword]['obj']['title'];
