@@ -53,7 +53,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
   		$img = array(
             'Title'=> '【今日良友节目概览】',
             'Description'=> $str."\n永不止息，需要有你\n回复【】内编号即可收听[加油]！",
-            'PicUrl'=> 'http://www.yongbuzhixi.com/sites/all/themes/b3/images/family_2-min.png',
+            'PicUrl'=> 'http://mmbiz.qpic.cn/mmbiz/0fV5QBhibUJjvmqqUbJaL3ZPqIBKxPKpkq4SvjmagLGia5X6SDhTDKLY49qhWqE7ibyb6N1QUelvHv0ZnL5V7HWicA/640?wx_fmt=jpeg&tp=webp&wxfrom=5.jpg',
             'Url'=> 'http://ly.yongbuzhixi.com',
           );
       $news[] = $img;
