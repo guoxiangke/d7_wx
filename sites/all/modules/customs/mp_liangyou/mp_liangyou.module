@@ -81,9 +81,10 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		  $audios = liangyou_audio_list2();
 		  $lyaudio = array();
 		  $lyaudio_code = FALSE;
+		  if($orikeyword=='bv') $keyword='mw';
 		  foreach ($audios as $code => $audio) {
 		  	//ee cc gv hg + 空中辅导 ＝》603  603=603
-		  	if(strpos($orikeyword, $code) !==false || strpos($orikeyword, $audio['title']) !==false || $audio['index']==$orikeyword){
+		  	if(strpos($keyword, $code) !==false || strpos($keyword, $audio['title']) !==false || $audio['index']==$keyword){
 		  		$keyword = $audio['index'];//cc =>603
 		  		$lyaudio = $audio;
 		  		$lyaudio_code = $code;
