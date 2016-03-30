@@ -99,7 +99,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 							  $mp3_description = $html->find('#div_playlist li .mp3_description', 0)->plaintext;
 							  $dates = explode('-', $title_get);
 							  $data[] = array(
-							    'title' => '【'.$keyword.'】'.$title,
+							    'title' => $title,
 							    'date' => $dates[1],
 							    'url'   =>  $url->attr['data-stream'],
 							    'desc'  => $mp3_description,
