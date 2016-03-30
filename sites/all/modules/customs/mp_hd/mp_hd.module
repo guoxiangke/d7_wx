@@ -175,7 +175,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         // watchdog('mp_service_pages', $user_name.'账户创建成功！'.$account->uid, array(), WATCHDOG_NOTICE, 'link');
       $weObj->text("恭喜您获得100积分，请点击【送大奖】→我的海报\n看见【请稍后再试】\n(小永累趴后)/:shake\n再次点击！[强]")->reply();
 
-      ga_push_add_event(array(
+      gapushagent('event',array(
        'category'        => 'mp_hd',
        'action'          => $keyword,
        'label'           => '账户创建！',
@@ -203,7 +203,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         $context = stream_context_create($opts);
       	$file = file_get_contents($qr_remote, false, $context);
       	file_put_contents($ptqr, $file);
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => $keyword,
          'label'           => '生产普通二维码',
@@ -215,14 +215,14 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
 	      $return = $weObj->uploadMedia($data,'image');//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
 	      if(isset($return['media_id'])){
 	        $weObj->image($return['media_id'])->reply();
-          ga_push_add_event(array(
+          gapushagent('event',array(
            'category'        => 'mp_hd',
            'action'          => $keyword,
            'label'           => '回复普通二维码',
           ));
 	      }else{
 	        $weObj->text("活动火爆，系统繁忙，请再试一次！[握手]")->reply();
-          ga_push_add_event(array(
+          gapushagent('event',array(
            'category'        => 'mp_hd',
            'action'          => $keyword,
            'label'           => '普通二维码未生成',
@@ -257,7 +257,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
       }
       ;
       $weObj->text("您当前有".userpoints_get_current_points($account->uid)."积分，邀请1人100积分！满1000积分就可以抽奖1次！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n".$jf)->reply();
-      ga_push_add_event(array(
+      gapushagent('event',array(
        'category'        => 'mp_hd',
        'action'          => $keyword,
        'label'           => 'getJF',
@@ -270,7 +270,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
          $jr = (1000-$jf)/100;
          $cj = '您当前积分是'.$jf."，不足1000，不可抽奖[可怜]赶快分享二维码邀请朋友吧！";
          $weObj->text($cj."再邀请【".$jr."】人可以抽奖啦！[拳头]\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331?t=".time()."'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]")->reply();
-          ga_push_add_event(array(
+          gapushagent('event',array(
            'category'        => 'mp_hd',
            'action'          => $keyword,
            'label'           => '不足1000，不可抽奖',
@@ -323,7 +323,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         $jf = userpoints_get_current_points($account->uid);
         $jr = (1000-$jf)/100;
         $weObj->text("恭喜您，获得".$cj."！\n兑奖码:".$id.'#'.$account->uid."\n<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=402092274&idx=1&sn=fb5eedc11776f1db8c15ecc159c74ea7#rd'>关注领奖号领奖</a>\n您还剩余".$jf.'积分，在邀请'.$jr."人就可以再次抽奖啦！[拳头]")->reply();
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => $keyword,
          'label'           => $cj,
@@ -339,7 +339,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
         $wx_headimgurl = drupal_realpath($account->picture->uri) ;
       }else{
         $weObj->text("系统还没有头像啊！正处理您请求，获取头像与二维码中。。。！[握手]")->reply();
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => $keyword,
          'label'           => '获取头像与二维码中',
@@ -349,7 +349,7 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
       // watchdog('vip wx_headimgurl', $wx_headimgurl, array(), WATCHDOG_NOTICE, 'link');
       if(!file_exists($wx_headimgurl)){
         $weObj->text("小永正在为您ps宣传海报，等待2分钟后再来获取吧！[握手]")->reply();
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => $keyword,
          'label'           => '正在为您ps宣传海报',
@@ -408,14 +408,14 @@ function mp_hd_wxresources($resources, $account, $keyword,$weObj){
       // watchdog('return', '<pre>'.print_r($return,1), array(), WATCHDOG_NOTICE, 'link');
       if(isset($return['media_id'])){
         $weObj->image($return['media_id'])->reply();
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => $keyword,
          'label'           => '宣传海报GET',
         ));
       }else{
         $weObj->text("活动火爆，系统繁忙，请再试一次！[握手]")->reply();
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => $keyword,
          'label'           => '活动火爆，系统繁忙，请再试一次',
@@ -482,7 +482,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
       // $friend_name = db_result(db_query("SELECT name FROM {users} WHERE uid = '%s'", $uid));{".$friend_name."
       $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>回复【VIP】可获得为您PS个性宣传图\n小永透露：中奖率100%[调皮]"."\n点击【送大奖】→我的海报，呼朋唤友，踊跃参与吧[跳跳]")->reply();
       //add points!
-      ga_push_add_event(array(
+      gapushagent('event',array(
        'category'        => 'mp_hd',
        'action'          => 'event',
        'label'           => '账户创建！',
@@ -491,7 +491,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
     }else{
       if($uid == $account->uid){
         $weObj->text("赶快分享本图片到朋友圈、好友、群、QQ即可邀请他们来参加积分有奖活动！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n回复【VIP】可获得为您PS个性宣传图\n呼朋唤友，踊跃参与吧[转圈]")->reply();
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => 'event',
          'label'           => '扫描自己',
@@ -516,7 +516,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
         );
         userpoints_userpointsapi($params);
         $weObj->text("恭喜您和好友都已获得100积分\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]回复【VIP】可获得为您PS个性宣传图\n点击【送大奖】→我的海报，呼朋唤友，踊跃参与吧[跳跳]")->reply();
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => 'event',
          'label'           => '邀请成功',
@@ -524,7 +524,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
       }else{
         // watchdog('老朋友', $account->uid, array(), WATCHDOG_NOTICE, 'error');
         $weObj->text("老朋友您好，此次扫描无效。请点击【送大奖】→我的海报，来邀请[新朋友]赚积分赢大奖吧！\n奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."\n回复【VIP】可获得为您PS个性宣传图\n呼朋唤友，踊跃参与吧[转圈]")->reply();
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => 'event',
          'label'           => '老朋友扫描',
@@ -584,7 +584,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
         }
 
         $weObj->text('{'.$account->name."}恭喜您接受了的邀请！你们都获得100积分，推荐10人即可参加积分抽奖，奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>小永透露：中奖率100%[调皮]\n请点击【送大奖】→我的海报！[强]")->reply();
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => 'event',
          'label'           => '新朋友邀请成功',
@@ -596,7 +596,7 @@ function mp_hd_wxservice_event_alter($weObj,$event,$account){
           $weObj->text("请您分享本图片到朋友圈或发给好友或群组即可邀请他们来参加活动。\n推荐100积分的奖励哦！奖品有：<a href='http://wx.yongbuzhixi.com/node/331'>kindle，CD，图书...</a>\n小永透露：中奖率100%[调皮]"."谢谢参与！")->reply();
         };
         $weObj->text("老朋友您好，此次扫描无效。\n请点击【送大奖】→我的海报，来邀请[新朋友]赚积分赢大奖吧！")->reply();
-        ga_push_add_event(array(
+        gapushagent('event',array(
          'category'        => 'mp_hd',
          'action'          => 'event',
          'label'           => '老朋友扫描关注',

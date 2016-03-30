@@ -96,7 +96,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' '.$date;
 		    $weObj->music($title , $desc, $musicurl, $musicurl)->reply();
 
-				ga_push_add_event(array(
+				gapushagent('event',array(
 			   'category'        => 'lywxaudio',
 			   'action'          => $ori_title,
 			   'label'           => 'offset_'.$offset,
@@ -107,7 +107,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 		}
 		{
 			$weObj->text('亲爱的知音人，请一次只发一个节目代码，谢谢!')->reply();
-			ga_push_add_event(array(
+			gapushagent('event',array(
 		   'category'        => 'lywxother',
 		   'action'          => $keyword,
 		   'label'           => 'menu get',
@@ -137,7 +137,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' '.$date;
 		    $weObj->music($title , $desc, $musicurl, $musicurl)->reply();
 
-				ga_push_add_event(array(
+				gapushagent('event',array(
 			   'category'        => 'lywxaudio',
 			   'action'          => $ori_title,
 			   'label'           => 'offset_'.$offset,
@@ -150,7 +150,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
 	// $allowkeywords = array('节目','听节目','?');
 	// if(in_array($keyword, $allowkeywords)){
 	// 	$weObj->text(lywx_menu())->reply();
-	// 	ga_push_add_event(array(
+	// 	gapushagent('event',array(
 	//    'category'        => 'lywxother',
 	//    'action'          => $keyword,
 	//    'label'           => 'menu get',
@@ -183,7 +183,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
     $weObj->news($news)->reply();
 	}else{
 		$weObj->text(lywx_menu())->reply();
-		ga_push_add_event(array(
+		gapushagent('event',array(
 	   'category'        => 'lywxother',
 	   'action'          => $keyword,
 	   'label'           => 'menu get',
@@ -219,7 +219,7 @@ function mp_lywx_keyword_response(&$weObj,$keyword,$account) {
  //        $weObj->news($new);
  //        break;
  //    }
- //    if($account->uid>1) ga_push_add_event(array(
+ //    if($account->uid>1) gapushagent('event',array(
  //       'category'        => $wxresources[$keyword]['type'],
  //       'action'          => $ori_keyword,
  //       'label'           => 'wxservice_'.$account->uid,

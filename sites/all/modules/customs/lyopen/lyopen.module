@@ -64,7 +64,7 @@ function lyopen_get($index=604,$max=7){
   // dpm($js_radios);
   // return 'nothing';
   // $playlist = json_encode($js_radios);
-  ga_push_add_event(array(
+  gapushagent('event',array(
    'category'        => 'lyopen',
    'action'          => $index,
    'label'           => $radio['title'],
