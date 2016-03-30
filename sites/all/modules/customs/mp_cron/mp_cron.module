@@ -65,7 +65,7 @@ function mp_cron_cron() {
         watchdog('mp_cron', '!file_get_html:'.$code, array(), WATCHDOG_NOTICE, 'error');
         continue;
       }
-      if(!isset($html->find('.ss-title p', 0)->plaintext)) return;
+      if(!isset($html->find('.ss-title p', 0)->plaintext)) continue;
       $mp3_description = $html->find('.ss-title p', 0)->plaintext;
       $title_get = $html->find('.ss-title a', 1)->plaintext;
       $dates = explode('-', $title_get);
