@@ -190,6 +190,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新';
 						$resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',
+							'gakey'		=>	$keyword,
 							'obj'		=> array(
 								'title'	=>  '【'.$keyword.'】'.$title.'♪',
 								'desc'	=> $desc,
@@ -216,6 +217,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 								$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").($offset?$date:' 每日更新');
 								$resources['key_'.$orikeyword]= array(
 									'type'	=>	'music',
+									'gakey'		=>	$keyword,
 									'obj'		=> array(
 										'title'	=>  '【'.$keyword.'】'.$title.'♪',
 										'desc'	=> $desc,

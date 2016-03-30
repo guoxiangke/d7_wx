@@ -126,7 +126,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     }
     if($account->uid>1) gapushagent('event',array(
        'category'        => $wxresources[$keyword]['type'],
-       'action'          => $ori_keyword,
+       'action'          => isset($wxresources[$keyword]['gakey'])?$wxresources[$keyword]['gakey']:$ori_keyword,
        'label'           => 'wxservice_'.$account->uid,
      ));
     return;
