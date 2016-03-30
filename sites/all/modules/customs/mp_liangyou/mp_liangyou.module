@@ -91,7 +91,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 							  $mp3_description = $html->find('#div_playlist li .mp3_description', 0)->plaintext;
 							  $dates = explode('-', $title_get);
 							  $data[] = array(
-							    'title' => $title,
+							    'title' => '【'.$keyword.'】'.$title,
 							    'date' => $dates[1],
 							    'url'   =>  $url->attr['data-stream'],
 							    'desc'  => $mp3_description,
@@ -538,10 +538,13 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		$orikeyword = $keyword;
 		$check_keyword = substr($keyword, 0,2);
 		$index = substr($keyword, 2,3);
-		if($check_keyword == 'sd' && $account->uid != 8 ){
+		watchdog('$orikeyword', $orikeyword, array(), WATCHDOG_NOTICE, 'link');
+		watchdog('$check_keyword', $check_keyword, array(), WATCHDOG_NOTICE, 'link');
+		watchdog('$index', $index, array(), WATCHDOG_NOTICE, 'link');
+		if($check_keyword == 'sd'){
 			$lysd = get_lysd();
-			if($keyword = 'sd'){
-				$mavmenu = "----四等奖目录----\n";
+			if($keyword == 'sd'){
+				$mavmenu = "----良友礼品卡----\n";
 				foreach ($lysd as $key => $value) {
 					$mavmenu .= $key.' sd'.$value['begin'].'-sd'.$value['end']."\n";
 				}
@@ -562,8 +565,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						$key = 'ly729';   // token 防盗链密钥
 						$path = '/lysd/'.$link; // 图片相对路径
 						$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-
-						$link = 'http://ly729.b0.upaiyun.com/lysd/'.urlencode($link).'?_upt='.$sign;
+						//http://lyweixintest.b0.upaiyun.com/lysd/001.mp3
+						$link = 'http://lyweixintest.b0.upaiyun.com/lysd/'.urlencode($link).'?_upt='.$sign;
 
 						$resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',
