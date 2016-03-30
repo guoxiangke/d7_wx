@@ -57,10 +57,18 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			$orikeyword = $keyword;
 
 			require_once('liangyou_audio_list.php');
-			$liangyou_audio_list = liangyou_audio_list_bytitle();
-			if(in_array($keyword, array_keys($liangyou_audio_list))){
-				$keyword = $liangyou_audio_list[$keyword]['index'];
-			}
+		  $audios = liangyou_audio_list2();
+		  $lyaudio = array();
+		  $lyaudio_code = FALSE;
+		  foreach ($audios as $code => $audio) {
+		  	//ee cc gv hg + 空中辅导 ＝》603  603=603
+		  	if(strpos($orikeyword, $code) !==false || strpos($orikeyword, $audio['title']) !==false || $audio['index']==$orikeyword){
+		  		$keyword = $audio['index'];//cc =>603
+		  		$lyaudio = $audio;
+		  		$lyaudio_code = $code;
+		  		break;
+		  	}
+		  }
 		  if(is_numeric($keyword) && ($keyword>600 && $keyword<=655) ) {
 		  	if($keyword>=641 && $keyword<=645){
 		    // if(0)
@@ -170,10 +178,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				}
 
 				if($keyword=='603'){
-					$liangyou_audio_list = liangyou_audio_list_byindex();
-					$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
-					$title = $liangyou_audio_list_info['title'];
-					$code = $liangyou_audio_list_info['code'];
+					$title = $lyaudio['title'];
+					$code = $lyaudio_code;
 					$offset=7;
 					$date = date('ymd',time()-$offset*86400);
 					$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
@@ -185,7 +191,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 						$resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',
 							'obj'		=> array(
-								'title'	=> $title.'♪',
+								'title'	=>  '【'.$keyword.'】'.$title.'♪',
 								'desc'	=> $desc,
 								'musicurl'	=>	$musicurl,
 								'hgmusicurl'	=>	$musicurl,
@@ -196,12 +202,9 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				}
 				//USE UPYUN
 				{
-					$liangyou_audio_list = liangyou_audio_list_byindex();
-					if(isset($liangyou_audio_list[$keyword])){
-
-						$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
-						$title = $liangyou_audio_list_info['title'];
-						$code = $liangyou_audio_list_info['code'];
+					if($lyaudio_code){
+						$title = $lyaudio['title'];
+						$code = $lyaudio_code;
 						$offset=0;
 						while ($offset <= 7) {
 							$date = date('ymd',time()-$offset*86400);
@@ -214,7 +217,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 								$resources['key_'.$orikeyword]= array(
 									'type'	=>	'music',
 									'obj'		=> array(
-										'title'	=> $title.'♪',
+										'title'	=>  '【'.$keyword.'】'.$title.'♪',
 										'desc'	=> $desc,
 										'musicurl'	=>	$musicurl,
 										'hgmusicurl'	=>	$musicurl,
@@ -538,9 +541,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		$orikeyword = $keyword;
 		$check_keyword = substr($keyword, 0,2);
 		$index = substr($keyword, 2,3);
-		watchdog('$orikeyword', $orikeyword, array(), WATCHDOG_NOTICE, 'link');
-		watchdog('$check_keyword', $check_keyword, array(), WATCHDOG_NOTICE, 'link');
-		watchdog('$index', $index, array(), WATCHDOG_NOTICE, 'link');
 		if($check_keyword == 'sd'){
 			$lysd = get_lysd();
 			if($keyword == 'sd'){
@@ -582,92 +582,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				}
 			}
 		}
-
-
-  	//ee bv se gv
-	  {//||(isset($enabled_resources['ly']) && $enabled_resources['ly'])
-		  $radios_list = liangyou_audio_list();
-		  $radios_keys = array_keys($radios_list);
-			// bc1
-		  $key = $check_keyword;
-
-		  if(in_array($key, $radios_keys)) {
-		    $offset = 0;
-		    if(strlen($keyword)>2) {
-		      $offset = substr($keyword, 2,1);
-		      if(!is_numeric($offset)) $offset = 0;
-		    }
-		    //se->bf
-		    if ($key=='se' && $offset == 0 && date('N')>5) {
-		    	$key = 'bf';
-		    }
-		    if ($key=='bc' && $offset == 0 && date('N')>5) {
-		    	$key = 'rt';
-		    }
-		    if($key=='bv') $key='mw';
-		    if($key=='cc' && $offset == 0) $offset=1;
-	    	// if($key=='603') $keyword='cc1';
-		    if ($key=='bf' && $offset == 0 && date('N')<=5) {
-		    	$keyword = '416';
-		    	return mp_bbn_response($keyword,$account,$key);
-		    }
-		    //6,7播出的节目
-		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='67' && $offset == 0 && date('N')<=5) {
-		    	$offset = date('N');
-		    }
-		    //7周日播出
-		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='7' && $offset == 0 && date('N')<=6) {
-		    	$offset = date('N');
-		    }
-		    //周1-5播出
-		    if (isset($radios_list[$key]['day']) && $radios_list[$key]['day']=='5' && $offset == 0 && date('N')>=6) {
-		    	$offset = date('N')%2+1;
-		    }
-
-		    $string = date('ymd',time()-$offset*24*60*60);
-		    $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 更多节目请回复【600】';
-		    $url = $radios_list[$key]['prefix'].$key.'/'.$key.$string.'.mp3';
-		    //USE UPYUN
-	  		{
-		 			{
-						require_once('liangyou_audio_list.php');
-						$liangyou_audio_list = liangyou_audio_list2();
-						$liangyou_audio_list_info = $liangyou_audio_list[$key];
-						$title = $liangyou_audio_list_info['title'];
-						$code = $key;
-						// http://lywxaudio.b0.upaiyun.com/2016/zz/zz160205.mp3
-						// $dir_stru = 'liangyou/nissigz/'.$title.'/'.date('Ym');
-	          $path = '/'.date('Y').'/'.$code.'/'.$code. date('ymd').'.mp3';
-	          $musicurl = $cdnlink.$path.upyun_get_token($path);
-	          $temp = @get_headers($musicurl);
-	          if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-								$resources['key_'.$keyword]= array(
-									'type'	=>	'music',
-									'obj'		=> array(
-										'title'	=> $title.'♪',
-										'desc'	=>	"点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新",
-										'musicurl'	=>	$musicurl,
-										'hgmusicurl'	=>	$musicurl,
-									),
-								);
-								return $resources;
-	          }else{
-	          	//本节目暂无上传，请稍后再试！
-	          }
-					}
-		    }//UPYUN END
-		  	$resources['key_'.$keyword]= array(
-					'type'	=>	'music',
-					'obj'		=> array(
-						'title'	=> $radios_list[$key]['name'],
-						'desc'	=>	$desc,
-						'musicurl'	=>	$url,
-						'hgmusicurl'	=>	$url,
-					),
-				);
-				return $resources;
-			}
-	  }
 
 	}
 	return $resources;
