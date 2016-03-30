@@ -6,11 +6,11 @@ function mp_cron_cron() {
   module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
   $radios = liangyou_audio_list2();
   //20160330.json
-  $file_path = DRUPAL_ROOT.'/sites/default/files/cron/lycloudjson/';
+  $file_path = DRUPAL_ROOT.'/sites/default/files/cron/txly2/';
   if (!is_dir($file_path)) {
     mkdir($file_path, 0777, true);
   }
-  $file_key = drupal_realpath('public://cron/lycloudjson/'.date('Ymd').'.json') ;
+  $file_key = drupal_realpath('public://cron/txly2/'.date('Ymd').'.json') ;
   if(!file_exists($file_key))  {
     foreach ($radios as $code => $radio) {
       $title = $radio['title'];
@@ -40,7 +40,7 @@ function mp_cron_cron() {
   }
   // each code.json
   foreach ($radios as $code => $radio) {
-    $file_key = drupal_realpath('public://cron/lycloudjson/'.$code.'.json');
+    $file_key = drupal_realpath('public://cron/txly2/'.$code.'.json');
     if(!file_exists($file_key))  {
       $url = 'http://txly2.net/'.$code;
       // $url = 'http://txly2.net/sg';
@@ -49,7 +49,7 @@ function mp_cron_cron() {
         watchdog('mp_cron', '!file_get_html:'.$code, array(), WATCHDOG_NOTICE, 'error');
         continue;
       }
-      if(!isset($html->find('.ss-title p', 0)->plaintext)) return;
+      if(!isset($html->find('.ss-title p', 0)->plaintext)) continue;
       $mp3_description = $html->find('.ss-title p', 0)->plaintext;
       $title_get = $html->find('.ss-title a', 1)->plaintext;
       $dates = explode('-', $title_get);
