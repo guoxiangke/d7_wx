@@ -177,7 +177,7 @@ function mp_service_settings_form(){
     '#value' => t('Update'),
     '#submit' => array('wechat_admin_update_rescources_submit'),
   );
-  if($user->uid==255){
+  if(0&&$user->uid==255){
     $form['lts33'] = array(
       '#type' => 'fieldset',
       '#title' => '良院同步播放',
