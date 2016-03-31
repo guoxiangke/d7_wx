@@ -7,10 +7,10 @@ function mp_lts_rescources_info(){
     'name' => 'mav',
     'desc' => '良友圣经学院【#100】',
   );
-  $rescources[] = array(
-    'name' => 'jckc',
-    'desc' => '良院基础课程【jc】',
-  );
+  // $rescources[] = array(
+  //   'name' => 'jckc',
+  //   'desc' => '良院基础课程【jc】',
+  // );
   return $rescources;
 }
 
