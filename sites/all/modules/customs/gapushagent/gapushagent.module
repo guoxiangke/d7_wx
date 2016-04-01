@@ -19,6 +19,21 @@ function gapushagent_menu() {
  * @return [type]            [description]
  */
 function gapushagent($type,$data){
+  $pos = strpos($_SERVER['HTTP_HOST'], 'staging');
+  if($pos != FALSE){
+    switch ($type) {
+      case 'event':
+        ga_push_add_event($push_data);
+        break;
+      case 'pageview':
+        ga_push_add_pageview($push_data);
+        break;
+      default:
+        # code...
+        break;
+    }
+    return;
+  }
   // POST data
   $data = drupal_json_encode($data);
   $push_data = 'type='.$type.'&data='.$data;
