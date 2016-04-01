@@ -586,6 +586,17 @@ function liangyou_audio_list2(){
       'category'=>'中英双语',
       'desc'=>'透过经卷研读，陪伴你建立真理基础，栽培你灵命成长，帮助你活出信仰',
       ),
+    'sg'=>array(
+      'title' =>'津津乐道',
+      'bce' => 0,
+      'txly'=>'http://www.txly2.net/sg',
+      'prefix'=>$prefix['33'],
+      'day'=>'5',//????
+      'index'=>653,
+      'lywx'=>503,
+      'category'=>'慕道探索',
+      'desc'=>'透过经卷研读，陪伴你建立真理基础，栽培你灵命成长，帮助你活出信仰',
+      ),
   );
 
 }
