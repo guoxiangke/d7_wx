@@ -91,7 +91,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 		  		break;
 		  	}
 		  }
-		  if(is_numeric($keyword) && ($keyword>600 && $keyword<=655) ) {
+		  if(is_numeric($keyword) && ($keyword>600 && $keyword<=656) ) {
 		  	if($keyword>=641 && $keyword<=645){
 		    // if(0)
 			    {
@@ -684,7 +684,7 @@ function ly_stream_menu(){
 	慕道探索
   【639】生命的福音
   【617】现代人的希望
-  【653】津津乐道
+  【656】津津乐道
 	生命成长
   【620】旷野吗哪
   【618】生命的四季
