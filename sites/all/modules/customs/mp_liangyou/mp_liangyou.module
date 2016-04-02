@@ -1,5 +1,31 @@
 <?php
 /**
+ * Implements hook_menu().
+ */
+function mp_liangyou_menu() {
+  $items['get_upyun_token/%'] = array(
+    'title' => '',
+    'page callback' => 'get_upyun_token',
+    'page arguments' => array(1,2),
+    'access arguments' => array('access content'),
+    'type' => MENU_SUGGESTED_ITEM,
+   );
+  return $items;
+}
+function get_upyun_token($code,$offset=0){
+	$cdnlink = 'http://lywxaudio.b0.upaiyun.com';
+	require_once('liangyou_audio_list.php');
+  $audios = liangyou_audio_list2();
+  $lyaudio = $audios[$code];
+	$title = $lyaudio['title'];
+	// $offset=7;
+	$date = date('ymd',time()-$offset*86400);
+	$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
+	$musicurl = $cdnlink.$path.upyun_get_token($path,86400);
+	header('Content-type: application/json');
+	print drupal_json_encode($musicurl);
+}
+/**
  * hook_rescources_info
  */
 function mp_liangyou_rescources_info(){
