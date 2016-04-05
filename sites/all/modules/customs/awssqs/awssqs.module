@@ -1,0 +1,155 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function awssqs_menu() {
+  $items['sqs/api'] = array(
+    //PUT GET POST DELETE
+    'page callback' => 'sqsapi',
+    // 'page arguments' => array(1),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+
+  $items['sqs/test'] = array(
+    //PUT GET POST DELETE
+    'page callback' => 'test',
+    // 'page arguments' => array(1),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+  $items['sqs/reader'] = array(
+    //PUT GET POST DELETE
+    'page callback' => 'sqs_reader',
+    // 'page arguments' => array(1),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+function test() {
+
+  $event_data = drupal_json_encode( array(
+   'category'        => 'default_keyword_resource',
+   'action'          => 'music_sqs',
+   'label'           => 'music_sqs',
+  ));
+  // CURL-less method with PHP5:
+  $data = array('data' => $event_data, 'type' => 'ga_event');
+  // use key 'http' even if you send the request to https://...
+  $options = array(
+      'http' => array(
+          'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+          'method'  => 'POST',
+          'content' => http_build_query($data)
+      )
+  );
+  $context  = stream_context_create($options);
+  // $url = 'http://wxstaging.yongbuzhixi.com/sqs/api';
+  global $base_url;
+  $url = $base_url.'/sqs/api';
+  $result = file_get_contents($url, false, $context);
+  if ($result === FALSE) { /* Handle error */ dvm($result);}
+  return 'POST data success!';
+}
+
+function sqsapi() {
+  if(isset($_POST)){
+    // watchdog('post', '<pre>'.print_r($_POST,1));
+    require 'aws.phar';
+    // Use the us-west-2 region and latest version of each client.
+    $sharedConfig = [
+        'region'  => 'ap-southeast-1',
+        'version' => 'latest',
+        'credentials' => array(
+          'key'    => '',
+          'secret' => '',
+        ),
+    ];
+    // Create an SDK class used to share configuration across clients.
+    $sdk = new Aws\Sdk($sharedConfig);
+    // Create an Amazon S3 client using the shared configuration data.
+    $SqsClient = $sdk->createSqs();
+    // $QueueUrl = $SqsClient->getQueueUrl(array('QueueName'=>'our_queue'))['QueueUrl'];
+    $queue_name = 'our_queue';
+    $QueueUrl = 'https://sqs.ap-southeast-1.amazonaws.com/740669826614/'.$queue_name;
+    // dpm($QueueUrl);
+    $MessageBody = $_POST['data'];//'sqs post at'.date('Ymd H:i:s');
+    $message = array(
+      // 'DelaySeconds' => <integer>, //Delay delivery of this message by 0
+      'MessageAttributes' => [
+          'type' => [
+              'DataType' => 'String', // REQUIRED String, Number, and Binary.
+              'StringValue' => $_POST['type'],
+          ],
+      ],
+      'MessageBody' => $MessageBody, // REQUIRED
+      'QueueUrl' => $QueueUrl, // REQUIRED
+    );
+    $result = $SqsClient->sendMessage($message);
+  }
+  return 1;
+}
+
+
+
+function sqs_reader(){
+  require 'aws.phar';
+  // Use the us-west-2 region and latest version of each client.
+  $sharedConfig = [
+      'region'  => 'ap-southeast-1',
+      'version' => 'latest',
+      'credentials' => array(
+        'key'    => '',
+        'secret' => '',
+      ),
+  ];
+
+  // Create an SDK class used to share configuration across clients.
+  $sdk = new Aws\Sdk($sharedConfig);
+
+  // Create an Amazon S3 client using the shared configuration data.
+
+  $SqsClient = $sdk->createSqs();
+  // $QueueUrl = $SqsClient->getQueueUrl(array('QueueName'=>'our_queue'))['QueueUrl'];
+  $queue_name = 'our_queue';
+  $QueueUrl = 'https://sqs.ap-southeast-1.amazonaws.com/740669826614/'.$queue_name;
+
+
+  // dpm($result->toArray());
+  $result = $SqsClient->receiveMessage([
+    // 'AttributeNames' => ['type'],
+    'MaxNumberOfMessages' => 10,// Values can be from 1 to 10. Default is 1.
+    'MessageAttributeNames' => ['type'],
+    'QueueUrl' => $QueueUrl, // REQUIRED
+    // 'VisibilityTimeout' => <integer>,
+    // 'WaitTimeSeconds' => <integer>,
+  ]);
+  $Messages = $result->toArray();
+
+  $array = array('false');//no message to process
+  // dpm($Messages);
+  if(isset($Messages['Messages']))
+  foreach ($Messages['Messages'] as $key => $Message) {
+    $MessageBody = $Message['Body'];
+    $type = $Message['MessageAttributes']['type'];
+    if($type=='ga_push_event'){
+      $even_data = drupal_json_decode($MessageBody);
+      ga_push_event($even_data);
+    }
+    // dpm(drupal_json_decode($MessageBody));
+
+    $result = $SqsClient->deleteMessage([
+      'QueueUrl' => $QueueUrl, // REQUIRED
+      'ReceiptHandle' => $Message['ReceiptHandle'], // REQUIRED
+    ]);
+    // dpm($result->toArray());
+    $array = array('success');
+  }
+  header('Content-Type: application/json');
+  print drupal_json_encode($array);
+  drupal_exit();
+}
+
