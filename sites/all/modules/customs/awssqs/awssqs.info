@@ -2,5 +2,3 @@ name = awssqs
 description = awssqs
 core = 7.x
 package = A-DEV
-
-dependencies[] = ga_push

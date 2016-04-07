@@ -1,24 +1,12 @@
 <?php
 /**
- * Implements hook_menu().
- */
-function gapushagent_menu() {
-  $items = array();
-  $items['gapushagent'] = array(
-    'page callback' => 'gapushagent_in',
-    'type' => MENU_CALLBACK,
-    'access arguments' => array('access content'),
-  );
-  return $items;
-}
-
-/**
- * [gapushagent description]
+ * Client call this funciton.
  * @param  [type] $type      [description]
  * @param  [type] $push_data [description]
  * @return [type]            [description]
  */
 function gapushagent($type,$push_data){
+  //if server call. then use default funciton. no sqs round.
   $pos = strpos($_SERVER['HTTP_HOST'], 'staging');
   if($pos != FALSE){
     switch ($type) {
@@ -36,10 +24,8 @@ function gapushagent($type,$push_data){
   }
   // POST data
     // ga_push_add_event($push_data);
-    // CURL-less method with PHP5:
-    $data = array('data' => $push_data, 'type' => 'ga_push_add_event');
-    // global $base_url;
-    // $url = $base_url.'/sqs/api';
+    $data = array('data' => drupal_json_encode($push_data), 'type' => 'ga_push_add_event');
+    // Server API url
     $url = 'http://wxstaging.yongbuzhixi.com/sqs/api';
     //open connection
     $ch = curl_init();
@@ -55,11 +41,12 @@ function gapushagent($type,$push_data){
     //close connection
     curl_close($ch);
     // return 'POST data '.($result?'success!':'faild!');
-    $array = array('faild');
-    if($result)  $array = array('success');
-    header('Content-Type: application/json');
-    print drupal_json_encode($array);
-    drupal_exit();
+    $return = 'faild';
+    if($result)  $return = 'success';
+    return $return;
+    // header('Content-Type: application/json');
+    // print drupal_json_encode($array);
+    // drupal_exit();
   // $data = drupal_json_encode($data);
   // $push_data = 'type='.$type.'&data='.$data;
   // $url = 'http://wxstaging.yongbuzhixi.com/gapushagent';
@@ -71,27 +58,4 @@ function gapushagent($type,$push_data){
   // drupal_http_request($url, $options);
   // // $result =
   // // dpm($result);
-}
-/**
- * [gapushagent_in description]
- * @see ga_push_add_ecommerce()
- * @see ga_push_add_event()
- * @see ga_push_add_pageview()
- * @see ga_push_add_social()
- * @return [type] [description]
- */
-function gapushagent_in(){
-  $push_data = drupal_json_decode($_POST['data']);
-  $type = $_POST['type'];
-  switch ($type) {
-    case 'event':
-      ga_push_add_event($push_data);
-      break;
-    case 'pageview':
-      ga_push_add_pageview($push_data);
-      break;
-    default:
-      # code...
-      break;
-  }
 }

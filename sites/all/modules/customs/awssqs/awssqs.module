@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Only enabled on ServerPoint. not agent!
+ * remember set corn for sqs/reader
+ */
 /**
  * Implements hook_menu().
  */
@@ -19,14 +22,6 @@ function awssqs_menu() {
     'access arguments' => array('access content overview'),
     'weight' => -10,
   );
-
-  $items['sqs/test'] = array(
-    //PUT GET POST DELETE
-    'page callback' => 'test',
-    // 'page arguments' => array(1),
-    'type' => MENU_CALLBACK,
-    'access arguments' => array('access content'),
-  );
   $items['sqs/reader'] = array(
     //PUT GET POST DELETE
     'page callback' => 'sqs_reader',
@@ -36,39 +31,10 @@ function awssqs_menu() {
   );
   return $items;
 }
-
-function test() {
-
-  $event_data = drupal_json_encode( array(
-   'category'        => 'dev_test_category',
-   'action'          => 'dev_test_action',
-   'label'           => 'dev_test_label',
-  ));
-  // CURL-less method with PHP5:
-  $data = array('data' => $event_data, 'type' => 'ga_push_add_event');
-  global $base_url;
-  $url = $base_url.'/sqs/api';
-  //open connection
-  $ch = curl_init();
-
-  //set the url, number of POST vars, POST data
-  curl_setopt($ch,CURLOPT_URL, $url);
-  curl_setopt($ch,CURLOPT_POST, 2);
-  curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($data));
-
-  //execute post
-  $result = curl_exec($ch);
-
-  //close connection
-  curl_close($ch);
-  // return 'POST data '.($result?'success!':'faild!');
-  $array = array('faild');
-  if($result)  $array = array('success');
-  header('Content-Type: application/json');
-  print drupal_json_encode($array);
-  drupal_exit();
-}
-
+/**
+ * GET {Post} data then push to sqs
+ * @return [type] [description]
+ */
 function sqsapi() {
   if(isset($_POST)){
     // watchdog('post', '<pre>'.print_r($_POST,1));
@@ -104,10 +70,14 @@ function sqsapi() {
     );
     $result = $SqsClient->sendMessage($message);
   }
-  return 1;
+  header('Content-Type: application/json');
+  print '["called"]';
+  drupal_exit();
 }
 
-
+/**
+ * read from sqs then pass to process function then delete!
+ */
 
 function sqs_reader(){
   require 'aws.phar';
@@ -170,7 +140,7 @@ function sqs_reader(){
 
 
 /**
- * wechat setting form
+ * awssqs setting form
  */
 function awssqs_settings_form(){
   global $user;
