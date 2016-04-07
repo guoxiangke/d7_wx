@@ -18,7 +18,7 @@ function gapushagent_menu() {
  * @param  [type] $push_data [description]
  * @return [type]            [description]
  */
-function gapushagent($type,$data){
+function gapushagent($type,$push_data){
   $pos = strpos($_SERVER['HTTP_HOST'], 'staging');
   if($pos != FALSE){
     switch ($type) {
