@@ -111,7 +111,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         if(!isset($wxresources[$keyword]['obj']['hgmusicurl']))
           $wxresources[$keyword]['obj']['hgmusicurl'] = $wxresources[$keyword]['obj']['musicurl'];
         $title = $wxresources[$keyword]['obj']['title'];
-        if(strpos($wxresources[$keyword]['obj']['title'], '【')!=FALSE){
+        if(strpos($wxresources[$keyword]['obj']['title'], '【')===FALSE){
           $title = '【'.$ori_keyword.'】'.$wxresources[$keyword]['obj']['title'];
         }
         $weObj->music($title, $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
