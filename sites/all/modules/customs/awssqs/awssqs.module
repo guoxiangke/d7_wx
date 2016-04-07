@@ -11,6 +11,14 @@ function awssqs_menu() {
     'type' => MENU_CALLBACK,
     'access arguments' => array('access content'),
   );
+  $items['admin/aws/settings'] = array(
+    'title' => 'AWS',
+    'description' => 'Find and manage content.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('awssqs_settings_form'),
+    'access arguments' => array('access content overview'),
+    'weight' => -10,
+  );
 
   $items['sqs/test'] = array(
     //PUT GET POST DELETE
@@ -32,27 +40,33 @@ function awssqs_menu() {
 function test() {
 
   $event_data = drupal_json_encode( array(
-   'category'        => 'default_keyword_resource',
-   'action'          => 'music_sqs',
-   'label'           => 'music_sqs',
+   'category'        => 'dev_test_category',
+   'action'          => 'dev_test_action',
+   'label'           => 'dev_test_label',
   ));
   // CURL-less method with PHP5:
-  $data = array('data' => $event_data, 'type' => 'ga_event');
-  // use key 'http' even if you send the request to https://...
-  $options = array(
-      'http' => array(
-          'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-          'method'  => 'POST',
-          'content' => http_build_query($data)
-      )
-  );
-  $context  = stream_context_create($options);
-  // $url = 'http://wxstaging.yongbuzhixi.com/sqs/api';
+  $data = array('data' => $event_data, 'type' => 'ga_push_add_event');
   global $base_url;
   $url = $base_url.'/sqs/api';
-  $result = file_get_contents($url, false, $context);
-  if ($result === FALSE) { /* Handle error */ dvm($result);}
-  return 'POST data success!';
+  //open connection
+  $ch = curl_init();
+
+  //set the url, number of POST vars, POST data
+  curl_setopt($ch,CURLOPT_URL, $url);
+  curl_setopt($ch,CURLOPT_POST, 2);
+  curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($data));
+
+  //execute post
+  $result = curl_exec($ch);
+
+  //close connection
+  curl_close($ch);
+  // return 'POST data '.($result?'success!':'faild!');
+  $array = array('faild');
+  if($result)  $array = array('success');
+  header('Content-Type: application/json');
+  print drupal_json_encode($array);
+  drupal_exit();
 }
 
 function sqsapi() {
@@ -64,8 +78,8 @@ function sqsapi() {
         'region'  => 'ap-southeast-1',
         'version' => 'latest',
         'credentials' => array(
-          'key'    => '',
-          'secret' => '',
+          'key'    => variable_get('aws_key', ""),
+          'secret' => variable_get('aws_secret', ""),
         ),
     ];
     // Create an SDK class used to share configuration across clients.
@@ -102,8 +116,8 @@ function sqs_reader(){
       'region'  => 'ap-southeast-1',
       'version' => 'latest',
       'credentials' => array(
-        'key'    => '',
-        'secret' => '',
+        'key'    => variable_get('aws_key', ""),
+        'secret' => variable_get('aws_secret', ""),
       ),
   ];
 
@@ -118,7 +132,6 @@ function sqs_reader(){
   $QueueUrl = 'https://sqs.ap-southeast-1.amazonaws.com/740669826614/'.$queue_name;
 
 
-  // dpm($result->toArray());
   $result = $SqsClient->receiveMessage([
     // 'AttributeNames' => ['type'],
     'MaxNumberOfMessages' => 10,// Values can be from 1 to 10. Default is 1.
@@ -127,29 +140,67 @@ function sqs_reader(){
     // 'VisibilityTimeout' => <integer>,
     // 'WaitTimeSeconds' => <integer>,
   ]);
+  $return = 0;//no message to process
+  // $process = 0;//no message to process
   $Messages = $result->toArray();
-
-  $array = array('false');//no message to process
   // dpm($Messages);
   if(isset($Messages['Messages']))
   foreach ($Messages['Messages'] as $key => $Message) {
     $MessageBody = $Message['Body'];
-    $type = $Message['MessageAttributes']['type'];
-    if($type=='ga_push_event'){
-      $even_data = drupal_json_decode($MessageBody);
-      ga_push_event($even_data);
+    $function = $Message['MessageAttributes']['type']['StringValue'];
+    $parements = drupal_json_decode($MessageBody);
+    if(function_exists($function)) {
+      // dpm($function);
+      $function($parements);
+      // dpm($parements);
+      $return++;
     }
-    // dpm(drupal_json_decode($MessageBody));
-
     $result = $SqsClient->deleteMessage([
       'QueueUrl' => $QueueUrl, // REQUIRED
       'ReceiptHandle' => $Message['ReceiptHandle'], // REQUIRED
     ]);
+    // $process++;//delete how many
     // dpm($result->toArray());
-    $array = array('success');
   }
+  // return '';
   header('Content-Type: application/json');
-  print drupal_json_encode($array);
+  print '["'.$return.'"]';
   drupal_exit();
 }
 
+
+/**
+ * wechat setting form
+ */
+function awssqs_settings_form(){
+  global $user;
+  $form['config'] = array(
+    '#type' => 'fieldset',
+    '#title' => '接入信息',
+    '#collapsible' => TRUE,
+    '#collapsed' => false,
+  );
+  $form['config']['aws_key'] = array(
+    '#type' => 'textfield',
+    '#title' => 'key',
+    '#description' => '',
+    '#default_value' => variable_get('aws_key', ""),
+    '#required' => true,
+  );
+  $form['config']['aws_secret'] = array(
+    '#type' => 'textfield',
+    '#title' => 'secret',
+    '#description' => '',
+    // '#default_value' => variable_get('aws_secret', ""),
+    '#required' => true,
+  );
+  $form['config']['submit_config'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+  return $form;
+}
+function awssqs_settings_form_submit($form, &$form_state){
+  variable_set('aws_key', $form_state['values']['aws_key']);
+  variable_set('aws_secret', $form_state['values']['aws_secret']);
+}
