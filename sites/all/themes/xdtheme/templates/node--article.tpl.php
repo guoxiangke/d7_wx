@@ -108,9 +108,22 @@
     }
   if($view_mode=='full' && isset($node->field_video_url[LANGUAGE_NONE][0])){
     $vid = $node->field_video_url[LANGUAGE_NONE][0]['value'];
+    if(!(isset($node->field_video_position[LANGUAGE_NONE][0]['value']) && $node->field_video_position[LANGUAGE_NONE][0]['value']==1)){
   ?>
-  <iframe frameborder="0" width="100%" height="250px" src="http://v.qq.com/iframe/player.html?vid=<?php echo $vid;?>&tiny=0&auto=0" allowfullscreen></iframe>
+  <iframe id='video_top' frameborder="0" width="100%" height="250px" src="http://v.qq.com/iframe/player.html?vid=<?php echo $vid;?>&tiny=0&auto=0" allowfullscreen></iframe>
+  <script>
+    (function($){
+      $(document).ready(function(){
+        if($('#video').length){
+          var html = $('<div>').append($('#video_top').clone()).remove().html()
+          $('#video_top').remove();
+          $('#video').html(html);
+        }
+      });
+    })(jQuery)
+  </script>
   <?php
+    }
   }
 
   if($view_mode=='full' && isset($node->field_mp3url[LANGUAGE_NONE][0])){
@@ -179,7 +192,15 @@
       hide($content['links']);
       hide($content['field_image']);
       print render($content);
-    ?>
+      if($view_mode=='full' && isset($node->field_video_url[LANGUAGE_NONE][0])){
+        $vid = $node->field_video_url[LANGUAGE_NONE][0]['value'];
+        if((isset($node->field_video_position[LANGUAGE_NONE][0]['value']) && $node->field_video_position[LANGUAGE_NONE][0]['value']==1)){
+      ?>
+      <iframe frameborder="0" width="100%" height="250px" src="http://v.qq.com/iframe/player.html?vid=<?php echo $vid;?>&tiny=0&auto=0" allowfullscreen></iframe>
+      <?php
+        }
+      }
+      ?>
   </div>
   <?php print render($content['links']); ?>
   <?php if($view_mode == 'full'):?>
