@@ -65,6 +65,19 @@ function mp_liangyou_rescources_info(){
  * hook_wxrescources
  */
 function mp_liangyou_wxresources($resources, $account, $keyword){
+	// http://my.oschina.net/u/166228/blog/340084
+	// $my_data = &drupal_static(__FUNCTION__);
+	// if (!isset($my_data)) {
+ //    if ($cache = cache_get('my_module_data')) {
+ //      $my_data = $cache->data;
+ //    }
+ //    else {
+ //      //将一些高花销的计算逻辑写在这里，并将结果赋值给$my_data变量。
+ //      //这里将计算的结果保存到cache表中。
+ //      cache_set('my_module_data', $my_data, 'cache');
+ //    }
+ //  }
+ //  return $my_data;
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){

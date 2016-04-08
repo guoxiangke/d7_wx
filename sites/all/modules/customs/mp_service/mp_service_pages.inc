@@ -38,6 +38,28 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
   // watchdog('len23', strlen($ori_keyword), array(), WATCHDOG_NOTICE, 'link');
 
   //TODO 数据收集！
+  // if($account->uid == 8 && $ori_keyword=='test'){
+  //   $openid = $weObj->getRev()->getRevFrom();
+  //   // $img = array(
+  //   //       'Title'=> '【今日良友节目概览】',
+  //   //       'Description'=> "\n永不止息，需要有你\n回复【】内编号即可收听[加油]！",
+  //   //       'PicUrl'=> 'http://mmbiz.qpic.cn/mmbiz/0fV5QBhibUJjvmqqUbJaL3ZPqIBKxPKpkq4SvjmagLGia5X6SDhTDKLY49qhWqE7ibyb6N1QUelvHv0ZnL5V7HWicA/640?wx_fmt=jpeg&tp=webp&wxfrom=5.jpg',
+  //   //       'Url'=> 'http://ly.yongbuzhixi.com',
+  //   //     );
+  //   // $news[] = $img;
+  //   // $music = array(
+  //   //   'title'=>'test',
+  //   //   'description'=>'description',
+  //   //   'musicurl'=>'http://lywxaudio.b0.upaiyun.com/2016/ee/ee160408.mp3?_upt=26f931e81460195154',
+  //   //   'hqmusicurl'=>'http://lywxaudio.b0.upaiyun.com/2016/ee/ee160408.mp3?_upt=26f931e81460195154',
+  //   //   );
+  //   $data = array(
+  //     "touser"=>$openid,
+  //     "msgtype"=>'text',
+  //     'text'=>array('content'=>'hellp'),
+  //   );
+  //   $weObj->sendCustomMessage($data)->reply(array(),1);
+  // }
   if($account->uid == 8 && strpos($ori_keyword,'mp.weixin.qq.com/s?__biz=')!==FALSE){
     $openid = $weObj->getRev()->getRevFrom();
     // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
