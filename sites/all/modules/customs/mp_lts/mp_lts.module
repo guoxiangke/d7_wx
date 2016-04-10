@@ -868,13 +868,15 @@ function mp_lts_wxresources($resources, $account, $keyword){
     else {
       //将一些高花销的计算逻辑写在这里，并将结果赋值给$my_data变量。
       //这里将计算的结果保存到cache表中。
-      $my_data = _mp_getwxresources($resources, $account, $keyword);
-      if(isset($my_data['key_'.$keyword]['type']) && $my_data['key_'.$keyword]['type']=='music'){
-        watchdog('cacheset',$keyword);
-        cache_set('mp_lts_wxresources_'.$keyword, $my_data, 'cache');
-      }
       // 如果你的缓存的过期时间是有规律的，可以预测的，可以尝试使用下面方式来给缓存设置过期时间。
       // cache_set('my_module_data', $my_data, 'cache', time() + 3600);
+      $my_data = _mp_getwxresources($resources, $account, $keyword);
+      if(isset($my_data['key_'.$keyword]['type'])){
+        if($my_data['key_'.$keyword]['type']=='music' || $my_data['key_'.$keyword]['cache']){
+          watchdog('cacheset',$keyword);
+          cache_set('mp_lts_wxresources_'.$keyword, $my_data, 'cache');
+        }
+      }
     }
   }
   return $my_data;
@@ -895,6 +897,7 @@ function _mp_getwxresources($resources, $account, $keyword){
         if($index==100){
           $resources['key_'.$keyword]= array(
               'type'  =>  'text',
+              'cache' =>  1,
               'obj'   => array(
                 'text'  => get_mp_lts_menu1(),
               )
@@ -904,6 +907,7 @@ function _mp_getwxresources($resources, $account, $keyword){
         if($index==700){
           $resources['key_'.$keyword]= array(
               'type'  =>  'text',
+              'cache' =>  1,
               'obj'   => array(
                 'text'  => get_mp_lts_menu2(),
               )
@@ -929,6 +933,7 @@ function _mp_getwxresources($resources, $account, $keyword){
         }
         $resources['key_'.$keyword]= array(
             'type'  =>  'text',
+            'cache' =>  1,
             'obj'   => array(
               'text'  => $text."【#100】★基础课程✿本科课程\n【#700】☆进深课程\n回复【#".$num."01】收听\n回复【#".$num."010】查看讲义！[ThumbsUp]",
             )
@@ -941,6 +946,7 @@ function _mp_getwxresources($resources, $account, $keyword){
         //error!编码超出范围！暂时没有，敬请期待！
         $resources['key_'.$keyword]= array(
             'type'  =>  'text',
+            'cache' =>  1,
             'obj'   => array(
               'text'  => "[大哭]编码有误，回复【#100】查看目录！",
             )
@@ -954,6 +960,7 @@ function _mp_getwxresources($resources, $account, $keyword){
       if($count>$total) {//error!编码不对！
         $resources['key_'.$keyword]= array(
           'type'  =>  'text',
+          'cache' =>  1,
           'obj'   => array(
             'text'  => "[大哭]编码有误，超出最大范围！\n回复【#".$index."0】查看讲义！",
           )
