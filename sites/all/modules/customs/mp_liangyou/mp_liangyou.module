@@ -30,10 +30,6 @@ function get_upyun_token($code,$offset=0){
  * hook_rescources_info
  */
 function mp_liangyou_rescources_info(){
-	// $rescources[] = array(
- //    'name' => 'ly',
- //    'desc' =>	'良友电台线路1【ly】',
- //  );
 	$rescources[] = array(
     'name' => 'ly2',
     'desc' =>	'良友电台【600】',
@@ -65,22 +61,29 @@ function mp_liangyou_rescources_info(){
  * hook_wxrescources
  */
 function mp_liangyou_wxresources($resources, $account, $keyword){
-	// http://my.oschina.net/u/166228/blog/340084
-	// $my_data = &drupal_static(__FUNCTION__);
-	// if (!isset($my_data)) {
- //    if ($cache = cache_get('my_module_data')) {
- //      $my_data = $cache->data;
- //    }
- //    else {
- //      //将一些高花销的计算逻辑写在这里，并将结果赋值给$my_data变量。
- //      //这里将计算的结果保存到cache表中。
- //      cache_set('my_module_data', $my_data, 'cache');
- //    }
- //  }
- //  return $my_data;
+  $my_data = &drupal_static(__FUNCTION__);
+  if (!isset($my_data)) {
+    if ($cache = cache_get('mp_liangyou_wxresources_'.$keyword)) {
+      $my_data = $cache->data;
+    }
+    else {
+      $my_data = _mp_liangyou_wxresources($resources, $account, $keyword);
+      //cache = 0;永久缓存 cache = 43200;缓存一天／2
+      if(isset($my_data['key_'.$keyword]['cache'])){
+        if($my_data['key_'.$keyword]['cache']==0){
+          cache_set('mp_liangyou_wxresources_'.$keyword, $my_data, 'cache');
+        }else{
+          cache_set('mp_liangyou_wxresources_'.$keyword, $my_data, 'cache', time() + $my_data['key_'.$keyword]['cache']);
+        }
+      }
+    }
+  }
+  return $my_data;
+}
+
+function _mp_liangyou_wxresources($resources, $account, $keyword){
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
-  $resources = &drupal_static(__FUNCTION__);
-  if(!isset($resources)){
+  {
   	if($keyword == 'ly'||$keyword == '良友'){
   		$file_key = drupal_realpath('public://cron/txly2/'.date('Ymd').'.json');
   		$data = json_decode(file_get_contents($file_key),true);
@@ -99,6 +102,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
       $news[] = $img;
 		 	$resources['key_'.$keyword]= array(
         'type'  =>  'news',
+        'cache' =>  43200,
         'obj'   =>  $news,
         );
 			return $resources;
@@ -109,6 +113,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 			if($keyword == 600){
 			 	$resources['key_'.$keyword] = array(
 					'type'	=>	'text',
+					'cache' =>  0,
 					'obj'		=> array(
 						'text'	=> ly_stream_menu(),
 					)
@@ -184,6 +189,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				    if($keyword == 600){
 				     	$resources['key_'.$keyword] = array(
 								'type'	=>	'text',
+								'cache' =>  0,
 								'obj'		=> array(
 								'text'	=> ly_stream_menu(),
 								)
@@ -197,6 +203,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					    $desc =  substr($urls[$keyword]['date'], 4).' '.truncate_utf8($urls[$keyword]['desc'], 16, $wordsafe = FALSE, $add_ellipsis = TRUE, $min_wordsafe_length = 1);
 					    $resources['key_'.$orikeyword]= array(
 								'type'	=>	'music',
+								'cache' =>  43200,
 								'obj'		=> array(
 								'title'	=> $title,
 								'desc'	=>	$desc,
@@ -208,14 +215,6 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				    }
 						return $resources;
 					}
-
-				 	// $resources['key_'.$keyword] = array(
-					// 	'type'	=>	'text',
-					// 	'obj'		=> array(
-					// 		'text'	=> '改版开发中，敬请期待！',
-					// 	)
-					// );
-					// return $resources;
 		  	}
 				if(date('N')>5&&$keyword=='612') {//【612】书香园地＝》【614】今夜心未眠
 					$keyword = '614';
@@ -245,14 +244,16 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					$offset=7;
 					$date = date('ymd',time()-$offset*86400);
 					$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
-					$musicurl = $cdnlink.$path.upyun_get_token($path);
+					$musicurl = $cdnlink.$path;//.upyun_get_token($path);
 					// $temp = @get_headers($musicurl);
 					// if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-						// $title = $title;
+					// $title = $title;
 						$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新';
 						$resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',
 							'gakey'		=>	$keyword,
+							'path'	=>	$path,
+							'cache' =>  43203,
 							'obj'		=> array(
 								'title'	=>  '【'.$keyword.'】'.$title.'♪',
 								'desc'	=> $desc,
@@ -280,6 +281,8 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 								$resources['key_'.$orikeyword]= array(
 									'type'	=>	'music',
 									'gakey'		=>	$keyword,
+									'path'	=> $path,
+									'cache'	=> 43201,
 									'obj'		=> array(
 										'title'	=>  '【'.$keyword.'】'.$title.'♪',
 										'desc'	=> $desc,
@@ -307,6 +310,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
       $url = $musicurl;
       $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
+				'cache'	=> 43200,
 				'obj'		=> array(
 					'title'	=> $title.'♫',
 					'desc'	=>	$desc,
@@ -332,6 +336,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	    $desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新";
 	    $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
+				'cache'	=> 43200,
 				'obj'		=> array(
 					'title'	=> $title.'♫',
 					'desc'	=>	$desc,
@@ -360,6 +365,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	      $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 圣诞特辑《耶稣全貌》';
 	      $resources['key_'.$keyword]= array(
 					'type'	=>	'music',
+					'cache'	=> 43200,
 					'obj'		=> array(
 						'title'	=> $title,
 						'desc'	=>	$desc,
@@ -380,6 +386,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	      $hgmusicurl = $musicurl;
 	      $resources['key_'.$keyword]= array(
 					'type'	=>	'music',
+					'cache'	=> 43200,
 					'obj'		=> array(
 						'title'	=> $title,
 						'desc'	=>	$desc,
@@ -397,6 +404,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 	 	// 		$resources['key_'.$keyword] = wx_swty_resource_response($keyword);
 	 	// 	}
  		// }
+ 		// TO DO: DELETE!
  		require_once('liangyou.inc');
 		//a1 b1 c1 d1 e1 f1-f9
 		if(isset($enabled_resources['mav']) && $enabled_resources['mav']){
@@ -614,6 +622,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 				}
 				$resources['key_'.$keyword]= array(
 					'type'	=>	'text',
+					'cache'	=> 0,
 					'obj'		=> array(
 					'text'	=> $mavmenu,
 					)
@@ -625,15 +634,17 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
 					if($index>=$value['begin'] && $index<=$value['end']){
 						$link = $value['title'].'/'.str_pad($index, 3,'0',STR_PAD_LEFT).'.mp3';
 
-						$etime = time()+3600; // 授权十分钟后过期
-						$key = 'ly729';   // token 防盗链密钥
+						// $etime = time()+3600; // 授权十分钟后过期
+						// $key = 'ly729';   // token 防盗链密钥
 						$path = '/lysd/'.$link; // 图片相对路径
-						$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+						// $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
 						//http://lyweixintest.b0.upaiyun.com/lysd/001.mp3
-						$link = 'http://lyweixintest.b0.upaiyun.com/lysd/'.urlencode($link).'?_upt='.$sign;
+						$link = 'http://lyweixintest.b0.upaiyun.com/lysd/'.urlencode($link);//.'?_upt='.$sign;
 
 						$resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',
+							'cache'	=> 0,
+							'path'	=> $path,
 							'obj'		=> array(
 								'title'	=> $value['title'],
 								'desc'	=>	"良友礼品卡 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
@@ -663,6 +674,7 @@ function mp_bbn_response($keyword,$account,$change_keyword=NULL){
  	if($keyword == '400'){
 		$resources['key_'.$change_keyword]= array(
 			'type'	=>	'text',
+			'cache' =>  0,
 			'obj'		=> array(
 			'text'	=> bbn_audio_menu(),
 			)
@@ -674,6 +686,7 @@ function mp_bbn_response($keyword,$account,$change_keyword=NULL){
 		$desc = '点击►收听 公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新';
 		$resources['key_'.$change_keyword]= array(
 			'type'	=>	'music',
+			'cache' =>  43200,
 			'obj'		=> array(
 				'title'	=> $title,
 				'desc'	=>	$desc,
