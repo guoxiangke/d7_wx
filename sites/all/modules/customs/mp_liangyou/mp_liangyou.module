@@ -273,7 +273,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
 						while ($offset <= 7) {
 							$date = date('ymd',time()-$offset*86400);
 							$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
-							$musicurl = $cdnlink.$path.upyun_get_token($path);
+							$musicurl = $cdnlink.$path;//.upyun_get_token($path);
 							$temp = @get_headers($musicurl);
 							if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
 								// $title = $title;
