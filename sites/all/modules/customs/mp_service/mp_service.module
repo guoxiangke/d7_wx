@@ -108,6 +108,12 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
   if(isset($wxresources[$keyword])){
     switch ($wxresources[$keyword]['type']) {
       case 'music':
+        if(isset($wxresources[$keyword]['path'])){
+          $etime = time()+86400;
+          $sign = substr(md5('ly729'.'&'.$etime.'&'.$wxresources[$keyword]['path']), 12,8).$etime;
+          $wxresources[$keyword]['obj']['musicurl'] .= '?_upt='.$sign;
+          $wxresources[$keyword]['obj']['hgmusicurl'] = $wxresources[$keyword]['obj']['musicurl'];
+        }
         if(!isset($wxresources[$keyword]['obj']['hgmusicurl']))
           $wxresources[$keyword]['obj']['hgmusicurl'] = $wxresources[$keyword]['obj']['musicurl'];
         $title = $wxresources[$keyword]['obj']['title'];

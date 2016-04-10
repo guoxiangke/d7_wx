@@ -7,10 +7,6 @@ function mp_lts_rescources_info(){
     'name' => 'mav',
     'desc' => '良友圣经学院【#100】',
   );
-  // $rescources[] = array(
-  //   'name' => 'jckc',
-  //   'desc' => '良院基础课程【jc】',
-  // );
   return $rescources;
 }
 
@@ -864,6 +860,26 @@ function get_mp_lts_menu2(){
  * hook_wxrescources
  */
 function mp_lts_wxresources($resources, $account, $keyword){
+  $my_data = &drupal_static(__FUNCTION__);
+  if (!isset($my_data)) {
+    if ($cache = cache_get('mp_lts_wxresources_'.$keyword)) {
+      $my_data = $cache->data;
+    }
+    else {
+      //将一些高花销的计算逻辑写在这里，并将结果赋值给$my_data变量。
+      //这里将计算的结果保存到cache表中。
+      $my_data = _mp_getwxresources($resources, $account, $keyword);
+      if(isset($my_data['key_'.$keyword]['type']) && $my_data['key_'.$keyword]['type']=='music'){
+        watchdog('cacheset',$keyword);
+        cache_set('mp_lts_wxresources_'.$keyword, $my_data, 'cache');
+      }
+      // 如果你的缓存的过期时间是有规律的，可以预测的，可以尝试使用下面方式来给缓存设置过期时间。
+      // cache_set('my_module_data', $my_data, 'cache', time() + 3600);
+    }
+  }
+  return $my_data;
+}
+function _mp_getwxresources($resources, $account, $keyword){
   $enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
@@ -979,25 +995,26 @@ function mp_lts_wxresources($resources, $account, $keyword){
       $rep = str_pad($count, 2,'0',STR_PAD_LEFT);
       $link = 'new/'.$level.'/'.$mav['title'].'/ma'.$mav['prefex'].$rep.'.mp3';
       // watchdog('$link', $link, array(), WATCHDOG_NOTICE, 'link');
-      $etime = time()+86400; // 授权1天后过期
-      $key = 'ly729';   // token 防盗链密钥
+      // $etime = time()+86400; // 授权1天后过期
+      // $key = 'ly729';   // token 防盗链密钥
       $path = '/'.$link; // 图片相对路径
-      $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+      // $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
 
       $cdn = 'http://lts33.b0.upaiyun.com/';
-      $link = $cdn . urlencode($link).'?_upt='.$sign;
-      $temp = @get_headers($link);
-      if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
-        $resources['key_'.$keyword]= array(
-          'type'  =>  'text',
-          'obj'   => array(
-            'text'  => "[大哭]本课程还没有开放哦！",
-          )
-        );
-        return $resources;
-      }
+      $link = $cdn . urlencode($link);//.'?_upt='.$sign;
+      // $temp = @get_headers($link);
+      // if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
+      //   $resources['key_'.$keyword]= array(
+      //     'type'  =>  'text',
+      //     'obj'   => array(
+      //       'text'  => "[大哭]本课程还没有开放哦！",
+      //     )
+      //   );
+      //   return $resources;
+      // }
       $resources['key_'.$keyword]= array(
         'type'  =>  'music',
+        'path' =>  $path,
         'obj'   => array(
           'title' => '【'.$keyword.'】'.$mav['title'].'-'.$rep,
           'desc'  =>  "点击►收听".$update." 良院".str_replace('课程', '', $level) ." 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' 技术支持:'.($account->uid==255?'永不止息':'主内公众云'),
