@@ -1,5 +1,5 @@
 name = mp cron
-description = mp cron
+description = mp cron自动发布图文
 core = 7.x
 package = A-DEV
 

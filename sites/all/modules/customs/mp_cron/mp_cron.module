@@ -78,3 +78,31 @@ function mp_cron_cron() {
   }
   // return $resources;
 }
+
+/**
+ * called by corn.
+ * @return [type] [description]
+ */
+function create_mp_cron_nodes($account=NULL){
+  //get all 认证的账户
+  //TODO no repeat meadia_ids!!!
+  $account = user_load(8);
+  $weObj= _mp_service_init_wechat($account);
+  $medias = $weObj->getForeverList('news',1,20);
+  foreach ($medias['item'] as $key => $media) {
+    $node = new stdClass();
+    $node->type = 'mp_cron';
+    node_object_prepare($node);
+    $node->uid = $account->uid;
+    $node = $node;
+    $node->field_media_id[LANGUAGE_NONE][0]['value']  =  $media['media_id'];
+    // $node->field_publish_date[LANGUAGE_NONE][0]['value']  = date('Y-m-d H:i:s');
+    foreach ($media['content']['news_item'] as $key => $item) {
+      $node->field_title[LANGUAGE_NONE][]= array('value'=>$item['title']);
+      $node->field_redirect_link[LANGUAGE_NONE][]= array('value'=>$item['url']);
+      $node->field_link[LANGUAGE_NONE][]= array('value'=>$item['thumb_url']);//image
+    }
+    $node->title = $node->field_title[LANGUAGE_NONE][0]['value'];
+    node_save($node);
+  }
+}
