@@ -80,7 +80,7 @@ function mp_cron_cron() {
 }
 
 /**
- * called by corn.
+ * called by use click!.
  * @return [type] [description]
  */
 function create_mp_cron_nodes($account=NULL){
@@ -104,5 +104,75 @@ function create_mp_cron_nodes($account=NULL){
     }
     $node->title = $node->field_title[LANGUAGE_NONE][0]['value'];
     node_save($node);
+  }
+}
+
+function  get_need_publish_this_hour_nodes(){
+  $nodes = db_query("SELECT node.nid AS nid, node.uid AS uid, field_data_field_date.field_date_value AS plan_time, node.status AS node_status, node.created AS node_created, 'node' AS field_data_field_date_node_entity_type
+      FROM
+      {node} node
+      LEFT JOIN {field_data_field_date} field_data_field_date ON node.nid = field_data_field_date.entity_id AND (field_data_field_date.entity_type = 'node' AND field_data_field_date.deleted = '0')
+      WHERE (( (node.type IN  ('mp_cron')) AND (node.status=1) AND (field_data_field_date.field_date_value LIKE '%".date('m-d')."%') ))
+      ORDER BY node_created DESC
+      LIMIT 50 OFFSET 0")->fetchAll();
+  //每天执行一次！设置uid的nid 如果已发布，设置 node->status = 0;
+  // $nodes = array('1090','1089');
+  $uids = array();
+  $times = array();
+  foreach ($nodes as $key => $node) {
+    if(in_array($node->uid, $uids)) continue;//每个uid每天只发一个
+    variable_set('mp_cron_publish_'.$node->uid, $node->nid);
+    $uids[]=$node->uid;
+    $times[] = $node->plan_time;//0000-04-12 11:45:00
+  }
+  variable_set('mp_cron_publish_uids', $uids);
+  variable_set('mp_cron_publish_plan', $times);
+  // return $nodes;
+}
+
+function  _publish_mpnews(){
+  $plans = variable_get('mp_cron_publish_plan', array());
+  $uids = variable_get('mp_cron_publish_uids', array());
+  foreach ($plans as $time) {
+    $now = time();
+    if($time > $now+600 || $time < $now+600){//上下10分钟内check
+      foreach ($uids as $uid) {
+        $nid = variable_get('mp_cron_publish_'.$uid, '0');
+        if(!$nid) continue;
+        //get node to published! date!time!!
+        $node = node_load($nid);
+        $media_id = $node->field_media_id[LANGUAGE_NONE][0]['value'];
+        $account->uid = $node->uid;
+        $weObj = _mp_service_init_wechat($account);
+        //if 没有认证 TODO
+        //if 今天已经发过了！
+        {
+          $sendall = array(
+            'filter' => array(
+              'is_to_all' => true,
+              // 'group_id'  => 2,
+            ),
+            'mpnews' => array('media_id'=>$media_id),
+            'msgtype' => "mpnews",// mpnews | voice | image | mpvideo => array( "media_id"=>"MediaId")
+          );
+          $return = $weObj->sendMassMessage($sendall);
+          watchdog($nid.'<=nid mp_cron_send uid=>'.$uid, '<pre>'.print_r($return, 1), array(), WATCHDOG_NOTICE, 'link');
+          {//if($return!=false)
+            $node->status = 0;
+            node_save($node);
+            variable_delete('mp_cron_publish_'.$node->uid);
+            if(($key = array_search($uid, $uids)) !== false) {
+              unset($messages[$key]);
+              variable_set('mp_cron_publish_uids', $uids);
+            }
+            if(($key = array_search($time, $uids)) !== false) {
+              unset($messages[$key]);
+              variable_set('mp_cron_publish_plan', $uids);
+            }
+          }
+          // $return = $weObj->sendGroupMassMessage($sendall);
+        }
+      }
+    }
   }
 }
