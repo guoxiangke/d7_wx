@@ -108,6 +108,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
 			return $resources;
   	}
 		// 600-652 stream ly
+		require_once('liangyou_audio_list.php');
 		$cdnlink = 'http://lywxaudio.b0.upaiyun.com';
 	  if(isset($enabled_resources['ly2']) && $enabled_resources['ly2']){
 			if($keyword == 600){
@@ -121,8 +122,6 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
 				return $resources;
 			}
 			$orikeyword = $keyword;
-
-			require_once('liangyou_audio_list.php');
 		  $audios = liangyou_audio_list2();
 		  $lyaudio = array();
 		  $lyaudio_code = FALSE;
@@ -707,71 +706,4 @@ function mp_bbn_response($keyword,$account,$change_keyword=NULL){
 function upyun_get_token($path, $etime = 86400, $key = 'ly729'){
 	$etime = time()+$etime; // 授权1分钟后过期
 	return '?_upt='. substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-}
-
-
-function ly_stream_menu(){
-  return '▶良友广播节目单
-  ----------------------------------------------
-  生活智慧
-  【609】微播出炉
-  【612】书香园地
-  【614】今夜心未眠
-  【608】绝妙当家
-  【610】生活无国界
-  【611】零点零距离
-  【613】 爱广播
-	关怀辅导
-  【603】空中辅导
-  【601】无限飞行号
-  【602】 心磁场
-	婚恋家庭
-  【604】恋爱季节
-  【605】幸福满家园
-  【606】亲情不断电
-  【607】欢乐卡恰碰
-	诗歌音乐
-  【623】齐来颂扬
-  【615】彩虹桥
-  【616】长夜的牵引
-	慕道探索
-  【639】生命的福音
-  【617】现代人的希望
-  【656】津津乐道
-	生命成长
-  【620】旷野吗哪
-  【618】生命的四季
-  【619】拥抱每一天
-  【624】施恩座前
-  【640】这一刻清心
-  【628】空中崇拜
-  【652】燃亮的一生
-  【632】佳美脚踪
-  【625】真理之光
-  【636】生根建造
-  【634】给力人生
-  【637】信仰百宝箱
-  【635】空中门训
-	学习真道
-  【621】真道分解
-  【622】圣言盛宴
-  【627】聆听主道
-  【631】经动人心
-  【630】好牧人
-  【629】善牧良言
-  【692】真理与柱石
-	【638】生活之光
-	中英双语
-  【633】蓝天绿洲
-  【648】天路导向
-  【649】天路导向粤
-	少数民族
-  【650】恩典与真理
-  【651】爱在人间
-	栽培训练
-  【626】接棒人
-  【646】晨曦讲座
-  【647】良院精选
-   回复【】内容[调皮]不带中括号
-   点击►收听[抱拳]';
 }
