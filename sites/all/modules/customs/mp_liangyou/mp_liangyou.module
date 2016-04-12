@@ -272,10 +272,10 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
 						while ($offset <= 7) {
 							$date = date('ymd',time()-$offset*86400);
 							$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
-							$musicurl = $cdnlink.$path;//.upyun_get_token($path);
-							// $temp = @get_headers($musicurl);
-							// if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-								// $title = $title;
+							$musicurl = $cdnlink.$path;
+							$upyunurl = $cdnlink.$path.upyun_get_token($path);
+							$temp = @get_headers($upyunurl);
+							if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
 								$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").($offset?$date:' 每日更新');
 								$resources['key_'.$orikeyword]= array(
 									'type'	=>	'music',
@@ -290,7 +290,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
 									),
 								);
 								return $resources;
-							// }
+							}
 							$offset++;
 						}
 					}
