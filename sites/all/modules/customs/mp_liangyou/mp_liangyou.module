@@ -59,6 +59,7 @@ function mp_liangyou_rescources_info(){
 
 /**
  * hook_wxrescources
+ * TODO:	cache_clear_all('mp_liangyou', 'cache', TRUE); once a day!
  */
 function mp_liangyou_wxresources($resources, $account, $keyword){
   $my_data = &drupal_static(__FUNCTION__);
