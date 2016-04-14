@@ -43,16 +43,22 @@ function lyopen_get($index=604,$max=7){
   // $max = 7;
   $js_radios = array();
   $code = $radio['code'];
+
+  $file_key = drupal_realpath('public://cron/txly2/'.$code.'.json');
+  if(file_exists($file_key))
+    $descs = json_decode(file_get_contents($file_key),true);
   while ($offset <= 30) {
     $date = date('ymd',time()-$offset*86400);
     $path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
     $musicurl = 'http://'.$cdnlink.$path.upyun_get_token($path,864000);
     $temp = @get_headers($musicurl);
     if(count($js_radios)>=$max) break;
+    $js_radio =array();
     if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-      // $radio_url = $musicurl;
       $js_radio['title'] = $radio['title'];
-      // $js_radio['index'] = $index;
+      if(isset($descs['20'.$date])){
+        $js_radio['desc'] = $descs['20'.$date];
+      }
       $js_radio['date'] = $date;
       $js_radio['category'] = $radio['category'];
       $js_radio['mp3'] = $musicurl;
