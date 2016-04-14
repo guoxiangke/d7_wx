@@ -10,7 +10,17 @@ function mp_liangyou_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_SUGGESTED_ITEM,
    );
+  $items['cc_liangyou'] = array(
+    'page callback' => '_mp_liangyou_cc',
+    'access arguments' => array('access content'),
+    'type' => MENU_SUGGESTED_ITEM,
+   );
   return $items;
+}
+function _mp_liangyou_cc(){
+	cache_clear_all('mp_liangyou', 'cache', TRUE); //once a day!
+	header('Content-type: application/json');
+	print '[{"hi":"clean"}]';
 }
 function get_upyun_token($code,$offset=0){
 	$cdnlink = 'http://lywxaudio.b0.upaiyun.com';
