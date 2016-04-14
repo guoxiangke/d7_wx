@@ -480,7 +480,9 @@ function mp_getwxcontent($link,$weObj=NULL){
   node_object_prepare($node);
   //get title
   $uid = '8'; //uid of love.
-  if(isset($weObj)){
+  if(strpos($title, '王明道')!==FALSE){
+    $uid = '2503'; //uid of love.
+  }elseif(isset($weObj)){
     $openid = $weObj->getRev()->getRevFrom();
     $user_info = $weObj->getUserInfo($openid);
     $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
