@@ -20,7 +20,7 @@ function ybread_page(){
 		$node = new stdClass();
 		$node->type = $content_type;
 		node_object_prepare($node);
-		$node->uid = '1'; //uid of love.
+		$node->uid = '8'; //uid of love.
 		//get title
 	  $node->title = trim($html->find('h2.entry-title', 0)->plaintext);
 	  if(isset($result->nid)){
@@ -87,7 +87,7 @@ function ctoday_page(){
 		$node = new stdClass();
 		$node->type = $content_type;
 		node_object_prepare($node);
-		$node->uid = '1'; //uid of love.
+		$node->uid = '8'; //uid of love.
 		//get title
 	  if(isset($result->nid)){
 	  	$temp_nid = $result->nid;
@@ -212,7 +212,7 @@ function grace365_page(){
 				$node->type = $content_type;
 				node_object_prepare($node);
 				//get title
-				$node->uid = '1'; //uid of love.
+				$node->uid = '8'; //uid of love.
 				$node->promote = 1;
 			  $node->title = $title;
 			  $node->body[LANGUAGE_NONE][0]['value'] = $body;//trim($tempbody->plaintext);

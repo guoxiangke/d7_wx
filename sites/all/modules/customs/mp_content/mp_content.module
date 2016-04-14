@@ -479,7 +479,7 @@ function mp_getwxcontent($link,$weObj=NULL){
   }
   node_object_prepare($node);
   //get title
-  $uid = '1'; //uid of love.
+  $uid = '8'; //uid of love.
   if(isset($weObj)){
     $openid = $weObj->getRev()->getRevFrom();
     $user_info = $weObj->getUserInfo($openid);
