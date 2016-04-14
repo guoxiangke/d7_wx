@@ -204,7 +204,7 @@ function  _publish_mpnews(){
   if(count($plans))
   foreach ($plans as $time) {
     $now = time();
-    if($time > $now+600 || $time < $now+600){//上下10分钟内check
+    if($time < $now-600 || $time < $now+600){//上下10分钟内check
       if(count($uids))
       foreach ($uids as $uid) {
         $nid = variable_get('mp_cron_publish_'.$uid, '0');
