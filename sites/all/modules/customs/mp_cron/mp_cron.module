@@ -139,7 +139,8 @@ function create_mp_cron_nodes(){
   foreach ($exist_media_objs as $obj) {
     $exist_media_ids[] = $obj->id;
   }
-  foreach ($medias['item'] as $key => $media) {
+  $items = array_reverse($medias['item']);
+  foreach ($items as $media) {
     $node = new stdClass();
     $node->type = 'mp_cron';
     node_object_prepare($node);
