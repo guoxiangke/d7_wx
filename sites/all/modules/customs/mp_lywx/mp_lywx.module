@@ -241,8 +241,14 @@ function mp_lywx_wxservice_event_alter($weObj,$event,$account){
 
     if($event['event']=='VIEW'){
       //MP menu!
-    }else{
+    }elseif(isset($event['key'])){
     	mp_lywx_keyword_response($weObj,$event['key'],$account);
+    }elseif($event['event']=='MASSSENDJOBFINISH'){
+      gapushagent('event',array(
+       'category'        => '图片发布',
+       'action'          => '发送成功',
+       'label'           => $account->uid,
+      ));
     }
     return;
   }
