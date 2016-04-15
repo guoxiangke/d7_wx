@@ -215,6 +215,13 @@ function _mp_service_process_event($weObj,$account){
   module_invoke_all('wxservice_event_alter', $weObj,$event,$account);
   if(is_array($weObj->Message(''))){return;}
 
+  if($event['event']=='MASSSENDJOBFINISH'){
+      gapushagent('event',array(
+       'category'        => '图文发布',
+       'action'          => '图文发送成功',
+       'label'           => $account->uid,
+      ));
+  }
   if(!isset($event['key'])){
     if($account->uid>1) gapushagent('event',array(
        'category'        => 'event',
