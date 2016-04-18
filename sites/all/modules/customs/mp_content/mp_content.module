@@ -515,10 +515,12 @@ function mp_getwxcontent($link,$weObj=NULL){
   node_save($node);
   $mp_contents[]  = $ori_title;
   variable_set('mp_contents_'.date('W'), $mp_contents);
+  $node_link = l(t('view'), 'node/' . $node->nid);
+  $watchdog_args = array('@type' => $node->type, '%title' => $node->title);
+  watchdog('mpcontent', '@type: added %title.', $watchdog_args, WATCHDOG_NOTICE, $node_link);
 
   if(isset($weObj))
     $weObj->text("<a href='http://wx.yongbuzhixi.com/node/".$node->nid."'>".$node->title."</a>已发布成功！谢谢！[握手]\n<a href='http://wx.yongbuzhixi.com/node/".$node->nid."/edit'>编辑</a>")->reply();
-  watchdog('ybread', 'created articles form wx'.$node->nid, array(), WATCHDOG_NOTICE, 'link');
 }
 
 function save_mpwechat_node($nickname,$user_name,$hd_head_img,$wechat_profile_qrcode,$wechat_profile_account,$wechat_profile_intro,$link){
