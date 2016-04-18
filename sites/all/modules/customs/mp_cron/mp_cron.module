@@ -156,7 +156,7 @@ function create_mp_cron_nodes(){
       $node->field_redirect_link[LANGUAGE_NONE][]= array('value'=>$item['url']);
       $node->field_link[LANGUAGE_NONE][]= array('value'=>$item['thumb_url']);//image
     }
-    $node->field_date[LANGUAGE_NONE][0]['value'] = date("Y-m-d 18:00:s",time()-86400);
+    $node->field_date[LANGUAGE_NONE][0]['value'] = date("Y-m-d H:i:s",time()-86400);
     $node->title = $node->field_title[LANGUAGE_NONE][0]['value'];
     node_save($node);
     $count++;
