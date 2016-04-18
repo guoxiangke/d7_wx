@@ -3,9 +3,6 @@
 html body.admin-menu{
 	margin-top: 0 !important;
 }
-.nav-tabs{
-  display: none;
-}
 
 #block-block-1{
   display: none;
