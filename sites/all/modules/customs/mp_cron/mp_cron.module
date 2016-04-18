@@ -234,9 +234,11 @@ function  _publish_mpnews(){
           );
           $return = $weObj->sendGroupMassMessage($sendall);
           // $return = $weObj->sendGroupMassMessage($sendall);
-          watchdog($nid.'<=nid mp_cron_send uid=>'.$uid, '<pre>'.print_r($return, 1), array(), WATCHDOG_NOTICE, 'link');
           if($return){
-            watchdog('mpnews', 'Success send mp news'.$node->nid, array(), WATCHDOG_NOTICE, 'link');
+            $node_link = l(t('view'), 'node/' . $node->nid);
+            $watchdog_args = array('@type' => $node->name, '%title' => $node->title);
+            watchdog('autosendmpnews', '@type: %title sent sucess.', $watchdog_args, WATCHDOG_NOTICE, $node_link);
+
             $node->status = 0;
             node_save($node);
             variable_delete('mp_cron_publish_'.$node->uid);
