@@ -160,6 +160,10 @@ function create_mp_cron_nodes(){
     $node->title = $node->field_title[LANGUAGE_NONE][0]['value'];
     node_save($node);
     $count++;
+    $node_link = l(t('view'), 'node/' . $node->nid);
+    $watchdog_args = array('@type' => $node->type, '%title' => $node->title);
+    watchdog('mpcron', '@type: added %title.', $watchdog_args, WATCHDOG_NOTICE, $node_link);
+
   }
   if($count){
     drupal_set_message('本次更新了'.$count.'个图文。', 'status', FALSE);
