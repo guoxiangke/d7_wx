@@ -77,6 +77,11 @@ function mp_service_settings_form(){
       '#value' => '点击更新',
       '#submit' => array('wechat_admin_update_menu_submit'),
     );
+    $form['update_menu']['delete_menu'] = array(
+      '#type' => 'submit',
+      '#value' => '删除菜单',
+      '#submit' => array('wechat_admin_delete_menu_submit'),
+    );
   }
 	$collapsed = FALSE;
 	if(variable_get('wechat_default_message_'.$user->uid, "")) $collapsed = TRUE;
@@ -312,7 +317,18 @@ function wechat_admin_update_menu_submit($form, &$form_state){
   }
   return;
 }
-
+function wechat_admin_delete_menu_submit($form, &$form_state){
+  global $user;
+  $weObj = _mp_service_init_wechat($user);
+  if($weObj->deleteMenu())
+  {
+    drupal_set_message(t('Delete menu success.'));
+  }
+  else{
+    drupal_set_message($weObj->errMsg.'-'.$weObj->errCode, 'error');
+  }
+  return;
+}
 
 
 function _mp_new_menu($user){
