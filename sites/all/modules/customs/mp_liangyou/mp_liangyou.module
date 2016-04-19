@@ -74,17 +74,16 @@ function mp_liangyou_rescources_info(){
 function mp_liangyou_wxresources($resources, $account, $keyword){
   $my_data = &drupal_static(__FUNCTION__);
   if (!isset($my_data)) {
-    if ($cache = cache_get('mp_liangyou_wxresources_'.$keyword)) {
+    if ($cache = cache_get('mp_liangyou_wxresources_'.$account->uid.$keyword)) {
       $my_data = $cache->data;
-    }
-    else {
+    }else {
       $my_data = _mp_liangyou_wxresources($resources, $account, $keyword);
       //cache = 0;永久缓存 cache = 43200;缓存一天／2
       if(isset($my_data['key_'.$keyword]['cache'])){
         if($my_data['key_'.$keyword]['cache']==0){
-          cache_set('mp_liangyou_wxresources_'.$keyword, $my_data, 'cache');
+          cache_set('mp_liangyou_wxresources_'.$account->uid.$keyword, $my_data, 'cache');
         }else{
-          cache_set('mp_liangyou_wxresources_'.$keyword, $my_data, 'cache', time() + $my_data['key_'.$keyword]['cache']);
+          cache_set('mp_liangyou_wxresources_'.$account->uid.$keyword, $my_data, 'cache', time() + $my_data['key_'.$keyword]['cache']);
         }
       }
     }
