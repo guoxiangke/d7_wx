@@ -860,6 +860,10 @@ function get_mp_lts_menu2(){
  * hook_wxrescources
  */
 function mp_lts_wxresources($resources, $account, $keyword){
+  $enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
+  if(!(isset($enabled_resources['mav']) && $enabled_resources['mav'])){
+    return ;
+  }
   $my_data = &drupal_static(__FUNCTION__);
   if (!isset($my_data)) {
     if ($cache = cache_get('mp_lts_wxresources_'.$keyword)) {
@@ -884,157 +888,153 @@ function mp_lts_wxresources($resources, $account, $keyword){
   return $my_data;
 }
 function _mp_getwxresources($resources, $account, $keyword){
-  $enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
-  $resources = &drupal_static(__FUNCTION__);
-  if(!isset($resources)){
-    if(isset($enabled_resources['mav']) && $enabled_resources['mav']){
-      #101-999
-      if(substr($keyword, 0, 1)!='#')return;
-      $subkey = str_replace('#', '', $keyword);
-      $index = substr($subkey, 0, 3);//101-999
-      if(!($index>=100&&$index<=999))return;
+  {
+    #101-999
+    if(substr($keyword, 0, 1)!='#')return;
+    $subkey = str_replace('#', '', $keyword);
+    $index = substr($subkey, 0, 3);//101-999
+    if(!($index>=100&&$index<=999))return;
 
-      $mavs = get_mp_ltsma();
-      if(substr($index, 1)==='00'){
-        if($index==100){
-          $resources['key_'.$keyword]= array(
-              'type'  =>  'text',
-              'cache' =>  0,
-              'obj'   => array(
-                'text'  => get_mp_lts_menu1(),
-              )
-            );
-          return $resources;
-        }
-        if($index==700){
-          $resources['key_'.$keyword]= array(
-              'type'  =>  'text',
-              'cache' =>  0,
-              'obj'   => array(
-                'text'  => get_mp_lts_menu2(),
-              )
-            );
-          return $resources;
-        }
-
-        $num = substr($index,0,1);
-        $begin = $num.'00';
-        $end = $num.'99';
-        $text = '';
-        $add = '★';
-        foreach ($mavs as $key => $mav) {
-          if($key>$begin&&$key<=$end) {
-            if($mav['level']=='本科课程')
-              $add = '✿';
-            if($mav['level']=='进深课程')
-              $add = '☆';
-            if($mav['level']=='专辑课程')
-              $add = '*';
-            $text .= '【#'.$key.'】'.$mav['title'].$add."\n";
-          }
-        }
+    $mavs = get_mp_ltsma();
+    if(substr($index, 1)==='00'){
+      if($index==100){
         $resources['key_'.$keyword]= array(
             'type'  =>  'text',
             'cache' =>  0,
             'obj'   => array(
-              'text'  => $text."【#100】★基础课程✿本科课程\n【#700】☆进深课程\n回复【#".$num."01】收听\n回复【#".$num."010】查看讲义！[ThumbsUp]",
+              'text'  => get_mp_lts_menu1(),
             )
           );
         return $resources;
-
       }
-
-      if(!in_array($index, array_keys($mavs))){
-        //error!编码超出范围！暂时没有，敬请期待！
+      if($index==700){
         $resources['key_'.$keyword]= array(
             'type'  =>  'text',
             'cache' =>  0,
             'obj'   => array(
-              'text'  => "[大哭]编码有误，回复【#100】查看目录！",
+              'text'  => get_mp_lts_menu2(),
             )
           );
         return $resources;
       }
-      $mav = $mavs["$index"];
-      $total = $mav['count'];
-      $level = $mav['level'];
-      $count = substr($subkey, 3);//1-24-30
-      if($count>$total) {//error!编码不对！
-        $resources['key_'.$keyword]= array(
+
+      $num = substr($index,0,1);
+      $begin = $num.'00';
+      $end = $num.'99';
+      $text = '';
+      $add = '★';
+      foreach ($mavs as $key => $mav) {
+        if($key>$begin&&$key<=$end) {
+          if($mav['level']=='本科课程')
+            $add = '✿';
+          if($mav['level']=='进深课程')
+            $add = '☆';
+          if($mav['level']=='专辑课程')
+            $add = '*';
+          $text .= '【#'.$key.'】'.$mav['title'].$add."\n";
+        }
+      }
+      $resources['key_'.$keyword]= array(
           'type'  =>  'text',
           'cache' =>  0,
           'obj'   => array(
-            'text'  => "[大哭]编码有误，超出最大范围！\n回复【#".$index."0】查看讲义！",
+            'text'  => $text."【#100】★基础课程✿本科课程\n【#700】☆进深课程\n回复【#".$num."01】收听\n回复【#".$num."010】查看讲义！[ThumbsUp]",
+          )
+        );
+      return $resources;
+
+    }
+
+    if(!in_array($index, array_keys($mavs))){
+      //error!编码超出范围！暂时没有，敬请期待！
+      $resources['key_'.$keyword]= array(
+          'type'  =>  'text',
+          'cache' =>  0,
+          'obj'   => array(
+            'text'  => "[大哭]编码有误，回复【#100】查看目录！",
+          )
+        );
+      return $resources;
+    }
+    $mav = $mavs["$index"];
+    $total = $mav['count'];
+    $level = $mav['level'];
+    $count = substr($subkey, 3);//1-24-30
+    if($count>$total) {//error!编码不对！
+      $resources['key_'.$keyword]= array(
+        'type'  =>  'text',
+        'cache' =>  0,
+        'obj'   => array(
+          'text'  => "[大哭]编码有误，超出最大范围！\n回复【#".$index."0】查看讲义！",
+        )
+      );
+      return $resources;
+    }
+    if($count==='0'){//获取目录概括+//获取pdf
+      $link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
+      $cdn = 'http://lts33.b0.upaiyun.com/';
+      $etime = time()+864000; // 授权十天后过期
+      $key = 'ly729';   // token 防盗链密钥
+      $path = '/'.$link; // 图片相对路径
+      $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+      $link = $cdn . urlencode($path).'?_upt='.$sign;
+      $temp = @get_headers($link);
+      if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
+        $resources['key_'.$keyword]= array(
+          'type'  =>  'text',
+          'cache' =>  864000,
+          'obj'   => array(
+            'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n回复【#".$index."1】到【#".$index.$total."】获取节目！\n每日获取同步【#".$index."】\n[大哭]本课程暂无讲义哦！",
           )
         );
         return $resources;
       }
-      if($count==='0'){//获取目录概括+//获取pdf
-        $link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
-        $cdn = 'http://lts33.b0.upaiyun.com/';
-        $etime = time()+864000; // 授权十天后过期
-        $key = 'ly729';   // token 防盗链密钥
-        $path = '/'.$link; // 图片相对路径
-        $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-        $link = $cdn . urlencode($path).'?_upt='.$sign;
-        $temp = @get_headers($link);
-        if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
-          $resources['key_'.$keyword]= array(
-            'type'  =>  'text',
-            'cache' =>  864000,
-            'obj'   => array(
-              'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n回复【#".$index."1】到【#".$index.$total."】获取节目！\n每日获取同步【#".$index."】\n[大哭]本课程暂无讲义哦！",
-            )
-          );
-          return $resources;
-        }
-        $resources['key_'.$keyword]= array(
-            'type'  =>  'text',
-            'cache' =>  864000,
-            'obj'   => array(
-              'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》带阅读器的讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》点此查看讲义</a>",
-            )
-          );
-        return $resources;
-      }
-      $update = '';
-      if($count===FALSE) {
-        $count = date('z')%$total;//按顺序循环播出，每天一集！
-        ++$count;
-        $update = ' 每日更新';
-      }
-      $rep = str_pad($count, 2,'0',STR_PAD_LEFT);
-      $link = 'new/'.$level.'/'.$mav['title'].'/ma'.$mav['prefex'].$rep.'.mp3';
-      // watchdog('$link', $link, array(), WATCHDOG_NOTICE, 'link');
-      // $etime = time()+86400; // 授权1天后过期
-      // $key = 'ly729';   // token 防盗链密钥
-      $path = '/'.$link; // 图片相对路径
-      // $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-
-      $cdn = 'http://lts33.b0.upaiyun.com/';
-      $link = $cdn . urlencode($link);//.'?_upt='.$sign;
-      // $temp = @get_headers($link);
-      // if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
-      //   $resources['key_'.$keyword]= array(
-      //     'type'  =>  'text',
-      //     'obj'   => array(
-      //       'text'  => "[大哭]本课程还没有开放哦！",
-      //     )
-      //   );
-      //   return $resources;
-      // }
       $resources['key_'.$keyword]= array(
-        'type'  =>  'music',
-        'path' =>  $path,
-        'cache' =>  0,
-        'obj'   => array(
-          'title' => '【'.$keyword.'】'.$mav['title'].'-'.$rep,
-          'desc'  =>  "点击►收听".$update." 良院".str_replace('课程', '', $level) ." 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' 技术支持:'.($account->uid==255?'永不止息':'主内公众云'),
-          'musicurl'  =>  $link,
-          'hgmusicurl'  =>  $link,
-        ),
-      );
+          'type'  =>  'text',
+          'cache' =>  864000,
+          'obj'   => array(
+            'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》带阅读器的讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》点此查看讲义</a>",
+          )
+        );
       return $resources;
     }
+    $update = '';
+    if($count===FALSE) {
+      $count = date('z')%$total;//按顺序循环播出，每天一集！
+      ++$count;
+      $update = ' 每日更新';
+    }
+    $rep = str_pad($count, 2,'0',STR_PAD_LEFT);
+    $link = 'new/'.$level.'/'.$mav['title'].'/ma'.$mav['prefex'].$rep.'.mp3';
+    // watchdog('$link', $link, array(), WATCHDOG_NOTICE, 'link');
+    // $etime = time()+86400; // 授权1天后过期
+    // $key = 'ly729';   // token 防盗链密钥
+    $path = '/'.$link; // 图片相对路径
+    // $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
+
+    $cdn = 'http://lts33.b0.upaiyun.com/';
+    $link = $cdn . urlencode($link);//.'?_upt='.$sign;
+    // $temp = @get_headers($link);
+    // if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
+    //   $resources['key_'.$keyword]= array(
+    //     'type'  =>  'text',
+    //     'obj'   => array(
+    //       'text'  => "[大哭]本课程还没有开放哦！",
+    //     )
+    //   );
+    //   return $resources;
+    // }
+    $resources['key_'.$keyword]= array(
+      'type'  =>  'music',
+      'path' =>  $path,
+      'cache' =>  0,
+      'obj'   => array(
+        'title' => '【'.$keyword.'】'.$mav['title'].'-'.$rep,
+        'desc'  =>  "点击►收听".$update." 良院".str_replace('课程', '', $level) ." 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' 技术支持:'.($account->uid==255?'永不止息':'主内公众云'),
+        'musicurl'  =>  $link,
+        'hgmusicurl'  =>  $link,
+      ),
+    );
+    return $resources;
   }
 }
