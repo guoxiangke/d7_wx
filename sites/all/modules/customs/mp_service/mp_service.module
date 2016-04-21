@@ -130,14 +130,18 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $weObj->news($new);
         break;
     }
-    if($account->uid>1) gapushagent('event',array(
-       'category'        => $wxresources[$keyword]['type'],
-       'action'          => isset($wxresources[$keyword]['gakey'])?$wxresources[$keyword]['gakey']:$ori_keyword,
-       'label'           => 'wxservice_'.$account->uid,
-     ));
+    if(isset($wxresources[$keyword]['gadata'])){
+      gapushagent('event',$wxresources[$keyword]['gadata']);
+    }else{
+      gapushagent('event',array(
+         'category'        => $wxresources[$keyword]['type'],
+         'action'          => isset($wxresources[$keyword]['gakey'])?$wxresources[$keyword]['gakey']:$ori_keyword,
+         'label'           => 'wxservice_'.$account->uid,
+       ));
+    }
     return;
   }
-  //menuGet....
+  //TODO need delete ??? menuGet....
   $special_keywords = array('?','1','0');
   if(in_array($ori_keyword, $special_keywords)){
     $copyright = copyright($account);

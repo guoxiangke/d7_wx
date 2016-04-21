@@ -74,7 +74,7 @@ function mp_liangyou_rescources_info(){
 function mp_liangyou_wxresources($resources, $account, $keyword){
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
 	if(!(isset($enabled_resources['ly2']) && $enabled_resources['ly2'])){
-		return;
+		return $resources;
 	}
   $my_data = &drupal_static(__FUNCTION__);
   if (!isset($my_data)) {
