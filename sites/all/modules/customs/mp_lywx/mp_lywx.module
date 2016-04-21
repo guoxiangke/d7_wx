@@ -90,6 +90,7 @@ function mp_lywx_rescources_info(){
  * @return [type]            [description]
  */
 function  mp_lywx_wxresources($resources, $account, $keyword){
+  if(!$keyword||!is_string($keyword)) return;
   $enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   if(!(isset($enabled_resources['ly']) && $enabled_resources['ly'])){
     return;
@@ -122,7 +123,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword){
   // 101-901
 	if(in_array($keyword, array_keys($liangyou_audio_list))){
     $lywx = (int)$keyword;
-    if($lywx!=$keyword) {//TODO: 101,102,103!
+    if("$lywx"!="$keyword") {//TODO: 101,102,103!
       $text = '亲爱的知音人，请一次只发一个节目代码，谢谢!';
       $resources['key_'.$keyword] = array(
         'type'  =>  'text',
@@ -294,7 +295,6 @@ function mp_lywx_wxservice_event_alter($weObj,$event,$account){
   if(isset($event['key'])){
     mp_service_keyword_response($weObj,$event['key'],$account);
   }
-  watchdog('event', '<pre>'.print_r($event, 1), array(), WATCHDOG_NOTICE, 'link');
   switch ($event['event']) {
     case 'subscribe':
       $weObj->text("亲爱的朋友，你好！感谢你关注良友电台官方订阅号“良友知音”！\n".lywx_menu());
@@ -315,7 +315,14 @@ function mp_lywx_wxservice_event_alter($weObj,$event,$account){
       gapushagent('event',array(
        'category'        => 'lywxother',
        'action'          => '菜单浏览',
-       'label'           => $account->uid,
+       'label'           => $event['key'],
+      ));
+      break;
+    case 'CLICK'://MP menu!
+      gapushagent('event',array(
+       'category'        => 'lywxother',
+       'action'          => '菜单点击',
+       'label'           => $event['key'],
       ));
       break;
     case 'MASSSENDJOBFINISH'://图文发送成功
