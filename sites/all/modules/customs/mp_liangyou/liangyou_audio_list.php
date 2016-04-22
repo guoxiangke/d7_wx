@@ -39,8 +39,6 @@ function liangyou_audio_list2(){
     return  array(
     'ib'=>array(
       'title' =>'无限飞行号',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcjm-3b2p38',
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>601,
@@ -50,8 +48,6 @@ function liangyou_audio_list2(){
       ),
     'im'=>array(
       'title' =>'i关怀心磁场',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njchy-3b2ozw',
       'prefix'=>$prefix['32'],
       'day'=>'74',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>602,//74 周五周六无,
@@ -61,8 +57,6 @@ function liangyou_audio_list2(){
       ),
     'cc'=>array(
       'title' =>'空中辅导',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njci2-3b2p04',
       'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>603,
@@ -72,8 +66,6 @@ function liangyou_audio_list2(){
       ),
     'se'=>array(
       'title' =>'恋爱季节',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njci0-3b2p00',
       'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>604,
@@ -85,8 +77,6 @@ function liangyou_audio_list2(){
       ),
     'bf'=>array(
       'title' =>'幸福满家园',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njci6-3b2p0c',
       'prefix'=>$prefix['33'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>605,
@@ -96,8 +86,6 @@ function liangyou_audio_list2(){
       ),
     'up'=>array(
       'title' =>'亲情不断电',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcil-3b2p16',
       'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>606,
@@ -107,8 +95,6 @@ function liangyou_audio_list2(){
       ),
     'hg'=>array(
       'title' =>'欢乐卡恰碰',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njci4-3b2p08',
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>607,
@@ -119,8 +105,6 @@ function liangyou_audio_list2(){
       ),
     'yu'=>array(
       'title' =>'绝妙当家',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njchx-3b2ozu',
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>608,
@@ -131,8 +115,6 @@ function liangyou_audio_list2(){
       ),
     'fc'=>array(
       'title' =>'微播出炉',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcm0-3b2p80',
       'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>609,
@@ -142,8 +124,6 @@ function liangyou_audio_list2(){
       ),
     'gv'=>array(
       'title' =>'生活无国界',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njci3-3b2p06',
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>610,
@@ -153,8 +133,6 @@ function liangyou_audio_list2(){
       ),
     'zz'=>array(
       'title' =>'零点零距离',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njciw-3b2p1s',
       'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>611,
@@ -164,8 +142,6 @@ function liangyou_audio_list2(){
       ),
     'bc'=>array(
       'title' =>'书香园地',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njci1-3b2p02',
       'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>612,
@@ -176,8 +152,6 @@ function liangyou_audio_list2(){
       ),
     'ir'=>array(
       'title' =>'iradio爱广播',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njchu-3b2ozo',
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>613,
@@ -187,8 +161,6 @@ function liangyou_audio_list2(){
       ),
     'rt'=>array(
       'title' =>'今夜心未眠',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcia-3b2p0k',
       'prefix'=>$prefix['32'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>614,
@@ -198,8 +170,6 @@ function liangyou_audio_list2(){
       ),
     'tr'=>array(
       'title' =>'彩虹桥',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njchv-3b2ozq',
       'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>615,
@@ -209,8 +179,6 @@ function liangyou_audio_list2(){
       ),
     'ws'=>array(
       'title' =>'长夜的牵引',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njci9-3b2p0i',
       'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>616,
@@ -220,8 +188,6 @@ function liangyou_audio_list2(){
       ),
     'gn'=>array(
       'title' =>'现代人的希望',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcif-3b2p0u',
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>617,
@@ -232,8 +198,6 @@ function liangyou_audio_list2(){
       ),
     'ns'=>array(
       'title' =>'生命的四季',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njciu-3b2p1o',
       'prefix'=>$prefix['33'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>618,
@@ -243,8 +207,6 @@ function liangyou_audio_list2(){
       ),
     'ee'=>array(
       'title' =>'拥抱每一天',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njchw-3b2ozs',
       'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>619,
@@ -254,8 +216,6 @@ function liangyou_audio_list2(){
       ),
     'mw'=>array(
       'title' =>'旷野吗哪',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcly-3b2p7w',
       'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>620,
@@ -266,8 +226,6 @@ function liangyou_audio_list2(){
       ),
     'be'=>array(
       'title' =>'真道分解',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcik-3b2p14',
       'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>621,
@@ -277,8 +235,6 @@ function liangyou_audio_list2(){
       ),
     'bs'=>array(
       'title' =>'圣言盛宴',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njci8-3b2p0g',
       'prefix'=>$prefix['33'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>622,
@@ -289,8 +245,6 @@ function liangyou_audio_list2(){
       ),
     'cw'=>array(
       'title' =>'齐来颂扬',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njchz-3b2ozy',
       'prefix'=>$prefix['33'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>623,
@@ -301,8 +255,6 @@ function liangyou_audio_list2(){
       ),
     'tg'=>array(
       'title' =>'施恩座前',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njclc-3b2p6o',
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>624,
@@ -312,8 +264,6 @@ function liangyou_audio_list2(){
       ),
     'th'=>array(
       'title' =>'真理之光',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcjh-3b2p2y',
       'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>625,
@@ -323,8 +273,6 @@ function liangyou_audio_list2(){
       ),
     'pb'=>array(
       'title' =>'接棒人',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcj9-3b2p2i',
       'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>626,
@@ -334,8 +282,6 @@ function liangyou_audio_list2(){
       ),
     'hw'=>array(
       'title' =>'聆听主道',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njciy-3b2p1w',
       'prefix'=>$prefix['33'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>627,
@@ -345,8 +291,6 @@ function liangyou_audio_list2(){
       ),
     'aw'=>array(
       'title' =>'空中崇拜',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcir-3b2p1i',
       'prefix'=>$prefix['33'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>628,
@@ -357,8 +301,6 @@ function liangyou_audio_list2(){
       ),
     'yp'=>array(
       'title' =>'善牧良言',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njciz-3b2p1y',
       'prefix'=>$prefix['33'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>629,
@@ -368,8 +310,6 @@ function liangyou_audio_list2(){
       ),
     'gsa'=>array(
       'title' =>'好牧人',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcix-3b2p1u',
       'prefix'=>$prefix['33'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>630,
@@ -379,8 +319,6 @@ function liangyou_audio_list2(){
       ),
     'ba'=>array(
       'title' =>'经动人心',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcis-3b2p1k',
       'prefix'=>$prefix['33'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>631,
@@ -390,8 +328,6 @@ function liangyou_audio_list2(){
       ),
     'bm'=>array(
       'title' =>'佳美脚踪',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcl2-3b2p64',
       'prefix'=>$prefix['33'],
       'day'=>'6',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>632,
@@ -401,8 +337,6 @@ function liangyou_audio_list2(){
       ),
     'hd'=>array(
       'title' =>'蓝天绿洲',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcit-3b2p1m',
       'prefix'=>$prefix['33'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>633,
@@ -412,8 +346,6 @@ function liangyou_audio_list2(){
       ),
     'sr'=>array(
       'title' =>'给力人生',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcj7-3b2p2e',
       'prefix'=>$prefix['33'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>634,
@@ -423,8 +355,6 @@ function liangyou_audio_list2(){
       ),
     'dp'=>array(
       'title' =>'空中门训',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcja-3b2p2k',
       'prefix'=>$prefix['33'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>635,
@@ -434,8 +364,6 @@ function liangyou_audio_list2(){
       ),
     'bb'=>array(
       'title' =>'生根建造',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcj5-3b2p2a',
       'prefix'=>$prefix['33'],
       'day'=>'135',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>636,
@@ -445,8 +373,6 @@ function liangyou_audio_list2(){
       ),
     'tu'=>array(
       'title' =>'信仰百宝箱',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcj8-3b2p2g',
       'prefix'=>$prefix['33'],
       'day'=>'135',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>637,
@@ -456,8 +382,6 @@ function liangyou_audio_list2(){
       ),
     'iv'=>array(
       'title' =>'生活之光',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcjc-3b2p2o',
       'prefix'=>$prefix['33'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>638,
@@ -467,8 +391,6 @@ function liangyou_audio_list2(){
       ),
     'gl'=>array(
       'title' =>'生命的福音',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcjb-3b2p2m',
       'prefix'=>$prefix['33'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>639,
@@ -478,8 +400,6 @@ function liangyou_audio_list2(){
       ),
     'mp'=>array(
       'title' =>'这一刻清心',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcld-3b2p6q',
       'prefix'=>$prefix['32'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>640,
@@ -489,8 +409,6 @@ function liangyou_audio_list2(){
       ),
     'ds'=>array(
       'title' =>'晨曦讲座',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcji-3b2p30',
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>646,
@@ -500,8 +418,6 @@ function liangyou_audio_list2(){
       ),
     'vx'=>array(
       'title' =>'良院精选',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njclb-3b2p6m',
       'prefix'=>$prefix['32'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>647,
@@ -511,8 +427,6 @@ function liangyou_audio_list2(){
       ),
     'wa'=>array(
       'title' =>'天路导向',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcj3-3b2p26',
       'prefix'=>$prefix['32'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>648,
@@ -522,8 +436,6 @@ function liangyou_audio_list2(){
       ),
     'cwa'=>array(
       'title' =>'天路导向粤',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcj2-3b2p24',
       'prefix'=>$prefix['32'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>649,
@@ -533,8 +445,6 @@ function liangyou_audio_list2(){
       ),
     'gt'=>array(
       'title' =>'恩典与真理',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcj0-3b2p20',
       'prefix'=>$prefix['32'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>650,
@@ -544,8 +454,6 @@ function liangyou_audio_list2(){
       ),
     'ynf'=>array(
       'title' =>'爱在人间',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njcj1-3b2p22',
       'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>651,
@@ -555,8 +463,6 @@ function liangyou_audio_list2(){
       ),
     'ls'=>array(
       'title' =>'燃亮的一生',
-      'bce' => 1,
-      'txly'=>'http://www.txly1.net/program/1njclz-3b2p7y',
       'prefix'=>$prefix['32'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>652,
@@ -566,8 +472,6 @@ function liangyou_audio_list2(){
       ),
     'tp'=>array(
       'title' =>'真理与柱石',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcik-3b2p14?',
       'prefix'=>$prefix['33'],
       'day'=>'5',//????
       'index'=>654,
@@ -577,8 +481,6 @@ function liangyou_audio_list2(){
       ),
     'hdb'=>array(
       'title' =>'蔚蓝心情',
-      'bce' => 0,
-      'txly'=>'http://www.txly1.net/program/1njcik-3b2p14?',
       'prefix'=>$prefix['33'],
       'day'=>'5',//????
       'index'=>655,
@@ -588,8 +490,6 @@ function liangyou_audio_list2(){
       ),
     'sg'=>array(
       'title' =>'津津乐道',
-      'bce' => 0,
-      'txly'=>'http://www.txly2.net/sg',
       'prefix'=>$prefix['33'],
       'day'=>'5',//????
       'index'=>656,
