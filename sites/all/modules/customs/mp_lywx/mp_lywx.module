@@ -90,7 +90,7 @@ function mp_lywx_rescources_info(){
  * @return [type]            [description]
  */
 function  mp_lywx_wxresources($resources, $account, $keyword){
-  if(!$keyword||!is_string($keyword)) return;
+  if(!is_string($keyword)) return;//!$keyword||
   $enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   if(!(isset($enabled_resources['ly']) && $enabled_resources['ly'])){
     return;
@@ -220,15 +220,23 @@ function _mp_lywx_wxresources($resources, $account, $keyword){
 			$offset++;
 		}
 	}
-	// $allowkeywords = array('节目','听节目','?');
-	// if(in_array($keyword, $allowkeywords)){
-	// 	$weObj->text(lywx_menu())->reply();
-	// 	gapushagent('event',array(
-	//    'category'        => 'lywxother',
-	//    'action'          => $keyword,
-	//    'label'           => 'menu get',
-	//   ));
-	// }
+
+	$allowkeywords = array('0');
+	if(in_array($keyword, $allowkeywords)){
+    $resources['key_'.$keyword] = array(
+      'type'  =>  'text',
+      'gadata' => array(
+       'category'        => 'lywxother',
+       'action'          => 'menu get',
+       'label'           => $keyword,
+       ),
+      'cache' =>  0,
+      'obj'   => array(
+        'text'  => lywx_menu(),
+      )
+    );
+    return $resources;
+	}
 
 	$allowkeywords = array('消息','?');
 	if(preg_match('/^([a-zA-Z])+/', $keyword)||in_array($keyword, $allowkeywords)){
