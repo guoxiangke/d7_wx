@@ -58,7 +58,7 @@
              // downscroll code
              if(st>=49){
               $('#navbar').hide();
-              $('.authorinfo .top').css({"top":"0","position": "fixed","background": "#fff","width": "100%","left": "13px","padding": "10px 0 0 3%"});
+              $('.authorinfo .top').css({"top":"0","position": "fixed","background": "#fff","width": "100%","left": "13px","padding": "10px 10% 0 3%"});
              }
          } else {
             console.log('upscroll:'+st)
