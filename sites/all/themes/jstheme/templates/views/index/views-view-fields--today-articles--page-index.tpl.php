@@ -45,11 +45,11 @@
     <?php print $fields['title']->wrapper_suffix; ?>
   </div>
   <div class=list-footer>
-    <?php print $fields['totalcount']->wrapper_prefix; ?>
-      <?php print $fields['totalcount']->label_html; ?>
-      <?php print $fields['totalcount']->content; ?>
-    <?php print $fields['totalcount']->wrapper_suffix; ?>
-    · 评论 <span class="commentcount">25</span> · 喜欢 <span class="favcount">100</span>
+    <?php print $fields['comment_count']->wrapper_prefix; ?>
+      <?php print $fields['comment_count']->label_html; ?>
+      <?php print $fields['comment_count']->content; ?>
+    <?php print $fields['comment_count']->wrapper_suffix; ?>
+    · 阅读 <span class="commentcount">255</span> · 喜欢 <span class="favcount">100</span>
   </div>
 </div>
 <div class="col-xs-3 col-sm-3">
