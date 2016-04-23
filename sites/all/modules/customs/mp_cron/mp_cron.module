@@ -156,7 +156,7 @@ function create_mp_cron_nodes(){
       $node->field_redirect_link[LANGUAGE_NONE][]= array('value'=>$item['url']);
       $node->field_link[LANGUAGE_NONE][]= array('value'=>$item['thumb_url']);//image
     }
-    $node->field_date[LANGUAGE_NONE][0]['value'] = date("Y-m-d H:i:s",time()-86400);
+    $node->field_date[LANGUAGE_NONE][0]['value'] = time()-3600;
     $node->title = $node->field_title[LANGUAGE_NONE][0]['value'];
     node_save($node);
     $count++;
@@ -172,33 +172,40 @@ function create_mp_cron_nodes(){
   }
   drupal_goto('mp-cron');
 }
-
+/**
+ * [_get_need_publish_After this time!]
+ * @return [type] [description]
+ */
 function  _get_need_publish_this_hour_nodes(){
   $nodes = db_query("SELECT node.nid AS nid, node.uid AS uid, field_data_field_date.field_date_value AS plan_time, node.status AS node_status, node.created AS node_created
       FROM
       {node} node
       LEFT JOIN {field_data_field_date} field_data_field_date ON node.nid = field_data_field_date.entity_id AND (field_data_field_date.entity_type = 'node' AND field_data_field_date.deleted = '0')
-      WHERE (( (node.type IN  ('mp_cron')) AND (node.status=1) AND (field_data_field_date.field_date_value LIKE '%".date('m-d')."%') ))
+      WHERE (( (node.type IN  ('mp_cron')) AND (node.status=1) AND (field_data_field_date.field_date_value >=".time().") ))
       ORDER BY node_created DESC
       LIMIT 50 OFFSET 0")->fetchAll();
-  //每天执行一次！设置uid的nid 如果已发布，设置 node->status = 0;
   // dpm($nodes);
   // dpm(variable_get('mp_cron_publish_8'));
-  $times = variable_get('mp_cron_publish_plan', array());
-  $uids = variable_get('mp_cron_publish_uids', array());
+  // $times = variable_get('mp_cron_publish_plan', array());
+  // $uids = variable_get('mp_cron_publish_uids', array());
   // dpm($times);
   // dpm($uids);
   $uids = array();
   $times = array();
   foreach ($nodes as $key => $node) {
     if(in_array($node->uid, $uids)) continue;//每个uid每天只发一个
+    // variable_delete('mp_cron_publish_'.$node->uid);//debug!
+    if($node->nid==variable_get('mp_cron_publish_'.$node->uid,0)) continue; //如果已经存在
     variable_set('mp_cron_publish_'.$node->uid, $node->nid);
     $uids[]=$node->uid;
-    $time = strtotime($node->plan_time.' UTC+8');//0000-04-12 11:45:00 UTC+8 =>1460634300
+    $time = $node->plan_time;//strtotime(.' UTC+8');//0000-04-12 11:45:00 UTC+8 =>1460634300
     $times[] = $time;
+    $node_link = l(t('view'), 'node/' . $node->nid);
+    $watchdog_args = array('%time' => date('m/d H:i',$node->plan_time), '@nid' => $node->nid, '@uid' => $node->uid);
+    watchdog('autosendmpnews', '%time set var user: @uid of nid: @nid', $watchdog_args, WATCHDOG_NOTICE, $node_link);
   }
-  variable_set('mp_cron_publish_uids', $uids);
-  variable_set('mp_cron_publish_plan', $times);
+  if($uids) variable_set('mp_cron_publish_uids', $uids);
+  if($times) variable_set('mp_cron_publish_plan', $times);
   // return  'ee';
   header('Content-type: application/json');
   print '[{"end":"get_need_publish_this_hour_nodes called"}]';
