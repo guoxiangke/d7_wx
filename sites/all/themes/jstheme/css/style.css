@@ -32,6 +32,10 @@ body {
 }
 /*logo top begin*/
 
+.authorinfo .followwx{
+  display: none;
+}
+
 @media screen and (max-width: 768px){
 	.navbar-header{
 	  top: 0;
@@ -129,8 +133,51 @@ body {
 	section.col-sm-9{
 		padding-top: 25px;
 	}
-}
 
+  .user-picture{
+    max-width: 35px;
+  }
+  .submitted{
+    line-height: 35px;
+    font-size: 12px;
+    font-style: normal;
+  }
+  .submitted .label {
+    background: none;
+    border: 1px solid #e78170;
+    color: #e78170;
+    text-shadow: none;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1;
+    vertical-align: baseline;
+    display: inline-block;
+    padding: 2px 4px;
+    margin: 0 5px;
+  }
+  .submitted .username {
+    margin-right: 5px;
+  }
+  .authorinfo .followwx{
+    padding: 2px 4px;
+    float: right;
+    font-size: 12px;
+    margin-top: 6px;
+    display: block;
+  }
+  .authorinfo .followwx a{
+    text-decoration: none;
+    color: #fff;
+    font-size: 12px;
+  }
+  .followwx span{
+    margin-left: 3px;
+  }
+  h1.page-header{
+    display: none;
+  }
+
+}
 /*end*/
 a {
   color: #555555;

@@ -79,14 +79,28 @@
  */
 ?>
 <?php if(!empty($body)): ?>
-<article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>> <?php print $user_picture; ?> <?php print render($title_prefix); ?>
-  <?php if (!$page): ?>
-  <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
-  <?php endif; ?>
-  <?php print render($title_suffix); ?>
+<article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+  <header class="authorinfo">
   <?php if ($display_submitted): ?>
-  <div class="submitted"> <?php print $submitted; ?> </div>
+  <div class="clearfix top">
+    <?php print $user_picture; ?>
+    <div class="submitted"><span class="label">来源</span><?php print $submitted; ?> </div>
+
+    <?php $wxfocuslink = variable_get('mp_config_default_url_'.$uid, "");
+      if($wxfocuslink):
+    ?>
+    <div class="btn btn-small btn-success followwx">
+      <a href="<?php echo $wxfocuslink;?>"><i class="glyphicon glyphicon-share-alt"></i><span>添加关注</span></a>
+    </div>
+    <?php endif;?>
+  </div>
   <?php endif; ?>
+  <?php if(1||$page): ?>
+    <?php print render($title_prefix); ?>
+    <h2 class="page-header"><?php print $title; ?></h2>
+    <?php print render($title_suffix); ?>
+  <?php endif; ?>
+  </header>
   <div class="content"<?php print $content_attributes; ?>>
     <?php
       //

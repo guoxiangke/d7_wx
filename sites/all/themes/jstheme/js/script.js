@@ -50,15 +50,29 @@
       });
       $('.rate-widget-1').hide();
 
+
+      var lastScrollTop = 0;
+      $(window).scroll(function(event){
+         var st = $(this).scrollTop();
+         if (st > lastScrollTop){
+             // downscroll code
+             if(st>=49){
+              $('#navbar').hide();
+              $('.authorinfo .top').css({"top":"0","position": "fixed","background": "#fff","width": "93%","left": "13px","padding-top": "10px"});
+             }
+         } else {
+            console.log('upscroll:'+st)
+            // upscroll code
+            if(st<30){
+              $('#navbar').slideDown(800);
+            }
+         }
+         lastScrollTop = st;
+      });
+
+
     }
   }
-
-
-
-  $("select option").each(function(){
-      // Add to your list
-      console.log( $(this).val());
-  });
 
 
 })(jQuery);
