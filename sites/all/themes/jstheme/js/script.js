@@ -40,6 +40,8 @@
       }
     );
 
+
+
   });
 
   Drupal.behaviors.jstheme = {
@@ -61,7 +63,6 @@
               $('.authorinfo .top').css({"top":"0","position": "fixed","background": "#fff","width": "100%","left": "13px","padding": "10px 10% 0 3%"});
              }
          } else {
-            console.log('upscroll:'+st)
             // upscroll code
             if(st<30){
               $('#navbar').slideDown(800);
@@ -71,6 +72,33 @@
          lastScrollTop = st;
       });
 
+
+
+       //go to top
+      $("body").append("<a href='#' id='sbq_gototop'></a>");
+
+      $(function() {
+        if ($(window).scrollTop() > 100) {
+          $("#sbq_gototop").show();
+        } else {
+          $("#sbq_gototop").hide();
+        }
+        //scroll show hide
+        $(window).scroll(function() {
+          if ($(window).scrollTop() > 100) {
+            $("#sbq_gototop").fadeIn(100);
+          } else {
+            $("#sbq_gototop").fadeOut(50);
+          }
+        });
+        //btn
+        $("#sbq_gototop").click(function() {
+          $('body,html').animate({
+            scrollTop : 0
+          }, 500);
+          return false;
+        });
+      });
 
     }
   }
