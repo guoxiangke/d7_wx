@@ -35,7 +35,23 @@ body {
 .authorinfo .followwx{
   display: none;
 }
+.authorinfo h2{
+  display: none;
+}
 
+  .submitted .label {
+    background: none;
+    border: 1px solid #e78170;
+    color: #e78170;
+    text-shadow: none;
+    font-size: 11px;
+    font-weight: normal;
+    line-height: 1;
+    vertical-align: baseline;
+    display: inline-block;
+    padding: 2px 4px;
+    margin: 0 5px;
+  }
 @media screen and (max-width: 768px){
 	.navbar-header{
 	  top: 0;
@@ -142,19 +158,6 @@ body {
     font-size: 12px;
     font-style: normal;
   }
-  .submitted .label {
-    background: none;
-    border: 1px solid #e78170;
-    color: #e78170;
-    text-shadow: none;
-    font-size: 11px;
-    font-weight: normal;
-    line-height: 1;
-    vertical-align: baseline;
-    display: inline-block;
-    padding: 2px 4px;
-    margin: 0 5px;
-  }
   .submitted .username {
     margin-right: 5px;
   }
@@ -193,6 +196,7 @@ article .user-picture,
 article .submitted{
   display: inline-block;
   float: left;
+  line-height: 50px;
 }
 article .user-picture img {
     border-radius: 50%;

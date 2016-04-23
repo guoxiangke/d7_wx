@@ -58,13 +58,14 @@
              // downscroll code
              if(st>=49){
               $('#navbar').hide();
-              $('.authorinfo .top').css({"top":"0","position": "fixed","background": "#fff","width": "93%","left": "13px","padding-top": "10px"});
+              $('.authorinfo .top').css({"top":"0","position": "fixed","background": "#fff","width": "100%","left": "13px","padding": "10px 0 0 3%"});
              }
          } else {
             console.log('upscroll:'+st)
             // upscroll code
             if(st<30){
               $('#navbar').slideDown(800);
+              $('.authorinfo .top').removeAttr('style');
             }
          }
          lastScrollTop = st;
