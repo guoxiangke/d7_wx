@@ -27,6 +27,11 @@
 ?>
 <div class="col-xs-9 col-sm-9">
   <p class=list-top>
+    <?php print $fields['type']->wrapper_prefix; ?>
+      <?php print $fields['type']->label_html; ?>
+      <?php print $fields['type']->content; ?>
+    <?php print $fields['type']->wrapper_suffix; ?>
+
     <?php print $fields['field_term']->wrapper_prefix; ?>
       <?php print $fields['field_term']->label_html; ?>
       <?php print $fields['field_term']->content; ?>
