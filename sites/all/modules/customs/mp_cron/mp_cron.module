@@ -195,7 +195,7 @@ function  _get_need_publish_this_hour_nodes(){
   foreach ($nodes as $key => $node) {
     if(in_array($node->uid, $uids)) continue;//每个uid每天只发一个
     // variable_delete('mp_cron_publish_'.$node->uid);//debug!
-    if($node->nid==variable_get('mp_cron_publish_'.$node->uid,0)) continue; //如果已经存在
+    // if($node->nid==variable_get('mp_cron_publish_'.$node->uid,0)) continue; //如果已经存在
     variable_set('mp_cron_publish_'.$node->uid, $node->nid);
     $uids[]=$node->uid;
     $time = $node->plan_time;//strtotime(.' UTC+8');//0000-04-12 11:45:00 UTC+8 =>1460634300
