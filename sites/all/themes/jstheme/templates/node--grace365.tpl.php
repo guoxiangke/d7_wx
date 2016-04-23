@@ -89,20 +89,15 @@
   <?php endif; ?>
   <div class="content"<?php print $content_attributes; ?>>
     <?php
-      // 
-
       $field_updated  = db_query('SELECT field_updated_value FROM {field_data_field_updated} WHERE entity_id = :nid', array(':nid' => $node->nid))->fetchField();
-      
-     
-      if($field_updated != '1'){
-        print render($content['field_image']);
-      }else{
-        hide($content['field_image']);
-      }
-      
 
-  if(isset($node->field_mp3url[LANGUAGE_NONE][0])){
-    ?>    
+      // if($field_updated != '1'){
+        print render($content['field_image']);
+      // }else{
+        // hide($content['field_image']);
+      // }
+  if($view_mode=='full' && isset($node->field_mp3url[LANGUAGE_NONE][0])){
+    ?>
    <div class="audio-wrapper">
         <div id="demo" class="audio state-stop" role="application" aria-label="media player">
             <div class="play-control control">
@@ -170,11 +165,11 @@
   </div>
   <?php print render($content['links']); ?>
   <?php if($view_mode == 'full'):?>
-    <?php 
+    <?php
       include('prev-next-post.php');
       include('wx_bottom.php');
     ?>
   <?php endif;?>
-  <?php print render($content['comments']); ?> 
+  <?php print render($content['comments']); ?>
 </article>
 <?php endif; ?>

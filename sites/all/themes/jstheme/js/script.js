@@ -52,26 +52,26 @@
       });
       $('.rate-widget-1').hide();
 
-
-      var lastScrollTop = 0;
-      $(window).scroll(function(event){
-         var st = $(this).scrollTop();
-         if (st > lastScrollTop){
-             // downscroll code
-             if(st>=49){
-              $('#navbar').hide();
-              $('.authorinfo .top').css({"top":"0","position": "fixed","background": "#fff","width": "100%","left": "13px","padding": "10px 10% 0 3%"});
-             }
-         } else {
-            // upscroll code
-            if(st<30){
-              $('#navbar').slideDown(800);
-              $('.authorinfo .top').removeAttr('style');
-            }
-         }
-         lastScrollTop = st;
-      });
-
+      if($('.authorinfo').length){
+        var lastScrollTop = 0;
+        $(window).scroll(function(event){
+           var st = $(this).scrollTop();
+           if (st > lastScrollTop){
+               // downscroll code
+               if(st>=49){
+                $('#navbar').hide();
+                $('.authorinfo .top').css({"top":"0","position": "fixed","background": "#fff","width": "100%","left": "13px","padding": "10px 10% 0 3%"});
+               }
+           } else {
+              // upscroll code
+              if(st<30){
+                $('#navbar').slideDown(800);
+                $('.authorinfo .top').removeAttr('style');
+              }
+           }
+           lastScrollTop = st;
+        });
+      }
 
 
        //go to top

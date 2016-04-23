@@ -511,7 +511,8 @@ function mp_getwxcontent($link,$weObj=NULL){
     $node->field_mp3url[LANGUAGE_NONE][0]['value']=$voice_url;
   if(isset($video_url)){
     $node->field_video_url[LANGUAGE_NONE][0]['value']=$video_url;
-    $node->field_updated[LANGUAGE_NONE][0]['value']=1;
+    if($node->type!=='grace365')
+      $node->field_updated[LANGUAGE_NONE][0]['value']=1;
   }
   if(isset($tid))
     $node->field_term[LANGUAGE_NONE][0]['tid']=$tid;

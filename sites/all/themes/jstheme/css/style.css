@@ -113,9 +113,9 @@ article .submitted{
     box-shadow: none;
     z-index: 1011;
 		margin-top: 43px;
-    margin-left: -16px;
+    margin-left: -31px;
     padding-left: 0px;
-	  min-width: 160px;
+	  min-width: 100px;
 	  background-color: #fff;
 	  padding-right: 0;
 	}
