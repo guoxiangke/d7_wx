@@ -58,7 +58,14 @@ article .submitted{
   float: left;
   line-height: 50px;
 }
-
+.comment-container .comment_forbidden{
+  display: none;
+}
+.comment-container .submitted{
+  font-size: 12px;
+  font-style: normal;
+  color: #000;
+}
 
 #sbq_gototop {
     float: left;
