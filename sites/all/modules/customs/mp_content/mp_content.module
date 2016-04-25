@@ -486,8 +486,9 @@ function mp_getwxcontent($link,$weObj=NULL){
   node_object_prepare($node);
   //get title
   $uid = '8'; //uid of love.
-  if(strpos($title, '王明道')!==FALSE){
-    $uid = '2503'; //uid of love.
+  $account = user_load_by_name($user_name);
+  if($account){
+    $uid = $account->uid;
   }elseif(isset($weObj)){
     $openid = $weObj->getRev()->getRevFrom();
     $user_info = $weObj->getUserInfo($openid);
@@ -500,6 +501,9 @@ function mp_getwxcontent($link,$weObj=NULL){
     if($account){
       $uid = $account->uid;
     }
+  }
+  if(strpos($title, '王明道')!==FALSE){
+    $uid = '2503'; //uid of love.
   }
   $node->uid = $uid;
   $node->title = $title;
