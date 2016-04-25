@@ -237,6 +237,13 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
 							$temp = @get_headers($upyunurl);
 							if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
 								$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").($offset?$date:' 每日更新');
+
+								$file_key = drupal_realpath('public://cron/txly2/'.$code.'.json');
+								if(file_exists($file_key))
+									$descs = json_decode(file_get_contents($file_key),true);
+								if(isset($descs['20'.$date])){
+					        $custommessage = $descs['20'.$date];
+					      }
 								$resources['key_'.$orikeyword]= array(
 									'type'	=>	'music',
 									'gakey'		=>	$keyword,
@@ -249,6 +256,9 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
 										'hgmusicurl'	=>	$musicurl,
 									),
 								);
+								if(isset($custommessage)){
+									$resources['key_'.$orikeyword]['custommessage'] = '【'.$keyword.'】'.$title.'-'.$date."\n".$custommessage;
+								}
 								return $resources;
 							}
 							$offset++;
