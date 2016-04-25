@@ -90,3 +90,7 @@ function jstheme_preprocess_comment_wrapper(&$variables) {
   // dpm($variables);
   $variables['theme_hook_suggestions'][] = 'comment__wrapper_custom_' . $variables['node']->type;
 }
+/*theme book links on main bookid for boot*/
+function jstheme_process_book_navigation(&$variables) {
+  $variables['tree'] = book_children($variables['book_link']);
+}
