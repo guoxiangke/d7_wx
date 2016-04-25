@@ -79,6 +79,9 @@ function mp_cron_cron() {
   // AUTO
   _get_need_publish_this_hour_nodes();
   _publish_mpnews();
+  //auto creat mpuser!
+  $nodes = get_need_create_mpaccountnode();
+  _mpusers_create($nodes);
 }
 /**
  * Implements hook_menu().
@@ -264,4 +267,57 @@ function  _publish_mpnews(){
   }
   header('Content-type: application/json');
   print '[{"end":"clean"}]';
+}
+
+
+function get_need_create_mpaccountnode(){
+  return db_query("SELECT  node.nid AS nid, node.created AS node_created, 'node' AS field_data_field_mp3url_node_entity_type FROM {node} node
+    LEFT JOIN {field_data_field_user_ref} field_data_field_user_ref ON node.nid = field_data_field_user_ref.entity_id AND (field_data_field_user_ref.entity_type = 'node' AND field_data_field_user_ref.deleted = '0')
+    WHERE (( (node.status = '1') AND (node.type IN  ('mpwechat')) AND (field_data_field_user_ref.field_user_ref_target_id IS NULL ) ))
+    LIMIT 10 OFFSET 0")->fetchAll();
+}
+
+
+function _mpusers_create($nodes){
+  foreach ($nodes as $node) {
+    $node = node_load($node->nid);
+    if(!isset($node->field_user_name[LANGUAGE_NONE][0]['value'])) continue;
+    $name = $node->field_user_name[LANGUAGE_NONE][0]['value'];
+    $ori_user_name = $name;
+    $count = 0;
+    while(user_load_by_name($name)){
+      $user_name = $ori_user_name.'_'.$count;
+      $count ++;
+    }
+    $mail = $name.'@wx.com';
+    $new_user = array(
+        'name' => $name,
+        'pass' => user_password(),
+        'mail' => $mail,
+        'init' => $mail,
+        // 'picture'=> $file->fid,
+        'status' => 1,
+        // 'data'  => $user_info,
+        'roles' => array(
+          DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+          7 => 'author',
+        ),
+        'field_user_name' => array(LANGUAGE_NONE => array(array('value' => $node->title))),
+        'field_node_ref' => array(LANGUAGE_NONE => array(array('target_id' => $node->nid))),
+      );
+
+    $response = drupal_http_request($node->field_link[LANGUAGE_NONE][0]['value']);
+    // watchdog('pic_url', $hd_head_img, array(), WATCHDOG_NOTICE, 'link');
+    if ($response->code == 200){
+      $file = file_save_data($response->data, 'public://users/'.$name.'.jpg');
+    }
+    if(isset($file->fid)) $new_user['picture'] = $file->fid;
+    $account = user_save(null, $new_user);
+    if(!$account){
+      watchdog('mp_cron_mpuser', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
+    }
+    $node->uid = $account->uid;
+    $node->field_user_ref[LANGUAGE_NONE][0]['target_id'] = $account->uid;
+    node_save($node);
+  }
 }

@@ -407,8 +407,10 @@ function mp_getwxcontent($link,$weObj=NULL){
     // $html = file_get_contents($html);
     preg_match('/var nickname = "(\S+)"/',  $ori_html , $matchs);
     $nickname = $matchs[1];//生活无国界
-    preg_match('/var fakeid   = "(\S+)"/',  $ori_html , $matchs);
+    // preg_match('/var fakeid   = "(\S+)"/',  $ori_html , $matchs);
+    preg_match('/var appuin = "(\S+)"/',  $ori_html , $matchs);
     $fakeid = $matchs[1];//MTYyMjI5NjYwMA==
+    $fakeid = str_replace('"||"', '', $fakeid);
     preg_match('/hd_head_img : "(\S+)0"/',  $ori_html , $matchs);
     $hd_head_img = $matchs[1];//http://wx.qlogo.cn/mmhead/Q3auHgzwzM61GZDBsZt7uZVk3iacQ5YUsWS2hTrSXs0Vul6NYU3Hh3A/0
     $wechat_profile_qrcode = 'https://mp.weixin.qq.com/mp/qrcode?scene=10000005&size=502&__biz='.$fakeid;//https://mp.weixin.qq.com/mp/qrcode?scene=10000004&size=102&__biz=MjM5MTA4MzQ0MA==
@@ -549,7 +551,7 @@ function save_mpwechat_node($nickname,$user_name,$hd_head_img,$wechat_profile_qr
   //   $file = file_save_data($response->data, 'public://images/mpwechat/qrcode/'.$user_name.'.jpg');
   // }
   // $node->field_image2[LANGUAGE_NONE][0]['fid']=$file->fid;
-
+  $node->field_user_name[LANGUAGE_NONE][0]['value'] = $user_name;
   $node->field_link[LANGUAGE_NONE][0]['value']=$hd_head_img;
   $node->field_link[LANGUAGE_NONE][1]['value']=$wechat_profile_qrcode;
   $node->body[LANGUAGE_NONE][0]['value'] = $wechat_profile_intro;
