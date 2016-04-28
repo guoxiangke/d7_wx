@@ -212,7 +212,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
 							'gakey'		=>	$keyword,
 							'path'	=>	$path,
 							'cache' =>  43203,
-							'custommessage'=>"细心聆听你的苦闷心声，\n真诚关怀你的内心感受，\n借着圣经和祷告给你回应，\n为你指引成长的途径。\n如果您想留言给周师母，请直接发送留言内容@163发给本号即可分享您的[微笑][抓狂][难过][呲牙]。\nhttp://wx.yongbuzhixi.com/node/163 [拥抱][拳头]",//20160424
+							'custommessage'=>"细心聆听你的苦闷心声，\n真诚关怀你的内心感受，\n借着圣经和祷告给你回应，\n为你指引成长的途径。\n如果您想留言给周师母，请直接发送留言内容@163发给本号即可分享您的[微笑][抓狂][难过][呲牙]。\nhttp://wx.yongbuzhixi.com/node/163 [拥抱][拳头]\n热线电话：13229966322 开放时段：星期二至四 19:00-20:00； 星期三 9:30-11:00 \n辅导短信：13068410512",//20160424
 							'obj'		=> array(
 								'title'	=>  '【'.$keyword.'】'.$title.'♪',
 								'desc'	=> $desc,
