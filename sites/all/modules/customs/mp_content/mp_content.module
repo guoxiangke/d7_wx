@@ -562,6 +562,6 @@ function save_mpwechat_node($nickname,$user_name,$hd_head_img,$wechat_profile_qr
   $node->body[LANGUAGE_NONE][0]['format'] = 'full_html';
   $node->language = LANGUAGE_NONE;
   // dpm($node);
-  watchdog($nickname, 'create mpwechat account!', array(), WATCHDOG_NOTICE, 'link');
+  watchdog('mpwechat', 'account created:'.$nickname, array(), WATCHDOG_NOTICE, 'link');
   node_save($node);
 }
