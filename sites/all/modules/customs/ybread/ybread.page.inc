@@ -13,6 +13,7 @@ function ybread_page(){
 	  $now = date('z');
 	  $hour = date('G',time());
 	  $last = date('z',$result->created);
+	  $nid = $result->nid;
   }
   if(($now - $last >= 1 && $hour >= 6)|| !isset($result->nid)) {
 	  $html = file_get_html('http://simplified-odb.org/today/');
@@ -57,9 +58,6 @@ function ybread_page(){
 		  	watchdog('ybread', 'created lingming '.$nid, array(), WATCHDOG_NOTICE, 'link');
 			}
 	  }
-  }else{
-  	$nid = $result->nid;
-		$node = node_load($nid);
   }
 	$node = node_load($nid);
   $node_view = node_view($node); //drupal_render($node_view).;
