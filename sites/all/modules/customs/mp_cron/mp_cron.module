@@ -185,7 +185,7 @@ function  _get_need_publish_this_hour_nodes(){
       {node} node
       LEFT JOIN {field_data_field_date} field_data_field_date ON node.nid = field_data_field_date.entity_id AND (field_data_field_date.entity_type = 'node' AND field_data_field_date.deleted = '0')
       WHERE (( (node.type IN  ('mp_cron')) AND (node.status=1) AND (field_data_field_date.field_date_value >=".time().") ))
-      ORDER BY plan_time ESC
+      ORDER BY plan_time ASC
       LIMIT 50 OFFSET 0")->fetchAll();
   // dpm($nodes);
   // dpm(variable_get('mp_cron_publish_8'));
