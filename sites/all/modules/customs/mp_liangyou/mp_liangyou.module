@@ -25,7 +25,7 @@ function _mp_liangyou_cc(){
 	print '[{"hi":"clean"}]';
 }
 function get_upyun_token($code,$offset=0){
-	$cdnlink = 'http://lywxaudio.b0.upaiyun.com';
+	$cdnlink = 'http://lywxaudio.yongbuzhixi.com';
 	require_once('liangyou_audio_list.php');
   $audios = liangyou_audio_list2();
   $lyaudio = $audios[$code];
@@ -139,7 +139,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
   	}
 		// 600-652 stream ly
 		require_once('liangyou_audio_list.php');
-		$cdnlink = 'http://lywxaudio.b0.upaiyun.com';
+		$cdnlink = 'http://lywxaudio.yongbuzhixi.com';
 	  if(isset($enabled_resources['ly2']) && $enabled_resources['ly2']){
 			if($keyword == 600){
 			 	$resources['key_'.$keyword] = array(
