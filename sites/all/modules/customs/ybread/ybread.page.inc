@@ -42,7 +42,6 @@ function ybread_page(){
 			  $picture = $html->find('#content .entry-thumbnail img', 0);
 			  $pic_url = $picture->attr['src'];
 		    $response = drupal_http_request($pic_url);
-		    watchdog('pic_url', $pic_url, array(), WATCHDOG_NOTICE, 'link');
 		    if ($response->code == 200){
 		      $file = file_save_data($response->data, 'public://lingming/'.date('Ymd').'.jpg');
 		    }
@@ -55,7 +54,9 @@ function ybread_page(){
 			  // dpm($node);
 			  node_save($node);
 		  	$nid = $node->nid;
-		  	watchdog('ybread', 'created lingming '.$nid, array(), WATCHDOG_NOTICE, 'link');
+		  	$node_link = l(t('view'), 'node/' . $node->nid);
+    		$watchdog_args = array('@title' => $node->title);
+    		watchdog('ybread', 'create lingming @title', $watchdog_args, WATCHDOG_NOTICE, $node_link);
 			}
 	  }
   }
@@ -139,7 +140,9 @@ function ctoday_page(){
 			  // dpm($node);
 			  node_save($node);
 		  	$nid = $node->nid;
-		  	watchdog('ctoday', 'created ctoday '.$nid, array(), WATCHDOG_NOTICE, 'link');
+		  	$node_link = l(t('view'), 'node/' . $node->nid);
+    		$watchdog_args = array('@title' => $node->title);
+    		watchdog('ybread', 'create ctoday @title', $watchdog_args, WATCHDOG_NOTICE, $node_link);
 			}
 	  }
   }else{
