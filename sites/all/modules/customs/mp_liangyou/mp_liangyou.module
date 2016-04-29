@@ -36,7 +36,8 @@ function get_upyun_token($code,$offset=0){
 	$musicurl = $cdnlink.$path.upyun_get_token($path,86400);
 	// return $musicurl;
 	header('Content-type: application/json');
-	print drupal_json_encode($musicurl);
+	// print '[{"hi":"clean"}]';
+	print drupal_json_encode(array($musicurl));
 }
 /**
  * hook_rescources_info
