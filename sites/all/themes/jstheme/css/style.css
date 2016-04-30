@@ -58,7 +58,9 @@ article .submitted{
   float: left;
   line-height: 50px;
 }
-.comment-container .comment_forbidden{
+.comment-container .comment_forbidden,
+.node .comment_forbidden,
+.links .statistics_counter{
   display: none;
 }
 .comment-container .submitted{
