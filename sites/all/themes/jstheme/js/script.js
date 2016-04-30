@@ -100,6 +100,19 @@
         });
       });
 
+      //br p delete!
+      $('span').each(function(){
+        if(!$(this).text().length)
+          $(this).remove()
+      })
+      $('p').each(function(){
+        if(!$(this).text().length)
+          $(this).remove()
+      })
+      $('section').each(function(){
+        if(!$(this).text().length)
+          $(this).remove()
+      })
     }
   }
 
