@@ -113,6 +113,7 @@
         if(!$(this).text().length)
           $(this).remove()
       })
+      $('p br').remove();
     }
   }
 
