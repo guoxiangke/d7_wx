@@ -48,6 +48,12 @@ function mp_service_menu() {
     'file' => 'mp_service.admin.inc',
     'type' => MENU_LOCAL_TASK,
   );
+  $items['user/wechatsso'] = array(
+    'title' => '微信绑定',
+    'page callback' => '_wechat_sso',
+    'access arguments' => array('access content'),
+    'type' => MENU_LOCAL_TASK,
+  );
   $items['mp_service/comments'] = array(
     'page callback' => 'mp_service_comments',
     'access arguments' => array('access content'),//TODO
@@ -56,7 +62,61 @@ function mp_service_menu() {
   );
   return $items;
 }
+function  _wechat_sso(){
+  if(isset($_GET['openid'])){
+    $openid = $_GET['openid'];
+    $mail = $openid.'@wechat.bind';
+    $account = user_load_by_mail($mail);
+    if(!$account){
+      $mp_account = new stdClass();
+      $mp_account->uid = 8;
+      $weObj = _mp_service_init_wechat($mp_account);
+      $user_info = $weObj->getUserInfo($openid);
+      if(!$user_info['subscribe']){
+        drupal_goto('http://mp.weixin.qq.com/s?__biz=MzAwNjI4MDAxNA==&mid=211280048&idx=1&sn=9ee78d9f6246ddeb40e69a33a92b0e3f#rd');
+        // return '<a href="http://mp.weixin.qq.com/s?__biz=MzAwNjI4MDAxNA==&mid=211280048&idx=1&sn=9ee78d9f6246ddeb40e69a33a92b0e3f#rd">请您先关注服务号：永不止息，才可以登陆。</a>';
+      }
+      $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+      $user_name = $ori_user_name;
+      $user_info['nickname'] = $ori_user_name;
 
+      $count = 0;
+      while(user_load_by_name($user_name)){
+        // $user_name = $user_name.rand(0, 100);
+        $user_name = $ori_user_name.'_'.$count;
+        $count ++;
+      }
+      $pass = $user_info['openid'];
+      $new_user = array(
+        'name' => $user_name,
+        'pass' => user_password(),
+        'mail' => $mail,
+        'init' => $mail,
+        // 'picture'=> $file->fid,
+        'status' => 1,
+        'data'  => $user_info,
+        'roles' => array(
+          DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+        ),
+        'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
+        // 'field_recommend' => array(LANGUAGE_NONE => array(array('target_id' => $uid))),
+
+      );
+      $account = user_save(null, $new_user);
+      if(!$account){
+        watchdog('mp_service_sso', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
+      }
+      watchdog('ssouser', 'New user: %name (%email).', array('%name' => $form_state['values']['name'], '%email' => $form_state['values']['mail']), WATCHDOG_NOTICE, l(t('edit'), 'user/' . $account->uid . '/edit'));
+    }
+    _wechat_user_login($account->uid);
+    drupal_set_message('登陆成功，欢迎您！', 'status', FALSE);
+    drupal_goto('<front>');
+  }else{
+    header('Content-type: application/json');
+    print '[{"ssologin":"failed"}]';
+    // return 'FALSE';//登陆失败!
+  }
+}
 /**
  * Implements hook_permission().
  */

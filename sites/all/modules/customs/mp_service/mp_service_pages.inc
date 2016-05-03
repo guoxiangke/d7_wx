@@ -60,10 +60,14 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
   //   );
   //   $weObj->sendCustomMessage($data)->reply(array(),1);
   // }
+
+    // $openid = $weObj->getRev()->getRevFrom();
+    // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
   if($account->uid == 8 && strpos($ori_keyword,'mp.weixin.qq.com/s?')!==FALSE){
     $openid = $weObj->getRev()->getRevFrom();
-    // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
-    if(in_array($openid, array('oTjEwsxl5srb_PgAw7e1xvNp3xk4','oTjEws_LNd8maly0PugxnmFQPdTA','oTjEws-8eAAUqgR4q_ns7pbd0zN8'))){
+    watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
+    //陈玉，亚南,建华
+    if(in_array($openid, array('oTjEws7dFeTScW2vBmjmANLQIBBY','oTjEws1hQOzexqQyybkOi2HY_iP8','oTjEwsw9JKN1N1ysxhOlWAN4Ltvk','oTjEwsxl5srb_PgAw7e1xvNp3xk4','oTjEws_LNd8maly0PugxnmFQPdTA','oTjEws-8eAAUqgR4q_ns7pbd0zN8'))){
       if(strlen($ori_keyword)>255){
         $ori_keyword = substr($ori_keyword, 0, strpos( $ori_keyword,'&scene='));
         // $weObj->text('链接太长了！请检查删除后边的再试！');return;
