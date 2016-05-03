@@ -112,6 +112,7 @@ function  _wechat_sso(){
     drupal_set_message('登陆成功，欢迎您！', 'status', FALSE);
     drupal_goto('<front>');
   }else{
+    drupal_goto('http://www.yongbuzhixi.com/wechat_login/1?sso=wx');
     header('Content-type: application/json');
     print '[{"ssologin":"failed"}]';
     // return 'FALSE';//登陆失败!
