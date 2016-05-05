@@ -60,23 +60,30 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
   //   );
   //   $weObj->sendCustomMessage($data)->reply(array(),1);
   // }
-
-    // $openid = $weObj->getRev()->getRevFrom();
-    // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
-  if($account->uid == 8 && strpos($ori_keyword,'mp.weixin.qq.com/s?')!==FALSE){
-    $openid = $weObj->getRev()->getRevFrom();
-    watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
-    //陈玉，亚南,建华
-    if(in_array($openid, array('oTjEws7dFeTScW2vBmjmANLQIBBY','oTjEws1hQOzexqQyybkOi2HY_iP8','oTjEwsw9JKN1N1ysxhOlWAN4Ltvk','oTjEwsxl5srb_PgAw7e1xvNp3xk4','oTjEws_LNd8maly0PugxnmFQPdTA','oTjEws-8eAAUqgR4q_ns7pbd0zN8'))){
-      if(strlen($ori_keyword)>255){
-        $ori_keyword = substr($ori_keyword, 0, strpos( $ori_keyword,'&scene='));
-        // $weObj->text('链接太长了！请检查删除后边的再试！');return;
-      }
-      mp_getwxcontent($ori_keyword,$weObj);
-      return;
-    }
-  }
   if($account->uid == 8){
+    // $openid = $weObj->getRev()->getRevFrom();
+    // watchdog('openid_'.$ori_keyword, $openid, array(), WATCHDOG_NOTICE, 'link');
+    if(strpos($ori_keyword,'mp.weixin.qq.com/s?')!==FALSE){
+      $openid = $weObj->getRev()->getRevFrom();
+      watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
+      $allows = array(
+        '陈玉'=>'oTjEws7dFeTScW2vBmjmANLQIBBY',
+        '亚南'=>'oTjEws1hQOzexqQyybkOi2HY_iP8',
+        '建华'=>'oTjEwsw9JKN1N1ysxhOlWAN4Ltvk',
+        'bluesky_still'=>'oTjEwsycJgEpiKTzzisTRa8RP8y4',
+        '小永'=>'oTjEws-8eAAUqgR4q_ns7pbd0zN8',
+        '365'=>'oTjEwsxl5srb_PgAw7e1xvNp3xk4',
+        '366'=>'oTjEws_LNd8maly0PugxnmFQPdTA'
+      );
+      if(in_array($openid,$allows)){
+        if(strlen($ori_keyword)>255){
+          $ori_keyword = substr($ori_keyword, 0, strpos( $ori_keyword,'&scene='));
+          // $weObj->text('链接太长了！请检查删除后边的再试！');return;
+        }
+        mp_getwxcontent($ori_keyword,$weObj);
+        return;
+      }
+    }
     $weObj->text("亲爱的主内家人，迫于经济压力，本号暂停服务，请关注<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=402309376&idx=1&sn=8e7f77cb6014948fc572f12085521edd#rd'>永不止息主内婚恋网</a>订阅号，您将会每日收到我们推送的精彩图文。\n如果您对我们的服务有负担，请代祷或<a href='http://kdt.im/9Okuhr'>赞助支持</a>我们，谢谢！永不止息，需要有你！[抱拳]");
     return;
   }

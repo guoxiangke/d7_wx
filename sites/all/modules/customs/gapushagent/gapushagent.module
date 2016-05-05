@@ -39,7 +39,7 @@ function gapushagent($type,$push_data){
     //execute post http://thisinterestsme.com/php-error-handling-curl/
     $result = curl_exec($ch);
     if(curl_errno($ch)){
-      watchdog('gapushagent', 'Exception '.curl_error($ch), array(), WATCHDOG_NOTICE, 'link');
+      watchdog('gapushagent', 'Exception:'.curl_error($ch), array(), WATCHDOG_NOTICE, 'link');
     }
 
     //close connection
