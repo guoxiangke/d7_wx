@@ -34,16 +34,17 @@ function gapushagent($type,$push_data){
     curl_setopt($ch,CURLOPT_URL, $url);
     curl_setopt($ch,CURLOPT_POST, 2);
     curl_setopt($ch,CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($ch, CURLOPT_TIMEOUT, 4); //timeout in seconds
 
-    //execute post
+    //execute post http://thisinterestsme.com/php-error-handling-curl/
     $result = curl_exec($ch);
+    if(curl_errno($ch)){
+      watchdog('gapushagent', 'Exception '.curl_error($ch), array(), WATCHDOG_NOTICE, 'link');
+    }
 
     //close connection
     curl_close($ch);
-    // return 'POST data '.($result?'success!':'faild!');
-    $return = 'faild';
-    if($result)  $return = 'success';
-    return $return;
+    return;
     // header('Content-Type: application/json');
     // print drupal_json_encode($array);
     // drupal_exit();

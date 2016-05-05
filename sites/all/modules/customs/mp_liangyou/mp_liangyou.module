@@ -18,8 +18,8 @@ function mp_liangyou_menu() {
   return $items;
 }
 function _mp_liangyou_cc(){
-	// cache_clear_all(); //once a day! //'mp_liangyou', 'cache', TRUE //
-	drupal_flush_all_caches();
+	// drupal_flush_all_caches();
+  cache_clear_all('*', 'cache', TRUE);
 	watchdog('cache_clear_all', 'TODO:delete this line:once a day'.date('Ymd H:i:s'), array(), WATCHDOG_NOTICE, 'link');
 	header('Content-type: application/json');
 	print '[{"hi":"clean"}]';
