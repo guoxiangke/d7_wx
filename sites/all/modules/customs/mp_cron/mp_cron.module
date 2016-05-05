@@ -70,9 +70,11 @@ function mp_cron_cron() {
       $mp3_description = $html->find('.ss-title p', 0)->plaintext;
       $title_get = $html->find('.ss-title a', 1)->plaintext;
       $dates = explode('-', $title_get);
-      $data[$dates[1]] = $mp3_description;
-      $file = json_encode($data);
-      file_put_contents( $file_key , $file );
+      if(isset($dates[1])){
+        $data[$dates[1]] = $mp3_description;
+        $file = json_encode($data);
+        file_put_contents( $file_key , $file );
+      }
       continue;
     }
   }
