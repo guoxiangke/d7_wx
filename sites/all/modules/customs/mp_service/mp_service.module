@@ -106,10 +106,10 @@ function  _wechat_sso(){
       if(!$account){
         watchdog('mp_service_sso', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
       }
-      watchdog('ssouser', 'New user: %name (%email).', array('%name' => $form_state['values']['name'], '%email' => $form_state['values']['mail']), WATCHDOG_NOTICE, l(t('edit'), 'user/' . $account->uid . '/edit'));
+      watchdog('ssouser', 'New user: %name (%email).', array('%name' => $user_name, '%email' => $$mail), WATCHDOG_NOTICE, l(t('edit'), 'user/' . $account->uid . '/edit'));
     }
     _wechat_user_login($account->uid);
-    drupal_set_message('登陆成功，欢迎您！', 'status', FALSE);
+    drupal_set_message('WX登陆成功，欢迎您！', 'status', FALSE);
     drupal_goto('<front>');
   }else{
     drupal_goto('http://www.yongbuzhixi.com/wechat_login/1?sso=wx');
