@@ -260,6 +260,10 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       $user_info = $weObj->getUserInfo($openid);
 
       $comment_body = $ori_keyword;
+      if(strpos($comment_body,'收到不支持的消息类型,暂无法显') !== false){
+        $weObj->text("收到不支持的消息类型,暂无法显！")->reply();
+        return;
+      }
       //微信回复【内容@106】 即可留言！
       // $comment_body = '@113.我没有单身的恩赐.等了很多年另一半还没出现.我问神.神一直没回应我. ';
       // $str = explode('@',$comment_body);
