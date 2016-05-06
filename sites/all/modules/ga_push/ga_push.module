@@ -168,7 +168,7 @@ function ga_push_add($push, $type = GA_PUSH_TYPE_EVENT, $method_key = NULL, $opt
 
   if (is_array($push) && count($push)) {
 
-    if (_googleanalytics_visibility_user($user)) {
+    // if (_googleanalytics_visibility_user($user)) {
 
       // If the select method is not available or is not defined:
       if (is_null($method_key)
@@ -200,7 +200,7 @@ function ga_push_add($push, $type = GA_PUSH_TYPE_EVENT, $method_key = NULL, $opt
         // @TODO: watchdog there's no method available.
       }
 
-    }
+    // }
   }
 }
 
