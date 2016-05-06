@@ -67,13 +67,14 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
       $openid = $weObj->getRev()->getRevFrom();
       watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
       $allows = array(
+        '孔莉萍'=>'oTjEwsyk2oHVYuBzJQxAFdt8_YLk',
         '陈玉'=>'oTjEws7dFeTScW2vBmjmANLQIBBY',
         '亚南'=>'oTjEws1hQOzexqQyybkOi2HY_iP8',
         '建华'=>'oTjEwsw9JKN1N1ysxhOlWAN4Ltvk',
         'bluesky_still'=>'oTjEwsycJgEpiKTzzisTRa8RP8y4',
         '小永'=>'oTjEws-8eAAUqgR4q_ns7pbd0zN8',
         '365'=>'oTjEwsxl5srb_PgAw7e1xvNp3xk4',
-        '366'=>'oTjEws_LNd8maly0PugxnmFQPdTA'
+        '366'=>'oTjEws_LNd8maly0PugxnmFQPdTA',
       );
       if(in_array($openid,$allows)){
         if(strlen($ori_keyword)>255){
