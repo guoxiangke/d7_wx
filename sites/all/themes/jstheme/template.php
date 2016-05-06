@@ -97,7 +97,7 @@ function jstheme_process_book_navigation(&$variables) {
 
 function jstheme_preprocess_node(&$variables) {
   $node = $variables['node'];
-  if($variables['view_mode']=='full' && isset($node->field_mp3url[LANGUAGE_NONE][0])){
+  if($variables['view_mode']=='full' && (isset($node->field_mp3url[LANGUAGE_NONE][0])||isset($node->field_mp3_file[LANGUAGE_NONE][0]['fid'])) ){
     drupal_add_css(drupal_get_path('theme', 'jstheme').'/css/fmplayer.css');
     drupal_add_js(drupal_get_path('theme', 'jstheme').'/js/fmplayer.min.js');
   }
