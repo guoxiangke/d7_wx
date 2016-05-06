@@ -1,0 +1,22 @@
+<?php
+/**
+ * Implements hook_preprocess_page().
+ */
+function ga_preprocess_page(&$variables) {
+  $path = 'public://analytics.js';
+  global $theme;
+  if($theme!='seven')//默认管理主题不加载
+    drupal_add_js($path);
+}
+
+/**
+ * Implements hook_cron().
+ */
+function ga_cron() {
+  //每天23：50开始，更新js
+  if(date('G')==23 && date('i')>=50){
+    $path = 'public://analytics.js';
+    $ori = 'https://www.google-analytics.com/analytics.js';
+    file_put_contents($path, file_get_contents($ori) );
+  }
+}

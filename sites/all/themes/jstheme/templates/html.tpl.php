@@ -45,6 +45,13 @@
     <div class="row">
       <div class="d-copyright"><div>京ICP备15024539号&nbsp;<img src="/<?php echo drupal_get_path('theme', 'jstheme');?>/images/copy_rignt_24.png" style="height:16px; width:13px" /> <a href="http://wx.yongbuzhixi.com/node/373">免责声明</a></div></div>
     </div>
-  </div></body>
-
+  </div>
+  <!-- Google Analytics -->
+  <script>
+  window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+  ga('create', 'UA-36975988-2', 'auto');
+  ga('send', 'pageview');
+  </script>
+  <!-- End Google Analytics -->
+</body>
 </html>
