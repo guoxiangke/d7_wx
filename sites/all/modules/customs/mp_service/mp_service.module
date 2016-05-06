@@ -40,19 +40,25 @@ function mp_service_menu() {
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
-  $items['user/%user/wechat'] = array(
-    'title' => '微信绑定',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('mp_service_bind_form'),
-    'access arguments' => array('access content'),
-    'file' => 'mp_service.admin.inc',
+  // $items['user/%user/wechat'] = array(
+  //   'title' => '微信绑定',
+  //   'page callback' => 'drupal_get_form',
+  //   'page arguments' => array('mp_service_bind_form'),
+  //   'access callback' => 'user_is_logged_in',
+  //   'file' => 'mp_service.admin.inc',
+  //   'type' => MENU_LOCAL_TASK,
+  // );
+  $items['user/wechatlogin'] = array(
+    'title' => '微信登陆',
+    'page callback' => '_wechat_sso_login',
+    'access callback' => 'user_is_anonymous',
     'type' => MENU_LOCAL_TASK,
   );
   $items['user/wechatsso'] = array(
-    'title' => '微信绑定',
+    'title' => '微信绑定sso',
     'page callback' => '_wechat_sso',
     'access arguments' => array('access content'),
-    'type' => MENU_LOCAL_TASK,
+    'type' => MENU_CALLBACK,
   );
   $items['mp_service/comments'] = array(
     'page callback' => 'mp_service_comments',
@@ -61,6 +67,9 @@ function mp_service_menu() {
     'type' => MENU_CALLBACK,
   );
   return $items;
+}
+function _wechat_sso_login(){
+  drupal_goto('http://www.yongbuzhixi.com/wechat_login/1?sso=wx');
 }
 function  _wechat_sso(){
   if(isset($_GET['openid'])){
@@ -112,9 +121,7 @@ function  _wechat_sso(){
     drupal_set_message('WX登陆成功，欢迎您！', 'status', FALSE);
     drupal_goto('<front>');
   }else{
-    drupal_goto('http://www.yongbuzhixi.com/wechat_login/1?sso=wx');
-    header('Content-type: application/json');
-    print '[{"ssologin":"failed"}]';
+    _wechat_sso_login();
     // return 'FALSE';//登陆失败!
   }
 }

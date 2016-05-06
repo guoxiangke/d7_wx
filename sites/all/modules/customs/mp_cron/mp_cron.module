@@ -112,7 +112,17 @@ function mp_cron_menu() {
   );
   return $items;
 }
-
+/**
+ * Implements hook_menu_alter().
+ * 只有认证用户才可以使用自动发送
+ */
+function mp_cron_menu_alter(&$items) {
+  $items['mp-cron']['access callback'] = '_user_user_autosend_certified';
+}
+function _user_user_autosend_certified(){
+  global $user;
+  return variable_get('mp_config_certified_'.$user->uid, "")?TRUE:FALSE;
+}
 
 function _user_has_role($roles = array()) {
   global $user;
