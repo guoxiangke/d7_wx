@@ -102,15 +102,15 @@
 
       //br p delete!
       $('span').each(function(){
-        if(!$(this).text().length)
+        if($(this).text().length<=1)
           $(this).remove()
       })
       $('p').each(function(){
-        if(!$(this).text().length)
+        if($(this).text().length<=1)
           $(this).remove()
       })
       $('section').each(function(){
-        if(!$(this).text().length)
+        if($(this).text().length<=6)
           $(this).remove()
       })
       $('p br').remove();
