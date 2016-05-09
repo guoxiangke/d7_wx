@@ -67,6 +67,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
       $openid = $weObj->getRev()->getRevFrom();
       watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
       $allows = array(
+        '2250王正泉'=>'oTjEwsx2rsbb57zRQFLS1dWNPfOg',
         '孔莉萍'=>'oTjEwsyk2oHVYuBzJQxAFdt8_YLk',
         '陈玉'=>'oTjEws7dFeTScW2vBmjmANLQIBBY',
         '亚南'=>'oTjEws1hQOzexqQyybkOi2HY_iP8',
