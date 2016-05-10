@@ -86,8 +86,8 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
         return;
       }
     }
-    $weObj->text("亲爱的主内家人，迫于经济压力，本号暂停服务，请关注<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=402309376&idx=1&sn=8e7f77cb6014948fc572f12085521edd#rd'>永不止息主内婚恋网</a>订阅号，您将会每日收到我们推送的精彩图文。\n如果您对我们的服务有负担，请代祷或<a href='http://kdt.im/9Okuhr'>赞助支持</a>我们，谢谢！永不止息，需要有你！[抱拳]");
-    return;
+    // $weObj->text("亲爱的主内家人，迫于经济压力，本号暂停服务，请关注<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=402309376&idx=1&sn=8e7f77cb6014948fc572f12085521edd#rd'>永不止息主内婚恋网</a>订阅号，您将会每日收到我们推送的精彩图文。\n如果您对我们的服务有负担，请代祷或<a href='http://kdt.im/9Okuhr'>赞助支持</a>我们，谢谢！永不止息，需要有你！[抱拳]");
+    // return;
   }
   $keyword = make_semiangle(strtolower($ori_keyword));//include trim;
 
@@ -225,7 +225,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
 function _mp_service_process_event($weObj,$account){
 	$event = $weObj->getRevEvent();
   if(!$event){
-    break;
+    return;
   }
 
   // TODO
