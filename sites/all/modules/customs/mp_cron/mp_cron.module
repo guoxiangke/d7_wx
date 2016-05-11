@@ -1,6 +1,7 @@
 <?php
 /**
  * Implements hook_cron().
+ *  every 15 mins
  */
 function mp_cron_cron() {
   module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
@@ -79,7 +80,7 @@ function mp_cron_cron() {
     }
   }
   // AUTO
-  _get_need_publish_this_hour_nodes();
+  // _get_need_publish_nodes();//only update when node update!!!+twice a day!
   _publish_mpnews();
   //auto creat mpuser!
   $nodes = get_need_create_mpaccountnode();
@@ -98,13 +99,15 @@ function mp_cron_menu() {
     'access arguments' => array(array('公众平台运营者','administrator')),
     'type' => MENU_CALLBACK,
   );
-  $items['mpcron/thishour'] = array(//cron every hour!
-    'title' => '',
-    'page callback' => '_get_need_publish_this_hour_nodes',
+  //1 * * * * wget -O - http://wx.yongbuzhixi.com/mpcron/needsent >/dev/null 2>&1
+  //每小时执行一次
+  $items['mpcron/needsent'] = array(//cron every hour!
+    'title' => '',//only update when node update!!!+twice a day!
+    'page callback' => '_get_need_publish_nodes',
     'type' => MENU_CALLBACK,
     'access arguments' => array('access content'),
   );
-  $items['mpcron/publish_mpnews'] = array(//cron run every 10 mins
+  $items['mpcron/publish_mpnews'] = array(//cron run every 5 mins
     'title' => '',
     'page callback' => '_publish_mpnews',
     'type' => MENU_CALLBACK,
@@ -188,10 +191,11 @@ function create_mp_cron_nodes(){
   drupal_goto('mp-cron');
 }
 /**
- * [_get_need_publish_After this time!]
+ * //only update when node update!!!+twice a day!
+ * 0 0 0/12 * * ? mpcron/needsent
  * @return [type] [description]
  */
-function  _get_need_publish_this_hour_nodes(){
+function  _get_need_publish_nodes(){ //>now time
   $nodes = db_query("SELECT node.nid AS nid, node.uid AS uid, field_data_field_date.field_date_value AS plan_time, node.status AS node_status, node.created AS node_created
       FROM
       {node} node
@@ -232,7 +236,7 @@ function  _publish_mpnews(){
   if(count($plans))
   foreach ($plans as $time) {
     $now = time();
-    if($time < $now-600 || $time < $now+600){//上下10分钟内check
+    if($time < $now-900 || $time < $now+900){//上下15分钟内check
       if(count($uids))
       foreach ($uids as $uid) {
         $nid = variable_get('mp_cron_publish_'.$uid, '0');
@@ -331,5 +335,14 @@ function _mpusers_create($nodes){
     $node->uid = $account->uid;
     $node->field_user_ref[LANGUAGE_NONE][0]['target_id'] = $account->uid;
     node_save($node);
+  }
+}
+/**
+ * Implements hook_node_update().
+ */
+function mp_cron_node_update($node) {
+  if($node->type =='mp_cron'){
+    _get_need_publish_nodes();//only update when node update!!!+twice a day!
+    watchdog('nodeupdate', 'called _get_need_publish_nodes', array(), WATCHDOG_NOTICE, 'link');
   }
 }
