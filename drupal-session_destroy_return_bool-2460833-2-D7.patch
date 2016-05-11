@@ -1,0 +1,31 @@
+diff --git a/includes/session.inc b/includes/session.inc
+index 84d1983..f791028 100644
+--- a/includes/session.inc
++++ b/includes/session.inc
+@@ -419,13 +419,16 @@ function drupal_session_regenerate() {
+  *
+  * @param $sid
+  *   Session ID.
++ *
++ * @return
++ *   FALSE if writing session data has been disabled. Otherwise, TRUE.
+  */
+ function _drupal_session_destroy($sid) {
+   global $user, $is_https;
+ 
+   // Nothing to do if we are not allowed to change the session.
+   if (!drupal_save_session()) {
+-    return;
++    return FALSE;
+   }
+ 
+   // Delete session data.
+@@ -446,6 +449,8 @@ function _drupal_session_destroy($sid) {
+   elseif (variable_get('https', FALSE)) {
+     _drupal_session_delete_cookie('S' . session_name(), TRUE);
+   }
++
++  return TRUE;
+ }
+ 
+ /**
