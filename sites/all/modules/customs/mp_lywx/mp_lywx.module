@@ -139,7 +139,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword){
       );
       return $resources;
     }
-		$liangyou_audio_list_info = $liangyou_audio_list[$keyword];
+		$liangyou_audio_list_info = $liangyou_audio_list[(int)$keyword];
 		$ori_title = $liangyou_audio_list_info['title'];
 		$code = $liangyou_audio_list_info['code'];
 		$lywx = $liangyou_audio_list_info['lywx'];
