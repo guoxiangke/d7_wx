@@ -225,7 +225,7 @@ function  _get_need_publish_nodes(){ //>now time
   }
   if($uids) variable_set('mp_cron_publish_uids', $uids);
   if($times) variable_set('mp_cron_publish_plan', $times);
-  // return  'ee';
+  return ;
   header('Content-type: application/json');
   print '[{"end":"get_need_publish_this_hour_nodes called"}]';
 }
