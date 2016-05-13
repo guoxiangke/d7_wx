@@ -8,18 +8,16 @@
 	 */
 	// The commands
 	// if ( !(isset($_POST['payload']) || (isset($_GET['go']) && $_GET['go']=='1')) ) {
-	// 	echo 'no permission!';	
+	// 	echo 'no permission!';
 	// }
 	$commands = array(
 		'echo $PWD',
 		'whoami',
+		'which git',
 		'git checkout sites/all/',
-		'git pull origin master',
+		'/usr/bin/git pull  2>&1',
 		'git status',
-		'git submodule sync',
-		'git submodule update',
-		'git submodule status',
-		'git log -1',
+		'git log -3',
 	);
 	// Run the commands for output
 	$output = '';
