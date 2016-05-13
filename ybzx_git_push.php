@@ -12,12 +12,14 @@
 	// }
 	$commands = array(
 		'echo $PWD',
-		'whoami',
-		'which git',
-		'git checkout sites/all/',
-		'/usr/bin/git pull  2>&1',
+		// 'whoami',
+		// 'which git',
+		// 'git checkout sites/all/',
+		// '/usr/bin/git pull  2>&1',
+		'git log -1',
+		'./auto.sh',
+		'git log -1',
 		'git status',
-		'git log -3',
 	);
 	// Run the commands for output
 	$output = '';
