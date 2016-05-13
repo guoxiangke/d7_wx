@@ -117,7 +117,7 @@ function devel_menu() {
     'file' => 'devel.pages.inc',
     'menu_name' => 'devel',
   );
-  $items['devel/php'] = array(
+  $items['devel/phpexe'] = array(
     'title' => 'Execute PHP Code',
     'description' => 'Execute some PHP code',
     'page callback' => 'drupal_get_form',
