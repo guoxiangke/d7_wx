@@ -234,10 +234,11 @@ function _mp_service_process_event($weObj,$account){
 
   if($event['event']=='MASSSENDJOBFINISH'){
       gapushagent('event',array(
-       'category'        => '图文发布',
+       'category'        => 'event',
        'action'          => '图文发送成功',
-       'label'           => $account->uid,
+       'label'           => 'wxservice_'.$account->uid,
       ));
+      return ;
   }
   if(!isset($event['key'])){
     if($account->uid>1) gapushagent('event',array(
@@ -248,6 +249,11 @@ function _mp_service_process_event($weObj,$account){
   }else{
     if($event['event']=='VIEW'){
       //MP menu!
+      gapushagent('event',array(
+       'category'        => 'event',
+       'action'          => '图文VIEW',
+       'label'           => 'wxservice_'.$account->uid,
+      ));
     }else{
       if(is_string($event['key']))
         mp_service_keyword_response($weObj,$event['key'],$account);
@@ -317,6 +323,11 @@ function _mp_service_process_event($weObj,$account){
         }
       }
     }
+    gapushagent('event',array(
+       'category'        => 'event',
+       'action'          => 'subscribe',
+       'label'           => 'wxservice_'.$account->uid,
+     ));
     $copyright = copyright($account);
     $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！[握手]').$copyright);
   }elseif($event['event']=='WifiConnected'){
