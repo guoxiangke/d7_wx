@@ -1352,8 +1352,8 @@ function drupal_serve_page_from_cache(stdClass $cache) {
   if (!isset($hook_boot_headers['vary']) && !variable_get('omit_vary_cookie')) {
     header('Vary: Cookie');
   }
-
-  if ($page_compression) {
+  // https://www.drupal.org/node/2112325 dale
+  if ($page_compression && $cache->data['body']) {
     header('Vary: Accept-Encoding', FALSE);
     // If page_compression is enabled, the cache contains gzipped data.
     if ($return_compressed) {
