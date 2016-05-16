@@ -165,6 +165,10 @@ function _mp_service_init_wechat($account){
  */
 
 function mp_service_keyword_response(&$weObj,$keyword,$account) {
+  if(strpos($keyword,'收到不支持的消息类型') !== false){
+    $weObj->text("不支持的消息类型,请输入文字或节目代号！")->reply();
+    return;
+  }
   $wxresources = array();  //TODO： get all (enabled)resources/node of account.
   $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword,$weObj);
 	$ori_keyword = $keyword;
@@ -243,7 +247,29 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     //婚姻的意义留言内容==27
 
 
-    /////字数太少，我们为你转人工服务吧！
+    /////字数太少，我们为你转人工服务吧！感谢主 阿门 谢谢 我是
+    // 您好 你好 请   今天 + 几点 + 播?  播出 哪里 哪个  有+吗  我想 我也 想听 怎么
+    if ($account->uid != 12)
+    if (strpos($ori_keyword,'您好') !== false||
+        strpos($ori_keyword,'你好') !== false||
+        strpos($ori_keyword,'请') !== false||
+        strpos($ori_keyword,'播') !== false||
+        strpos($ori_keyword,'哪里') !== false||
+        strpos($ori_keyword,'哪个') !== false||
+        strpos($ori_keyword,'我') !== false||
+        strpos($ori_keyword,'想') !== false||
+        strpos($ori_keyword,'么') !== false||
+        strpos($ori_keyword,'吗') !== false||
+        strpos($ori_keyword,'几') !== false
+      ){
+      $weObj->transfer_customer_service()->reply();
+      if($account->uid>1) gapushagent('event',array(
+       'category'        => 'wxservice',
+       'action'          => 'customerservice',
+       'label'           => $ori_keyword,
+      ));
+      return ;
+    }
     // if($len > 15 && $len <= 30){
     //   if($account->uid>1) gapushagent('event',array(
     //    'category'        => 'wxservice',
@@ -267,10 +293,6 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
       $user_info = $weObj->getUserInfo($openid);
 
       $comment_body = $ori_keyword;
-      if(strpos($comment_body,'收到不支持的消息类型,暂无法显') !== false){
-        $weObj->text("收到不支持的消息类型,暂无法显！")->reply();
-        return;
-      }
       //微信回复【内容@106】 即可留言！
       // $comment_body = '@113.我没有单身的恩赐.等了很多年另一半还没出现.我问神.神一直没回应我. ';
       // $str = explode('@',$comment_body);

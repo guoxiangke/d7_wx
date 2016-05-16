@@ -901,6 +901,11 @@ function _mp_getwxresources($resources, $account, $keyword){
         $resources['key_'.$keyword]= array(
             'type'  =>  'text',
             'cache' =>  0,
+            'gadata'   =>  array(
+               'category'        => 'lts33',
+               'action'          => 'menu_100',
+               'label'           => 'wxservice_'.$account->uid,
+            ),
             'obj'   => array(
               'text'  => get_mp_lts_menu1(),
             )
@@ -911,6 +916,11 @@ function _mp_getwxresources($resources, $account, $keyword){
         $resources['key_'.$keyword]= array(
             'type'  =>  'text',
             'cache' =>  0,
+            'gadata'   =>  array(
+               'category'        => 'lts33',
+               'action'          => 'menu_700',
+               'label'           => 'wxservice_'.$account->uid,
+            ),
             'obj'   => array(
               'text'  => get_mp_lts_menu2(),
             )
@@ -937,6 +947,11 @@ function _mp_getwxresources($resources, $account, $keyword){
       $resources['key_'.$keyword]= array(
           'type'  =>  'text',
           'cache' =>  0,
+          'gadata'   =>  array(
+             'category'        => 'lts33',
+             'action'          => 'menu_other',
+             'label'           => 'wxservice_'.$account->uid,
+          ),
           'obj'   => array(
             'text'  => $text."【#100】★基础课程✿本科课程\n【#700】☆进深课程\n回复【#".$num."01】收听\n回复【#".$num."010】查看讲义！[ThumbsUp]",
           )
@@ -950,6 +965,11 @@ function _mp_getwxresources($resources, $account, $keyword){
       $resources['key_'.$keyword]= array(
           'type'  =>  'text',
           'cache' =>  0,
+          'gadata'   =>  array(
+             'category'        => 'lts33',
+             'action'          => '编码超出范围',
+             'label'           => 'wxservice_'.$account->uid,
+          ),
           'obj'   => array(
             'text'  => "[大哭]编码有误，回复【#100】查看目录！",
           )
@@ -964,6 +984,11 @@ function _mp_getwxresources($resources, $account, $keyword){
       $resources['key_'.$keyword]= array(
         'type'  =>  'text',
         'cache' =>  0,
+        'gadata'   =>  array(
+           'category'        => 'lts33',
+           'action'          => '编码不对',
+           'label'           => 'wxservice_'.$account->uid,
+        ),
         'obj'   => array(
           'text'  => "[大哭]编码有误，超出最大范围！\n回复【#".$index."0】查看讲义！",
         )
@@ -983,6 +1008,11 @@ function _mp_getwxresources($resources, $account, $keyword){
         $resources['key_'.$keyword]= array(
           'type'  =>  'text',
           'cache' =>  864000,
+          'gadata'   =>  array(
+             'category'        => 'lts33',
+             'action'          => '远程暂无',
+             'label'           => 'wxservice_'.$account->uid,
+          ),
           'obj'   => array(
             'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n回复【#".$index."1】到【#".$index.$total."】获取节目！\n每日获取同步【#".$index."】\n[大哭]本课程暂无讲义哦！",
           )
@@ -992,6 +1022,11 @@ function _mp_getwxresources($resources, $account, $keyword){
       $resources['key_'.$keyword]= array(
           'type'  =>  'text',
           'cache' =>  864000,
+          'gadata'   =>  array(
+             'category'        => 'lts33',
+             'action'          => $mav['title'].'_pdf',
+             'label'           => 'wxservice_'.$account->uid,
+          ),
           'obj'   => array(
             'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》带阅读器的讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》点此查看讲义</a>",
           )
@@ -1028,6 +1063,11 @@ function _mp_getwxresources($resources, $account, $keyword){
       'type'  =>  'music',
       'path' =>  $path,
       'cache' =>  0,
+      'gadata'   =>  array(
+         'category'        => 'lts33',
+         'action'          => $mav['title'].'_'.$rep,
+         'label'           => 'wxservice_'.$account->uid,
+      ),
       'obj'   => array(
         'title' => '【'.$keyword.'】'.$mav['title'].'-'.$rep,
         'desc'  =>  "点击►收听".$update." 良院".str_replace('课程', '', $level) ." 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' 技术支持:'.($account->uid==255?'永不止息':'主内公众云'),
