@@ -29,14 +29,29 @@ function mp_fm_wxresources($resources, $account, $keyword){
   $resources = &drupal_static(__FUNCTION__);
   if(!isset($resources)){
     //每日亲近神【653】 begin
-    //http://www.tpehoc.org.tw/daily_message/daily_message_1602/mp3/160201mat93.mp3
-    //http://www.tpehoc.org.tw/daily_message/daily_message_1602/mp3/160202mat63.mp3
-    //http://www.tpehoc.org.tw/daily_message/daily_message_1602/mp3/160207mark01.mp3
-    //http://www.tpehoc.org.tw/daily_message/daily_message_1602/mp3/160209mark03.mp3
-    //http://www.tpehoc.org.tw/daily_message/daily_message_1603/mp3/160303mark26.mp3
-    //http://www.tpehoc.org.tw/daily_message/daily_message_1604/mp3/160401luke20.mp3
-    //http://www.tpehoc.org.tw/daily_message/daily_message_1605/mp3/160501luke50.mp3
       if($keyword =='653'&&isset($enabled_resources['qjs']) && $enabled_resources['qjs']){
+        // 2016.05.19 mat01
+        $begin = strtotime('05/19/16');
+        if(time()>$begin){
+        $index = str_pad((date('z') - date('z',$begin) +1),2,"0",STR_PAD_LEFT);
+        // http://lyweixintest.b0.upaiyun.com/resources/653/mat/mat01.mp3
+        $code = 'mat';
+        $path = '/resources/653/'.$code.'/'.$code.$index.'.mp3';
+        $cdnlink = 'http://lyweixintest.b0.upaiyun.com';
+        $url = $cdnlink.$path.upyun_get_token($path);
+
+        $resources['key_'.$keyword]=  array(
+          'type'  =>  'music',
+          'obj'   => array(
+            'title' => '每日亲近神'.$index,
+            'desc'  => '点击►收听 公众号：'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新',
+            'musicurl'  => $url,
+            'hgmusicurl'  =>  $url,
+          ),
+        );
+        return $resources;
+      }
+      //todo delete!!!blow!!!
         $ym = date('ym');
         $ymd = date('ymd');
         $begin = 49;
