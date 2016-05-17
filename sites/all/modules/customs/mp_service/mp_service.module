@@ -170,7 +170,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     return;
   }
   $wxresources = array();  //TODO： get all (enabled)resources/node of account.
-  $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword,$weObj);
+  $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword, $weObj);
 	$ori_keyword = $keyword;
 
 	$keyword = 'key_'.$keyword;//1001 => 0 selution.
@@ -263,10 +263,12 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         strpos($ori_keyword,'几') !== false
       ){
       $weObj->transfer_customer_service()->reply();
-      if($account->uid>1) gapushagent('event',array(
+      if($account->uid>1)
+      gapushagent('event',array(
        'category'        => 'wxservice',
-       'action'          => 'customerservice',
-       'label'           => $ori_keyword,
+       'action'          => '转接客服',
+       'label'           => 'wxservice_'.$account->uid,
+       'value'           => $ori_keyword,
       ));
       return ;
     }

@@ -89,20 +89,20 @@ function mp_lywx_rescources_info(){
  * @param  [type] $keyword   [description]
  * @return [type]            [description]
  */
-function  mp_lywx_wxresources($resources, $account, $keyword){
+function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
   if(!is_string($keyword)) return;//!$keyword||
   $enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   if(!(isset($enabled_resources['ly']) && $enabled_resources['ly'])){
     return;
   }
-  $my_data = _mp_lywx_wxresources($resources, $account, $keyword);
+  $my_data = _mp_lywx_wxresources($resources, $account, $keyword,$weObj);
   // return $my_data;
   $my_data = &drupal_static(__FUNCTION__);
   if (!isset($my_data)) {
     if ($cache = cache_get('mp_lywx_wxresources_'.$account->uid.$keyword)) {
       $my_data = $cache->data;
     }else {
-      $my_data = _mp_lywx_wxresources($resources, $account, $keyword);
+      $my_data = _mp_lywx_wxresources($resources, $account, $keyword,$weObj);
       //cache = 0;永久缓存 cache = 43200;缓存一天／2
       if(isset($my_data['key_'.$keyword]['cache'])){
         if($my_data['key_'.$keyword]['cache']==0){
@@ -116,7 +116,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword){
   return $my_data;
 }
 
-function _mp_lywx_wxresources($resources, $account, $keyword){
+function _mp_lywx_wxresources($resources, $account, $keyword,$weObj){
 	module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
 	$liangyou_audio_list = liangyou_audio_list_bylywxindex();
   $orikeyword = $keyword;
@@ -221,6 +221,27 @@ function _mp_lywx_wxresources($resources, $account, $keyword){
 			$offset++;
 		}
 	}
+  $ori_keyword = $keyword;
+  if (strpos($ori_keyword,'您好') !== false||
+      strpos($ori_keyword,'你好') !== false||
+      strpos($ori_keyword,'请') !== false||
+      strpos($ori_keyword,'播') !== false||
+      strpos($ori_keyword,'哪') !== false||
+      strpos($ori_keyword,'我') !== false||
+      strpos($ori_keyword,'想') !== false||
+      strpos($ori_keyword,'么') !== false||
+      strpos($ori_keyword,'吗') !== false||
+      strpos($ori_keyword,'几') !== false
+    ){
+    $weObj->transfer_customer_service()->reply();
+    gapushagent('event',array(
+     'category'        => 'lywxother',
+     'action'          => '转接客服',
+     'label'           => 'wxservice_'.$account->uid,
+     'value'           => $ori_keyword,
+    ));
+    return ;
+  }
 
 	$allowkeywords = array('0');
 	if(in_array($keyword, $allowkeywords)){
