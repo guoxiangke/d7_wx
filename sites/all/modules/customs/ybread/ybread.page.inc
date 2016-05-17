@@ -21,7 +21,7 @@ function ybread_page(){
 		$node = new stdClass();
 		$node->type = $content_type;
 		node_object_prepare($node);
-		$node->uid = '8'; //uid of love.
+		$node->uid = '2562'; //uid of yami.
 		//get title
 	  $node->title = trim($html->find('h2.entry-title', 0)->plaintext);
 	  if(isset($result->nid)){
@@ -60,9 +60,10 @@ function ybread_page(){
 			}
 	  }
   }
-	$node = node_load($nid);
-  $node_view = node_view($node); //drupal_render($node_view).;
-  return drupal_render($node_view);
+  drupal_goto('node/'.$nid);
+	// $node = node_load($nid);
+	//  $node_view = node_view($node); //drupal_render($node_view).;
+	//  return drupal_render($node_view);
 }
 
 function ctoday_page(){
@@ -86,7 +87,7 @@ function ctoday_page(){
 		$node = new stdClass();
 		$node->type = $content_type;
 		node_object_prepare($node);
-		$node->uid = '8'; //uid of love.
+		$node->uid = '2565'; //uid of love.
 		//get title
 	  if(isset($result->nid)){
 	  	$temp_nid = $result->nid;
@@ -148,11 +149,12 @@ function ctoday_page(){
   }else{
   	$nid = $result->nid;
   }
-	$node = node_load($nid);
-  $node_view = node_view($node); //drupal_render($node_view).;
-  return drupal_render($node_view);
+  drupal_goto('node/'.$nid);
 }
-
+/**
+ * to delete! dale
+ * @return [type] [description]
+ */
 function grace365_page(){
 	$content_type = 'grace365';
 	// get latest node.
@@ -229,7 +231,5 @@ function grace365_page(){
 			}
 		}
   }
-	$node = node_load($nid);
-  $node_view = node_view($node); //drupal_render($node_view).;
-  return drupal_render($node_view);
+  drupal_goto('node/'.$nid);
 }
