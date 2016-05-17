@@ -393,12 +393,22 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
 }
 
 function mp_getwxcontent($link,$weObj=NULL){
-  $ori_html = file_get_contents($link);
+  $arrContextOptions=array(
+      "ssl"=>array(
+          "verify_peer"=>false,
+          "verify_peer_name"=>false,
+      ),
+  );
+  $ori_html = file_get_contents($link, false, stream_context_create($arrContextOptions));
   $html = str_get_html($ori_html);
-  $html = file_get_html($link);
+  // $html = file_get_html($link);
   $ori_title = $html->find('title',0)->plaintext;
 
   preg_match('/var user_name = "(\S+)"/',  $ori_html , $matchs);
+  if(!isset($matchs[1])){
+    $weObj->text("啊喔，出错了，请再试一次.")->reply();
+    return;
+  }
   $user_name = $matchs[1];//gh_01f807be5d1b
   // $wechat_profile_nickname = $html->find('.profile_nickname',0)->plaintext;
   // $wechat_profile_qrcode = $html->find('#js_profile_qrcode_img',0)->src;
