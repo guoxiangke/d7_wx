@@ -1039,6 +1039,7 @@ function _mp_getwxresources($resources, $account, $keyword){
       ++$count;
       $update = ' 每日更新';
     }
+    if($count==0) $count++;
     $rep = str_pad($count, 2,'0',STR_PAD_LEFT);
     $link = 'new/'.$level.'/'.$mav['title'].'/ma'.$mav['prefex'].$rep.'.mp3';
     // watchdog('$link', $link, array(), WATCHDOG_NOTICE, 'link');
