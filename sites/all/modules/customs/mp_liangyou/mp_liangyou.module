@@ -74,7 +74,7 @@ function mp_liangyou_rescources_info(){
  * hook_wxrescources
  * TODO:	cache_clear_all('mp_liangyou', 'cache', TRUE); once a day!
  */
-function mp_liangyou_wxresources($resources, $account, $keyword){
+function mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
 	if(!(isset($enabled_resources['ly2']) && $enabled_resources['ly2'])){
 		return $resources;
@@ -84,7 +84,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
     if ($cache = cache_get('mp_liangyou_wxresources_'.$account->uid.$keyword)) {
       $my_data = $cache->data;
     }else {
-      $my_data = _mp_liangyou_wxresources($resources, $account, $keyword);
+      $my_data = _mp_liangyou_wxresources($resources, $account, $keyword, $weObj);
       //cache = 0;永久缓存 cache = 43200;缓存一天／2
       if(isset($my_data['key_'.$keyword]['cache'])){
         if($my_data['key_'.$keyword]['cache']==0){
@@ -98,7 +98,7 @@ function mp_liangyou_wxresources($resources, $account, $keyword){
   return $my_data;
 }
 
-function _mp_liangyou_wxresources($resources, $account, $keyword){
+function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 	$enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
   {
   	if($keyword == 'ly'||$keyword == '良友'){
@@ -327,7 +327,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
     //圣经广播网 400-435
     if(isset($enabled_resources['400']) && $enabled_resources['400'])
     if(is_numeric($keyword) && ($keyword>=400 && $keyword<=435) ) {
-    	$resources = mp_bbn_response($keyword,$account);
+    	$resources = mp_bbn_response($keyword,$account, $weObj);
     }
 
  		if(isset($enabled_resources['1225']) && $enabled_resources['1225']){
@@ -642,11 +642,12 @@ function _mp_liangyou_wxresources($resources, $account, $keyword){
 /**
  * $change_keyword = return key!
  */
-function mp_bbn_response($keyword,$account,$change_keyword=NULL){
+function mp_bbn_response($keyword,$account,$weObj) {
+	if(date('G')<11) {
+    $weObj->text("弟兄姊妹，平安，圣经广播网4开头节目于每早11点更新，请11点后点击播放即可，谢谢代祷推荐给亲朋好友\n永不止息，需要有你[握手]")->reply();
+  }
 	$resources = array();
-	if (!$change_keyword) {
-		$change_keyword = $keyword;
-	}
+	$change_keyword = $keyword;
 	require_once('bbn.inc');
  	if($keyword == '400'){
 		$resources['key_'.$change_keyword]= array(
@@ -664,6 +665,7 @@ function mp_bbn_response($keyword,$account,$change_keyword=NULL){
 		$resources['key_'.$change_keyword]= array(
 			'type'	=>	'music',
 			'cache' =>  43200,
+			'custommessage'=>"弟兄姊妹，平安，圣经广播网4开头节目于每早11点更新，请11点后点击播放即可，谢谢代祷推荐给亲朋好友\n永不止息，需要有你[握手]",//20160424
 			'obj'		=> array(
 				'title'	=> $title,
 				'desc'	=>	$desc,
