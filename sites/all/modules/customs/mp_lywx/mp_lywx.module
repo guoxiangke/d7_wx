@@ -116,29 +116,13 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
   return $my_data;
 }
 
-function _mp_lywx_wxresources($resources, $account, $keyword,$weObj){
+function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 	module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
 	$liangyou_audio_list = liangyou_audio_list_bylywxindex();
   $orikeyword = $keyword;
   // 101-901
 	if(in_array($keyword, array_keys($liangyou_audio_list))){
     $lywx = (int)$keyword;
-    if("$lywx"!="$keyword") {//TODO: 101,102,103!
-      $text = '亲爱的知音人，请一次只发一个节目代码，谢谢!';
-      $resources['key_'.$keyword] = array(
-        'type'  =>  'text',
-        'gadata'   =>  array(
-           'category'        => 'lywxother',
-           'action'          => $keyword,
-           'label'           => '一次一个',
-        ),
-        'cache' =>  0,
-        'obj'   => array(
-          'text'  => $text,
-        )
-      );
-      return $resources;
-    }
 		$liangyou_audio_list_info = $liangyou_audio_list[(int)$keyword];
 		$ori_title = $liangyou_audio_list_info['title'];
 		$code = $liangyou_audio_list_info['code'];
