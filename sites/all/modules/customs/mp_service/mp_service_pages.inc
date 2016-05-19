@@ -65,7 +65,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
     // watchdog('openid_'.$ori_keyword, $openid, array(), WATCHDOG_NOTICE, 'link');
     if(strpos($ori_keyword,'mp.weixin.qq.com/s?')!==FALSE){
       $openid = $weObj->getRev()->getRevFrom();
-      watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
+      // watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
       $allows = array(
         '2250王正泉'=>'oTjEwsx2rsbb57zRQFLS1dWNPfOg',
         '孔莉萍'=>'oTjEwsyk2oHVYuBzJQxAFdt8_YLk',
@@ -82,7 +82,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
           $ori_keyword = substr($ori_keyword, 0, strpos( $ori_keyword,'&scene='));
           // $weObj->text('链接太长了！请检查删除后边的再试！');return;
         }
-        mp_getwxcontent($ori_keyword,$weObj);
+        mp_getwxcontent($ori_keyword,$openid,$weObj);
         return;
       }
     }

@@ -392,7 +392,7 @@ function mp_content_wxservice_default_msg_alter($weObj, $keyword, $account){
   }
 }
 
-function mp_getwxcontent($link,$weObj=NULL){
+function mp_getwxcontent($link,$wx_openid,$weObj){
   $arrContextOptions=array(
       "ssl"=>array(
           "verify_peer"=>false,
@@ -525,6 +525,7 @@ function mp_getwxcontent($link,$weObj=NULL){
   $node->field_sourcex[LANGUAGE_NONE][0]['value'] = $field_user_name;//文章来源
   $node->field_link[LANGUAGE_NONE][0]['value'] = $link;//原文链接
   $node->field_user_name[LANGUAGE_NONE][0]['value'] = $field_user_name;//原文作者
+  $node->field_wx_openid[LANGUAGE_NONE][0]['value'] = $wx_openid;//收集义工ID TODO＝get_uid_from_openID
 
   $node->body[LANGUAGE_NONE][0]['value'] = $body;//trim($tempbody->plaintext);
   if(isset($voice_url))
