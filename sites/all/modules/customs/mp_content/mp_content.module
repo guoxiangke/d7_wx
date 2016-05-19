@@ -467,6 +467,8 @@ function mp_getwxcontent($link,$wx_openid,$weObj){
   $body = str_replace('<p><br /></p>', '', $body);
   $body = str_replace('&nbsp;', '', $body);
 
+  preg_match('/var msg_desc = "(\S+)"/',  $ori_html , $matchs);
+  $summary = $matchs[1];
 
   if(strpos($body, 'MUSTARD SEED')!==FALSE){
     $begin = 0;
@@ -528,6 +530,7 @@ function mp_getwxcontent($link,$wx_openid,$weObj){
   $node->field_wx_openid[LANGUAGE_NONE][0]['value'] = $wx_openid;//收集义工ID TODO＝get_uid_from_openID
 
   $node->body[LANGUAGE_NONE][0]['value'] = $body;//trim($tempbody->plaintext);
+  $node->body[LANGUAGE_NONE][0]['summary'] = $summary;
   if(isset($voice_url))
     $node->field_mp3url[LANGUAGE_NONE][0]['value']=$voice_url;
   if(isset($video_url)){
