@@ -44,7 +44,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
         $resources['key_'.$keyword]=  array(
           'type'  =>  'music',
           'obj'   => array(
-            'title' => '每日亲近神——马太福音第'.$index.'天',
+            'title' => '马太福音第'.$index.'天',
             'desc'  => '点击►收听 公众号：'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新',
             'musicurl'  => $url,
             'hgmusicurl'  =>  $url,
