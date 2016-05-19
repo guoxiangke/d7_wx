@@ -402,208 +402,6 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
  		// TO DO: DELETE!
  		require_once('liangyou.inc');
 		//a1 b1 c1 d1 e1 f1-f9
-		if(isset($enabled_resources['mav']) && $enabled_resources['mav']){
-			// $keyword = 'd11';
-			$first = substr($keyword, 0,1);
-			$second = substr($keyword, 1,1);
-			$temp = array('a','b','c','d','e','f','g');
-			if(in_array($first, $temp) && $second>0 && $second<10 ){
-				$third = substr($keyword, 2,2);
-				$mav = get_ly_mav();
-				if(isset($mav[$first.$second])){
-					$mav = $mav[$first.$second];
-				}else{
-					return $resources['key_'.$keyword]= array(
-							'type'	=>	'text',
-							'obj'		=> array(
-								'text'	=> "[大哭]编码有误，请回复a0、b0、c0...f0查看目录哦！",
-							)
-						);
-				}
-				$level = (($mav['level'] == 1)?'本科课程':'进深课程');
-				if($third>0&&$third<=$mav['count']){
-					//24 => 001
-					$count = $mav['count'];
-					if($count<9)
-						$count = '0'.$count;
-					$rep = str_pad($third, 2,'0',STR_PAD_LEFT);
-					$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['prefex'].$rep.'.mp3';
-
-					$etime = time()+3600; // 授权十分钟后过期
-					$key = 'ly729';   // token 防盗链密钥
-					$path = '/'.$link; // 图片相对路径
-					$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-
-					$cdn = 'http://lts33.b0.upaiyun.com/';
-					$link = $cdn . urlencode($link).'?_upt='.$sign;
-					$resources['key_'.$keyword]= array(
-						'type'	=>	'music',
-						'obj'		=> array(
-							'title'	=> $mav['title'].'-'.$rep,
-							'desc'	=>	"良友圣经学院 ".$level." 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
-							'musicurl'	=>	$link,
-							'hgmusicurl'	=>	$link,
-						),
-					);
-				}else{
-					//编码对，编号不对！
-					$path = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
-					$cdn = 'http://lts33.b0.upaiyun.com/';
-
-
-					$etime = time()+864000; // 授权十天后过期
-					$key = 'ly729';   // token 防盗链密钥
-					$path = '/'.$path; // 图片相对路径
-					$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-
-					$link = $cdn . urlencode($path).'?_upt='.$sign;
-
-					if($mav['pdf']>0){
-						$resources['key_'.$keyword]= array(
-							'type'	=>	'text',
-							'obj'		=> array(
-								'text'	=> "恭喜您，良院 $level 《".$mav['title']."》已结束！\n回复".$first.($second+1)."1学习下一门课程[强]\n".'<a href="http://ly.yongbuzhixi.com/pdfviewer/web/?pdf='.$link.'&q='.time().'">查看'.$mav['title'].'讲义</a>',
-							)
-						);
-					}else{
-						$resources['key_'.$keyword]= array(
-							'type'	=>	'text',
-							'obj'		=> array(
-								'text'	=> "[大哭]本科没有讲义哦！",
-							)
-						);
-					}
-				}
-			}else{
-				$menu = array('a0','b0','c0','d0','e0','f0','g0');
-				$temp_keyword = substr($keyword, 0,2);
-				$first = substr($keyword, 0,1);
-				if(in_array($temp_keyword, $menu)){
-					$mav = get_ly_mav();
-					if(in_array($temp_keyword, array('e0','f0','g0'))){
-						$level = '进深';
-					}else{
-						$level = '本科';
-					}
-					$mavmenu = '良院'.$level.'文凭课程目录'.$first."\n";
-					foreach ($mav as $key => $value) {
-						if(strpos($key,$first) !== false){
-							$mavmenu .= "【".$key."】".$value['title']."\n";
-						}
-					}
-					$mavmenu .="回复【".$first."11】，即可获得第一课[强]";
-					$resources['key_'.$keyword]= array(
-						'type'	=>	'text',
-						'obj'		=> array(
-						'text'	=> $mavmenu,
-						)
-					);
-				}
-			}
-		}//end of 良友圣经学院
-		//x0 y0 z0
-		// 		阮老师，我在设计新的良院编码，这样可以吗？：
-		// 用户回复【基础课程】或【jckc】可得到基础课程8科按顺序排列的节目，8*24+1(pdf)=200天循环一次。
-		// 每个科目，比如事奉装备，用户回复【事奉装备】或【sfzb】获得当天节目，25天一循环，收听14课可以回复【sfzb14】
-		//begin new 良友圣经学院
-		if(isset($enabled_resources['jckc']) && $enabled_resources['jckc']){
-			if($keyword == '基础' || $keyword == 'jc'){
-				$mav = get_ly_jckc();
-				$mavmenu = "良院基础课程目录\n";
-				foreach ($mav as $key => $value) {
-					$mavmenu .= "【J".$value['order']."】".$value['title']."\n";//"【".strtoupper($key)."】".
-				}
-				$mavmenu .="回复【J11】，即可获得第一课[强]";
-				$resources['key_'.$keyword]= array(
-					'type'	=>	'text',
-					'obj'		=> array(
-					'text'	=> $mavmenu,
-					)
-				);
-				return $resources;
-			}
-
-			$temp_keyword = $keyword;
-			if($keyword == '基础课程' || $keyword == 'jckc'){
-				$index_day = date('z');
-				$total = 25;
-				$index1 = $index_day%200;//200天一循环！
-				// dvm($index1);
-				// dvm($index1%25,'课');
-				// dvm(ceil($index1/25),'单元');
-				$course_id = $index1%$total;//课
-				$course_index = ceil($index1/$total);//单元
-				$temp_keyword = 'j'.$course_index.$course_id;//326 j1514
-				// watchdog('course_id', $course_id, array(), WATCHDOG_NOTICE, 'link');
-				// watchdog('course_index', $course_index, array(), WATCHDOG_NOTICE, 'link');
-				// watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'link');
-			}
-
-			//J11 J124 J21 J224...
-			$first = substr($temp_keyword, 0,1);//J
-			$second = substr($temp_keyword, 1,1);//1-8
-			$temp = array('j');
-			$level = '基础课程';
-
-			if(in_array($first, $temp) && $second>0 && $second<10 ){
-				$third = substr($temp_keyword, 2,2);
-				$mav = get_ly_jckc();
-				if(!isset($mav[$second])){
-					$resources['key_'.$keyword]= array(
-						'type'	=>	'text',
-						'obj'		=> array(
-							'text'	=> "啊呜，指令不对，出错啦！请回复【jc】或【基础】查看指令！",
-						)
-					);return $resources;
-				}
-				$mav = $mav[$second];
-				if($third>0&&$third<=$mav['max']){
-					//24 => 001
-					$count = $mav['max'];
-					$index = str_pad($third, 2,'0',STR_PAD_LEFT);
-
-
-					$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['prefex'].$index.'.mp3';
-
-					$etime = time()+3600; // 授权十分钟后过期
-					$key = 'ly729';   // token 防盗链密钥
-					$path = '/'.$link; // 图片相对路径
-					$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-
-					$cdn = 'http://lts33.b0.upaiyun.com/';
-					$link = $cdn . urlencode($link).'?_upt='.$sign;
-					$resources['key_'.$keyword]= array(
-						'type'	=>	'music',
-						'obj'		=> array(
-							'title'	=> $mav['title'].'-'.$index,
-							'desc'	=>	"良友圣经学院 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 点击►收听",
-							'musicurl'	=>	$link,
-							'hgmusicurl'	=>	$link,
-						),
-					);return $resources;
-				}else{
-					//编码对，编号不对！
-					$link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
-					$cdn = 'http://lts33.b0.upaiyun.com/';
-
-
-					$etime = time()+864000; // 授权十天后过期
-					$key = 'ly729';   // token 防盗链密钥
-					$path = '/'.$link; // 图片相对路径
-					$sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-
-					$link = $cdn . urlencode($path).'?_upt='.$sign;
-					$resources['key_'.$keyword]= array(
-						'type'	=>	'text',
-						'obj'		=> array(
-							'text'	=> "恭喜您，良友圣经学院 $level 《".$mav['title']."》已结束！\n回复J".($second+1)."1学习下一门课程[强]\n".'<a href="http://ly.yongbuzhixi.com/pdfviewer/web/?pdf='.$link.'">查看'.$mav['title'].'讲义</a>',
-						)
-					);return $resources;
-				}
-			}
-			//
-			//end of new 良友圣经学院
-		}
 		//begin lysd sd1-sd999
 		$orikeyword = $keyword;
 		$check_keyword = substr($keyword, 0,2);
@@ -662,7 +460,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
  */
 function mp_bbn_response($keyword,$account,$weObj) {
 	if(date('G')<11) {
-    $weObj->text("弟兄姊妹，平安，圣经广播网4开头节目于每早11点更新，请11点后点击播放即可，谢谢代祷推荐给亲朋好友\n永不止息，需要有你[握手]")->reply();
+    $weObj->text("弟兄姊妹，平安，圣经广播网4开头节目于每早11点更新，请11点后点击播放即可，谢谢代祷推荐给亲朋好友\n永不止息，需要有你[握手]")->reply(); return;
   }
 	$resources = array();
 	$change_keyword = $keyword;
@@ -683,7 +481,6 @@ function mp_bbn_response($keyword,$account,$weObj) {
 		$resources['key_'.$change_keyword]= array(
 			'type'	=>	'music',
 			'cache' =>  43200,
-			'custommessage'=>"弟兄姊妹，平安，圣经广播网4开头节目于每早11点更新，请11点后点击播放即可，谢谢代祷推荐给亲朋好友\n永不止息，需要有你[握手]",//20160424
 			'obj'		=> array(
 				'title'	=> $title,
 				'desc'	=>	$desc,
@@ -691,6 +488,9 @@ function mp_bbn_response($keyword,$account,$weObj) {
 				'hgmusicurl'	=>	$musicurl,
 			),
 		);
+		if(date('G')<11) {
+			$resources['key_'.$change_keyword]['custommessage'] = "弟兄姊妹，平安，圣经广播网4开头节目于每早11点更新，请11点后点击播放即可，谢谢代祷推荐给亲朋好友\n永不止息，需要有你[握手]";
+	  }
 	}
 	return $resources;
 }
