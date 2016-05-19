@@ -125,7 +125,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 			return $resources;
   	}
   	if($keyword == 'zb'||$keyword == '直播'){
-	   	$resources['key_'.$keyword]= array(
+	   		return $resources['key_'.$keyword]= array(
 				'type'	=>	'music',
 				'cache' =>  43200,
 				'obj'		=> array(
@@ -166,14 +166,33 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 		  	}
 		  }
 		  if(is_numeric($keyword) && ($keyword>600 && $keyword<=656) ) {
+				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新';
 		  	if($keyword>=641 && $keyword<=645){
-					$resources['key_'.$keyword]= array(
+		  		$title = $lyaudio['title'];
+					$code = $lyaudio_code;
+		  		$html = file_get_contents('http://txly2.net/'.$code);
+		  		preg_match_all("/{file:'[^(')]+/", $html, $urls);
+		  		preg_match_all("/',title:'[^(')]+/", $html, $titles);
+		  		$index = 0;
+		  		if(isset($urls[0][$index])){
+		  			$musicurl = 'http://txly2.net'.str_replace("{file:'", '', $urls[0][$index]);
+		  			return $resources['key_'.$keyword]= array(
+							'type'	=>	'music',
+							'cache'	=> 43200,
+							'obj'		=> array(
+								'title'	=> str_replace("',title:'", '', $titles[0][$index]).'♫'.$title,
+								'desc'	=>	$desc,
+								'musicurl'	=>	$musicurl,
+								'hgmusicurl'	=>	$musicurl,
+							),
+						);
+		  		}
+					return $resources['key_'.$keyword]= array(
 						'type'	=>	'text',
 						'obj'		=> array(
-							'text'	=> "良友圣经学院节目641-645改版中，请回复【#100】功能！",
+							'text'	=> "ao出错啦，告诉小永吧回复反馈内容给永不止息即可。，良友圣经学院节目641-645改版中，请回复【#100】功能！",
 						)
 					);
-					return $resources;
 		  	}
 				if(date('N')>5&&$keyword=='612') {//【612】书香园地＝》【614】今夜心未眠
 					$keyword = '614';
@@ -201,7 +220,6 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 					// $temp = @get_headers($musicurl);
 					// if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
 					// $title = $title;
-						$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新';
 						$resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',
 							// 'gakey'		=>	$keyword,
@@ -213,7 +231,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 				      ),
 							'path'	=>	$path,
 							'cache' =>  43203,
-							'custommessage'=>"细心聆听你的苦闷心声，\n真诚关怀你的内心感受，\n借着圣经和祷告给你回应，\n为你指引成长的途径。\n如果您想留言给周师母，请直接发送留言内容@163发给本号即可分享您的[微笑][抓狂][难过][呲牙]。\nhttp://wx.yongbuzhixi.com/node/163 [拥抱][拳头]\n热线电话：13229966322 开放时段：星期二至四 19:00-20:00； 星期三 9:30-11:00 \n辅导短信：13068410512",//20160424
+							'custommessage'=>"神在旧约圣经的列王记下20章里说：我已看你的眼泪，我必医治你！听众朋友，让我们一起面对生命的成长，经历神奇妙的大恩。\n热线电话：13229966322 开放时段：星期二至四 19:00-20:00； 星期三 9:30-11:00 \n如果您想留言给周师母，请直接发送留言内容@163发给本号即可分享您的[微笑][抓狂][难过][呲牙]\n查看周师母留言板：http://wx.yongbuzhixi.com/node/163 [拥抱][拳头]。\n辅导短信：13068410512",//20160424
 							'obj'		=> array(
 								'title'	=>  '【'.$keyword.'】'.$title.'♪',
 								'desc'	=> $desc,

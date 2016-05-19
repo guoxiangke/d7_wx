@@ -507,7 +507,7 @@ function liangyou_audio_list2(){
       'desc'=>'基础课程',
       ),
     'ltsdp1'=>array(
-      'title' =>'良院本科1',
+      'title' =>'本科1',
       'prefix'=>$prefix['32'],
       'day'=>'7',
       'index'=>642,
@@ -516,7 +516,7 @@ function liangyou_audio_list2(){
       'desc'=>'本科文凭课程1',
       ),
     'ltsdp2'=>array(
-      'title' =>'良院本科2',
+      'title' =>'本科2',
       'prefix'=>$prefix['32'],
       'day'=>'7',
       'index'=>643,
@@ -525,7 +525,7 @@ function liangyou_audio_list2(){
       'desc'=>'本科文凭课程2',
       ),
     'ltshdp1'=>array(
-      'title' =>'进深文凭课程1',
+      'title' =>'进深1',
       'prefix'=>$prefix['32'],
       'day'=>'7',
       'index'=>644,
@@ -534,7 +534,7 @@ function liangyou_audio_list2(){
       'desc'=>'进深文凭课程1',
       ),
     'ltshdp2'=>array(
-      'title' =>'进深文凭课程2',
+      'title' =>'进深2',
       'prefix'=>$prefix['32'],
       'day'=>'7',
       'index'=>645,
