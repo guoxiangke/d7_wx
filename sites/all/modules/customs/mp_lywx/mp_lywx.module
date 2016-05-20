@@ -313,6 +313,13 @@ function mp_lywx_wxservice_event_alter($weObj,$event,$account){
        'label'           => $account->uid,
       ));
       break;
+    case 'kf_create_session':
+      gapushagent('event',array(
+       'category'        => 'lywxother',
+       'action'          => '客服会话',
+       'label'           => $account->uid,
+      ));
+      break;
     case 'VIEW'://MP menu!
       gapushagent('event',array(
        'category'        => 'lywxother',
