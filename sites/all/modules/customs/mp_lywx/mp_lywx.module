@@ -117,9 +117,33 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 }
 
 function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
-	module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
-	$liangyou_audio_list = liangyou_audio_list_bylywxindex();
+
+  $allowkeywords = array('0');
+  //1. 如輸入”0”時，會自動發送圖文“收听节目代号”。
+  if(in_array($keyword, $allowkeywords)){
+    $img = array(
+      'Title'=>"收听节目代号",
+      'Description'=>"欢迎收听我们的节目！知音‧牵手‧同行 ※ 为你送上精彩节目和活动！",
+      'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrY4zkXwy5SPZbur1Jd7HMRneGCr0xhsqEJFXyQ0XkTqZmG8xCPIadhCt4GJk0kibtevrUIJ2Wpw7ag/0?wx_fmt=jpeg',
+      'Url'=>'http://mp.weixin.qq.com/s?__biz=MzI1MDE0NzM5Ng==&mid=401924143&idx=1&sn=9e7a4f6f8390b6a807060b99e9975c4a#rd',
+    );
+    $news[] = $img;
+    $resources['key_'.$keyword]= array(
+      'type'  =>  'news',
+      'gadata' => array(
+       'category'        => 'lywxother',
+       'action'          => '收听节目代号',
+       'label'           => $keyword,
+       ),
+      'cache' =>  0,
+      'obj'   =>  $news,
+      );
+    return $resources;
+  }
+
   $orikeyword = $keyword;
+  module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
+  $liangyou_audio_list = liangyou_audio_list_bylywxindex();
   // 101-901
 	if(in_array($keyword, array_keys($liangyou_audio_list))){
     $lywx = (int)$keyword;
@@ -205,7 +229,6 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 			$offset++;
 		}
 	}
-  $ori_keyword = $keyword;
   if (strpos($ori_keyword,'您好') !== false||
       strpos($ori_keyword,'你好') !== false||
       strpos($ori_keyword,'请') !== false||
@@ -227,28 +250,6 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     return ;
   }
 
-	$allowkeywords = array('0');
-	//1. 如輸入”0”時，會自動發送圖文“收听节目代号”。
-  if(in_array($keyword, $allowkeywords)){
-    $img = array(
-      'Title'=>"收听节目代号",
-      'Description'=>"欢迎收听我们的节目！知音‧牵手‧同行 ※ 为你送上精彩节目和活动！",
-      'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrY4zkXwy5SPZbur1Jd7HMRneGCr0xhsqEJFXyQ0XkTqZmG8xCPIadhCt4GJk0kibtevrUIJ2Wpw7ag/0?wx_fmt=jpeg',
-      'Url'=>'http://mp.weixin.qq.com/s?__biz=MzI1MDE0NzM5Ng==&mid=401924143&idx=1&sn=9e7a4f6f8390b6a807060b99e9975c4a#rd',
-    );
-    $news[] = $img;
-    $resources['key_'.$keyword]= array(
-      'type'  =>  'news',
-      'gadata' => array(
-       'category'        => 'lywxother',
-       'action'          => '收听节目代号',
-       'label'           => $keyword,
-       ),
-      'cache' =>  0,
-      'obj'   =>  $news,
-      );
-    return $resources;
-	}
   //2. 如輸入”0”或節目代號以外的任何數字、英文、符號等，會自動發送圖文“良友知音使用说明”。
   $img = array(
     'Title'=>"良友知音使用说明",
