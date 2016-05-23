@@ -141,7 +141,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     return $resources;
   }
 
-  $orikeyword = $keyword;
+  $ori_keyword = $keyword;
   module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
   $liangyou_audio_list = liangyou_audio_list_bylywxindex();
   // 101-901
@@ -168,7 +168,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 				$title = '【'.$lywx.'】'.$ori_title;
 				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' '.$date;
 		    // $weObj->music($title , $desc, $musicurl, $musicurl)->reply();
-        $resources['key_'.$orikeyword]= array(
+        $resources['key_'.$ori_keyword]= array(
           'type'  =>  'music',
           'gadata'   =>  array(
              'category'        => 'lywxaudio',
@@ -212,7 +212,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 				$title = '【'.$lywx.'】'.$ori_title;
 				$desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息").' '.$date;
 		    // $weObj->music($title , $desc, $musicurl, $musicurl)->reply();
-        $resources['key_'.$orikeyword]= array(
+        $resources['key_'.$ori_keyword]= array(
           'type'  =>  'music',
           'gakey'   =>  $ori_title,
           'path'  => $path,
