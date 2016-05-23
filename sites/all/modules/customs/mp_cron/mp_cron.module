@@ -25,11 +25,13 @@ function mp_cron_cron() {
       $mp3_description = $html->find('.ss-title p', 0)->plaintext;
       $title_get = $html->find('.ss-title a', 1)->plaintext;
       $dates = explode('-', $title_get);
+      $date = '';
+      if(isset($dates[1])) $date = $dates[1];
       $data[] = array(
         'code'  => $code,
         'index'  => $radio['index'],
         'title' => $title,
-        'date' => $dates[1],
+        'date' => $date,
         'desc'  => $mp3_description,
         );
       // break;
