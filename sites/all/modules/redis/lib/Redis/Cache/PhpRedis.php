@@ -56,6 +56,30 @@ class Redis_Cache_PhpRedis extends Redis_Cache_Base
 
         return $values;
     }
+    /*getMultiple+get*/
+    public function getlike($prex)
+    {
+        $client = $this->getClient();
+        $key    = $this->getKey($prex);
+        $idList    = $client->keys($key.'*');
+        $sss = $this->getPrefix() .$this::KEY_SEPARATOR.$this->getNamespace().$this::KEY_SEPARATOR;
+        $ret = array();
+
+        $pipe = $client->multi(Redis::PIPELINE);
+        foreach ($idList as $id) {
+            $pipe->hgetall(($id));
+        }
+        $replies = $pipe->exec();
+
+        foreach (array_values($idList) as $line => $id) {
+            $id = str_replace($sss,'',$id);
+            if (!empty($replies[$line]) && is_array($replies[$line])) {
+                $ret[$id] = $replies[$line];
+            }
+        }
+
+        return $ret;
+    }
 
     public function getMultiple(array $idList)
     {

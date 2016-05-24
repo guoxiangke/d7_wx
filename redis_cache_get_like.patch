@@ -1,0 +1,101 @@
+diff --git a/sites/all/modules/redis/lib/Redis/Cache.php b/sites/all/modules/redis/lib/Redis/Cache.php
+index 0feceb4..9cc6566 100644
+--- a/sites/all/modules/redis/lib/Redis/Cache.php
++++ b/sites/all/modules/redis/lib/Redis/Cache.php
+@@ -288,7 +288,7 @@ class Redis_Cache
+         if (!$this->flushCache) {
+             $this->flushCache = $this->backend->getLastFlushTime();
+         }
+- 
++
+          // At the very first hit, we might not have the timestamps set, thus
+          // we need to create them to avoid our entry being considered as
+          // invalid
+@@ -410,6 +410,52 @@ class Redis_Cache
+ 
+         return $entry;
+     }
++    public function getlike($prex)
++    {
++        $entries = $this->backend->getlike($prex);
++
++        if (empty($entries)) {
++            return false;
++        }
++
++        list($flushPerm, $flushVolatile) = $this->getLastFlushTime();
++        $cids = array_keys($entries);
++        foreach ($cids as $key => $cid) {
++            if (!empty($entries[$cid])) {
++                $entry = $this->expandEntry($entries[$cid], $flushPerm, $flushVolatile);
++            } else {
++                $entry = null;
++            }
++            if (empty($entry)) {
++                $delete[] = $cid;
++            } else {
++                $ret[$cid] = $entry;
++                unset($cids[$key]);
++            }
++        }
++
++        if (!empty($delete)) {
++            if ($this->allowPipeline) {
++                foreach ($delete as $id) {
++                    $this->backend->delete($id);
++                }
++            } else {
++                $this->backend->deleteMultiple($delete);
++            }
++        }
++
++        return $ret;
++
++
++        // $entry = $this->expandEntry($values, $flushPerm, $flushVolatile);
++
++        // if (!$entry) { // This entry exists but is invalid.
++        //     $this->backend->delete($cid);
++        //     return false;
++        // }
++
++        // return $entry;
++    }
+ 
+     /**
+      * {@inheritdoc}
+diff --git a/sites/all/modules/redis/lib/Redis/Cache/PhpRedis.php b/sites/all/modules/redis/lib/Redis/Cache/PhpRedis.php
+index bc27af5..902f491 100644
+--- a/sites/all/modules/redis/lib/Redis/Cache/PhpRedis.php
++++ b/sites/all/modules/redis/lib/Redis/Cache/PhpRedis.php
+@@ -56,6 +56,30 @@ class Redis_Cache_PhpRedis extends Redis_Cache_Base
+ 
+         return $values;
+     }
++    /*getMultiple+get*/
++    public function getlike($prex)
++    {
++        $client = $this->getClient();
++        $key    = $this->getKey($prex);
++        $idList    = $client->keys($key.'*');
++        $sss = $this->getPrefix() .$this::KEY_SEPARATOR.$this->getNamespace().$this::KEY_SEPARATOR;
++        $ret = array();
++
++        $pipe = $client->multi(Redis::PIPELINE);
++        foreach ($idList as $id) {
++            $pipe->hgetall(($id));
++        }
++        $replies = $pipe->exec();
++
++        foreach (array_values($idList) as $line => $id) {
++            $id = str_replace($sss,'',$id);
++            if (!empty($replies[$line]) && is_array($replies[$line])) {
++                $ret[$id] = $replies[$line];
++            }
++        }
++
++        return $ret;
++    }
+ 
+     public function getMultiple(array $idList)
+     {

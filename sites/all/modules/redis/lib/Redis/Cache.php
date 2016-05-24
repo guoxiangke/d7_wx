@@ -288,7 +288,7 @@ class Redis_Cache
         if (!$this->flushCache) {
             $this->flushCache = $this->backend->getLastFlushTime();
         }
- 
+
          // At the very first hit, we might not have the timestamps set, thus
          // we need to create them to avoid our entry being considered as
          // invalid
@@ -409,6 +409,52 @@ class Redis_Cache
         }
 
         return $entry;
+    }
+    public function getlike($prex)
+    {
+        $entries = $this->backend->getlike($prex);
+
+        if (empty($entries)) {
+            return false;
+        }
+
+        list($flushPerm, $flushVolatile) = $this->getLastFlushTime();
+        $cids = array_keys($entries);
+        foreach ($cids as $key => $cid) {
+            if (!empty($entries[$cid])) {
+                $entry = $this->expandEntry($entries[$cid], $flushPerm, $flushVolatile);
+            } else {
+                $entry = null;
+            }
+            if (empty($entry)) {
+                $delete[] = $cid;
+            } else {
+                $ret[$cid] = $entry;
+                unset($cids[$key]);
+            }
+        }
+
+        if (!empty($delete)) {
+            if ($this->allowPipeline) {
+                foreach ($delete as $id) {
+                    $this->backend->delete($id);
+                }
+            } else {
+                $this->backend->deleteMultiple($delete);
+            }
+        }
+
+        return $ret;
+
+
+        // $entry = $this->expandEntry($values, $flushPerm, $flushVolatile);
+
+        // if (!$entry) { // This entry exists but is invalid.
+        //     $this->backend->delete($cid);
+        //     return false;
+        // }
+
+        // return $entry;
     }
 
     /**
