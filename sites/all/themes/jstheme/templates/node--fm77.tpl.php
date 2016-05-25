@@ -144,29 +144,6 @@
       hide($content['field_image2']);
       hide($content['field_term']);
       print render($content);
-       if($view_mode=='full'){
-      ?>
-      <div class="field-name-field-mp3-img">
-      <?php
-      if($node->field_image2){
-        print render($content['field_image2']);
-      }else{
-        $temp_user = user_load($uid);
-        print theme_image_style(
-                  array(
-                      'style_name' => 'large',
-                      'path' => $temp_user->picture->uri,
-                      'width' => NULL,
-                      'height' => NULL,
-                      'attributes' => array(
-                          'class' => 'ybzx-avatar',
-                      )
-                  )
-              );
-      }
-      ?>
-      </div>
-      <?php }
       print render($content['field_term']);
     ?>
   </div>
