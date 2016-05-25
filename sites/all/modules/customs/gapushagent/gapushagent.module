@@ -23,8 +23,12 @@ function gapushagent($type,$push_data){
     return;
   }
   // POST data
+  $data = drupal_json_encode($push_data);
+  $time = microtime(TRUE);
+  cache_set('ga_push_event_'.$time, $data, 'cache',  time() + 43200);
+  return;
     // ga_push_add_event($push_data);
-    $data = array('data' => drupal_json_encode($push_data), 'type' => 'ga_push_add_event');
+    $data = array('data' => $data, 'type' => 'ga_push_add_event');
     // Server API url
     $url = 'http://wxstaging.yongbuzhixi.com/sqs/api';
     //open connection
