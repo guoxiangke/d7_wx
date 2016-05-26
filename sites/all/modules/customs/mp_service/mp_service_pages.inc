@@ -66,6 +66,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
     if(strpos($ori_keyword,'mp.weixin.qq.com/s?')!==FALSE){
       $openid = $weObj->getRev()->getRevFrom();
       $allows = array(
+        '卫丹' =>'oTjEws3riprhKhgV8T463_HsoTJk',
         '2189刘云胜'=>'oTjEwswNUrG9eOdr4QqxFwriz_Rw',
         '2250王正泉'=>'oTjEwsx2rsbb57zRQFLS1dWNPfOg',
         '孔莉萍'=>'oTjEwsyk2oHVYuBzJQxAFdt8_YLk',
@@ -84,9 +85,64 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
         mp_getwxcontent($ori_keyword,$openid,$weObj);
         return;
       }else{
+        $mail = $openid.'@wechat.bind';
+        $account = user_load_by_mail($mail);
+        if(isset($account->roles['8'])){
+          mp_getwxcontent($ori_keyword,$openid,$weObj);
+          return;
+        }else{
           watchdog('openid', $openid, array(), WATCHDOG_NOTICE, 'link');
-          $weObj->text('已申请管理员,审核后再次发送链接即可收集文章啦！');return;
+          $weObj->text('已申请管理员,请再次发送暗号【小蜜蜂】两字后即可发送链接即可收集文章啦！');return;
+        }
       }
+    }
+    if($ori_keyword=='小蜜蜂'){
+      $openid = $weObj->getRev()->getRevFrom();
+      $weObj->text("恭喜您已申请成为[永不止息-主内公众云]小蜜蜂收集员[强]\n您可以发送微信图文链接给永不止息服务号可收集文章啦[握手]\n永不止息，需要有你！");
+
+      $mail = $openid.'@wechat.bind';
+      $account = user_load_by_mail($mail);
+      if(!$account){
+        // $user_info = $weObj->getOauthUserinfo($accessData['access_token'], $accessData['openid']);
+        $user_info = $weObj->getUserInfo($openid);
+        // auto register
+        // $user_name = 'wechat_'.substr($accessData['openid'], 0, 15);
+        $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+        $user_name = $ori_user_name;
+        $user_info['nickname'] = $ori_user_name;
+        $count = 0;
+        while(user_load_by_name($user_name)){
+          $user_name = $ori_user_name.'_'.$count;
+          $count ++;
+        }
+        $pass = date('Ymd');
+        $new_user = array(
+          'name' => $user_name,
+          'pass' => $pass,//user_password()
+          'mail' => $mail,
+          'init' => $mail,
+          // 'picture'=> $file->fid,
+          'status' => 1,
+          'data'  => $user_info,
+          'roles' => array(
+            DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+            8 => '小蜜蜂',
+          ),
+        );
+        // $account returns user object
+        $account = user_save(null, $new_user);
+        if(!$account){
+          watchdog('小蜜蜂', '失败！', array(), WATCHDOG_NOTICE, 'error');
+        }
+        watchdog('小蜜蜂', $user_name.'成功!', array(), WATCHDOG_NOTICE, 'error');
+      }else{
+        if(!isset($account->roles['8'])){
+          $account->roles['8'] = '小蜜蜂';
+          user_save($account);
+        }
+        watchdog('小蜜蜂', $account->name.' already 成功!', array(), WATCHDOG_NOTICE, 'error');
+      }
+      return;
     }
     // $weObj->text("亲爱的主内家人，迫于经济压力，本号暂停服务，请关注<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=402309376&idx=1&sn=8e7f77cb6014948fc572f12085521edd#rd'>永不止息主内婚恋网</a>订阅号，您将会每日收到我们推送的精彩图文。\n如果您对我们的服务有负担，请代祷或<a href='http://kdt.im/9Okuhr'>赞助支持</a>我们，谢谢！永不止息，需要有你！[抱拳]");
     // return;
