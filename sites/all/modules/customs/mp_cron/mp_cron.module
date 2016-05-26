@@ -345,6 +345,6 @@ function _mpusers_create($nodes){
 function mp_cron_node_update($node) {
   if($node->type =='mp_cron'){
     _get_need_publish_nodes();//only update when node update!!!+twice a day!
-    watchdog('nodeupdate', 'called _get_need_publish_nodes', array(), WATCHDOG_NOTICE, 'link');
+    // watchdog('nodeupdate', 'called _get_need_publish_nodes', array(), WATCHDOG_NOTICE, 'link');
   }
 }
