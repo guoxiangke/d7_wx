@@ -27,6 +27,23 @@ function mp_service_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'mp_service_pages.inc',
   );
+
+  $items['CustomService/%'] = array(
+    'title' => '在线客服',
+    'page callback' => '_customServiceOnline',
+    'page arguments' => array(1),
+    'access callback' => '_user_has_role',
+    'access arguments' => array(array('公众平台运营者','administrator')),
+    'type' => MENU_CALLBACK,
+  );
+  $items['CustomService/%/%/%/%/close'] = array(
+    'title' => '终止在线客服',
+    'page callback' => '_customServiceOnlineclose',
+    'page arguments' => array(1,2,3,4),
+    'access callback' => '_user_has_role',
+    'access arguments' => array(array('公众平台运营者','administrator')),
+    'type' => MENU_CALLBACK,
+  );
   $items['wechat_login/%user'] = array(
     'title' => '微信授权登陆',
     'page callback' => 'wechat_login',
@@ -67,6 +84,52 @@ function mp_service_menu() {
     'type' => MENU_CALLBACK,
   );
   return $items;
+}
+function _customServiceOnlineclose($uid,$openid,$acc1,$acc2){
+  $account = new stdClass();
+  $account->uid = $uid;
+  $weObj  = _mp_service_init_wechat($account);
+  $kf_account = $acc1.'@'.$acc2;//kf2003@liangyouzhiyin
+  $return = $weObj->closeKFSession($openid,$kf_account,$text='ah');
+  if($return['errcode']==0 && $return['errmsg']=='ok'){
+    drupal_set_message('成功终止！该用户可以回复获取音频了！', 'status', FALSE);
+  }
+  drupal_goto('CustomService/'.$uid);
+}
+function _customServiceOnline($uid){
+  $account = new stdClass();
+  $account->uid = $uid;
+  $weObj  = _mp_service_init_wechat($account);
+
+  $header = array('用户', '客服昵称', '操作' );
+  $rows = array();
+  // $no_yes = array('No', 'Yes');
+
+  $allKF = $weObj->getCustomServiceKFlist();
+  // dpm($allKF['kf_list']);
+  foreach ($allKF['kf_list'] as $key => $value) {
+    $allkflist[$value['kf_account']] = $value;
+  }//TODO 缓存所有客服！
+  $OnlineKFlist = $weObj ->getCustomServiceOnlineKFlist();
+  // dpm($OnlineKFlist);
+  if(isset($OnlineKFlist['kf_online_list'][0]))
+  foreach ($OnlineKFlist['kf_online_list'] as $KF) {
+    $sessionlist = $weObj ->getKFSessionlist($KF['kf_account']);
+    // dpm($sessionlist);
+    if(isset($sessionlist['sessionlist'][0]))
+    foreach ($sessionlist['sessionlist'] as  $session) {
+      $user_info = $weObj->getUserInfo($session['openid']);
+      $acc_info = explode('@', $KF['kf_account']) ;
+      $rows[] = array('<img src="'.$user_info['headimgurl'].'" style="max-width:20px;">'.$user_info['nickname'],$allkflist[$KF['kf_account']]['kf_nick'],l('终止会话','CustomService/'.$uid.'/'.$session['openid'].'/'.$acc_info[0].'/'.$acc_info[1].'/close'));
+    }
+  }
+  $kfwait = $weObj ->getKFSessionWait();
+  if($kfwait['count'])
+  foreach ($kfwait['waitcaselist'] as $value) {
+      $user_info = $weObj->getUserInfo($value['openid']);
+      $rows[] = array('<img src="'.$user_info['headimgurl'].'" style="max-width:20px;">'.$user_info['nickname'],'暂无接入','接入会话');
+  }
+  return theme('table', array('header' => $header, 'rows' => $rows));
 }
 function _wechat_sso_login(){
   drupal_goto('http://www.yongbuzhixi.com/wechat_login/1?sso=wx');
