@@ -1028,7 +1028,7 @@ function _mp_getwxresources($resources, $account, $keyword){
              'label'           => 'wxservice_'.$account->uid,
           ),
           'obj'   => array(
-            'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》带阅读器的讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》点此查看讲义</a>",
+            'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】\n",
           )
         );
       return $resources;
