@@ -191,6 +191,9 @@ article.node-mpwechat .submitted{
   .user-picture{
     max-width: 35px;
   }
+  .node-mpwechat .user-picture{
+    max-width: 50px;
+  }
   article .submitted{
     line-height: 35px;
     font-size: 12px;
@@ -301,4 +304,13 @@ a:hover,a:focus {
 .js-row-article-list .list-footer,
 .js-row-article-list .list-footer>a{
     color: #999999;
+}
+
+
+.view-gzh .node-mpwechat h2
+{
+  display: none;
+}
+.view-gzh .views-row{
+  border-bottom: solid 1px #999;
 }
