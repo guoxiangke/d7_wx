@@ -87,7 +87,7 @@ article.node-mpwechat .submitted{
 #sbq_gototop:hover {
     background-position: 0px -40px;
 }
-#collapsempqr{
+.collapsempqr{
   max-width: 350px;
 }
 @media screen and (max-width: 768px){
