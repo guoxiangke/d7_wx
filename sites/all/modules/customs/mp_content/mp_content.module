@@ -559,7 +559,7 @@ function save_mpwechat_node($nickname,$user_name,$hd_head_img,$wechat_profile_qr
   $node->type = 'mpwechat';
   $node->uid = 1;
   $node->title = str_replace('&nbsp;', '', $nickname);
-  $node->field_link[LANGUAGE_NONE][0]['value'] = $link;//原文链接
+  $node->field_redirect_link[LANGUAGE_NONE][0]['value'] = $link;//原文链接
 
   // $response = drupal_http_request($hd_head_img);
   // watchdog('pic_url1', $hd_head_img, array(), WATCHDOG_NOTICE, 'link');
