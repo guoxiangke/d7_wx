@@ -76,11 +76,16 @@ function mp_service_settings_form(){
       '#type' => 'submit',
       '#value' => '点击更新',
       '#submit' => array('wechat_admin_update_menu_submit'),
+      '#attributes' => array('class'=>array('btn','btn-success')),
     );
     $form['update_menu']['delete_menu'] = array(
       '#type' => 'submit',
       '#value' => '删除菜单',
       '#submit' => array('wechat_admin_delete_menu_submit'),
+      '#attributes' => array('class'=>array('btn','btn-danger')),
+    );
+    $form['update_menu']['kf'] = array(
+      '#markup' => l('多客服管理','CustomService/'.$user->uid,array('attributes'=>array('class'=>array('btn','btn-success')))),
     );
   }
 	$collapsed = FALSE;
