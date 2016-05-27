@@ -58,6 +58,10 @@ article .submitted{
   float: left;
   line-height: 50px;
 }
+article.node-mpwechat .user-picture,
+article.node-mpwechat .submitted{
+  float: none;
+}
 .comment-container .comment_forbidden,
 .node .comment_forbidden,
 .links .statistics_counter{

@@ -1,0 +1,4 @@
+name = mp layout for wx
+description =  评价布局
+core = 7.x
+package = A-DEV
