@@ -179,6 +179,14 @@ function  get_mp_ltsma(){
       'category'=>'专题特辑',
       'author'=>'吴加恩',
     ),
+    '214'=>array(
+      'title'=>'慎思明辨',
+      'prefex'=>'vfd0',
+      'count'=>6,
+      'level'=>'专辑课程',
+      'category'=>'专题特辑',
+      'author'=>'程蒙恩',
+    ),
     //205--299 预留给专辑
     //默认都有讲义。 如果无讲义，'pdf' =>0,
     //301-314(317-3)本科课程 圣经
