@@ -257,10 +257,11 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         }
         $weObj->music($title, $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
         if(variable_get('mp_config_certified_'.$account->uid, false) && isset($wxresources[$keyword]['custommessage'])){
+          $added = "\n根据不同网络情况，请您点击►后耐心等待3-5秒即可收听，或反复几次点击，耐心等待…";
           $data = array(
             "touser"=>$weObj->getRev()->getRevFrom(),
             "msgtype"=>'text',
-            'text'=>array('content'=>$wxresources[$keyword]['custommessage']),
+            'text'=>array('content'=>$wxresources[$keyword]['custommessage'].$added),
           );
           $weObj->sendCustomMessage($data);
         }
