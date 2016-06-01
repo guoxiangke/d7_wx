@@ -232,6 +232,10 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     $weObj->text("不支持的消息类型,请输入文字或节目代号！")->reply();
     return;
   }
+  if(strpos($keyword,'[cp]') !== false){
+    $weObj->text("不支持的复制消息发送,请重新输入！")->reply();
+    return;
+  }
   $wxresources = array();  //TODO： get all (enabled)resources/node of account.
   $wxresources = module_invoke_all('wxresources', $wxresources, $account, $keyword, $weObj);
 	$ori_keyword = $keyword;

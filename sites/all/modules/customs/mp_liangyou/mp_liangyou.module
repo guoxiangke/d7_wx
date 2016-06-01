@@ -459,7 +459,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
  * $change_keyword = return key!
  */
 function mp_bbn_response($keyword,$account,$weObj) {
-  $text = "弟兄姊妹，平安，【400】开头的圣经广播网节目系统维护中，谢谢代祷！\n永不止息，需要有你[握手]";
+  $text = "弟兄姊妹，平安，【400】开头的圣经广播网节目系统维护中，请回复【600】【603】使用其他节目，谢谢代祷！\n永不止息，需要有你[握手]";
 	$resources = array();$resources['key_'.$keyword]= array(
 		'type'	=>	'text',
 		'cache' =>  0,
