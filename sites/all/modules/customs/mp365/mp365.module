@@ -1,0 +1,84 @@
+<?php
+/**
+ * hook_rescources_info
+ */
+function mp365_rescources_info(){
+  $rescources[] = array(
+    'name' => '365',
+    'desc' => '恩典【365】【366】',
+  );
+  return $rescources;
+}
+
+/**
+ * hook_wxrescources
+ * TODO:  cache_clear_all('mp_liangyou', 'cache', TRUE); once a day!
+ */
+function mp365_wxresources($resources, $account, $keyword, $weObj){
+  $enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
+  if(!(isset($enabled_resources['365']) && $enabled_resources['365'])){
+    return $resources;
+  }
+  $my_data = &drupal_static(__FUNCTION__);
+  if (!isset($my_data)) {
+    if ($cache = cache_get('mp_liangyou_wxresources_'.$account->uid.$keyword)) {
+      $my_data = $cache->data;
+    }else {
+      $my_data = _mp365_wxresources($resources, $account, $keyword, $weObj);
+      //cache = 0;永久缓存 cache = 43200;缓存一天／2
+      if(isset($my_data['key_'.$keyword]['cache'])){
+        if($my_data['key_'.$keyword]['cache']==0){
+          cache_set('mp_liangyou_wxresources_'.$account->uid.$keyword, $my_data, 'cache');
+        }else{
+          cache_set('mp_liangyou_wxresources_'.$account->uid.$keyword, $my_data, 'cache', time() + $my_data['key_'.$keyword]['cache']);
+        }
+      }
+    }
+  }
+  // watchdog('mp365', '<pre>'.print_r($my_data, 1), array(), WATCHDOG_NOTICE, 'link');
+  // return $resources;//NO NEED RETURN! $my_data IS THE FUNCTION RETURN VALUES!
+}
+
+
+/**
+ * hook_wxrescources
+ * TODO:  cache_clear_all('mp_liangyou', 'cache', TRUE); once a day!
+ */
+function _mp365_wxresources($resources, $account, $keyword, $weObj){
+    //365||366
+    //http://lyweixintest.b0.upaiyun.com/resources/365/2014/20140109.mp3
+    $cdnlink = 'http://lyweixintest.b0.upaiyun.com';
+    $check_word = substr($keyword, 0,3);
+    if($check_word == '365' || $check_word == '366' ) {
+      $str = date('md');
+      if (strlen($keyword) ==7) {
+        $str = substr($keyword, 3,5);//0430
+        $month = (int) substr($str, 0,2);
+      }
+      $title = "恩典365";// '【'.$check_word.'】'.
+      $year = ($check_word=='365')?'2013':'2014';
+
+      $path = '/resources/365/'.$year.'/'.$year.$str.'.mp3';
+      $url = $cdnlink.$path;//.upyun_get_token($path);
+      // $url = 'http://1.ysong.org/yage/60%E7%A6%8F%E9%9F%B3%E8%AF%81%E9%81%93/%E5%AF%87%E7%BB%8D%E6%81%A9/2014%E5%B9%B4%20%E4%BA%94%E6%9C%88%E4%BB%BD/2014'.$str.'.mp3';
+      $desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新";
+      $resources['key_'.$keyword]= array(
+        'type'  =>  'music',
+        'cache' => 43200,
+        'path'  =>  $path,
+        'gadata'   =>  array(
+           'category'        => 'music',
+           'action'          => '365',
+           'label'           => 'wxservice_'.$account->uid,
+           'value'           => $keyword,
+        ),
+        'obj'   => array(
+          'title' => $title.'♫',
+          'desc'  =>  $desc,
+          'musicurl'  =>  $url,
+          'hgmusicurl'  =>  $url,
+        ),
+      );
+    }
+    return $resources;
+}

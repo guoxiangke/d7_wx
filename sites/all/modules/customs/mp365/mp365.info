@@ -1,0 +1,6 @@
+name = mp_365
+description = mp resource of 365
+core = 7.x
+package = A-DEV
+
+dependencies[] = mp_service
