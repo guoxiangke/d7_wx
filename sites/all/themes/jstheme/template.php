@@ -101,6 +101,9 @@ function jstheme_preprocess_node(&$variables) {
     drupal_add_css(drupal_get_path('theme', 'jstheme').'/css/fmplayer.css');
     drupal_add_js(drupal_get_path('theme', 'jstheme').'/js/fmplayer.min.js');
   }
+  if($variables['view_mode']=='full'){
+    drupal_add_js(drupal_get_path('theme', 'jstheme').'/js/page-node-full.js');
+  }
 
 
   // Display post information only on certain node types. ON GZH view pages!!!

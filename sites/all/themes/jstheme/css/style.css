@@ -321,3 +321,8 @@ a:hover,a:focus {
   border-bottom: solid 1px #999;
   padding: 10px 0;
 }
+
+
+.comment-form .form-item-subject {
+  display: none;
+}

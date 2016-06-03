@@ -48,9 +48,9 @@
     attach: function (context, settings) {
       $('#praise').click(function(){
         $('#rate-button-1').trigger('click');
-        $('.rate-widget-1').hide();
+        // $('.rate-widget-1').hide();
       });
-      $('.rate-widget-1').hide();
+      // $('.rate-widget-1').hide();
 
       if($('.authorinfo').length){
         var lastScrollTop = 0;
@@ -99,21 +99,6 @@
           return false;
         });
       });
-
-      //br p delete!
-      $('span').each(function(){
-        if($(this).text().length<=1)
-          $(this).remove()
-      })
-      $('p').each(function(){
-        if($(this).text().length<=1)
-          $(this).remove()
-      })
-      $('section').each(function(){
-        if($(this).text().length<=6)
-          $(this).remove()
-      })
-      $('p br').remove();
     }
   }
 
