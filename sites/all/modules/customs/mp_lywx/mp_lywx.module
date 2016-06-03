@@ -132,8 +132,9 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
       'type'  =>  'news',
       'gadata' => array(
        'category'        => 'lywxother',
-       'action'          => '收听节目代号',
-       'label'           => $keyword,
+       'action'          => 'getnews',
+       'label'           => 'wxservice_'.$account->uid,
+       'value'           => $keyword,
        ),
       'cache' =>  0,
       'obj'   =>  $news,
@@ -173,7 +174,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
           'gadata'   =>  array(
              'category'        => 'lywxaudio',
              'action'          => $ori_title,
-             'label'           => '一次一个',
+             'label'           => 'wxservice_'.$account->uid,
           ),
           'path'  => $path,
           'cache' => 43201,
@@ -214,7 +215,12 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 		    // $weObj->music($title , $desc, $musicurl, $musicurl)->reply();
         $resources['key_'.$ori_keyword]= array(
           'type'  =>  'music',
-          'gakey'   =>  $ori_title,
+          // 'gakey'   =>  $ori_title,
+          'gadata'   =>  array(
+             'category'        => 'lywxaudio',
+             'action'          => $ori_title,
+             'label'           => 'wxservice_'.$account->uid,
+          ),
           'path'  => $path,
           'cache' => 43201,
           'obj'   => array(
@@ -243,7 +249,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     $weObj->transfer_customer_service()->reply();
     gapushagent('event',array(
      'category'        => 'lywxother',
-     'action'          => '转接客服',
+     'action'          => 'getservice',
      'label'           => 'wxservice_'.$account->uid,
      'value'           => $ori_keyword,
     ));
@@ -262,8 +268,9 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     'type'  =>  'news',
     'gadata' => array(
      'category'        => 'lywxother',
-     'action'          => '使用说明',
-     'label'           => $keyword,
+     'action'          => 'get_news',
+     'label'           => 'wxservice_'.$account->uid,
+     'value'           => 'others',
      ),
     'cache' =>  0,
     'obj'   =>  $news,
@@ -304,42 +311,46 @@ function mp_lywx_wxservice_event_alter($weObj,$event,$account){
       gapushagent('event',array(
        'category'        => 'lywxother',
        'action'          => 'subscribe',
-       'label'           => $account->uid,
+       'label'           => 'wxservice_'.$account->uid,
       ));
       break;
     case 'unsubscribe':
       gapushagent('event',array(
        'category'        => 'lywxother',
        'action'          => 'unsubscribe',
-       'label'           => $account->uid,
+       'label'           => 'wxservice_'.$account->uid,
       ));
       break;
     case 'kf_create_session':
       gapushagent('event',array(
        'category'        => 'lywxother',
        'action'          => '客服会话',
-       'label'           => $account->uid,
+       'label'           => 'wxservice_'.$account->uid,
+       'value'           => 'getnews',
       ));
       break;
     case 'VIEW'://MP menu!
       gapushagent('event',array(
        'category'        => 'lywxother',
        'action'          => '菜单浏览',
-       'label'           => $event['key'],
+       'label'           => 'wxservice_'.$account->uid,
+       'value'           => $event['key'],
       ));
       break;
     case 'CLICK'://MP menu!
       gapushagent('event',array(
        'category'        => 'lywxother',
        'action'          => '菜单点击',
-       'label'           => $event['key'],
+       'label'           => 'wxservice_'.$account->uid,
+       'value'           => $event['key'],
       ));
       break;
     case 'MASSSENDJOBFINISH'://图文发送成功
       gapushagent('event',array(
        'category'        => 'lywxother',
        'action'          => '图文发送成功',
-       'label'           => $account->uid,
+       'label'           => 'wxservice_'.$account->uid,
+       'value'           => $account->uid,
       ));
       break;
     default:

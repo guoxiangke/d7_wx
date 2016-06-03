@@ -40,11 +40,17 @@ function mp_fm_wxresources($resources, $account, $keyword){
         $path = '/resources/653/'.$code.'/'.$code.$index.'.mp3';
         $cdnlink = 'http://lyweixintest.b0.upaiyun.com';
         $url = $cdnlink.$path.upyun_get_token($path);
-
+        $title = '马太福音第'.$index.'天';
         $resources['key_'.$keyword]=  array(
           'type'  =>  'music',
+          'gadata'   =>  array(
+             'category'        => 'music',
+             'action'          => '每日亲近神',
+             'label'           => 'wxservice_'.$account->uid,
+             'value'           => $title,
+          ),
           'obj'   => array(
-            'title' => '马太福音第'.$index.'天',
+            'title' => $title,
             'desc'  => '点击►收听 公众号：'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新',
             'musicurl'  => $url,
             'hgmusicurl'  =>  $url,
