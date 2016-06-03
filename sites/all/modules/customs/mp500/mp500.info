@@ -1,0 +1,6 @@
+name = mp_500
+description = mp resource of 500
+core = 7.x
+package = A-DEV
+
+dependencies[] = mp_service

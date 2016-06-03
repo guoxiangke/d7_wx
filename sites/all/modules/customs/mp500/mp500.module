@@ -1,0 +1,98 @@
+<?php
+/**
+ * hook_rescources_info
+ */
+function mp500_rescources_info(){
+  $rescources[] = array(
+    'name' => '500',
+    'desc' => '【500】优质资源',
+  );
+  return $rescources;
+}
+
+/**
+ * hook_wxrescources
+ * TODO:  cache_clear_all('mp_liangyou', 'cache', TRUE); once a day!
+ */
+function mp500_wxresources($resources, $account, $keyword, $weObj){
+  $enabled_resources = variable_get('wechat_resources_'.$account->uid, array());
+  if(!(isset($enabled_resources['500']) && $enabled_resources['500'])){
+    return $resources;
+  }
+  $my_data = &drupal_static(__FUNCTION__);
+  if (!isset($my_data)) {
+    if ($cache = cache_get('mp_liangyou_wxresources_'.$account->uid.$keyword)) {
+      $my_data = $cache->data;
+    }else {
+      $my_data = _mp500_wxresources($resources, $account, $keyword, $weObj);
+      //cache = 0;永久缓存 cache = 43200;缓存一天／2
+      if(isset($my_data['key_'.$keyword]['cache'])){
+        if($my_data['key_'.$keyword]['cache']==0){
+          cache_set('mp_liangyou_wxresources_'.$account->uid.$keyword, $my_data, 'cache');
+        }else{
+          cache_set('mp_liangyou_wxresources_'.$account->uid.$keyword, $my_data, 'cache', time() + $my_data['key_'.$keyword]['cache']);
+        }
+      }
+    }
+  }
+  // return $resources;//NO NEED RETURN! $my_data IS THE FUNCTION RETURN VALUES!
+}
+
+
+/**
+ * hook_wxrescources
+ * TODO:  cache_clear_all('mp_liangyou', 'cache', TRUE); once a day!
+ */
+function _mp500_wxresources($resources, $account, $keyword, $weObj){
+    //http://lyweixintest.b0.upaiyun.com/resources/365/2014/20140109.mp3
+    $cdnlink = 'http://lyweixintest.b0.upaiyun.com';
+    $check_word = substr($keyword, 0,3);
+    if($check_word==500){
+      $resources['key_'.$keyword]= array(
+        'type'  =>  'text',
+        'cache' => 0,
+        'gadata'   =>  array(
+           'category'        => '500',
+           'action'          => 'menu get',
+           'label'           => 'wxservice_'.$account->uid,
+        ),
+        'obj'   => array(
+          'text' => "【501】炼爱40天",
+        ),
+      );
+      return $resources;
+    }
+    if($check_word > 500 || $check_word <= 599 ) {
+      $res500 = array(
+        501=>array(
+          'title'=>'炼爱',
+          'count'=>'40',//01-40.mp3
+        ),
+      );
+      if(in_array($check_word,array_keys($res500))){
+        $index = date('z')%$res500[$check_word]['count']+1-30;
+        $title = $res500[$check_word]['title'];
+        $path = '/resources/500/'.$check_word.'/'.str_pad($index,2,"0",STR_PAD_LEFT).'.mp3';
+        $url = $cdnlink.$path;//.upyun_get_token($path);
+        // $url = 'http://1.ysong.org/yage/60%E7%A6%8F%E9%9F%B3%E8%AF%81%E9%81%93/%E5%AF%87%E7%BB%8D%E6%81%A9/2014%E5%B9%B4%20%E4%BA%94%E6%9C%88%E4%BB%BD/2014'.$str.'.mp3';
+        $desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新";
+        $resources['key_'.$keyword]= array(
+          'type'  =>  'music',
+          'cache' => 43200,
+          'path'  =>  $path,
+          'gadata'   =>  array(
+             'category'        => '500',
+             'action'          => $title,
+             'label'           => 'wxservice_'.$account->uid,
+          ),
+          'obj'   => array(
+            'title' => $title.$index.'/'.$res500[$check_word]['count'].'♫',
+            'desc'  =>  $desc,
+            'musicurl'  =>  $url,
+            'hgmusicurl'  =>  $url,
+          ),
+        );
+      }
+      return $resources;
+    }
+}
