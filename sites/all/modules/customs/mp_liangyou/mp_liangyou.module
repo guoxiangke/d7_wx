@@ -120,17 +120,17 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 			return $resources;
   	}
   	if($keyword == 'zb'||$keyword == '直播'){
-	   		return $resources['key_'.$keyword]= array(
+	   	$resources['key_'.$keyword]= array(
 				'type'	=>	'music',
 				'cache' =>  43200,
 				'obj'		=> array(
-				'title'	=> '【zb】良友直播',
-				'desc'	=>	'点击►收听 耐心等待数秒钟 公众号:永不止息',
-				'musicurl'	=> 'http://ly729.out.airtime.pro:8000/ly729_a?'.time().'061.mp3',
-				'hgmusicurl'	=>	'http://ly729.out.airtime.pro:8000/ly729_a?'.time().'061.mp3',
+  				'title'	=> '【zb】良友直播',
+  				'desc'	=>	'点击►收听 耐心等待数秒钟 公众号:永不止息',
+  				'musicurl'	=> 'http://ly729.out.airtime.pro:8000/ly729_a?'.time().'061.mp3',
+  				'hgmusicurl'	=>	'http://ly729.out.airtime.pro:8000/ly729_a?'.time().'061.mp3',
 				),
 			);
-
+      return $resources;
   	}
 		// 600-652 stream ly
 		require_once('liangyou_audio_list.php');
