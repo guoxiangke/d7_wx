@@ -64,6 +64,18 @@
   nav .secondary{
     width: 100%;
   }
+
+  body .view-gzh,body .view-gzh .btn,
+  .view-gzh .node .field-name-body p,
+  .view-gzh article .submitted>span{
+    font-size: 12px;
+  }
+  .view-gzh .node .field-name-body p{
+    margin: 0;
+  }
+  .view-gzh article a {
+    text-decoration: none;
+  }
 }
 
 /* Custom, iPhone Retina */
