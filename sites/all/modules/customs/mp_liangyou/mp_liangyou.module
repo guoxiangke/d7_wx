@@ -316,7 +316,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
     //圣经广播网 400-435
     if(isset($enabled_resources['400']) && $enabled_resources['400'])
     if(is_numeric($keyword) && ($keyword>=400 && $keyword<=435) ) {
-    	watchdog('mp_liangyou', '400', array(), WATCHDOG_NOTICE, 'link');
+    	// watchdog('mp_liangyou', '400', array(), WATCHDOG_NOTICE, 'link');
 			return mp_bbn_response($keyword,$account, $weObj);
     }
 

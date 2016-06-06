@@ -78,7 +78,7 @@ function get_lysd(){
       'title'=>'15-幸福三部曲',
       'begin'=>141,
       'end'=>178,
-    ),// http://ly729.b0.upaiyun.com/lysd/001.mp3
+    ),
     '让爱住你家'=>array(
       'title'=>'16-让爱住你家',
       'begin'=>179,

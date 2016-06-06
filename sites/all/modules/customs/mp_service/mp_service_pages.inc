@@ -289,34 +289,62 @@ function _mp_service_process_event($weObj,$account){
   // TODO
   module_invoke_all('wxservice_event_alter', $weObj,$event,$account);
   if(is_array($weObj->Message(''))){return;}
-
-  if($event['event']=='MASSSENDJOBFINISH'){
+  switch ($event['event']) {
+    case 'subscribe':
+      gapushagent('event',array(
+       'category'        => 'event',
+       'action'          => 'subscribe',
+       'label'           => 'wxservice_'.$account->uid,
+      ));
+      break;
+    case 'unsubscribe':
+      gapushagent('event',array(
+       'category'        => 'event',
+       'action'          => 'unsubscribe',
+       'label'           => 'wxservice_'.$account->uid,
+      ));
+      break;
+    case 'kf_create_session':
+      gapushagent('event',array(
+       'category'        => 'event',
+       'action'          => '客服会话',
+       'label'           => 'wxservice_'.$account->uid,
+      ));
+      watchdog('mp_lywx', '<pre>'.print_r($event, 1), array(), WATCHDOG_NOTICE, 'link');
+      break;
+    case 'VIEW'://MP menu!
+      gapushagent('event',array(
+       'category'        => 'event',
+       'action'          => '菜单浏览_'.$event['key'],
+       'label'           => 'wxservice_'.$account->uid,
+      ));
+      break;
+    case 'CLICK'://MP menu!
+      gapushagent('event',array(
+       'category'        => 'event',
+       'action'          => '菜单点击',
+       'label'           => 'wxservice_'.$account->uid,
+      ));
+      if(is_string($event['key'])){
+        mp_service_keyword_response($weObj,$event['key'],$account);
+      }
+      break;
+    case 'WifiConnected'://
+      watchdog('WifiConnected', '<pre>'.print_r($event, 1), array(), WATCHDOG_NOTICE, 'link');
+      // $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎来到我家！[握手]'));
+      break;
+    case 'MASSSENDJOBFINISH'://图文发送成功
       gapushagent('event',array(
        'category'        => 'event',
        'action'          => '图文发送成功',
        'label'           => 'wxservice_'.$account->uid,
       ));
-      return ;
+      break;
+    default:
+      watchdog('no track event!', '<pre>'.print_r($event, 1), array(), WATCHDOG_NOTICE, 'link');
+      break;
   }
-  if(!isset($event['key'])){
-    if($account->uid>1) gapushagent('event',array(
-       'category'        => 'event',
-       'action'          => $event['event'],
-       'label'           => 'wxservice_'.$account->uid,
-    ));
-  }else{
-    if($event['event']=='VIEW'){
-      //MP menu!
-      gapushagent('event',array(
-       'category'        => 'event',
-       'action'          => '图文VIEW',
-       'label'           => 'wxservice_'.$account->uid,
-      ));
-    }else{
-      if(is_string($event['key']))
-        mp_service_keyword_response($weObj,$event['key'],$account);
-    }
-  }
+
 	//add default behavior
   if($event['event']=='subscribe'){
     if($account->uid == 8){
@@ -381,20 +409,7 @@ function _mp_service_process_event($weObj,$account){
         }
       }
     }
-    gapushagent('event',array(
-       'category'        => 'event',
-       'action'          => 'subscribe',
-       'label'           => 'wxservice_'.$account->uid,
-     ));
-    $copyright = copyright($account);
-    $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎关注我们！[握手]').$copyright);
-  }elseif($event['event']=='WifiConnected'){
-    // watchdog('mp_service_pages', 'WifiConnected event trigger!', array(), WATCHDOG_NOTICE, 'link');
-    $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，欢迎来到我家！[握手]'));
-  }elseif($event['event']=='kf_create_session'){
-    //TODO
   }
-  // watchdog('no track event!', '<pre>'.print_r($event,true), array(), WATCHDOG_NOTICE, 'error');
 }
 
 /**

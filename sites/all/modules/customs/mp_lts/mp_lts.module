@@ -957,7 +957,7 @@ function _mp_getwxresources($resources, $account, $keyword){
           'cache' =>  0,
           'gadata'   =>  array(
              'category'        => 'lts33',
-             'action'          => 'menu_other',
+             'action'          => 'menu_'.$keyword,
              'label'           => 'wxservice_'.$account->uid,
           ),
           'obj'   => array(
