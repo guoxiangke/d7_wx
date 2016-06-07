@@ -410,7 +410,7 @@ function comment_goodness_form_comment_form_alter(&$form, &$form_state, $form_id
   $form['#submit'][] = 'comment_goodness_form_submit';
 
   // Disable preview button.
-  _comment_goodness_disable_actions($form);
+  // _comment_goodness_disable_actions($form);
 }
 
 /**
