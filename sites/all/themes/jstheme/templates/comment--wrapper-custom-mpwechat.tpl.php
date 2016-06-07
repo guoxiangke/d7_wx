@@ -6,4 +6,6 @@
     <?php print render($content['comment_form']); ?>
   <?php endif; ?>
 </div>
-<?php echo views_embed_view('gzh', 'block', $node->uid);?>
+<div class="hidden gzh-comment-block">
+  <?php echo views_embed_view('gzh', 'block', $node->uid);?>
+</div>

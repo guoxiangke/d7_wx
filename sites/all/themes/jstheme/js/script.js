@@ -66,6 +66,38 @@
       });
     });
 
+
+
+
+
+    $('.view-gzh .comment-add a').click(function(e){
+      e.preventDefault();
+      var dd = $(this).parents('article').find('#comments .comment-form');
+      if(!$(this).parents('article').find('#comments:visible').length){
+          $(this).parents('article').find('#comments').removeClass('hidden');
+          dd.slideDown();
+      }else{
+          $(this).parents('article').find('#comments').addClass('hidden');
+          dd.slideUp();
+      }
+
+
+    });
+
+    $('.view-gzh .node-readmore a').click(function(e){
+      e.preventDefault();
+      var dd = $(this).parents('article').find('.gzh-comment-block');
+      if(!$(this).parents('article').find('.gzh-comment-block:visible').length){
+          dd.removeClass('hidden');
+          dd.slideDown();
+      }else{
+        dd.slideUp();
+        dd.addClass('hidden');
+      }
+
+    });
+
+
   });
 
   Drupal.behaviors.jstheme = {
@@ -98,28 +130,6 @@
       }
 
 
-
-
-    $('.view-gzh .comment-add a').click(function(e){
-      e.preventDefault();
-      var dd = $(this).parents('article').find('#comments .comment-form');
-      if(!$(this).parents('article').find('#comments:visible').length){
-          $(this).parents('article').find('#comments').removeClass('hidden');
-          dd.slideDown();
-          return;
-      }
-
-      if($(this).parents('article').find('#comments .comment-form:visible').length){
-          dd.slideUp();
-          if(!$(this).parents('article').find('#comments .comment').length){
-            $(this).parents('article').find('#comments').addClass('hidden');//slideUp().delay( 1000 )
-          }
-      }
-      else{
-          dd.slideDown();
-      }
-
-    });
 
     }
   }

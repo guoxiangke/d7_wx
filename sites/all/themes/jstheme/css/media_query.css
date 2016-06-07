@@ -76,7 +76,8 @@
   .view-gzh article a {
     text-decoration: none;
   }
-  .view-gzh article footer .links .comment-comments{
+  .view-gzh article footer .links .comment-comments,
+  .view-gzh article footer .links .comment-new-comments{
     display: none;
   }
   .view-gzh .form-type-radios .form-radios,
