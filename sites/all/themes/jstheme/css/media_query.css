@@ -76,6 +76,13 @@
   .view-gzh article a {
     text-decoration: none;
   }
+  .view-gzh article footer .links .comment-comments{
+    display: none;
+  }
+  .view-gzh .form-type-radios .form-radios,
+  .view-gzh .form-type-radios .form-radios .radio{
+    display: inline;
+  }
 }
 
 /* Custom, iPhone Retina */

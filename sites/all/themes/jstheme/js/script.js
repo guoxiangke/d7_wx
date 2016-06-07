@@ -41,6 +41,30 @@
     );
 
 
+     //go to top
+    $("body").append("<a href='#' id='sbq_gototop'></a>");
+    $(function() {
+      if ($(window).scrollTop() > 100) {
+        $("#sbq_gototop").show();
+      } else {
+        $("#sbq_gototop").hide();
+      }
+      //scroll show hide
+      $(window).scroll(function() {
+        if ($(window).scrollTop() > 100) {
+          $("#sbq_gototop").fadeIn(100);
+        } else {
+          $("#sbq_gototop").fadeOut(50);
+        }
+      });
+      //btn
+      $("#sbq_gototop").click(function() {
+        $('body,html').animate({
+          scrollTop : 0
+        }, 500);
+        return false;
+      });
+    });
 
   });
 
@@ -74,31 +98,29 @@
       }
 
 
-       //go to top
-      $("body").append("<a href='#' id='sbq_gototop'></a>");
 
-      $(function() {
-        if ($(window).scrollTop() > 100) {
-          $("#sbq_gototop").show();
-        } else {
-          $("#sbq_gototop").hide();
-        }
-        //scroll show hide
-        $(window).scroll(function() {
-          if ($(window).scrollTop() > 100) {
-            $("#sbq_gototop").fadeIn(100);
-          } else {
-            $("#sbq_gototop").fadeOut(50);
+
+    $('.view-gzh .comment-add a').click(function(e){
+      e.preventDefault();
+      var dd = $(this).parents('article').find('#comments .comment-form');
+      if(!$(this).parents('article').find('#comments:visible').length){
+          $(this).parents('article').find('#comments').removeClass('hidden');
+          dd.slideDown();
+          return;
+      }
+
+      if($(this).parents('article').find('#comments .comment-form:visible').length){
+          dd.slideUp();
+          if(!$(this).parents('article').find('#comments .comment').length){
+            $(this).parents('article').find('#comments').addClass('hidden');//slideUp().delay( 1000 )
           }
-        });
-        //btn
-        $("#sbq_gototop").click(function() {
-          $('body,html').animate({
-            scrollTop : 0
-          }, 500);
-          return false;
-        });
-      });
+      }
+      else{
+          dd.slideDown();
+      }
+
+    });
+
     }
   }
 

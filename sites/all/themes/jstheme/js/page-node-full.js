@@ -14,5 +14,9 @@
         $(this).remove()
     })
     $('.field-name-body p br').remove();
+
+
+
+
   });
 })(jQuery);

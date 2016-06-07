@@ -89,6 +89,10 @@ function jstheme_preprocess_comment_wrapper(&$variables) {
   // e.g. for an article content type, the template file will be comment--custom-article.tpl.php
   // dpm($variables);
   $variables['theme_hook_suggestions'][] = 'comment__wrapper_custom_' . $variables['node']->type;
+  $node = $variables['node'];
+  if($node->type=='mpwechat' && arg(0)=='gzh'){
+      $variables['classes_array'][] = 'hidden';
+  }
 }
 /*theme book links on main bookid for boot*/
 function jstheme_process_book_navigation(&$variables) {

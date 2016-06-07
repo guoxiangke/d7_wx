@@ -321,7 +321,11 @@ a:hover,a:focus {
   border-bottom: solid 1px #999;
   padding: 10px 0;
 }
-
+.view-display-id-block .views-row {
+  padding:0;
+  border-top: dotted 1px #999;
+  border-bottom: none;
+}
 
 .comment-form .form-item-subject {
   display: none;
