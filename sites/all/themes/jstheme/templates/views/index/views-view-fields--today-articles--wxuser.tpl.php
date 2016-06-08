@@ -54,7 +54,7 @@
       <?php print $fields['comment_count']->label_html; ?>
       <?php print $fields['comment_count']->content; ?>
     <?php print $fields['comment_count']->wrapper_suffix; ?>
-    · 阅读 <span class="commentcount">255</span> · 喜欢 <span class="favcount">100</span>
+    · 阅读 <span class="commentcount"><?php print $fields['totalcount']->content; ?></span> · 喜欢 <span class="favcount"><?php print $fields['value']->content; ?></span>
   </div>
 </div>
 <div class="col-xs-3 col-sm-3">

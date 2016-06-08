@@ -136,6 +136,7 @@ p.list-top{
 .rich_media_tool {
   overflow: hidden;
   padding: 10px 0;
+  font-size: 14px;
 }
 
 .rich_media_tool .meta_primary {

@@ -9,19 +9,27 @@
     $('#statistics_counter').html(number);
 
    	// number -= Math.floor(Math.random() * (number - 0));
-    // number = $('.rate-number-up-down-rating').text();
+    number = parseInt($('.rate-number-up-down-rating').text());
     // console.log(number);
-    $('.praise_num').html(Drupal.settings.xdtheme.ratecount);
+    $('.praise_num').html(number);
+
+    if($('.rate-widget .glyphicon-thumbs-up').hasClass('rate-voted')){
+      $('#praise i').addClass('praised');
+    }
 
     $('#praise').click(function(){
     	$('.icon_praise_gray').toggleClass('praised');
     	if($('.praised').length){
     		$('.praise_num').html(( parseInt($('.praise_num').html())+1));
+        $('.rate-widget .glyphicon-thumbs-up').trigger('click');
     	}else{
     		$('.praise_num').html(( parseInt($('.praise_num').html())-1));
+        $('.rate-widget .glyphicon-thumbs-down').trigger('click');
     	}
     });
-
+    $('#praise_down').click(function(){
+        $('.rate-widget .glyphicon-thumbs-down').trigger('click');
+    });
     $('.content p').each(function(){
     if($(this).next('ul').length){
          $(this).addClass('data-ul');

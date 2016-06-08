@@ -30,6 +30,9 @@ body {
 	text-align: center;
 	font-size: 12px;
 }
+.footer p a{
+  font-size: 12px;
+}
 /*logo top begin*/
 
 .authorinfo .followwx{
@@ -262,7 +265,12 @@ article .user-picture img {
 .view-gzh article>.form-group label{
   display: none;
 }
-
+.page-node .node-article .content .form-group{
+  display: none;
+}
+.page-node .node-article #comments{
+  display: none;
+}
 .prev-next-post a{
   text-decoration: none;
 }
