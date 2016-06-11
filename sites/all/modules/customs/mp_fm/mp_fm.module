@@ -32,6 +32,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
       if($keyword =='653'&&isset($enabled_resources['qjs']) && $enabled_resources['qjs']){
         // 2016.05.19 mat01
         $begin = strtotime('05/19/16');
+        $begin += 86400*11;
         if(time()>$begin){
         $index = str_pad((date('z') - date('z',$begin) +1),2,"0",STR_PAD_LEFT);
         // http://lyweixintest.b0.upaiyun.com/resources/653/mat/mat01.mp3
