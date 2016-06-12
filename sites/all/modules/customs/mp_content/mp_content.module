@@ -96,9 +96,9 @@ function mp_content_wxresources($resources, $account, $keyword){
             if($offset<0) {
               $text = "------已有资源------";
               if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
-                $nodes = dale_get_mp_nodes('fm77', 30, $tid = NULL, $uids = array(),NODE_NOT_PROMOTED,NODE_PUBLISHED,"DESC");
+                $nodes = dale_get_mp_nodes('fm77', 50, $tid = NULL, $uids = array(),NODE_NOT_PROMOTED,NODE_PUBLISHED,"DESC");
               }else{
-                $nodes = dale_get_mp_nodes('fm77', 30, $tid = NULL, array($account->uid),NODE_NOT_PROMOTED,NODE_PUBLISHED,"DESC");
+                $nodes = dale_get_mp_nodes('fm77', 50, $tid = NULL, array($account->uid),NODE_NOT_PROMOTED,NODE_PUBLISHED,"DESC");
               }
               $i = 0;
               $total = count($nodes);
