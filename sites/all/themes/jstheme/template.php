@@ -109,12 +109,12 @@ function jstheme_preprocess_node(&$variables) {
     drupal_add_js(drupal_get_path('theme', 'jstheme').'/js/page-node-full.js');
   }
 
-
+  // dpm($node);
   // Display post information only on certain node types. ON GZH view pages!!!
   if (variable_get('node_submitted_' . $node->type, TRUE)) {
     $variables['display_submitted'] = TRUE;
     $name = $variables['name'];
-    if(arg(0)=='gzh') {
+    if(arg(0)=='gzh' || !empty($node->field_wx_openid['und'][0]['value'])){
       // $name = l($node->name,"wxuser/$node->uid");
       $name = str_replace('/user/', '/wxuser/', $name);
     }
@@ -168,12 +168,16 @@ function jstheme_preprocess_user_picture(&$variables) {
       else {
         $variables['user_picture'] = theme('image', array('path' => $filepath, 'alt' => $alt, 'title' => $alt));
       }
-      if (!empty($account->uid) && user_access('access user profiles')) {
-        $user_link = "user/$account->uid";
-        if(arg(0)=='gzh') $user_link = "wxuser/$account->uid";
-        $attributes = array('attributes' => array('title' => t('View user profile.')), 'html' => TRUE);
-        $variables['user_picture'] = l($variables['user_picture'], $user_link, $attributes);
-      }
+      // dpm($account);
+      // $account = user_load($account->uid);
+      // if (!empty($account->uid) && user_access('access user profiles')) {
+        // $user_link = "user/$account->uid";
+        if(arg(0)=='gzh' || !empty($node->field_wx_openid['und'][0]['value'])){
+          $user_link = "wxuser/$account->uid";
+          $attributes = array('attributes' => array('title' => t('View user profile.')), 'html' => TRUE);
+          $variables['user_picture'] = l($variables['user_picture'], $user_link, $attributes);
+        }
+      // }
     }
   }
 }
