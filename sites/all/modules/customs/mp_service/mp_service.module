@@ -260,7 +260,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         }
         $weObj->music($title, $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
         if(variable_get('mp_config_certified_'.$account->uid, false) && isset($wxresources[$keyword]['custommessage'])){
-          $added = "\n您喜欢获取音频的时候得到简介文字吗？http://wx.yongbuzhixi.com/node/1997";
+          $added = "\n您知道吗？网速不给力的时候，需要您耐心等待►变■，如此反复，间隔3-5秒！";
           $data = array(
             "touser"=>$weObj->getRev()->getRevFrom(),
             "msgtype"=>'text',

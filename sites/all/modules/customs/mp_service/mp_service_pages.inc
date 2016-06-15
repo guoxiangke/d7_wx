@@ -310,7 +310,15 @@ function _mp_service_process_event($weObj,$account){
        'action'          => '客服会话',
        'label'           => 'wxservice_'.$account->uid,
       ));
-      watchdog('mp_lywx', '<pre>'.print_r($event, 1), array(), WATCHDOG_NOTICE, 'link');
+      // watchdog('mp_lywx', '<pre>'.print_r($event, 1), array(), WATCHDOG_NOTICE, 'link');
+      break;
+    case 'kf_close_session':
+      gapushagent('event',array(
+       'category'        => 'event',
+       'action'          => '结束客服会话',
+       'label'           => 'wxservice_'.$account->uid,
+      ));
+      // watchdog('mp_lywx', '<pre>'.print_r($event, 1), array(), WATCHDOG_NOTICE, 'link');
       break;
     case 'VIEW'://MP menu!
       gapushagent('event',array(
