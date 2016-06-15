@@ -1006,7 +1006,7 @@ function _mp_getwxresources($resources, $account, $keyword){
     }
     if($count==='0'){//获取目录概括+//获取pdf
       $link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
-      $cdn = 'http://lts33.b0.upaiyun.com/';
+      $cdn = 'http://audio.yongbuzhixi.com/';
       $etime = time()+864000; // 授权十天后过期
       $key = 'ly729';   // token 防盗链密钥
       $path = '/'.$link; // 图片相对路径
@@ -1057,7 +1057,7 @@ function _mp_getwxresources($resources, $account, $keyword){
     $path = '/'.$link; // 图片相对路径
     // $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
 
-    $cdn = 'http://lts33.b0.upaiyun.com/';
+    $cdn = 'http://audio.yongbuzhixi.com/';
     $link = $cdn . urlencode($link);//.'?_upt='.$sign;
     // $temp = @get_headers($link);
     // if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!

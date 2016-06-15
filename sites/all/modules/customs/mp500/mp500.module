@@ -44,8 +44,8 @@ function mp500_wxresources($resources, $account, $keyword, $weObj){
  * TODO:  cache_clear_all('mp_liangyou', 'cache', TRUE); once a day!
  */
 function _mp500_wxresources($resources, $account, $keyword, $weObj){
-    //http://lyweixintest.b0.upaiyun.com/resources/365/2014/20140109.mp3
-    $cdnlink = 'http://lyweixintest.b0.upaiyun.com';
+    //http://audio.yongbuzhixi.com/resources/365/2014/20140109.mp3
+    $cdnlink = 'http://audio.yongbuzhixi.com';
     $check_word = substr($keyword, 0,3);
     if($check_word==500){
       $resources['key_'.$keyword]= array(

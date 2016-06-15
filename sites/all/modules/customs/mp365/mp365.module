@@ -46,8 +46,8 @@ function mp365_wxresources($resources, $account, $keyword, $weObj){
  */
 function _mp365_wxresources($resources, $account, $keyword, $weObj){
     //365||366
-    //http://lyweixintest.b0.upaiyun.com/resources/365/2014/20140109.mp3
-    $cdnlink = 'http://lyweixintest.b0.upaiyun.com';
+    //http://audio.yongbuzhixi.com/resources/365/2014/20140109.mp3
+    $cdnlink = 'http://audio.yongbuzhixi.com';
     $check_word = substr($keyword, 0,3);
     if($check_word == '365' || $check_word == '366' ) {
       $str = date('md');

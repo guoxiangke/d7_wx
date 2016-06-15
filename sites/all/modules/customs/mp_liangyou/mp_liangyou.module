@@ -403,8 +403,8 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 						// $key = 'ly729';   // token 防盗链密钥
 						$path = '/lysd/'.$link; // 图片相对路径
 						// $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-						//http://lyweixintest.b0.upaiyun.com/lysd/001.mp3
-						$link = 'http://lyweixintest.b0.upaiyun.com/lysd/'.urlencode($link);//.'?_upt='.$sign;
+						//http://audio.yongbuzhixi.com/lysd/001.mp3
+						$link = 'http://audio.yongbuzhixi.com/lysd/'.urlencode($link);//.'?_upt='.$sign;
 
 						$resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',

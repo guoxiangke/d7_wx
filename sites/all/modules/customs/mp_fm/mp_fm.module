@@ -35,11 +35,11 @@ function mp_fm_wxresources($resources, $account, $keyword){
         $begin += 86400*11;
         if(time()>$begin){
         $index = str_pad((date('z') - date('z',$begin) +1),2,"0",STR_PAD_LEFT);
-        // http://lyweixintest.b0.upaiyun.com/resources/653/mat/mat01.mp3
+        // http://audio.yongbuzhixi.com/resources/653/mat/mat01.mp3
         $code = 'mat';
         $all = array('mat'=>'马太福音');
         $path = '/resources/653/'.$code.'/'.$code.$index.'.mp3';
-        $cdnlink = 'http://lyweixintest.b0.upaiyun.com';
+        $cdnlink = 'http://audio.yongbuzhixi.com';
         $url = $cdnlink.$path.upyun_get_token($path);
         $title = '马太福音第'.$index.'天';
         $resources['key_'.$keyword]=  array(
