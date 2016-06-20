@@ -101,6 +101,15 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
   if (!isset($my_data)) {
     if ($cache = cache_get('mp_lywx_wxresources_'.$account->uid.$keyword)) {
       $my_data = $cache->data;
+      //DEBUG TO DELETE!
+      if($keyword=='202'||$keyword=='603'){
+        $str = date('ymd');
+        $pos = strpos($my_data['key_'.$keyword]['obj']['musicurl'], $str);
+        if($pos === false){
+          watchdog('mp_lywx', $keyword.'-'.$str.'-'.$my_data['key_'.$keyword]['obj']['musicurl'], array(), WATCHDOG_NOTICE, 'error');
+        }
+      }
+      //DEBUG TO DELETE later!
     }else {
       $my_data = _mp_lywx_wxresources($resources, $account, $keyword,$weObj);
       //cache = 0;永久缓存 cache = 43200;缓存一天／2
