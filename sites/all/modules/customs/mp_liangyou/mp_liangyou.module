@@ -208,7 +208,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 				if($keyword=='603'){
 					$title = $lyaudio['title'];
 					$code = $lyaudio_code;
-					$offset=7;
+					$offset=0;
 					$date = date('ymd',time()-$offset*86400);
 					$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
 					$musicurl = $cdnlink.$path;//.upyun_get_token($path);
@@ -226,7 +226,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 				      ),
 							'path'	=>	$path,
 							'cache' =>  43203,
-							'custommessage'=>"神在旧约圣经的列王记下20章里说：我已看你的眼泪，我必医治你！听众朋友，让我们一起面对生命的成长，经历神奇妙的大恩。\n热线电话：13229966322 开放时段：星期二至四 19:00-20:00； 星期三 9:30-11:00 \n如果您想留言给周师母，请直接发送留言内容@163发给本号即可</a>分享您的[微笑][抓狂][难过][呲牙]\n查看周师母留言板：http://wx.yongbuzhixi.com/node/163 [拥抱][拳头]。\n辅导短信：13068410512\n点击关注留言公众号：http://dwz.cn/52ybzx",//20160424
+							'custommessage'=>"2016年6月20日至30日，晚上7时至8时，《空中辅导》播出“第四届空中夫妻营”特辑。透过老师的教导，以及参加者的生命见证，让我们的家庭成就神的心意，同心荣耀神！由于播放特辑，空中辅导将会暂停直播，敬请留意。\n热线电话：13229966322 开放时段：星期二至四 19:00-20:00； 星期三 9:30-11:00 \n留言给周师母，请直接发送留言内容@163发给本号即可\n留言板：http://wx.yongbuzhixi.com/node/163 [拥抱][拳头]。\n辅导短信：13068410512\n点击关注留言公众号：http://dwz.cn/52ybzx",//20160424
 							'obj'		=> array(
 								'title'	=>  '【'.$keyword.'】'.$title.'♪',
 								'desc'	=> $desc,

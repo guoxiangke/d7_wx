@@ -296,6 +296,7 @@ function _mp_service_process_event($weObj,$account){
        'action'          => 'subscribe',
        'label'           => 'wxservice_'.$account->uid,
       ));
+      $weObj->text(variable_get("wechat_follow_message_".$account->uid, '您好，谢谢关注！[握手]'));
       break;
     case 'unsubscribe':
       gapushagent('event',array(
@@ -510,36 +511,6 @@ function wechat_auth($mp_account){
   drupal_goto($destination);
 }
 
-/**
- * find the default message
- */
-function _wechat_menu_default_message($event){
-  // get all click menu key
-  $key = isset($event['key']) ? $event['key'] : '';
-  if(!$key){
-    return '';
-  }
-  $menu_tree = menu_build_tree('wechat', array('max_depth'=>2));
-  foreach($menu_tree as $val){
-    if($val['link']['hidden']){
-      continue;
-    }
-    if(!empty($val['below'])){
-      foreach($val['below'] as $subval){
-        if($subval['link']['hidden']){
-          continue;
-        }
-        if($subval['link']['options']['attributes']['wechat_key'] == $key){
-          return $subval['link']['options']['attributes']['wechat_default_message'];
-        }
-      }
-    }
-    else if($val['link']['options']['attributes']['wechat_key'] == $key){
-      return $val['link']['options']['attributes']['wechat_default_message'];
-    }
-  }
-  return '';
-}
 
 // 全角半角转．
 function make_semiangle($str)
