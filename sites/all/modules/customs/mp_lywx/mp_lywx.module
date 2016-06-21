@@ -95,6 +95,48 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
   if(!(isset($enabled_resources['ly']) && $enabled_resources['ly'])){
     return;
   }
+  if($keyword=='tq') {
+    $img = array(
+      'Title'=>"良友67周年台庆祝福墙，点击查看更多～",
+      'Description'=>"",
+      'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrY4zkXwy5SPZbur1Jd7HMRneGCr0xhsqEJFXyQ0XkTqZmG8xCPIadhCt4GJk0kibtevrUIJ2Wpw7ag/0?wx_fmt=jpeg',
+      'Url'=>'http://wx.yongbuzhixi.com/node/2089',
+    );
+    $news[] = $img;
+    $nid = 2089;
+    $node = node_load($nid);
+    $mode = variable_get('comment_default_mode_' . $node->type, COMMENT_MODE_THREADED);
+    $comments_per_page = 10;
+    $info = '';
+    if ($cids = comment_get_thread($node, $mode, $comments_per_page)) {
+      $comments = comment_load_multiple($cids);
+      // dpm($comments);
+      foreach ($comments as $comment) {
+        $info .= '●'.$comment->registered_name.':'.$comment->comment_body['und'][0]['safe_value']."\n";
+      }
+    }
+    if(empty($info)){
+      $info = '恭喜，快来抢沙发吧！发送任意祝福内容+729即可发布哦！';
+    }
+    $img = array(
+      'Title'=>$info,
+      'Description'=>"欢迎收听我们的节目！知音‧牵手‧同行 ※ 为你送上精彩节目和活动！",
+      'PicUrl'=>'',
+      'Url'=>'http://wx.yongbuzhixi.com/node/2089',
+    );
+    $news[] = $img;
+    $resources['key_'.$keyword]= array(
+      'type'  =>  'news',
+      'gadata' => array(
+       'category'        => '图文',
+       'action'          => '良友67周年台',
+       'label'           => 'wxservice_'.$account->uid,
+       ),
+      'cache' =>  0,
+      'obj'   =>  $news,
+    );
+    return $resources;
+  }
   $my_data = _mp_lywx_wxresources($resources, $account, $keyword,$weObj);
   // return $my_data;
   $my_data = &drupal_static(__FUNCTION__);
@@ -263,6 +305,91 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     return ;
   }
 
+  $len = strlen($ori_keyword);
+  if($len > 30) {
+    $nid = 113;
+    $node_type = 'wxcomments';
+    //POST($user_info,$ori_keyword);
+    $id = $weObj->getRevID();
+    // watchdog('id?', $id, array(), WATCHDOG_NOTICE, 'link');
+    // if(variable_get('mp_config_wxcomments_before', '0') == $id) {
+    //   watchdog('prevent twice post by wechat servuce!', 'message', array(), WATCHDOG_NOTICE, 'link');
+    //   return;
+    // }
+    $openid = $weObj->getRev()->getRevFrom();
+    $user_info = $weObj->getUserInfo($openid);
+
+    $comment_body = $ori_keyword;
+
+    preg_match('/@\d{4}/', $ori_keyword,$m);//$m[0]=@2089
+    if(isset($m[0])){
+      $nid = str_replace('@', '', $m[0]);
+      $comment_body =  str_replace($m[0], '', $comment_body);
+    }
+
+    if (strpos($ori_keyword,'729') !== false|| strpos($ori_keyword,'台庆') !== false || strpos($ori_keyword,'生日') !== false) {
+      $nid = 2089;
+      $comment_body = $ori_keyword;
+    }
+    //空中辅导直播留言板开放时间：周2-3-4 晚上6点-9点 [微笑]敬请留意！字数>10<60字的内容会到发送到直播间大屏幕！
+
+    if(0&&$nid == 163 && $len > 29 && $len <= 200 &&  in_array(date('N'), array(2,3,4)) && date('G')>=6 &&date('G')>=9 ){//cc空中辅导大屏幕！10-30字
+      // watchdog('dpm', 'message', array(), WATCHDOG_NOTICE, 'link');
+      $openid = $weObj->getRev()->getRevFrom();
+      $user_info = $weObj->getUserInfo($openid);
+      $data = array();
+      $data['headimgurl'] = $user_info['headimgurl'].'.png';
+      $data['province'] = $user_info['province'].' '.$user_info['city'];
+      $data['nickname'] = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+      $data['openid'] = $openid;
+      $data['content'] = $ori_keyword;
+      $data['time'] = $weObj->getRevCtime(); //1444450304
+      // $id = $weObj->getRevID();//6203866816598959257
+      $re = firebaseset('wechat/'.$id,$data);
+      // watchdog('firebaseset', $data['nickname'].$keyword, array(), WATCHDOG_NOTICE, 'link');
+      //firebaseset end!
+      if($account->uid>1) gapushagent('event',array(
+       'category'        => 'firebaseset',
+       'action'          => $ori_keyword,
+       'label'           => 'wxservice_'.$account->uid,
+      ));
+      $weObj->text("互动留言已发布到大屏幕！\n周师母直播时会选读的哦！")->reply();
+      return;
+    }
+    //其他时间段会到留言板！
+    $pid = 0;
+    $str = explode('?',$comment_body);
+    if(isset($str[0]))
+      $comment_body = $str[0];
+    if(isset($str[1])){
+      $str2 = explode('#',$str[1]);
+      if(isset($str2[0])){
+        if(node_load($str2[0]))
+          $nid = $str2[0];
+      }
+      if(isset($str2[1]))
+        $pid = $str2[1];
+    }
+    $url = url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q=').'node/'.$nid;
+    $resources = mp_lywx_wxresources($resources, $account, 'tq', $weObj);
+    // $weObj->text("评论留言成功！\n审核后会<a href='".$url."'>出现在这里哦</a>！")->reply();
+    //...TODO sen news!
+    $before = variable_get('mp_config_wxcomments_wxid', '0');
+    // dpm($before);
+    // watchdog('before', $before, array(), WATCHDOG_NOTICE, 'link');
+    // watchdog('id', $id, array(), WATCHDOG_NOTICE, 'link');
+    if($before!=$id){
+      variable_set('mp_config_wxcomments_wxid', $id);
+      _post_wxcomments($user_info,$comment_body,$nid,$id,$pid);
+      if($account->uid>1) gapushagent('event',array(
+       'category'        => 'comments',
+       'action'          => $ori_keyword,
+       'label'           => 'wxservice_'.$account->uid,
+      ));
+    }
+  watchdog('mp_lywx', '<pre>'.print_r($resources, 1), array(), WATCHDOG_NOTICE, 'link');
+    return $resources;
+  }
   //2. 如輸入”0”或節目代號以外的任何數字、英文、符號等，會自動發送圖文“良友知音使用说明”。
   $img = array(
     'Title'=>"良友知音使用说明",
