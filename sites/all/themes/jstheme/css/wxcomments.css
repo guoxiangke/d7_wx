@@ -135,3 +135,13 @@ div[class|="edit-author"],#edit-author--2,.form-item-comment-body-und-0-value la
 .container-fluid{
   padding:0;
 }
+.comment-unpublished {
+  background-color: #efefef;
+}
+.comment-unpublished .comment-approve a{
+  color: #bd081c;
+}
+.comment-container .submitted.hidden-lg{
+  padding-top: 5px;
+  font-size: 10px;
+}

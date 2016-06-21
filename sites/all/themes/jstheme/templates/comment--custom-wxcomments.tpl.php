@@ -63,6 +63,7 @@
 		<div class="row <?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 			<div class="img-circle comment-padding col-xs-2">
 				<?php print $picture ?>
+			  <div class="submitted hidden-lg"><span class="glyphicon glyphicon-time"></span><span class="time"><?php echo date('H:i',$comment->created);?></span></div>
 			</div>
 			<div class="comment-padding col-xs-10">
 			  <div class="content"<?php print $content_attributes; ?>>

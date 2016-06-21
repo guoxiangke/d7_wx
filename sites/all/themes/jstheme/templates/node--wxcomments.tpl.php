@@ -120,12 +120,8 @@
       print render($content);
   	?>
   	<div class="desc-wrapper">
-	    <div class="comment-desc"  data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><span>微信回复【内容@<?php echo $node->nid;?>】 即可留言！</span></div>
-	    <div class="collapse" id="collapseExample">
-	    	<p class='title'>话题介绍</p>
-	    	<p id='collapsebody'><?php echo $node->body[LANGUAGE_NONE][0]['safe_value'];?>
-	    	</p>
-	    </div>
+	    <div class="comment-desc"><span>微信回复【内容@<?php echo $node->nid;?>】 即可留言！<?php echo $node->body[LANGUAGE_NONE][0]['safe_value'];?></span></div>
+
     </div>
   </div>
 
