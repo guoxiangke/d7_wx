@@ -95,6 +95,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
   if(!(isset($enabled_resources['ly']) && $enabled_resources['ly'])){
     return;
   }
+  //tq begin
   if($keyword=='tq') {
     $img = array(
       'Title'=>"良友67周年台庆微信留言板，点击查看更多～",
@@ -140,7 +141,24 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
       'obj'   =>  $news,
     );
     return $resources;
+  }//留言板图文end
+  if(strpos($keyword, '729')){
+    $new_keyword = str_replace('729', $keyword);
+    $questions = array(
+      '1'=>array(//day!
+        'question'=>'良友電台於哪一年、哪一天成立？',
+        'answer'=>'1949年7月29日',//(19490729 1949729 1949.7.29 49.72.9 一九四九729)
+        // 'options'=>node
+        ),
+      '16'=>array(//day!
+        'question'=>'良友電台節目表背後的福音單張，主題是甚麼？',
+        'answer'=>'0',
+        'options'=>array('破鏡重圓','歸主懷抱','將心歸我'),
+        )
+      );
   }
+  //tq end!
+
   $my_data = _mp_lywx_wxresources($resources, $account, $keyword,$weObj);
   // return $my_data;
   $my_data = &drupal_static(__FUNCTION__);
@@ -416,5 +434,50 @@ function mp_lywx_wxservice_event_alter($weObj,$event,$account){
     $news[] = $img;
     // $weObj->text("亲爱的朋友，你好！感谢你关注良友电台官方订阅号“良友知音”！\n".lywx_menu());
     $weObj->news($news);
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function mp_lywx_node_view($node, $view_mode, $langcode) {
+  $nid = 2089;
+  if($node->nid == $nid && $view_mode=='full'){
+    global $user;
+    if(isset($_GET['award'])){// && $user->uid == $node->uid
+      global $user;
+      $query = db_select('comment', 'c');
+      $query->join('users', 'u', 'c.uid = u.uid'); //JOIN node with users
+      $query->condition('c.nid', $nid);
+      $query->groupBy('c.uid');//GROUP BY user ID
+      $query->fields('u', array('name'));
+      $query->fields('u', array('uid'));
+      $result = $query->execute()->fetchAll();
+
+      $count = db_query('SELECT c.cid FROM {comment} c WHERE c.nid = :nid', array(':nid' => $nid));
+      $count->fetchCol();
+      $count = $count->rowCount();
+
+      $min=0; $max=count($result)-1; $quantity=3;
+      $awards = '截至'.date('Y.m.d H:i').',微信参与人数：'.$max.'; 总共接受到用户发送微信互动消息'.$count."条; 本次随机抽取的".$quantity."位听众如下：<br/><ol id='729award'>";
+      $numbers = range($min,$max);
+      shuffle($numbers);
+      $indexs = array_slice($numbers, 0, $quantity);
+      foreach ($indexs as $index) {
+        $registered_name = $result[$index]->name;
+        $str = explode('_',$result[$index]->name);
+        if(isset($str[1]))
+          $registered_name = $str[0];
+        $user = user_load($result[$index]->uid);
+        $province = isset($user->data['province'])?$user->data['province']:'';
+        $city = isset($user->data['city'])?$user->data['city']:'';
+        $awards .= '<li>'.$result[$index]->uid .'：'. $registered_name .' '.$province.$city. "</li>";
+      }
+      $awards .= '</ol>';
+      $node->content['my_additional_field'] = array(
+        '#markup' => $awards,
+        '#weight' => 10,
+      );return $node;
+    }
   }
 }
