@@ -121,7 +121,7 @@
   	?>
   	<div class="desc-wrapper">
 	    <div class="comment-desc"><span>微信回复【内容@<?php echo $node->nid;?>】 即可留言！<?php echo $node->body[LANGUAGE_NONE][0]['safe_value'];?></span>
-        <?php global $user; if(1||($node->nid=='2089' && $user->uid==$uid)):?>
+        <?php global $user; if(($node->nid=='2089' && $user->uid==$uid)):?>
           <span class="award btn btn-danger btn-xs"><?php echo l('点击抽奖','node/2089', array('query' => array('award' => '1')));?></span>
         <?php endif;?>
       </div>

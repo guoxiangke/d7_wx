@@ -142,20 +142,311 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     );
     return $resources;
   }//留言板图文end
-  if(strpos($keyword, '729')){
-    $new_keyword = str_replace('729', $keyword);
+  if(strpos($keyword,'729')!==false) {
+    // $keyword ='一+729';
+    // $new_keyword = trim(str_replace('729','',$keyword));
+    // $new_keyword = str_replace('+','',$new_keyword);
+    // $new_keyword = str_replace('加','',$new_keyword);
+    $new_keyword = trim($keyword);
     $questions = array(
-      '1'=>array(//day!
-        'question'=>'良友電台於哪一年、哪一天成立？',
-        'answer'=>'1949年7月29日',//(19490729 1949729 1949.7.29 49.72.9 一九四九729)
-        // 'options'=>node
-        ),
-      '16'=>array(//day!
-        'question'=>'良友電台節目表背後的福音單張，主題是甚麼？',
-        'answer'=>'0',
-        'options'=>array('破鏡重圓','歸主懷抱','將心歸我'),
-        )
-      );
+      array('question'=>"1.  良友电台于哪一年、哪一天成立？",
+        'answer'=>array('49','7','29'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"2.  爱广播的广播频率是甚么?",
+        'answer'=>array('9430'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"3.  良友电台台长和副台长的名字？",
+        'answer'=>array('赵群','唐华'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"4.  网上串流广播频道的名字？",
+        'answer'=>array('同行频道'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"5.  微信号名字？",
+        'answer'=>array('良友知音','liangyouzhiyin'),
+        'answerrule'=>'||',
+      ),
+      array('question'=>"6.  良友电台官方网站网址？",
+        'answer'=>array('www.729ly.net'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"7.  儿童节目的名字？",
+        'answer'=>array('欢乐卡恰碰'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"8.  良友电台的官方短信号码是？",
+        'answer'=>array('1322', '9966', '122'),
+        'answer1'=>array('1322', '9966', '022'),//if isset(answer1)
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"9.  教唱诗歌节目名字？",
+        'answer'=>array('彩虹桥'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"10. 现在电台有甚么节目是以中英双语呈现的？任举一个",
+        'answer'=>array('天路导向','蓝天绿洲'),
+        'answerrule'=>'||',
+      ),
+      array('question'=>"11. 任举一个良友电台手机应用程式",
+        'answer'=>array('聆听同行','聆听关怀','聆听成长'),
+        'answerrule'=>'||',
+      ),
+      array('question'=>"12. 任举三个良友电台少数民族语言节目",
+        'answer'=>array('蒙古','壮','白','康巴','傈僳','云南','维吾尔'),
+        'answerrule'=>'||',
+        'count'  => 3//满足条件的个数为3个！！！
+      ),
+      array('question'=>"13. 说出三个直播节目名称",
+        'answer'=>array('生命的四季','空中辅导','无限飞行号'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"14. 良友电台爱广播频道的发射攻率是？\n1). 10万瓦特\n2). 25万瓦特\n3). 30万瓦特",
+        'answer'=>1,
+        'answerrule'=>'options',
+      ),
+      array('question'=>"15. 良友电台成立以前，曾经在上海哪儿录音制作节目？\n1)沐恩堂\n2)怀恩堂\n3)国际礼拜堂",
+        'answer'=>2,
+        'answerrule'=>'options',
+      ),
+      array('question'=>"16. 良友电台节目表背后的福音单张，主题是甚么？\n1)  破镜重圆\n2)  归主怀抱\n3)  将心归我",
+        'answer'=>1,
+        'answerrule'=>'options',
+      ),
+      array('question'=>"17. 良友电台目前一共有几个节目? \n1)48\n2)54\n3)59",
+        'answer'=>3,
+        'answerrule'=>'options',
+      ),
+      array('question'=>"18. 试列举一位曾任电台驻台宣教士名称 \n1)卢文\n2)江重生\n3)徐婷",
+        'answer'=>3,
+        'answerrule'=>'options',
+      ),
+      array('question'=>"19. 短波广播的英文代号是？ \n1)AM\n2)FM\n3)SW",
+        'answer'=>3,
+        'answerrule'=>'options',
+      ),
+      array('question'=>"20. 只要向台长报告节目收听讯号，可以获得一张特别的报告卡，它的名字是？ \n1) QSL卡\n2) 收听卡\n3)SW卡",
+        'answer'=>1,
+        'answerrule'=>'options',
+      ),
+      array('question'=>"21. 良友电台的邮件地址是",
+        'answer'=>array('香港九龙大有街1号10楼','香港九龙大有街一号十楼','香港9龙大有街1号10楼','香港9龙大有街一号十楼'),
+        'answerrule'=>'||',
+      ),
+      array('question'=>"22. 良友电台空中崇拜节目播放那一家教会的崇拜? \n1)  香港圣经教会\n2)  台北信友堂\n3)  台北怀恩堂",
+        'answer'=>2,
+        'answerrule'=>'options',
+      ),
+      array('question'=>"23. 良友电台现今的两个祈祷节目名字",
+        'answer'=>array('这一刻','清心','施恩座前'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"24. 良友圣经学院，本科课程要通过多少门课才毕业？ \n1)24  \n2)36  \n3)48",
+        'answer'=>2,
+        'answerrule'=>'options',
+      ),
+      array('question'=>"25. 良友电台的口号是甚么？",
+        'answer'=>array('知音','牵手','同行'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"26. 良友电台专为残疾人而设的节目叫甚么？",
+        'answer'=>array('无限飞行号'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"27. 良友圣经学院 院长是谁？",
+        'answer'=>array('周广亮','周广亮牧师'),
+        'answerrule'=>'||',
+      ),
+      array('question'=>"28. 良友电台圣经广播剧节目的名称？",
+        'answer'=>array('经动人心'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"29. 哪个是为少数民族而设，却用普通话广播的节目？",
+        'answer'=>array('恩典与真理'),
+        'answerrule'=>'&&',
+      ),
+      array('question'=>"30. 良友、益友电台的发射站分别在哪个国家？",
+        'answer'=>array('韩国','菲律宾'),
+        'answerrule'=>'&&',
+      ),
+    );
+    $index  = (date('z')-22)%30;//0-29
+    // $index = 18;
+    // $keyword = '729@1';
+    $qindex = explode('@', $keyword);//todo delete!!!
+    if(isset($qindex[1])) $index = $qindex[1];//todo delete!!!
+    $aindex = explode('+', $keyword);//todo delete!!!
+    if(isset($aindex[1])) $index = $aindex[1];//todo delete!!!
+
+    $question = $questions[$index-1];
+    // dpm($question);
+    $text = '今天是'.date('Y-m-d').'距良友电台729台庆还有'.((int)((strtotime('2016-07-29 23:59:59')-time())/86400))."天。\n";
+
+    if((strlen($keyword)==5||strlen($keyword)==6) && isset($qindex[1])){//todo delete!!!
+      $text .= "今日有奖问答题目是：\n".$question['question'];
+      $weObj->text($text)->reply();
+      return;
+    }
+    switch ($question['answerrule']) {
+      case '&&':
+        $return = TRUE;
+        foreach ($question['answer'] as $value) {
+          if(strpos($new_keyword,$value)===FALSE){
+            $return = FALSE; break;
+          }
+        }
+        break;
+      case '||':
+        $return = FALSE;
+        if(isset($question['count'])) {
+          $max = $question['count'];
+          $count = 0;
+        }
+        foreach ($question['answer'] as $value) {
+          if(strpos($new_keyword,$value)!==FALSE){
+            if(isset($count)) {
+              $count++;
+              if($count == $max){
+                $return = TRUE;
+                break;
+              }
+            }else{
+            $return = TRUE; break;
+            }
+          }
+        }
+        break;
+      case 'options':
+        $aindex = explode('+', $keyword);//todo delete!!!
+        if(isset($aindex[2])) $keyword = $aindex[2];//todo delete!!!
+        $new_keyword = str_replace('729','',$keyword);
+        $return = FALSE;
+        switch ($new_keyword) {
+          case '一':
+            $new_keyword=1;
+            break;
+          case '二':
+            $new_keyword=2;
+            break;
+          case '三':
+            $new_keyword=3;
+            break;
+          default:
+            break;
+        }
+        if((int)$new_keyword==$question['answer']){
+          $return = TRUE;
+        }
+        break;
+      default:
+        # code...
+        break;
+    }
+    if($return){
+      $text .= $question['question']."\n您的答案是：".$keyword."\n恭喜您答对了！";
+    }else{
+      $text .= $question['question']."\n您的答案是：".$keyword."\n很遗憾，答错了！再接再厉，明天再来参加下一题吧！";
+    }
+    $weObj->text($text)->reply();
+    // dpm($text);
+    //TODO only answer one time!!! comments!!
+    //@see function mp_service_comments()
+      // $node_type = 'ly729qa';
+      $nid = 2110;
+      $id = $weObj->getRevID();
+      $pid = 0;
+      $openid = $weObj->getRev()->getRevFrom();
+      $user_info = $weObj->getUserInfo($openid);
+      $user_info = (array)$user_info;
+      $comment_body = $keyword;
+
+      $mail = $user_info['openid'].'@wechat.bind';
+      $account = user_load_by_mail($mail);
+      if(!$account){
+        // watchdog('create user '.$mail, 'message', array(), WATCHDOG_NOTICE, 'link');
+        // create $user;
+        // $response = drupal_http_request($user_info['headimgurl']);
+        // if ($response->code == 200){
+        //   $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'.jpg');
+        // }
+        $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+        $user_name = $ori_user_name;
+        $user_info['nickname'] = $ori_user_name;
+        $count = 0;
+        while(user_load_by_name($user_name)){
+          // $user_name = $user_name.rand(0, 100);
+          $user_name = $ori_user_name.'_'.$count;
+          $count ++;
+        }
+        $pass = date('Ymd');
+        $new_user = array(
+          'name' => $user_name,
+          'pass' => $pass,//user_password()
+          'mail' => $mail,
+          'init' => $mail,
+          // 'picture'=> $file->fid,
+          'status' => 1,
+          'data'  => $user_info,
+          'roles' => array(
+            DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+          ),
+          // 'field_sex' => 1,2男 ＝》 0 男 1 女
+          'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
+        );
+        $account = user_save(null, $new_user);
+        if(!$account){
+          // drupal_set_message('账户创建失败！', 'error', FALSE);
+          watchdog('mp_lywx', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
+        }
+        // drupal_set_message('恭喜您成功注册！', 'status', FALSE);
+      }
+      // check comment ID
+      {
+        // dpm($nid,'nid');
+        // dpm($pid,'pid');
+        // dpm($comment_body,'comment_body');
+        $comment = new stdClass();
+        $comment->nid = $nid; // nid of a node you want to attach a comment to
+        $comment->cid = 0; // leave it as is
+        $comment->pid = $pid; // parent comment id, 0 if none
+        $comment->uid = $account->uid; // user's id, who left the comment
+
+        $comment->mail = $mail;//
+        // $comment->thread = '01/'; // OPTIONAL. If you need comments to be threaded you can fill this value. Otherwise omit it.
+        $comment->name = $account->name;//; // If user is authenticated you can omit this field, it will be auto-populated, if the user is anonymous and you want to name him somehow, input his name here
+        // $comment->thread = '01/'; // OPTIONAL. If you need comments to be threaded you can fill this value. Otherwise omit it.
+        $comment->hostname = $_SERVER['REMOTE_ADDR'] ;// OPTIONAL. You can log poster's ip here
+        $comment->created = time(); // OPTIONAL. You can set any time you want here. Useful for backdated comments creation.
+        $comment->is_anonymous = 0; // leave it as is
+        $comment->homepage = ''; // you can add homepage URL here
+
+        // $status = COMMENT_PUBLISHED;
+        // if($pid != 0) $status = COMMENT_PUBLISHED;
+        $comment->status = COMMENT_PUBLISHED; // We auto-publish this comment
+        $comment->language = LANGUAGE_NONE; // The same as for a node
+        // $keyword = substr($keyword, 2);
+        $subject = truncate_utf8($comment_body, 15, $wordsafe = FALSE, $add_ellipsis = FALSE, $min_wordsafe_length = 1);
+        $comment->subject = $subject;
+
+        // $comment->signature = '';//$wechat_user_info['contact_info']['signature'] ;
+
+        // $comment->signature_format = 'filtered_html';
+        $comment->comment_body[$comment->language][0]['value'] = $comment_body; // Everything here is pretty much like with a node
+        $comment->comment_body[$comment->language][0]['format'] = 'filtered_html';
+        // $comment->field_custom_field_name[LANGUAGE_NONE][0]['value'] = 'Some value'; // OPTIONAL. If your comment has a custom field attached it can added as simple as this // preparing a comment for a save
+         // saving a comment
+        $comment->field_wxuid[$comment->language][0]['value'] = $openid;
+        $comment->field_questionid[$comment->language][0]['value'] = $index;
+        $comment->field_rightwrong[$comment->language][0]['value'] = $return?1:0;
+        ///////////end
+        if($comment = comment_submit($comment)) { // Prepare node for saving
+          comment_save($comment);
+            // return $comment;
+        }
+      }
+    //end function mp_service_comments()
   }
   //tq end!
 
@@ -444,8 +735,7 @@ function mp_lywx_node_view($node, $view_mode, $langcode) {
   $nid = 2089;
   if($node->nid == $nid && $view_mode=='full'){
     global $user;
-    if(isset($_GET['award'])){// && $user->uid == $node->uid
-      global $user;
+    if(isset($_GET['award'])&& $user->uid == $node->uid){
       $query = db_select('comment', 'c');
       $query->join('users', 'u', 'c.uid = u.uid'); //JOIN node with users
       $query->condition('c.nid', $nid);
@@ -468,12 +758,39 @@ function mp_lywx_node_view($node, $view_mode, $langcode) {
         $str = explode('_',$result[$index]->name);
         if(isset($str[1]))
           $registered_name = $str[0];
-        $user = user_load($result[$index]->uid);
-        $province = isset($user->data['province'])?$user->data['province']:'';
-        $city = isset($user->data['city'])?$user->data['city']:'';
+        $account = user_load($result[$index]->uid);
+        $province = isset($account->data['province'])?$account->data['province']:'';
+        $city = isset($account->data['city'])?$account->data['city']:'';
         $awards .= '<li>'.$result[$index]->uid .'：'. $registered_name .' '.$province.$city. "</li>";
       }
       $awards .= '</ol>';
+      $node->content['my_additional_field'] = array(
+        '#markup' => $awards,
+        '#weight' => 10,
+      );return $node;
+    }
+  }
+
+  $nid = 2110;
+  if($node->nid == $nid && $view_mode=='full'){
+    global $user;
+    if($user->uid == $node->uid){
+      $query = db_select('comment', 'c');
+      $query->join('users', 'u', 'c.uid = u.uid'); //JOIN node with users
+      $query->condition('c.nid', $nid);
+      $query->groupBy('c.uid');//GROUP BY user ID
+      $query->fields('u', array('name'));
+      $query->fields('u', array('uid'));
+      $result = $query->execute()->fetchAll();
+
+      $count = db_query('SELECT c.cid FROM {comment} c WHERE c.nid = :nid', array(':nid' => $nid));
+      $count->fetchCol();
+      $count = $count->rowCount();
+
+
+      $max=count($result)-1;
+      $awards = '截至'.date('Y.m.d H:i').',微信参与问答人数：'.$max.'; 总共接受到用户发送微信问答消息'.$count."条；听众top回答情况如下：<br/><ol id='729award'>";
+
       $node->content['my_additional_field'] = array(
         '#markup' => $awards,
         '#weight' => 10,
