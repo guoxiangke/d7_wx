@@ -120,7 +120,7 @@
       print render($content);
   	?>
   	<div class="desc-wrapper">
-	    <div class="comment-desc"><span>微信回复【内容@<?php echo $node->nid;?>】 即可留言！<?php echo $node->body[LANGUAGE_NONE][0]['safe_value'];?></span>
+	    <div class="comment-desc"><span><?php if($node->nid!='2089'):?>微信回复【内容@<?php echo $node->nid;?>】 即可留言！<?php endif;?><?php echo $node->body[LANGUAGE_NONE][0]['safe_value'];?></span>
         <?php global $user; if(($node->nid=='2089' && $user->uid==$uid)):?>
           <span class="award btn btn-danger btn-xs"><?php echo l('点击抽奖','node/2089', array('query' => array('award' => '1')));?></span>
         <?php endif;?>
@@ -132,5 +132,5 @@
   <?php print render($content['comments']); ?>
 
   <?php //print render($content['links']); ?>
-
+  <?php if($node->nid=='2089'):?><style>#block-block-1{display: none;}</style><?php endif;?>
 </div>

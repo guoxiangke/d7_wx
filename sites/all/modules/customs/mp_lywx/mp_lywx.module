@@ -761,7 +761,11 @@ function mp_lywx_node_view($node, $view_mode, $langcode) {
         $account = user_load($result[$index]->uid);
         $province = isset($account->data['province'])?$account->data['province']:'';
         $city = isset($account->data['city'])?$account->data['city']:'';
-        $awards .= '<li>'.$result[$index]->uid .'：'. $registered_name .' '.$province.$city. "</li>";
+        $sex = '未知';
+        if(isset($account->field_user_sex['und'][0]['value'])){
+          $sex=$account->field_user_sex['und'][0]['value']?'弟兄':'姊妹';
+        }
+        $awards .= '<li>'.$result[$index]->uid .'：'. $registered_name .$sex.' '.$province.$city. "</li>";
       }
       $awards .= '</ol>';
       $node->content['my_additional_field'] = array(
@@ -774,22 +778,60 @@ function mp_lywx_node_view($node, $view_mode, $langcode) {
   $nid = 2110;
   if($node->nid == $nid && $view_mode=='full'){
     global $user;
-    if($user->uid == $node->uid){
-      $query = db_select('comment', 'c');
-      $query->join('users', 'u', 'c.uid = u.uid'); //JOIN node with users
-      $query->condition('c.nid', $nid);
-      $query->groupBy('c.uid');//GROUP BY user ID
-      $query->fields('u', array('name'));
-      $query->fields('u', array('uid'));
-      $result = $query->execute()->fetchAll();
-
-      $count = db_query('SELECT c.cid FROM {comment} c WHERE c.nid = :nid', array(':nid' => $nid));
-      $count->fetchCol();
-      $count = $count->rowCount();
-
+    if(in_array('义工编辑',$user->roles)){
+      $nid = 2110;
+      $result = db_query('SELECT c.uid FROM {comment} c WHERE c.nid = :nid', array(':nid' => $nid));
+      $uids = $result->fetchCol();
+      $count = $result->rowCount();
+      $uids = array_unique($uids);
 
       $max=count($result)-1;
-      $awards = '截至'.date('Y.m.d H:i').',微信参与问答人数：'.$max.'; 总共接受到用户发送微信问答消息'.$count."条；听众top回答情况如下：<br/><ol id='729award'>";
+      $awards = '截至'.date('Y.m.d H:i').',微信参与问答人数：'.count($uids).'; 总共接受到用户发送微信问答消息'.$count."条；听众回答排行榜：<br/><ul id='729award'>";
+
+      if (!function_exists('sortByCount')){
+        function sortByCount($a, $b) {
+            $a = count($a);
+            $b = count($b);
+
+            if($a == $b) {
+                return 0;
+            }
+
+            return ($a > $b) ? -1 : 1;
+        }
+      }
+      //get all right answers cid&qid
+      $query = db_select('field_data_field_questionid', 'q');
+      $query->join('field_data_field_rightwrong', 'r', 'r.entity_id = q.entity_id');
+      $query->fields('q', array('entity_id','field_questionid_value'));
+      // $query->fields('r', array('field_rightwrong_value'));
+      $query->condition('r.field_rightwrong_value', 1);
+      $results = $query->execute()->fetchAll();
+      // dpm($results);
+      foreach ($results as $result) {
+        $query = db_select('comment', 'c');
+        $query->fields('c', array('name','uid'));
+        $query->condition('c.cid', $result->entity_id);//
+        $ccuser = $query->execute()->fetchAll();
+        $top[$ccuser[0]->uid][$result->field_questionid_value] = $ccuser[0]->name;
+      }
+      uasort($top, 'sortByCount');
+      // dpm($top);
+      foreach ($top as $uid => $value) {
+        $account = user_load($uid);
+        $registered_name = $account->name;
+        $str = explode('_',$account->name);
+        if(isset($str[1]))
+          $registered_name = $str[0];
+        $province = isset($account->data['province'])?$account->data['province']:'';
+        $city = isset($account->data['city'])?$account->data['city']:'';
+        $sex = '未知';
+        if(isset($account->field_user_sex['und'][0]['value'])){
+          $sex=$account->field_user_sex['und'][0]['value']?'弟兄':'姊妹';
+        }
+        $awards .= '<li>'.count($value).'：'. $registered_name .$sex.' '.$province.$city. "</li>";
+      }
+      $awards .= '</ol>';
 
       $node->content['my_additional_field'] = array(
         '#markup' => $awards,
@@ -798,3 +840,5 @@ function mp_lywx_node_view($node, $view_mode, $langcode) {
     }
   }
 }
+
+
