@@ -265,7 +265,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         }
         $weObj->music($title, $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
         if(variable_get('mp_config_certified_'.$account->uid, false) && isset($wxresources[$keyword]['custommessage'])){
-          $added = "\n------------------------------\n2016年6月20日至30日，《空中辅导》播出“第四届空中夫妻营”特辑。回复【603】收听！";
+          $added = "\n------------------------------\n2016年6月20日至30日，《空中辅导》播出“第四届空中夫妻营”特辑。回复【603】收听！\n 点此收听良友直播 http://wx.yongbuzhixi.com/node/2096 欢迎您反馈您的收听状况。永不止息，需要有你！";
           $data = array(
             "touser"=>$weObj->getRev()->getRevFrom(),
             "msgtype"=>'text',
@@ -607,7 +607,7 @@ function _post_wxcomments($user_info,$keyword,$nid,$id,$pid){
 
 function mp_service_comments() {
   // $nid = 113;
-  $node_type = 'wxcomments';
+  // $node_type = 'wxcomments';
   //POST($user_info,$ori_keyword);
   $nid = $_POST['nid'];
   $id = $_POST['id'];
@@ -702,6 +702,97 @@ function mp_service_comments() {
     }
 
   }
+}
+//no post function callback!!! directly call no menu call!
+function mp_service_wechat_comment($weObj,$comment_body,$nid = 113,$pid = 0){
+      //@see function mp_service_comments()
+      $id = $weObj->getRevID();
+      $openid = $weObj->getRev()->getRevFrom();
+      $user_info = $weObj->getUserInfo($openid);
+      $user_info = (array)$user_info;
+
+      $mail = $user_info['openid'].'@wechat.bind';
+      $account = user_load_by_mail($mail);
+      if(!$account){
+        // watchdog('create user '.$mail, 'message', array(), WATCHDOG_NOTICE, 'link');
+        // create $user;
+        // $response = drupal_http_request($user_info['headimgurl']);
+        // if ($response->code == 200){
+        //   $file = file_save_data($response->data, 'public://users/'. $user_info['openid'].'.jpg');
+        // }
+        $ori_user_name = mp_strip_utf8mb4_for_text_fields($user_info['nickname'],'?');
+        $user_name = $ori_user_name;
+        $user_info['nickname'] = $ori_user_name;
+        $count = 0;
+        while(user_load_by_name($user_name)){
+          // $user_name = $user_name.rand(0, 100);
+          $user_name = $ori_user_name.'_'.$count;
+          $count ++;
+        }
+        $pass = date('Ymd');
+        $new_user = array(
+          'name' => $user_name,
+          'pass' => $pass,//user_password()
+          'mail' => $mail,
+          'init' => $mail,
+          // 'picture'=> $file->fid,
+          'status' => 1,
+          'data'  => $user_info,
+          'roles' => array(
+            DRUPAL_AUTHENTICATED_RID => 'authenticated user',
+          ),
+          // 'field_sex' => 1,2男 ＝》 0 男 1 女
+          'field_user_sex' => array(LANGUAGE_NONE => array(array('value' => ($user_info['sex'])%2))),
+        );
+        $account = user_save(null, $new_user);
+        if(!$account){
+          // drupal_set_message('账户创建失败！', 'error', FALSE);
+          watchdog('mp_lywx', '账户创建失败！', array(), WATCHDOG_NOTICE, 'error');
+        }
+        // drupal_set_message('恭喜您成功注册！', 'status', FALSE);
+      }
+      // check comment ID
+      {
+        // dpm($nid,'nid');
+        // dpm($pid,'pid');
+        // dpm($comment_body,'comment_body');
+        $comment = new stdClass();
+        $comment->nid = $nid; // nid of a node you want to attach a comment to
+        $comment->cid = 0; // leave it as is
+        $comment->pid = $pid; // parent comment id, 0 if none
+        $comment->uid = $account->uid; // user's id, who left the comment
+
+        $comment->mail = $mail;//
+        // $comment->thread = '01/'; // OPTIONAL. If you need comments to be threaded you can fill this value. Otherwise omit it.
+        $comment->name = $account->name;//; // If user is authenticated you can omit this field, it will be auto-populated, if the user is anonymous and you want to name him somehow, input his name here
+        // $comment->thread = '01/'; // OPTIONAL. If you need comments to be threaded you can fill this value. Otherwise omit it.
+        $comment->hostname = $_SERVER['REMOTE_ADDR'] ;// OPTIONAL. You can log poster's ip here
+        $comment->created = time(); // OPTIONAL. You can set any time you want here. Useful for backdated comments creation.
+        $comment->is_anonymous = 0; // leave it as is
+        $comment->homepage = ''; // you can add homepage URL here
+
+        $status = COMMENT_NOT_PUBLISHED;
+        if($pid != 0) $status = COMMENT_PUBLISHED;
+        $comment->status = $status;//COMMENT_PUBLISHED; // We auto-publish this comment
+        $comment->language = LANGUAGE_NONE; // The same as for a node
+        // $keyword = substr($keyword, 2);
+        $subject = truncate_utf8($comment_body, 15, $wordsafe = FALSE, $add_ellipsis = FALSE, $min_wordsafe_length = 1);
+        $comment->subject = $subject;
+
+        // $comment->signature = '';//$wechat_user_info['contact_info']['signature'] ;
+
+        // $comment->signature_format = 'filtered_html';
+        $comment->comment_body[$comment->language][0]['value'] = $comment_body; // Everything here is pretty much like with a node
+        $comment->comment_body[$comment->language][0]['format'] = 'filtered_html';
+        // $comment->field_custom_field_name[LANGUAGE_NONE][0]['value'] = 'Some value'; // OPTIONAL. If your comment has a custom field attached it can added as simple as this // preparing a comment for a save
+         // saving a comment
+        ///////////end
+        if($comment = comment_submit($comment)) { // Prepare node for saving
+          comment_save($comment);
+            // return $comment;
+        }
+      }
+    //end function mp_service_comments()
 }
 /**
  *  Retern the processed text which the none utf8 characters has been replaced.
