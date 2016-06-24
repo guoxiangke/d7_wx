@@ -1,5 +1,5 @@
 <?php
-function big2gb($string_big5){
+function zh2cn($string_big5){
   // http://bbs.csdn.net/topics/300155674
   // http://blog.sina.com.cn/s/blog_4b5955d90100a8ro.html
   require_once drupal_get_path('module', 'hkzh').'/hkzh.inc';
