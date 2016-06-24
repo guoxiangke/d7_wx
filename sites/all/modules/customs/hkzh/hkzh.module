@@ -1,0 +1,13 @@
+<?php
+function big2gb($string_big5){
+  // http://bbs.csdn.net/topics/300155674
+  // http://blog.sina.com.cn/s/blog_4b5955d90100a8ro.html
+  require_once drupal_get_path('module', 'hkzh').'/hkzh.inc';
+  $obj=new zh2cn;
+  //简体 转换 繁体
+  // $string_big5 = $obj->chg_utfcode($string_gb,'big5');
+
+  // $string_big5 = '你好嗎我愛你hello';
+  //繁体 转换 简体
+  return $obj->convert($string_big5);
+}
