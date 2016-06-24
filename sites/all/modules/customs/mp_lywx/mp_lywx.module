@@ -148,131 +148,132 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     // $new_keyword = str_replace('+','',$new_keyword);
     // $new_keyword = str_replace('加','',$new_keyword);
     $new_keyword = trim($keyword);
+    // $new_keyword = zh2cn($new_keyword);
     $questions = array(
-      array('question'=>"1.  良友电台于哪一年、哪一天成立？",
-        'answer'=>array('49','7','29'),
+      array('question'=>"1.良友电台于哪一年、哪一天启播？",
+        'answer'=>array('49','7','29'),//19490729//1949 7 29
         'answerrule'=>'&&',
       ),
-      array('question'=>"2.  爱广播的广播频率是甚么?",
-        'answer'=>array('9430'),
+      array('question'=>"2.良友电台i-radio爱广播频道（短波）的广播频率是什么？",
+        'answer'=>array('9430'),//31公尺9430千赫//31 9430
         'answerrule'=>'&&',
       ),
-      array('question'=>"3.  良友电台台长和副台长的名字？",
-        'answer'=>array('赵群','唐华'),
+      array('question'=>"3.良友电台的台长和副台长是谁？",
+        'answer'=>array('赵群','唐华'),//赵群唐华//赵群和唐华
         'answerrule'=>'&&',
       ),
-      array('question'=>"4.  网上串流广播频道的名字？",
-        'answer'=>array('同行频道'),
+      array('question'=>"4.良友电台网上串流排程广播频道的名字是什么？",
+        'answer'=>array('同行频道'),//良友电台同行频道
         'answerrule'=>'&&',
       ),
-      array('question'=>"5.  微信号名字？",
+      array('question'=>"5.良友电台微信订阅号的名字是什么？",
         'answer'=>array('良友知音','liangyouzhiyin'),
         'answerrule'=>'||',
       ),
-      array('question'=>"6.  良友电台官方网站网址？",
-        'answer'=>array('www.729ly.net'),
+      array('question'=>"6.良友电台官方网站网址是什么？",
+        'answer'=>array('729ly.net'),//729ly.net
         'answerrule'=>'&&',
       ),
-      array('question'=>"7.  儿童节目的名字？",
+      array('question'=>"7.良友电台儿童节目的名字是什么？",
         'answer'=>array('欢乐卡恰碰'),
         'answerrule'=>'&&',
       ),
-      array('question'=>"8.  良友电台的官方短信号码是？",
+      array('question'=>"8.良友电台的官方短信号码是什么？",
         'answer'=>array('1322', '9966', '122'),
-        'answer1'=>array('1322', '9966', '022'),//if isset(answer1)
+        'answer1'=>array('1322', '9966', '022'),
         'answerrule'=>'&&',
       ),
-      array('question'=>"9.  教唱诗歌节目名字？",
+      array('question'=>"9.良友电台教唱诗歌节目的名称是什么？",
         'answer'=>array('彩虹桥'),
         'answerrule'=>'&&',
       ),
-      array('question'=>"10. 现在电台有甚么节目是以中英双语呈现的？任举一个",
+      array('question'=>"10.良友电台现时有哪些中英双语节目？请任举其一。",
         'answer'=>array('天路导向','蓝天绿洲'),
         'answerrule'=>'||',
       ),
-      array('question'=>"11. 任举一个良友电台手机应用程式",
+      array('question'=>"11.任举一个良友电台手机应用程序的名称。",
         'answer'=>array('聆听同行','聆听关怀','聆听成长'),
         'answerrule'=>'||',
       ),
-      array('question'=>"12. 任举三个良友电台少数民族语言节目",
-        'answer'=>array('蒙古','壮','白','康巴','傈僳','云南','维吾尔'),
+      array('question'=>"12. 任举三个良友电台少数民族语言节目的名称。",//恩典与真理（回族）
+        'answer'=>array('爱在人间','阳光下的喜鹊','祝福康巴','维吾尔佳音','好消息','壮族','傈僳','恩典与真理'),
         'answerrule'=>'||',
         'count'  => 3//满足条件的个数为3个！！！
       ),
-      array('question'=>"13. 说出三个直播节目名称",
+      array('question'=>"13.良友电台现时三个直播节目的名称是什么？",
         'answer'=>array('生命的四季','空中辅导','无限飞行号'),
         'answerrule'=>'&&',
       ),
-      array('question'=>"14. 良友电台爱广播频道的发射攻率是？\n1). 10万瓦特\n2). 25万瓦特\n3). 30万瓦特",
-        'answer'=>1,
+      array('question'=>"14.良友电台i-radio爱广播频道（短波）的发射功率是多少？\n1).10万瓦特\n2).25万瓦特\n3).30万瓦特",
+        'answer'=>1,//10万瓦特//十万
         'answerrule'=>'options',
       ),
-      array('question'=>"15. 良友电台成立以前，曾经在上海哪儿录音制作节目？\n1)沐恩堂\n2)怀恩堂\n3)国际礼拜堂",
+      array('question'=>"15.良友电台成立以前，曾经在上海哪个地方录音制作节目？\n1)沐恩堂\n2)怀恩堂\n3)国际礼拜堂",
         'answer'=>2,
         'answerrule'=>'options',
       ),
-      array('question'=>"16. 良友电台节目表背后的福音单张，主题是甚么？\n1)  破镜重圆\n2)  归主怀抱\n3)  将心归我",
+      array('question'=>"16.良友电台2016年节目表背后的福音单张，主题是什么？\n1)破镜重圆\n2)归主怀抱\n3)将心归我",
         'answer'=>1,
         'answerrule'=>'options',
       ),
-      array('question'=>"17. 良友电台目前一共有几个节目? \n1)48\n2)54\n3)59",
+      array('question'=>"17.良友电台目前共有多少个节目？ \n1)48\n2)54\n3)59",
         'answer'=>3,
         'answerrule'=>'options',
       ),
-      array('question'=>"18. 试列举一位曾任电台驻台宣教士名称 \n1)卢文\n2)江重生\n3)徐婷",
+      array('question'=>"18.下列哪位曾任电台驻台宣教士？ \n1)卢文\n2)江重生\n3)徐婷",
         'answer'=>3,
         'answerrule'=>'options',
       ),
-      array('question'=>"19. 短波广播的英文代号是？ \n1)AM\n2)FM\n3)SW",
+      array('question'=>"19.短波广播的英文代号是什么？ \n1)AM\n2)FM\n3)SW",
         'answer'=>3,
         'answerrule'=>'options',
       ),
-      array('question'=>"20. 只要向台长报告节目收听讯号，可以获得一张特别的报告卡，它的名字是？ \n1) QSL卡\n2) 收听卡\n3)SW卡",
+      array('question'=>"20.凡向台长报告节目收听讯号，均可获得一张特别的报告卡。此卡的名字是什么？ \n1)QSL卡\n2)收听卡\n3)SW卡",
         'answer'=>1,
         'answerrule'=>'options',
       ),
-      array('question'=>"21. 良友电台的邮件地址是",
+      array('question'=>"21.良友电台的邮寄地址是什么？",
         'answer'=>array('香港九龙大有街1号10楼','香港九龙大有街一号十楼','香港9龙大有街1号10楼','香港9龙大有街一号十楼'),
         'answerrule'=>'||',
       ),
-      array('question'=>"22. 良友电台空中崇拜节目播放那一家教会的崇拜? \n1)  香港圣经教会\n2)  台北信友堂\n3)  台北怀恩堂",
+      array('question'=>"22.良友电台《空中崇拜》节目播放的是哪一家教会的崇拜？ \n1)香港圣经教会\n2)台北信友堂\n3)台北怀恩堂",
         'answer'=>2,
         'answerrule'=>'options',
       ),
-      array('question'=>"23. 良友电台现今的两个祈祷节目名字",
+      array('question'=>"23.良友电台现时有哪两个祈祷节目？",
         'answer'=>array('这一刻','清心','施恩座前'),
         'answerrule'=>'&&',
       ),
-      array('question'=>"24. 良友圣经学院，本科课程要通过多少门课才毕业？ \n1)24  \n2)36  \n3)48",
+      array('question'=>"24.良友圣经学院本科课程需要通过多少门科目才毕业？ \n1)24  \n2)36  \n3)48",
         'answer'=>2,
         'answerrule'=>'options',
       ),
-      array('question'=>"25. 良友电台的口号是甚么？",
-        'answer'=>array('知音','牵手','同行'),
+      array('question'=>"25.良友电台的口号是甚么？",
+        'answer'=>array('知音','牵手','同行'),//知音牵手同行
         'answerrule'=>'&&',
       ),
-      array('question'=>"26. 良友电台专为残疾人而设的节目叫甚么？",
+      array('question'=>"26.良友电台专为残疾人而设的节目叫甚么？",
         'answer'=>array('无限飞行号'),
         'answerrule'=>'&&',
       ),
-      array('question'=>"27. 良友圣经学院 院长是谁？",
+      array('question'=>"27.良友圣经学院的院长是谁？",
         'answer'=>array('周广亮','周广亮牧师'),
         'answerrule'=>'||',
       ),
-      array('question'=>"28. 良友电台圣经广播剧节目的名称？",
+      array('question'=>"28.良友电台圣经广播剧节目的名称是什么？",
         'answer'=>array('经动人心'),
         'answerrule'=>'&&',
       ),
-      array('question'=>"29. 哪个是为少数民族而设，却用普通话广播的节目？",
+      array('question'=>"29.哪一个节目是为少数民族而设，却用普通话广播？",
         'answer'=>array('恩典与真理'),
         'answerrule'=>'&&',
       ),
-      array('question'=>"30. 良友、益友电台的发射站分别在哪个国家？",
+      array('question'=>"30.良友、益友电台的发射站分别在哪个国家？",
         'answer'=>array('韩国','菲律宾'),
         'answerrule'=>'&&',
       ),
     );
-    $index  = (date('z')-22)%30;//0-29
+    $index  = (date('z')+1)%30;//0-29
     // $index = 18;
     // $keyword = '729@1';
     $qindex = explode('@', $keyword);//todo delete!!!
@@ -347,7 +348,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     if($return){
       $text .= $question['question']."\n您的答案是：".$keyword."\n恭喜您答对了！";
     }else{
-      $text .= $question['question']."\n您的答案是：".$keyword."\n很遗憾，答错了！再接再厉，明天再来参加下一题吧！";
+      $text .= $question['question']."\n您的答案是：".$keyword."\n很遗憾，答错了！再努力一下吧！";
     }
     $weObj->text($text)->reply();
     // dpm($text);
@@ -637,8 +638,8 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
         $pid = $str2[1];
     }
     $url = url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q=').'node/'.$nid;
-    $resources = mp_lywx_wxresources($resources, $account, 'tq', $weObj);
-    // $weObj->text("评论留言成功！\n审核后会<a href='".$url."'>出现在这里哦</a>！")->reply();
+    // $resources = mp_lywx_wxresources($resources, $account, 'tq', $weObj);
+    $weObj->text("评论留言成功！\n审核后会<a href='".$url."'>出现在这里哦</a>！")->reply();
     //...TODO sen news!
     $before = variable_get('mp_config_wxcomments_wxid', '0');
     // dpm($before);
