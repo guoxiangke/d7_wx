@@ -70,7 +70,7 @@ function _mp500_wxresources($resources, $account, $keyword, $weObj){
         ),
       );
       if(in_array($check_word,array_keys($res500))){
-        $index = date('z')%$res500[$check_word]['count']+1+10;
+        $index = date('z')%$res500[$check_word]['count']+10;
         $title = $res500[$check_word]['title'];
         $path = '/resources/500/'.$check_word.'/'.str_pad($index,2,"0",STR_PAD_LEFT).'.mp3';
         $url = $cdnlink.$path;//.upyun_get_token($path);

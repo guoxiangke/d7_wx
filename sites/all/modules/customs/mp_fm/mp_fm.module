@@ -34,7 +34,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
         $begin = strtotime('05/19/16');
         $begin += 86400*11;
         if(time()>$begin){
-        $index = str_pad((date('z') - date('z',$begin) +1),2,"0",STR_PAD_LEFT);
+        $index = str_pad((date('z') - date('z',$begin)),2,"0",STR_PAD_LEFT);
         // http://audio.yongbuzhixi.com/resources/653/mat/mat01.mp3
         $code = 'mat';
         $all = array('mat'=>'马太福音');
