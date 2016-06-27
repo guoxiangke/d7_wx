@@ -452,7 +452,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
   }
   //tq end!
 
-  $my_data = _mp_lywx_wxresources($resources, $account, $keyword,$weObj);
+  // $my_data = _mp_lywx_wxresources($resources, $account, $keyword,$weObj);
   // return $my_data;
   $my_data = &drupal_static(__FUNCTION__);
   if (!isset($my_data)) {
@@ -601,7 +601,29 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 		}
 	}
 
+  if(date('md')!='0729')//台庆当天不使用微信客服功能
+  if (strpos($ori_keyword,'您好') !== false||
+      strpos($ori_keyword,'你好') !== false||
+      strpos($ori_keyword,'请') !== false||
+      strpos($ori_keyword,'播') !== false||
+      strpos($ori_keyword,'哪') !== false||
+      strpos($ori_keyword,'我') !== false||
+      strpos($ori_keyword,'想') !== false||
+      strpos($ori_keyword,'么') !== false||
+      strpos($ori_keyword,'吗') !== false||
+      strpos($ori_keyword,'几') !== false
+    ){
+    $weObj->transfer_customer_service()->reply();
+    gapushagent('event',array(
+     'category'        => 'getservice',
+     'action'          => $ori_keyword,
+     'label'           => 'wxservice_'.$account->uid,
+    ));
+    return ;
+  }
+
   $len = strlen($ori_keyword);
+  if(date('md')=='0729')//台庆当天使用留言板功能
   if($len > 30) {
     $nid = 113;
     $node_type = 'wxcomments';
@@ -656,28 +678,6 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
       ));
     }
     return $resources;
-  }
-
-
-  if(date('md')!='0729')//台庆当天不使用微信客服功能
-  if (strpos($ori_keyword,'您好') !== false||
-      strpos($ori_keyword,'你好') !== false||
-      strpos($ori_keyword,'请') !== false||
-      strpos($ori_keyword,'播') !== false||
-      strpos($ori_keyword,'哪') !== false||
-      strpos($ori_keyword,'我') !== false||
-      strpos($ori_keyword,'想') !== false||
-      strpos($ori_keyword,'么') !== false||
-      strpos($ori_keyword,'吗') !== false||
-      strpos($ori_keyword,'几') !== false
-    ){
-    $weObj->transfer_customer_service()->reply();
-    gapushagent('event',array(
-     'category'        => 'getservice',
-     'action'          => $ori_keyword,
-     'label'           => 'wxservice_'.$account->uid,
-    ));
-    return ;
   }
   //2. 如輸入”0”或節目代號以外的任何數字、英文、符號等，會自動發送圖文“良友知音使用说明”。
   $img = array(
