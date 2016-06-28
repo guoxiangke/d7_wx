@@ -277,9 +277,9 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     // $index = 18;
     // $keyword = '729@1';
     $qindex = explode('@', $new_keyword);//todo delete!!!
-    if(isset($qindex[1])) $index = $qindex[1];//todo delete!!!
+    if(isset($qindex[1])) $index = $qindex[1]-1;//todo delete!!!
     $aindex = explode('+', $new_keyword);//todo delete!!!
-    if(isset($aindex[1])) $index = $aindex[1];//todo delete!!!
+    if(isset($aindex[1])) $index = $aindex[1]-1;//todo delete!!!
 
     $question = $questions[$index];
     // dpm($question);
