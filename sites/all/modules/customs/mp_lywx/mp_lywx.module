@@ -273,7 +273,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
         'answerrule'=>'&&',
       ),
     );
-    $index  = (date('z')+1)%30;//0-29
+    $index  = (date('z'))%30;//0-29
     // $index = 18;
     // $keyword = '729@1';
     $qindex = explode('@', $new_keyword);//todo delete!!!
@@ -281,14 +281,14 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     $aindex = explode('+', $new_keyword);//todo delete!!!
     if(isset($aindex[1])) $index = $aindex[1];//todo delete!!!
 
-    $question = $questions[$index-1];
+    $question = $questions[$index];
     // dpm($question);
     $text = '今天是'.date('Y-m-d').'距良友电台729台庆还有'.((int)((strtotime('2016-07-29 23:59:59')-time())/86400))."天。\n";
 
     if(((strlen($keyword)==5||strlen($keyword)==6) && isset($qindex[1]))||$keyword=='729'){//todo delete!!!
-      $text .= "热题30今日题目是：\n".$question['question'];
-      $weObj->text($text)->reply();
-      return;
+      $text .= "[热题30]今日题目：\n".$question['question']."\n点击下面小键盘输入729+答案内容即可参与答题。";
+      // $weObj->text($text)->reply();
+      return $text;
     }
     switch ($question['answerrule']) {
       case '&&':
@@ -346,9 +346,9 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
         break;
     }
     if($return){
-      $text .= $question['question']."\n您的答案是：".$keyword."\n恭喜您答对了！";
+      $text .= $question['question']."\n您的答案是：".$keyword."\n恭喜您答对了！[强]";
     }else{
-      $text .= $question['question']."\n您的答案是：".$keyword."\n很遗憾，答错了！再试一下吧！";
+      $text .= $question['question']."\n您的答案是：".$keyword."\n很遗憾，答错了！再试一下吧！[Fist]";
     }
     $weObj->text($text)->reply();
     // dpm($text);
@@ -469,6 +469,12 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
       //DEBUG TO DELETE later!
     }else {
       $my_data = _mp_lywx_wxresources($resources, $account, $keyword,$weObj);
+      //729 30days.begin to delete
+      if(time()>strtotime('2016-06-28 23:59:59') && time()<strtotime('2016-07-28 23:59:59')){
+        $custommessage = mp_lywx_wxresources($resources, $account, '729', $weObj);
+        $my_data['key_'.$keyword]['custommessages'] = $custommessage;
+      }
+      ////729 30days.begin to delete end
       //cache = 0;永久缓存 cache = 43200;缓存一天／2
       if(isset($my_data['key_'.$keyword]['cache'])){
         if($my_data['key_'.$keyword]['cache']==0){
@@ -611,7 +617,19 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
       strpos($ori_keyword,'想') !== false||
       strpos($ori_keyword,'么') !== false||
       strpos($ori_keyword,'吗') !== false||
-      strpos($ori_keyword,'几') !== false
+      strpos($ori_keyword,'几') !== false||
+      strpos($ori_keyword,'怎') !== false||
+      strpos($ori_keyword,'在') !== false||
+      strpos($ori_keyword,'听') !== false||
+      strpos($ori_keyword,'祷') !== false||
+      strpos($ori_keyword,'帮') !== false||
+      strpos($ori_keyword,'好') !== false||
+      strpos($ori_keyword,'呢') !== false||
+      strpos($ori_keyword,'错') !== false||
+      strpos($ori_keyword,'电话') !== false||
+      strpos($ori_keyword,'手机') !== false||
+      strpos($ori_keyword,'号码') !== false||
+      strpos($ori_keyword,'没') !== false
     ){
     $weObj->transfer_customer_service()->reply();
     gapushagent('event',array(

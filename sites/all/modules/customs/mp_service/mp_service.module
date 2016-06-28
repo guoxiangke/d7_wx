@@ -273,6 +273,19 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
           );
           $weObj->sendCustomMessage($data);
         }
+        //TOdelete after 729 begin.
+        if(variable_get('mp_config_certified_'.$account->uid, false) && isset($wxresources[$keyword]['custommessages'])){
+          // $touser = $weObj->getRev()->getRevFrom();
+          if(time()>strtotime('2016-06-28 23:59:59') && time()<strtotime('2016-07-28 23:59:59')){
+            $data = array(
+              "touser"=>$weObj->getRev()->getRevFrom(),
+              "msgtype"=>'text',
+              'text'=>array('content'=>$wxresources[$keyword]['custommessages']),
+            );
+            $weObj->sendCustomMessage($data);
+          }
+        }
+        //TOdelete after 729 begin. end.
         break;
       case 'text':
         $weObj->text($wxresources[$keyword]['obj']['text']);
