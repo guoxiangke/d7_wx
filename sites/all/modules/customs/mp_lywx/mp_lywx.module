@@ -278,8 +278,8 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     // $keyword = '729@1';
     $qindex = explode('@', $new_keyword);//todo delete!!!
     if(isset($qindex[1])) $index = $qindex[1]-1;//todo delete!!!
-    $aindex = explode('+', $new_keyword);//todo delete!!!
-    if(isset($aindex[1])) $index = $aindex[1]-1;//todo delete!!!
+    // $aindex = explode('+', $new_keyword);//todo delete!!!
+    // if(isset($aindex[1])) $index = $aindex[1]-1;//todo delete!!!
 
     $question = $questions[$index];
     // dpm($question);
@@ -287,7 +287,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 
     if(((strlen($keyword)==5||strlen($keyword)==6) && isset($qindex[1]))||$keyword=='729'){//todo delete!!!
       $text .= "[热题30]今日题目：\n".$question['question']."\n点击下面小键盘输入729+答案内容即可参与答题。";
-      // $weObj->text($text)->reply();
+      if($keyword=='729') $weObj->text($text);
       return $text;
     }
     switch ($question['answerrule']) {
