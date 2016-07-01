@@ -152,10 +152,12 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     $questions = array(
       array('question'=>"1.良友电台于哪一年、哪一天启播？",
         'answer'=>array('49','7','29'),//19490729//1949 7 29
+        'answer1'=>array('四九', '七', '二十九'),
         'answerrule'=>'&&',
       ),
       array('question'=>"2.良友电台i-radio爱广播频道（短波）的广播频率是什么？",
         'answer'=>array('9430'),//31公尺9430千赫//31 9430
+        'answer1'=>array('九','四', '三','零'),
         'answerrule'=>'&&',
       ),
       array('question'=>"3.良友电台的台长和副台长是谁？",
@@ -293,6 +295,21 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     switch ($question['answerrule']) {
       case '&&':
         $return = TRUE;
+        if(isset($question['answer1'])){
+          $return1 = TRUE;
+          foreach ($question['answer1'] as $value) {
+            if(strpos($new_keyword,$value)===FALSE){
+              $return1 = FALSE; continue;
+            }
+          }
+          $return2 = TRUE;
+          foreach ($question['answer'] as $value) {
+            if(strpos($new_keyword,$value)===FALSE){
+              $return2 = FALSE; continue;
+            }
+          }
+          $return = $return2||$return1; break;
+        }
         foreach ($question['answer'] as $value) {
           if(strpos($new_keyword,$value)===FALSE){
             $return = FALSE; break;
