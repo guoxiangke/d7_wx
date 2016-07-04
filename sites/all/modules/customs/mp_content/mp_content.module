@@ -94,7 +94,6 @@ function mp_content_wxresources($resources, $account, $keyword){
             //get all nodes77 of one content!
             $offset = substr($keyword,2)-1;
             if($offset<0) {
-              $text = "------已有资源------";
               if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
                 $nodes = dale_get_mp_nodes('fm77', 50, $tid = NULL, $uids = array(),NODE_NOT_PROMOTED,NODE_PUBLISHED,"DESC");
               }else{
@@ -107,9 +106,10 @@ function mp_content_wxresources($resources, $account, $keyword){
                 $i++;
                 if($j>=10&&$j<100) $j=  str_pad($j,2,"0",STR_PAD_LEFT);
                 if($j>=100&&$j<1000) $j=  str_pad($j,3,"0",STR_PAD_LEFT);
-                $text .="\n【77".(0+$j).'】'.$node->title;
+                $text ="\n【77".(0+$j).'】'.$node->title.$text;
                 # code...
               }
+              $text = "------已有资源------".$text;
               $resources['key_'.$keyword]= array(
                 'type'  =>  'text',
                 'obj'   => array(
