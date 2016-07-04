@@ -282,7 +282,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     if(isset($qindex[1])) $index = $qindex[1]-1;//todo delete!!!
     // $aindex = explode('+', $new_keyword);//todo delete!!!
     // if(isset($aindex[1])) $index = $aindex[1]-1;//todo delete!!!
-
+    if($index==-1) $index  = (date('z'))%30;//0-29
     $question = $questions[$index];
     // dpm($question);
     $text = '今天是'.date('Y-m-d').'距良友电台729台庆还有'.((int)((strtotime('2016-07-29 23:59:59')-time())/86400))."天。\n";
@@ -359,6 +359,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
         }
         break;
       default:
+        $return = FALSE;
         # code...
         break;
     }

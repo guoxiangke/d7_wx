@@ -250,10 +250,9 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
   // watchdog('mp_service', '<pre>'.print_r($wxresources,TRUE), array(), WATCHDOG_NOTICE, 'link');
   if(isset($wxresources[$keyword])){
     if(!isset($wxresources[$keyword]['type'])){
-      $weObj->text($wxresources[$keyword]['obj']['text']);
-      watchdog('keyword', $keyword, array(), WATCHDOG_NOTICE, 'error');
+      if(isset($wxresources[$keyword]['obj']['text']))
+        $weObj->text($wxresources[$keyword]['obj']['text']);
       watchdog('ori_keyword', $ori_keyword, array(), WATCHDOG_NOTICE, 'error');
-      watchdog('mp_service', '<pre>'.print_r($wxresources,TRUE), array(), WATCHDOG_NOTICE, 'error');
       return;
     }
     switch ($wxresources[$keyword]['type']) {
