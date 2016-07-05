@@ -148,6 +148,9 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 				return $resources;
 			}
 			$orikeyword = $keyword;
+      $keyword = substr($orikeyword, 0, 3);
+      $index = (int)substr($orikeyword, 3);
+
 		  $audios = liangyou_audio_list2();
 		  $lyaudio = array();
 		  $lyaudio_code = FALSE;
@@ -172,7 +175,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 		  		$index = 0;
 		  		if(isset($urls[0][$index])){
 		  			$musicurl = 'http://txly2.net'.str_replace("{file:'", '', $urls[0][$index]);
-		  			return $resources['key_'.$keyword]= array(
+		  			return $resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',
 							'cache'	=> 43200,
 							'obj'		=> array(
@@ -183,39 +186,23 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 							),
 						);
 		  		}
-					return $resources['key_'.$keyword]= array(
+					return $resources['key_'.$orikeyword]= array(
 						'type'	=>	'text',
 						'obj'		=> array(
-							'text'	=> "ao出错啦，告诉小永吧回复反馈内容给永不止息即可。，良友圣经学院节目641-645改版中，请回复【#100】功能！",
+							'text'	=> "ao出错啦，告诉小永吧回复反馈内容给永不止息即可，良友圣经学院节目641-645改版中，请回复【#100】功能！",
 						)
 					);
 		  	}
-				if(date('N')>5&&$keyword=='612') {//【612】书香园地＝》【614】今夜心未眠
-					$keyword = '614';
-				}
-				if(date('N')>5&&$keyword=='604') {//【604】炼爱季节＝》【605】幸福满家园
-					$keyword = '605';
-				}
-				if(date('N')>5&&$keyword=='606') {//【606】亲情不断电＝》【605】幸福满家园
-					$keyword = '605';
-				}
-				if(date('N')>5&&$keyword=='623') {//【623】齐来颂扬＝》【615】彩虹桥
-					$keyword = '615';
-				}
-				if(date('N')<=5&&$keyword=='605') {//【605】幸福满家园=>【606】亲情不断电
-					$keyword = '606';
-				}
 
 				if($keyword=='603'){
 					$title = $lyaudio['title'];
 					$code = $lyaudio_code;
-					$offset=0;
+					$offset=21;
 					$date = date('ymd',time()-$offset*86400);
 					$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
 					$musicurl = $cdnlink.$path;//.upyun_get_token($path);
-					// $temp = @get_headers($musicurl);
+					$temp = @get_headers($musicurl);
 					// if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-					// $title = $title;
 						$resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',
 							// 'gakey'		=>	$keyword,
@@ -244,7 +231,8 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 						$title = $lyaudio['title'];
 						$code = $lyaudio_code;
 						$offset=0;
-						while ($offset <= 7) {
+            if($index) $offset=$index;
+						// while ($offset <= 7) {
 							$date = date('ymd',time()-$offset*86400);
 							$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
 							$musicurl = $cdnlink.$path;
@@ -281,9 +269,18 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 									$resources['key_'.$orikeyword]['custommessage'] = '【'.$keyword.'】'.$title.'-'.$date."\n".$custommessage;
 								}
 								return $resources;
-							}
-							$offset++;
-						}
+							}else{
+                $resources['key_'.$orikeyword]= array(
+                  'type'  =>  'text',
+                  'obj'   => array(
+                    'text'  => "[Cry]".$title."今日无节目,请明日再试！<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=2650578097&idx=2&sn=5ce83ad533bbdcdd3524affe623d800f&scene=2&srcid=0704wDRVmrL9nyAGJ7thr7dw&from=timeline&isappinstalled=0#wechat_redirect'>点此查看节目播出日期</a>",
+                  )
+                );
+                return $resources;
+                //本日没有音频！！！
+              }
+							// $offset++;
+						// }
 					}
 				}
 		    //UPYUN END
