@@ -187,6 +187,15 @@ function  get_mp_ltsma(){
       'category'=>'专题特辑',
       'author'=>'程蒙恩',
     ),
+    '215'=>array(
+      'title'=>'宣教周特辑2016',
+      'prefex'=>'miw160',
+      'count'=>6,
+      'level'=>'专辑课程',
+      'category'=>'专题特辑',
+      'author'=>'文惠、杨天成',
+      'pdf' =>0,
+    ),
     //205--299 预留给专辑
     //默认都有讲义。 如果无讲义，'pdf' =>0,
     //301-314(317-3)本科课程 圣经
@@ -396,11 +405,11 @@ function  get_mp_ltsma(){
     ),
     '602'=>array(
       'title'=>'路加福音',
-      'prefex'=>'vlu0',
-      'count'=>30,
+      'prefex'=>'vlu1',
+      'count'=>24,
       'level'=>'本科课程',
       'category'=>'选修科',
-      'author'=>'赵荣光',
+      'author'=>'林诚',
     ),
     '603'=>array(
       'title'=>'基督教与科学',
