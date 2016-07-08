@@ -506,6 +506,18 @@ function get_lymeta($code='ee',$date=NULL){
   $desc = $query->execute()->fetchField();
   return $desc;
 }
+
+function get_lymeta_id($code='ee',$date=NULL){
+  if(!$date) $date = date('Ymd');
+  $query = db_select('field_data_field_ly_desc', 'd');
+  $query->join('field_data_field_ly_code', 'c', 'c.entity_id = d.entity_id');
+  $query->join('field_data_field_ly_date', 'e', 'e.entity_id = d.entity_id');
+  $query->fields('d', array('entity_id'));
+  $query->condition('c.field_ly_code_value',$code);
+  $query->condition('e.field_ly_date_value',$date);
+  $entity_id = $query->execute()->fetchField();
+  return $entity_id;
+}
 /**
  * [save_lymeta description]
  * @param  [type] $code [description]
