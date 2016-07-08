@@ -271,7 +271,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
                 $resources['key_'.$orikeyword]= array(
                   'type'  =>  'text',
                   'obj'   => array(
-                    'text'  => "[Cry]".$title."今日无节目,请明日再试！<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=2650578097&idx=2&sn=5ce83ad533bbdcdd3524affe623d800f&scene=2&srcid=0704wDRVmrL9nyAGJ7thr7dw&from=timeline&isappinstalled=0#wechat_redirect'>点此查看节目播出日期</a>",
+                    'text'  => "[Cry]".$title."今日无节目,请明日再试！<a href='http://mp.weixin.qq.com/s?__biz=MjM5ODQ4NjU4MA==&mid=2650578097&idx=2&sn=5ce83ad533bbdcdd3524affe623d800f&scene=2&srcid=0704wDRVmrL9nyAGJ7thr7dw&from=timeline&isappinstalled=0#wechat_redirect'>点此查看节目播出日期</a>,比如请回复6011即是昨天节目哦！[Shhh]",
                   )
                 );
                 return $resources;
