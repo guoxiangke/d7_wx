@@ -90,7 +90,8 @@ function lyopen_get($index=604,$max=7){
  * @param  [type] $date [description]
  * @return [type]       [description]
  */
-function get_lymeta($code='ee',$date=date('Ymd')){
+function get_lymeta($code='ee',$date=NULL){
+  if(!$date) $date = date('Ymd');
   $query = db_select('field_data_field_ly_desc', 'd');
   $query->join('field_data_field_ly_code', 'c', 'c.entity_id = d.entity_id');
   $query->join('field_data_field_ly_date', 'e', 'e.entity_id = d.entity_id');
@@ -107,7 +108,8 @@ function get_lymeta($code='ee',$date=date('Ymd')){
  * @param  [type] $date [description]
  * @return [int] entityID       [description]
  */
-function save_lymeta($code,$desc,$date=date('Ymd')){
+function save_lymeta($code,$desc,$date=NULL){
+  if(!$date) $date = date('Ymd');
   //check if exsits ,don't save!
   if(!get_lymeta($code,$date)){
     $entity = entity_create('metadata', array('type' =>'lymeta'));
@@ -118,4 +120,17 @@ function save_lymeta($code,$desc,$date=date('Ymd')){
     return $entity->id;
   }
 }
+  // $now = time();
+  // $i = 0;
+  // while ($i <= 100) {
+  //   $index = date('Ymd',$now-$i*86400);
+  //   $file_key = drupal_realpath('public://cron/txly2/'.$index.'.json') ;
+  //   if(file_exists($file_key)) {
+  //     $data = json_decode(file_get_contents($file_key),true);
+  //     foreach ($data as $key => $radio) {
+  //       save_lymeta($radio['code'],$radio['desc'],(int)$radio['date']);
+  //     }
+  //   }
+  //   $i++;
+  // }
 ///end of ly meta!
