@@ -214,7 +214,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 				      ),
 							'path'	=>	$path,
 							'cache' =>  43203,
-							'custommessage'=>"热线电话：13229966322 开放时段：星期二至四 19:00-20:00； 星期三 9:30-11:00 \n留言给周师母，请直接发送留言内容@163发给本号即可\n留言板：http://wx.yongbuzhixi.com/node/163 [拥抱][拳头]。\n辅导短信：13068410512\n点击关注留言公众号：http://dwz.cn/52ybzx",//20160424
+							'custommessage'=>"热线电话：13229966322 开放时段：星期二至四 19:00-20:00； 星期三 9:30-11:00 \n留言给周师母，请直接发送留言内容@163发给本号即可\n留言板：http://wx.yongbuzhixi.com/node/163 [拥抱][拳头]。\n辅导短信：13068410512\n点击关注留言公众号：http://dwz.cn/51ybzx",//20160424
 							'obj'		=> array(
 								'title'	=>  '【'.$keyword.'】'.$title.'♪',
 								'desc'	=> $desc,

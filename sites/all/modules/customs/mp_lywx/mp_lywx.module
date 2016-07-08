@@ -190,7 +190,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
         'answerrule'=>'&&',
       ),
       array('question'=>"10.良友电台现时有哪些中英双语节目？请任举其一。",
-        'answer'=>array('天路导向','蓝天绿洲'),
+        'answer'=>array('天路导向','蓝天绿洲','haventoday','haven today'),
         'answerrule'=>'||',
       ),
       array('question'=>"11.任举一个良友电台手机应用程序的名称。",
