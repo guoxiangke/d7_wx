@@ -101,6 +101,7 @@ function mp_content_wxresources($resources, $account, $keyword){
               }
               $i = 0;
               $total = count($nodes);
+              $text = '';
               foreach ($nodes as $node) {
                 $j =  $total-$i;
                 $i++;
