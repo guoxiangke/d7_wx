@@ -27,6 +27,7 @@ function mp_cron_cron() {
       $dates = explode('-', $title_get);
       $date = '';
       if(isset($dates[1])) $date = $dates[1];
+      if($date) save_lymeta($code,$mp3_description,$date);
       $data[] = array(
         'code'  => $code,
         'index'  => $radio['index'],
