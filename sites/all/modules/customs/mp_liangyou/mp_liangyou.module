@@ -20,7 +20,6 @@ function mp_liangyou_menu() {
 function _mp_liangyou_cc(){
 	// drupal_flush_all_caches();
   cache_clear_all('*', 'cache', TRUE);
-  watchdog('DEBUG', 'cache_clear_all', array(), WATCHDOG_NOTICE, 'link');
 	header('Content-type: application/json');
 	print '[{"hi":"clean"}]';
 }
@@ -194,43 +193,15 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 					);
 		  	}
 
-				if($keyword=='603'){
-					$title = $lyaudio['title'];
-					$code = $lyaudio_code;
-					$offset=21;
-					$date = date('ymd',time()-$offset*86400);
-					$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
-					$musicurl = $cdnlink.$path;//.upyun_get_token($path);
-					$temp = @get_headers($musicurl);
-					// if($temp[0] == 'HTTP/1.1 200 OK'){//远程有!!!
-						$resources['key_'.$orikeyword]= array(
-							'type'	=>	'music',
-							// 'gakey'		=>	$keyword,
-				      'gadata'   =>  array(
-				         'category'        => 'liangyou',
-				         'action'          => $title,
-				         'label'           => 'wxservice_'.$account->uid,
-				         'value'           => $keyword,
-				      ),
-							'path'	=>	$path,
-							'cache' =>  43203,
-							'custommessage'=>"热线电话：13229966322 开放时段：星期二至四 19:00-20:00； 星期三 9:30-11:00 \n留言给周师母，请直接发送留言内容@163发给本号即可\n留言板：http://wx.yongbuzhixi.com/node/163 [拥抱][拳头]。\n辅导短信：13068410512\n点击关注留言公众号：http://dwz.cn/51ybzx",//20160424
-							'obj'		=> array(
-								'title'	=>  '【'.$keyword.'】'.$title.'♪',
-								'desc'	=> $desc,
-								'musicurl'	=>	$musicurl,
-								'hgmusicurl'	=>	$musicurl,
-							),
-						);
-						return $resources;
-					// }
-				}
 				//USE UPYUN
 				{
 					if($lyaudio_code){
 						$title = $lyaudio['title'];
 						$code = $lyaudio_code;
 						$offset=0;
+            if($keyword=='603'){
+              $offset=7;
+            }
             if($index) $offset=$index;
 						// while ($offset <= 7) {
 							$date = date('ymd',time()-$offset*86400);
@@ -245,6 +216,9 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 								if($custommessage = get_lymeta($code,'20'.$date)){
                   //donothing!
 					      }
+                if($keyword=='603'){
+                  $custommessage = "热线电话：13229966322 开放时段：星期二至四 19:00-20:00； 星期三 9:30-11:00 \n留言给周师母，请直接发送留言内容@163发给本号即可\n留言板：http://wx.yongbuzhixi.com/node/163 [拥抱][拳头]。\n辅导短信：13068410512\n点击关注留言公众号：http://dwz.cn/51ybzx";//20160424
+                }
 								$resources['key_'.$orikeyword]= array(
 									'type'	=>	'music',
 									// 'gakey'		=>	$keyword,
@@ -528,7 +502,7 @@ function get_lymeta_id($code='ee',$date=NULL){
 function save_lymeta($code,$desc,$date=NULL){
   if(!$date) $date = date('Ymd');
   //check if exsits ,don't save!
-  if(!get_lymeta($code,$date)){
+  if(!get_lymeta_id($code,$date)){
     $entity = entity_create('metadata', array('type' =>'lymeta'));
     $entity->field_ly_code = array(LANGUAGE_NONE => array(0 => array('value' =>  $code)));
     $entity->field_ly_desc = array(LANGUAGE_NONE => array(0 => array('value' =>  $desc)));
