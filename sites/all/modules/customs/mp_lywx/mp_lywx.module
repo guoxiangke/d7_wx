@@ -338,8 +338,11 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
         break;
       case 'options':
         $aindex = explode('+', $keyword);//todo delete!!!
-        if(isset($aindex[2])) $keyword = $aindex[2];//todo delete!!!
+        if(isset($aindex[2])) {$keyword = $aindex[2];//todo delete!!!
+        }
         $new_keyword = str_replace('729','',$keyword);
+        $new_keyword = str_replace('+','',$new_keyword);
+        $new_keyword = str_replace('十','',$new_keyword);
         $return = FALSE;
         switch ($new_keyword) {
           case '一':
