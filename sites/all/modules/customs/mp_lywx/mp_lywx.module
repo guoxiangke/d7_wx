@@ -235,7 +235,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
         'answerrule'=>'options',
       ),
       array('question'=>"21.良友电台的邮寄地址是什么？",
-        'answer'=>array('香港九龙大有街1号10楼','香港九龙大有街一号十楼','香港9龙大有街1号10楼','香港9龙大有街一号十楼'),
+        'answer'=>array('香港九龙大有街1号10楼','香港九龙大有街一号十楼','香港9龙大有街一号10楼','香港9龙大有街1号十楼'),
         'answerrule'=>'||',
       ),
       array('question'=>"22.良友电台《空中崇拜》节目播放的是哪一家教会的崇拜？ \n1)香港圣经教会\n2)台北信友堂\n3)台北怀恩堂",
@@ -289,7 +289,6 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 
     if(((strlen($keyword)==5||strlen($keyword)==6) && isset($qindex[1]))||$keyword=='729'){//todo delete!!!
       if($question['answerrule']=='options'){
-        $text .= $question['question']."\n选择题请回复729+1，729+2，或729+3\n您的答案是：".$keyword."\n很遗憾，答错了！再试一下吧！[Fist]";
         $text .= "[热题30]今日题目：\n".$question['question']."\n点击下面小键盘输入729+答案内容即可参与答题。\n选择题请回复729+1，729+2，或729+3";
       }else{
         $text .= "[热题30]今日题目：\n".$question['question']."\n点击下面小键盘输入729+答案内容即可参与答题。";
