@@ -100,7 +100,7 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
     $img = array(
       'Title'=>"良友67周年台庆微信留言板，点击查看更多～",
       'Description'=>"",
-      'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrY4zkXwy5SPZbur1Jd7HMRneGCr0xhsqEJFXyQ0XkTqZmG8xCPIadhCt4GJk0kibtevrUIJ2Wpw7ag/0?wx_fmt=jpeg',
+      'PicUrl'=>'http://wx.yongbuzhixi.com/sites/default/files/wxcomments/bg/729logo_67ann.png',
       'Url'=>'http://wx.yongbuzhixi.com/node/2089',
     );
     $news[] = $img;
@@ -671,7 +671,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 
   $len = strlen($ori_keyword);
   if(date('md')=='0729')//台庆当天使用留言板功能
-  if($len > 30) {
+  if($len > 30) {//祝良友电台生日快乐729
     $nid = 113;
     $node_type = 'wxcomments';
     //POST($user_info,$ori_keyword);
