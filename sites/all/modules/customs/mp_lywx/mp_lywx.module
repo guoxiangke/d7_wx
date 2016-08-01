@@ -336,6 +336,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
   if(date('md')=='0729')//台庆当天使用留言板功能
   if($len >= 12) {//祝良友电台生日快乐729
     $nid = 2089;
+
     $node_type = 'wxcomments';
     //POST($user_info,$ori_keyword);
     $id = $weObj->getRevID();
