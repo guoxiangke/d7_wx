@@ -132,5 +132,5 @@
   <?php print render($content['comments']); ?>
 
   <?php //print render($content['links']); ?>
-  <?php if($node->nid=='2089'):?><style>#block-block-1{display: none;}</style><?php endif;?>
+  <?php if($node->nid=='2089'):?><style>#block-block-1,#navbar{display: none;}</style><?php endif;?>
 </div>
