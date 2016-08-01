@@ -163,7 +163,7 @@ function _drupal_session_write($sid, $value) {
   try {
     if (!drupal_save_session()) {
       // We don't have anything to do if we are not allowed to save the session.
-      return;
+      return TRUE;
     }
 
     // Check whether $_SESSION has been changed in this request.
@@ -419,16 +419,13 @@ function drupal_session_regenerate() {
  *
  * @param $sid
  *   Session ID.
- *
- * @return
- *   FALSE if writing session data has been disabled. Otherwise, TRUE.
  */
 function _drupal_session_destroy($sid) {
   global $user, $is_https;
 
   // Nothing to do if we are not allowed to change the session.
   if (!drupal_save_session()) {
-    return FALSE;
+    return TRUE;
   }
 
   // Delete session data.

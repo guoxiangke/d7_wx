@@ -211,13 +211,13 @@
  * @endcode
  */
 $databases = array (
-  'default' => 
+  'default' =>
   array (
-    'default' => 
+    'default' =>
     array (
-      'database' => 'wx',
+      'database' => 'guo_wx',
       'username' => 'root',
-      'password' => 'mjk5nj',
+      'password' => 'root',
       'host' => 'localhost',
       'port' => '',
       'driver' => 'mysql',
@@ -278,7 +278,7 @@ $drupal_hash_salt = 'hjym9QGUQtMumpx1tG8wyXW4WYSvL1UFSrHebmIqqOM';
  * It is not allowed to have a trailing slash; Drupal will add it
  * for you.
  */
-$base_url = 'http://wx.yongbuzhixi.com';  // NO trailing slash!
+// $base_url = 'http://wx.yongbuzhixi.com';  // NO trailing slash!
 
 /**
  * PHP settings:
@@ -335,7 +335,7 @@ ini_set('session.cookie_lifetime', 2000000);
  * between your various domains. Make sure to always start the $cookie_domain
  * with a leading dot, as per RFC 2109.
  */
-$cookie_domain = '.yongbuzhixi.com';
+// $cookie_domain = '.yongbuzhixi.com';
 
 /**
  * Variable overrides:
@@ -565,3 +565,84 @@ $conf['404_fast_html'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
  * Remove the leading hash signs to disable.
  */
 # $conf['allow_authorize_operations'] = FALSE;
+// Checking if Redis is running, only locally.
+// For remote servers comment the if() statement.
+if (file_exists('/var/run/redis/redis-server.pid')) {
+  $redis_up = TRUE;
+}
+if (file_exists('sites/all/modules/contrib/entitycache/entitycache.info')) {
+  $entity_cache = TRUE;
+}
+
+if (!empty($redis_up)) {
+
+  // Required configurations.
+  $conf['lock_inc'] = 'sites/all/modules/redis/redis.lock.inc';
+  $conf['cache_backends'][] = 'sites/all/modules/redis/redis.autoload.inc';
+  $conf['redis_client_interface'] = 'PhpRedis';
+  $conf['redis_client_base'] = 1;
+  $conf['redis_client_host'] = '127.0.0.1';
+  $conf['redis_client_port'] = '6379';
+  $conf['redis_client_password'] = 'mjk5nj';
+  // Uncomment this line if Redis is locally running via socket.
+  // $conf['redis_cache_socket'] = '/var/run/redis/redis.sock';
+  $conf['cache_prefix']['default'] = 'wxredis_';
+  // http://dropbucket.org/node/805
+
+  // Optional not redis specific.
+  // $conf['cache_lifetime'] = 0;
+  // $conf['page_cache_max_age'] = 0;
+  // $conf['page_cache_maximum_age'] = 0;
+  // $conf['page_cache_invoke_hooks'] = TRUE;
+  // $conf['page_cache_without_database'] = FALSE;
+
+  // https://github.com/pantheon-systems/pantheon-settings-examples/blob/master/drupal-7/settings.redis.php
+  // Higher performance for smaller page counts. This technique does not execute
+  // full Drupal bootstrapping and does not invoke the database, which ignores
+  // database checks such as Drupal's IP blacklist.
+  if (FALSE) {
+    // High performance - no hook_boot(), no hook_exit(), ignores Drupal IP
+    // blacklists.
+    $conf['page_cache_without_database'] = TRUE;
+    $conf['page_cache_invoke_hooks'] = FALSE;
+    // Explicitly set page_cache_maximum_age as database won't be available.
+    $conf['page_cache_maximum_age'] = 900;
+  }
+  // Higher hit rate for larger page counts. This technique avoids evictions due
+  // to redis space limitations when your site has a large quantity of pages to
+  // cache. Will conflict with the first which skips the database entirely; do
+  // not use both at the same time.
+  else if (FALSE) {
+    // Use the database for cached HTML.
+    $conf['cache_class_cache_page'] = 'DrupalDatabaseCache';
+  }
+
+  // Cache bins.
+  $conf['cache_default_class'] = 'Redis_Cache';
+  // $conf['cache_class_cache_bootstrap'] = 'Redis_Cache';
+  // $conf['cache_class_cache'] = 'Redis_Cache';
+  // $conf['cache_class_cache_menu'] = 'Redis_Cache';
+  // $conf['cache_class_cache_block'] = 'Redis_Cache';
+  // $conf['cache_class_cache_views'] = 'Redis_Cache';
+  // $conf['cache_class_cache_views_data'] = 'Redis_Cache';
+  // $conf['cache_field'] = 'Redis_Cache';
+  // $conf['cache_class_cache_field'] = 'Redis_Cache';
+  // $conf['cache_class_cache_image'] = 'Redis_Cache';
+  // $conf['cache_class_cache_libraries'] = 'Redis_Cache';
+  // $conf['cache_class_cache_metatag'] = 'Redis_Cache';
+  // $conf['cache_class_cache_search_api_solr'] = 'Redis_Cache';
+
+  // Always Database Cache.
+  // Do not use Redis for cache_form (no performance difference).
+  $conf['cache_class_cache_form'] = 'DrupalDatabaseCache';
+
+  // Entity Cache.
+  if (!empty($entity_cache)) {
+    $conf['cache_entity_node'] = 'Redis_Cache';
+    $conf['cache_entity_fieldable_panels_pane'] = 'Redis_Cache';
+    $conf['cache_entity_file'] = 'Redis_Cache';
+    $conf['cache_entity_taxonomy_term'] = 'Redis_Cache';
+    $conf['cache_entity_taxonomy_vocabulary'] = 'Redis_Cache';
+  }
+
+}
