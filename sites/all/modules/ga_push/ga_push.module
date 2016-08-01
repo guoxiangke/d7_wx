@@ -7,12 +7,12 @@
 // Methods:
 // Classic GA.
 define('GA_PUSH_METHOD_DEFAULT', 'default');
-define('GA_PUSH_METHOD_JS', 'javascript');
+define('GA_PUSH_METHOD_GA_JS', 'ga-js');
 define('GA_PUSH_METHOD_SSGA', 'ssga');
 define('GA_PUSH_METHOD_PHP_GA', 'php-ga');
 // Universal Tracking, Measurement Protocol.
 define('GA_PUSH_METHOD_UTMP_PHP', 'utmp-php');
-define('GA_PUSH_METHOD_UTMP_JS', 'utmp-js');
+define('GA_PUSH_METHOD_ANALYTICS_JS', 'analytics-js');
 
 // Tracking methods:
 define('GA_PUSH_TRACKING_METHOD_CLASSIC', 'classic');
@@ -94,11 +94,11 @@ function ga_push_module_implements_alter(&$implementations, $hook) {
  * Implements hook_page_alter().
  */
 function ga_push_page_alter($main = 0) {
-  module_load_include('inc', 'ga_push', 'inc/ga_push.javascript');
-  ga_push_method_javascript_push();
+  module_load_include('inc', 'ga_push', 'inc/ga_push.ga_js');
+  ga_push_method_ga_js_push();
 
-  module_load_include('inc', 'ga_push', 'inc/ga_push.utmp.js');
-  ga_push_method_utmp_js_push();
+  module_load_include('inc', 'ga_push', 'inc/ga_push.analytics_js');
+  ga_push_method_analytics_js_push();
 }
 
 /**
@@ -140,7 +140,7 @@ function ga_push_page_alter($main = 0) {
  *   - Universal Tracking, Measurement Protocol.
  *     @see https://developers.google.com/analytics/devguides/collection/analyticsjs/
  *     - GA_PUSH_METHOD_UTMP_PHP
- *     - GA_PUSH_METHOD_UTMP_JS
+ *     - GA_PUSH_METHOD_ANALYTICS_JS
  *
  * @param array $options
  *   (optional) An associative array of additional options, with the following
@@ -156,6 +156,10 @@ function ga_push_page_alter($main = 0) {
  *       Only for Classic GA methods.
  *     - 'utmb': Force Classic GA __utmb cookie of the current user cookie
  *       Only for Classic GA methods.
+ *     - 'ua': Override User Agent of the current user.
+ *       Only for Universal GA methods.
+ *     - 'uip': Override User IP of the current user.
+ *       Only for Universal GA methods.
  *
  *   All methods:
  *     - 'context': An array of aditional info to be passed to drupal_alter implementations.
@@ -163,18 +167,23 @@ function ga_push_page_alter($main = 0) {
 function ga_push_add($push, $type = GA_PUSH_TYPE_EVENT, $method_key = NULL, $options = array()) {
   global $user;
 
+  // Legacy compatibility:
+  // Map old method keys to the new ones.
+  // @NOTE: this feature will be remove in future realeases.
+  $push = ga_push_add_legacy_params($push, $type);
+
   // Let other modules alter the current push data:
   drupal_alter('ga_push_add', $push, $type, $method_key, $options);
 
   if (is_array($push) && count($push)) {
 
-    // if (_googleanalytics_visibility_user($user)) {
+    if (_googleanalytics_visibility_user($user)) {
 
       // If the select method is not available or is not defined:
       if (is_null($method_key)
         || $method_key == GA_PUSH_METHOD_DEFAULT
         || !is_null($method_key) && !ga_push_method_available($method_key, $type)) {
-        $default_method_key = variable_get('ga_push_default_method', GA_PUSH_METHOD_JS);
+        $default_method_key = variable_get('ga_push_default_method', GA_PUSH_METHOD_ANALYTICS_JS);
         $method_key = $default_method_key;
       }
 
@@ -186,22 +195,57 @@ function ga_push_add($push, $type = GA_PUSH_TYPE_EVENT, $method_key = NULL, $opt
           require_once $method['file'];
         }
 
-        // @TODO: remove deprecated!
-        switch ($type) {
-          case GA_PUSH_TYPE_EVENT:
-            // If the VALUE argument is not numeric -> 1
-            $push['value'] = isset($push['value']) && is_numeric($push['value']) ? $push['value'] : 1;
-            break;
-        }
-
         call_user_func($method['callback'], $push, $type, $options);
       }
       else {
         // @TODO: watchdog there's no method available.
       }
 
-    // }
+    }
   }
+}
+/**
+ * Maps old method keys to the new ones.
+ * This function is for legacy compatibility and will be removed on next releases.
+ */
+function ga_push_add_legacy_params($push, $type) {
+
+  switch ($type) {
+    case  GA_PUSH_TYPE_ECOMMERCE:
+      // Transaction:
+      $push_legacy_trans_map = array(
+        'order_id'       => 'id',
+        'total'          => 'revenue',
+        'total_shipping' => 'shipping',
+        'total_tax'      => 'tax',
+      );
+      $push['trans'] = ga_push_push_data_mapper($push_legacy_trans_map, $push['trans']);
+
+      // Items:
+      $push_legacy_items_map = array(
+        'order_id' => 'id',
+      );
+      foreach ($push['items'] as $key => $value) {
+        $push['items'][$key] = ga_push_push_data_mapper($push_legacy_items_map, $value);
+      }
+
+      break;
+
+    default:
+      $push_legacy_map = array(
+        // Event:
+        'category' => 'eventCategory',
+        'action'   => 'eventAction',
+        'label'    => 'eventLabel',
+        'value'    => 'eventValue',
+        'non-interaction' => 'nonInteraction',
+      );
+
+      // Mapping.
+      $push = ga_push_push_data_mapper($push_legacy_map, $push);
+  }
+
+  return $push;
 }
 
 /**
@@ -224,19 +268,19 @@ function ga_push_add($push, $type = GA_PUSH_TYPE_EVENT, $method_key = NULL, $opt
  * @code
  *   ga_push_add_ecommerce(array(
  *     'trans' => array(
- *       'order_id'       => '1234',
- *       'affiliation'    => 'Acme Clothing',
- *       'total'          => '11.99',
- *       'total_tax'      => '1.29',
- *       'total_shipping' => '5',
- *       'city'           => 'San Jose',
- *       'region'         => 'California',
- *       'country'        => 'USA',
- *       'currency'       => 'EUR'
+ *       'id'          => '1234',
+ *       'affiliation' => 'Acme Clothing',
+ *       'revenue'     => '11.99',
+ *       'tax'         => '1.29',
+ *       'shipping'    => '5',
+ *       'currency'    => 'EUR',
+ *       'city'        => 'San Jose',  // Classic Analytics only.
+ *       'region'      => 'California',  // Classic Analytics only.
+ *       'country'     => 'USA',  // Classic Analytics only.
  *     ),
  *     'items' => array(
  *       array(
- *         'order_id' => '1234',
+ *         'id' => '1234',
  *         'sku'      => 'DD44',
  *         'name'     => 'T-Shirt',
  *         'category' => 'Green Medium',
@@ -252,32 +296,32 @@ function ga_push_add($push, $type = GA_PUSH_TYPE_EVENT, $method_key = NULL, $opt
  *   An associative array containing:
  *   - trans: array
  *     Transaction data. An associative array containing:
- *     - order_id:
+ *     - id:
  *       The transaction ID. (e.g. 1234).
  *     - affiliation:
  *      (optional) The store or affiliation from which this transaction occurred
  *      (e.g. Acme Clothing).
- *     - total:
- *       Revenue. Specifies the total revenue or grand total associated with the
+ *     - revenue:
+ *       Specifies the total revenue or grand total associated with the
  *       transaction (e.g. 11.99). This value may include shipping, tax costs,
  *       or other adjustments to total revenue that you want to include as part
  *       of your revenue calculations.
- *     - total_tax:
+ *     - tax:
  *       (optional) Specifies the total tax of the transaction. (e.g. 1.29).
- *     - total_shipping:
+ *     - shipping:
  *       (optional) Specifies the total shipping cost of the transaction. (e.g. 5).
  *     - city:
- *       (optional) city.
+ *       (optional) city. Only compatible with Classic Analytics.
  *     - region:
- *       (optional) state or province.
+ *       (optional) state or province. Only compatible with Classic Analytics.
  *     - country:
- *       (optional) country.
+ *       (optional) country. Only compatible with Classic Analytics.
  *     - currency:
  *       currency (ISO 4217).
  *
  *   - items: array
  *     Items data. A multiple associative array containing on each row:
- *     - order_id:
+ *     - id:
  *       The transaction ID. This ID is what links items to the transactions to
  *       which they belong. (e.g. 1234)
  *     - name:
@@ -316,23 +360,23 @@ function ga_push_add_ecommerce($push, $method_key = NULL, $options = array()) {
  * Example:
  * @code
  *   ga_push_add_event(array(
- *     'category'        => 'Videos',
- *     'action'          => 'Play',
- *     'label'           => 'Gone With the Wind',
- *     'value'           => 1,
- *     'non-interaction' => FALSE,
+ *     'eventCategory'        => 'Videos',
+ *     'eventAction'          => 'Play',
+ *     'eventLabel'           => 'Gone With the Wind',
+ *     'eventValue'           => 1,
+ *     'nonInteraction'       => FALSE,
  *   ));
  * @endcode
  *
  * @param array $push
  *   An associative array containing:
- *   - category: string
+ *   - eventCategory: string
  *     Typically the object that was interacted with (e.g. button).
- *   - action: string
+ *   - eventAction: string
  *     The type of interaction (e.g. click).
- *   - label: string
+ *   - eventLabel: string
  *     (optional) Useful for categorizing events (e.g. nav buttons).
- *   - value: int
+ *   - eventValue: int
  *     (optional) Values must be non-negative. Useful to pass counts (e.g. 4 times).
  *   - non-interaction: bool
  *     (optional) A boolean that when set to true, indicates that the event hit
@@ -347,11 +391,10 @@ function ga_push_add_event($push, $method_key = NULL, $options = array()) {
 }
 
 /**
- * Push a GA event.
+ * Push a GA exception.
  *
- * Event tracking allows you to measure how users interact with the content of
- * your website. For example, you might want to measure how many times a button
- * was pressed, or how many times a particular item was used in a web game.
+ * Exception measurement allows you to measure the number and type of crashes
+ * and exceptions that occur on your property.
  *
  * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/exceptions
  *
@@ -381,7 +424,7 @@ function ga_push_add_exception($push, $method_key = NULL, $options = array()) {
 }
 
 /**
- * Push a GA page tracking.
+ * Push a GA pageview.
  *
  * Page tracking allows you to measure the number of views you had of a
  * particular page on your web site. For a web app, you might decide to track a
@@ -404,7 +447,7 @@ function ga_push_add_exception($push, $method_key = NULL, $options = array()) {
  *   An associative array containing:
  *   - location: string
  *     (optional) URL of the page being tracked.
- *     By default, analytics.js sets this to the full document URL, excluding
+ *     By default, analytics_js sets this to the full document URL, excluding
  *     the fragment identifier.
  *   - page: string
  *     (optional) A string that is uniquely paired with each category, and
@@ -594,53 +637,27 @@ function ga_push_ga_push_method() {
 
   $module_path = drupal_get_path('module', 'ga_push');
 
-  $method[GA_PUSH_METHOD_JS] = array(
-    'name' => 'Javascript Classic (js)',
-    'description' => '',
-    'machine_name' => GA_PUSH_METHOD_JS,
-    'callback' => 'ga_push_method_javascript',
-    'file' => $module_path . '/inc/ga_push.javascript.inc',
+  $method[GA_PUSH_METHOD_ANALYTICS_JS] = array(
+    'name' => 'Analytics.js (js)',
+    'description' => l('Analytics.js', 'https://developers.google.com/analytics/devguides/collection/analyticsjs/'),
+    'machine_name' => GA_PUSH_METHOD_ANALYTICS_JS,
+    'callback' => 'ga_push_method_analytics_js',
+    'file' => $module_path . '/inc/ga_push.analytics_js.inc',
     'implements' => array(
       GA_PUSH_TYPE_EVENT => TRUE,
       GA_PUSH_TYPE_ECOMMERCE => TRUE,
+      GA_PUSH_TYPE_EXCEPTION => TRUE,
+      GA_PUSH_TYPE_PAGEVIEW => TRUE,
+      GA_PUSH_TYPE_SOCIAL => TRUE,
     ),
     'side' => GA_PUSH_CLIENT_SIDE,
-    'tracking_method' => GA_PUSH_TRACKING_METHOD_CLASSIC,
+    'tracking_method' => GA_PUSH_TRACKING_METHOD_UNIVERSAL,
     'available' => TRUE,
   );
 
-  $method[GA_PUSH_METHOD_SSGA] = array(
-    'name' => 'SSGA (php)',
-    'description' => 'requires php 5.2+, curl and ssga libraries',
-    'machine_name' => GA_PUSH_METHOD_SSGA,
-    'callback' => 'ga_push_method_ssga',
-    'file' => $module_path . '/inc/ga_push.ssga.inc',
-    'implements' => array(
-      GA_PUSH_TYPE_EVENT => TRUE,
-    ),
-    'side' => GA_PUSH_SERVER_SIDE,
-    'tracking_method' => GA_PUSH_TRACKING_METHOD_CLASSIC,
-    'available' => class_exists('ssga') && is_callable('curl_init'),
-  );
-
-  $method[GA_PUSH_METHOD_PHP_GA] = array(
-    'name' => 'PHP-GA (php)',
-    'description' => 'requires php 5.3 and php-ga library',
-    'machine_name' => GA_PUSH_METHOD_PHP_GA,
-    'callback' => 'ga_push_method_php_ga',
-    'file' => $module_path . '/inc/ga_push.php_ga.inc',
-    'implements' => array(
-      GA_PUSH_TYPE_EVENT => TRUE,
-      GA_PUSH_TYPE_ECOMMERCE => TRUE,
-    ),
-    'side' => GA_PUSH_SERVER_SIDE,
-    'tracking_method' => GA_PUSH_TRACKING_METHOD_CLASSIC,
-    'available' => 'ga_push_method_php_ga_available',
-  );
-
   $method[GA_PUSH_METHOD_UTMP_PHP] = array(
-    'name' => 'UTMP (php)',
-    'description' => 'Universal Tracking, Measurement Protocol',
+    'name' => 'Measurement Protocol (php)',
+    'description' => l('Measurement Protocol', 'https://developers.google.com/analytics/devguides/collection/protocol/v1/'),
     'machine_name' => GA_PUSH_METHOD_UTMP_PHP,
     'callback' => 'ga_push_method_utmp_php',
     'file' => $module_path . '/inc/ga_push.utmp.php.inc',
@@ -656,22 +673,48 @@ function ga_push_ga_push_method() {
     'available' => TRUE,
   );
 
-  $method[GA_PUSH_METHOD_UTMP_JS] = array(
-    'name' => 'UTMP (js)',
-    'description' => 'Universal Tracking, Measurement Protocol',
-    'machine_name' => GA_PUSH_METHOD_UTMP_JS,
-    'callback' => 'ga_push_method_utmp_js',
-    'file' => $module_path . '/inc/ga_push.utmp.js.inc',
+  $method[GA_PUSH_METHOD_GA_JS] = array(
+    'name' => 'Ga.js (js)',
+    'description' => '@deprecated ' . l('ga.js', 'https://developers.google.com/analytics/devguides/collection/gajs/'),
+    'machine_name' => GA_PUSH_METHOD_GA_JS,
+    'callback' => 'ga_push_method_ga_js',
+    'file' => $module_path . '/inc/ga_push.ga_js.inc',
     'implements' => array(
       GA_PUSH_TYPE_EVENT => TRUE,
       GA_PUSH_TYPE_ECOMMERCE => TRUE,
-      GA_PUSH_TYPE_EXCEPTION => TRUE,
-      GA_PUSH_TYPE_PAGEVIEW => TRUE,
-      GA_PUSH_TYPE_SOCIAL => TRUE,
     ),
     'side' => GA_PUSH_CLIENT_SIDE,
-    'tracking_method' => GA_PUSH_TRACKING_METHOD_UNIVERSAL,
+    'tracking_method' => GA_PUSH_TRACKING_METHOD_CLASSIC,
     'available' => TRUE,
+  );
+
+  $method[GA_PUSH_METHOD_PHP_GA] = array(
+    'name' => 'PHP-GA (php)',
+    'description' => '@deprecated requires php 5.3 and php-ga library',
+    'machine_name' => GA_PUSH_METHOD_PHP_GA,
+    'callback' => 'ga_push_method_php_ga',
+    'file' => $module_path . '/inc/ga_push.php_ga.inc',
+    'implements' => array(
+      GA_PUSH_TYPE_EVENT => TRUE,
+      GA_PUSH_TYPE_ECOMMERCE => TRUE,
+    ),
+    'side' => GA_PUSH_SERVER_SIDE,
+    'tracking_method' => GA_PUSH_TRACKING_METHOD_CLASSIC,
+    'available' => 'ga_push_method_php_ga_available',
+  );
+
+  $method[GA_PUSH_METHOD_SSGA] = array(
+    'name' => 'SSGA (php)',
+    'description' => '@deprecated requires php 5.2+, curl and ssga libraries',
+    'machine_name' => GA_PUSH_METHOD_SSGA,
+    'callback' => 'ga_push_method_ssga',
+    'file' => $module_path . '/inc/ga_push.ssga.inc',
+    'implements' => array(
+      GA_PUSH_TYPE_EVENT => TRUE,
+    ),
+    'side' => GA_PUSH_SERVER_SIDE,
+    'tracking_method' => GA_PUSH_TRACKING_METHOD_CLASSIC,
+    'available' => class_exists('ssga') && is_callable('curl_init'),
   );
 
   return $method;
@@ -687,16 +730,77 @@ function ga_push_method_php_ga_available() {
 
 /**
  * Key relationship map between analyticsjs & measurement_protocol.
+ *
+ * @see https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
  */
 function ga_push_analyticsjs_measurement_protocol_map() {
-  array(
-    'exDescription'	=> 'exd',
-    'exFatal'	=> 'exf',
+  return array(
+    // Application:
+    'appName'         => 'an',
+    'appId'           => 'aid',
+    'appVersion'      => 'av',
+    'appInstallerId'  => 'aiid',
+    // Ecommerce:
+    'id'              => 'ti',
+    'affiliation'     => 'ta',
+    'revenue'         => 'tr',
+    'tax'             => 'tt',
+    'shipping'        => 'ts',
+    'currency'        => 'cu',
+    'name'            => 'in',
+    'price'           => 'ip',
+    'quantity'        => 'iq',
+    'sku'             => 'ic',
+    'category'        => 'iv',
+    // Event:
+    'eventCategory'   => 'ec',
+    'eventAction'     => 'ea',
+    'eventLabel'      => 'el',
+    'eventValue'      => 'ev',
+    'nonInteraction'  => 'ni',
+    // Exception:
+    'exDescription'	  => 'exd',
+    'exFatal'	        => 'exf',
+    // Pageview:
+    'location'        => 'dh',
+    'page'            => 'dp',
+    'title'           => 'dt',
+    // Social:
+    'socialNetwork'   => 'sn',
+    'socialAction'    => 'sa',
+    'socialTarget'    => 'st',
   );
 }
 
 /**
- * Helper function to translate array keys.
+ * Translates Analytics.js keys to UTMP keys.
+ *
+ * Push array data uses Analytics.js keys to name each param. UTMP uses
+ * another set of keys. This method translates those keys.
+ *
+ * @param array $data
+ *   Array with keys to be translated.
+ *
+ * @return array
+ *   Array with keys translated.
+ */
+function ga_push_analyticsjs_measurement_protocol_mapping($data) {
+  $map = ga_push_analyticsjs_measurement_protocol_map();
+  $data_mapped = array();
+  foreach ($data as $key => $value) {
+    $mkey = isset($map[$key]) ? $map[$key] : $key;
+    // Replace custom dimensions and metrics that uses Analytics.js keys with UTMP keys.
+    $mkey = str_replace(array('dimension', 'metric'), array('cd', 'cm'), $mkey);
+
+    $data_mapped[$mkey] = $value;
+  }
+  return $data_mapped;
+}
+
+/**
+ * Helper function to asign data to keys.
+ *
+ * Only key_map keys will be mapped.
  *
  * @param array $key_map
  *   Array with keys to translate.
@@ -708,7 +812,7 @@ function ga_push_analyticsjs_measurement_protocol_map() {
  * @return array
  *   Mapped data.
  */
-function ga_push_push_mapper($key_map, $data, $initialize_empty = FALSE) {
+function ga_push_push_key_mapper($key_map, $data, $initialize_empty = FALSE) {
   $mapped_data = array();
   foreach ($key_map as $key => $target) {
     if (isset($data[$key])) {
@@ -718,6 +822,33 @@ function ga_push_push_mapper($key_map, $data, $initialize_empty = FALSE) {
       $mapped_data[$target] = '';
     }
   }
+  return $mapped_data;
+}
+
+/**
+ * Helper function to translate data keys.
+ *
+ * @param array $key_map
+ *   Array with keys to translate.
+ * @param array $data
+ *   Data push array.
+ * @param bool $initialize_empty
+ *   Initialize empty values.
+ *
+ * @return array
+ *   Mapped data.
+ */
+function ga_push_push_data_mapper($key_map, $data, $initialize_empty = FALSE) {
+  $mapped_data = array();
+  foreach ($data as $key => $value) {
+    $mkey = isset($key_map[$key]) ? $key_map[$key] : $key;
+    $mapped_data[$mkey] = $value;
+  }
+
+  if ($initialize_empty) {
+    $mapped_data += array_fill_keys($key_map, '');
+  }
+
   return $mapped_data;
 }
 

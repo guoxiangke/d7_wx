@@ -66,10 +66,10 @@ function ga_push_form_validate_get_validate_errors($form, $form_state) {
     foreach ($errors as $key => $error) {
       // @TODO: filter the error output.
       $push = array(
-        'category' => t('Form validate error'),
-        'action'   => $form['form_id']['#value'] . ' - ' . $key,
-        'label'    => $error,
-        'value'    => 1,
+        'eventCategory' => t('Form validate error'),
+        'eventAction'   => $form['form_id']['#value'] . ' - ' . $key,
+        'eventLabel'    => $error,
+        'eventValue'    => 1,
       );
       ga_push_add_event($push);
     }

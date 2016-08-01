@@ -49,15 +49,15 @@ function ga_push_method_php_ga($push, $type, $options) {
       $event = new UnitedPrototype\GoogleAnalytics\Event();
 
       // Required:
-      $event->setCategory($push['category']);
-      $event->setAction($push['action']);
+      $event->setCategory($push['eventCategory']);
+      $event->setAction($push['eventAction']);
 
       // Optional:
-      if (isset($push['label'])) {
-        $event->setLabel($push['label']);
+      if (isset($push['eventLabel'])) {
+        $event->setLabel($push['eventLabel']);
       }
-      if (isset($push['value'])) {
-        $event->setValue($push['value']);
+      if (isset($push['eventValue'])) {
+        $event->setValue($push['eventValue']);
       }
       if (isset($push['non-interaction'])) {
         $event->setNoninteraction($push['non-interaction']);
@@ -71,18 +71,18 @@ function ga_push_method_php_ga($push, $type, $options) {
       if (isset($push['trans']) && isset($push['items']) && count($push['items'])) {
 
         $transaction = new UnitedPrototype\GoogleAnalytics\Transaction();
-        $transaction->setOrderId($push['trans']['order_id']);
+        $transaction->setOrderId($push['trans']['id']);
         $transaction->setAffiliation($push['trans']['affiliation']);
-        $transaction->setTotal($push['trans']['total']);
-        $transaction->setTax($push['trans']['total_tax']);
-        $transaction->setShipping($push['trans']['total_shipping']);
+        $transaction->setTotal($push['trans']['revenue']);
+        $transaction->setTax($push['trans']['tax']);
+        $transaction->setShipping($push['trans']['shipping']);
         $transaction->setCity($push['trans']['city']);
         $transaction->setRegion($push['trans']['region']);
         $transaction->setCountry($push['trans']['country']);
 
         foreach ($push['items'] as $value) {
           $item = new UnitedPrototype\GoogleAnalytics\Item();
-          $item->setOrderId($value['order_id']);
+          $item->setOrderId($value['id']);
           $item->setSku($value['sku']);
           $item->setName($value['name']);
           // $item->setCategory($value['category]);

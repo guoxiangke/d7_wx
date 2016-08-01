@@ -17,7 +17,7 @@ function ga_push_form_validate_settings_form() {
     '#title' => t('Active forms'),
     '#default_value' => variable_get('ga_push_form_validate_forms', ''),
     '#rows' => 10,
-    '#description' => t('Insert the form ids to be logged on validate by line. You can user regular expressions.'),
+    '#description' => t('Insert the form ids to be logged on validate by line. You can use regular expressions.'),
   );
 
   $form['ga_push_form_validate_show_form_ids'] = array(
