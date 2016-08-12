@@ -149,7 +149,10 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 			$orikeyword = $keyword;
       $keyword = substr($orikeyword, 0, 3);
       $index = (int)substr($orikeyword, 3);
-
+      //20160101
+      if($index>100){
+        $dateindex = '16'.str_pad($index,4,"0",STR_PAD_LEFT);
+      }
 		  $audios = liangyou_audio_list2();
 		  $lyaudio = array();
 		  $lyaudio_code = FALSE;
@@ -205,6 +208,9 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
             if($index) $offset=$index;
 						// while ($offset <= 7) {
 							$date = date('ymd',time()-$offset*86400);
+              if(isset($dateindex)){
+                $date = $dateindex;
+              }
 							$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
 							$musicurl = $cdnlink.$path;
 							$upyunurl = $cdnlink.$path.upyun_get_token($path);
@@ -401,20 +407,20 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
  * $change_keyword = return key!
  */
 function mp_bbn_response($keyword,$account,$weObj) {
-  $text = "弟兄姊妹，平安，【400】开头的圣经广播网节目系统维护中，谢谢代祷！\n永不止息，需要有你[握手]\n请回复【600】收听其他节目，";
-	$resources = array();$resources['key_'.$keyword]= array(
-		'type'	=>	'text',
-		'cache' =>  0,
-		'gadata'   =>  array(
-       'category'        => '400',
-       'action'          => $keyword,
-       'label'           => 'wxservice_'.$account->uid,
-    ),
-		'obj'		=> array(
-			'text'	=> $text,
-		),
-	);
-	return $resources;
+ //  $text = "弟兄姊妹，平安，【400】开头的圣经广播网节目系统维护中，谢谢代祷！\n永不止息，需要有你[握手]\n请回复【600】收听其他节目，";
+	// $resources = array();$resources['key_'.$keyword]= array(
+	// 	'type'	=>	'text',
+	// 	'cache' =>  0,
+	// 	'gadata'   =>  array(
+ //       'category'        => '400',
+ //       'action'          => $keyword,
+ //       'label'           => 'wxservice_'.$account->uid,
+ //    ),
+	// 	'obj'		=> array(
+	// 		'text'	=> $text,
+	// 	),
+	// );
+	// return $resources;
 	$change_keyword = $keyword;
 	require_once('bbn.inc');
  	if($keyword == '400'){
