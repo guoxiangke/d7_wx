@@ -177,7 +177,7 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 		  		$index = 0;
 		  		if(isset($urls[0][$index])){
 		  			$musicurl = 'http://txly2.net'.str_replace("{file:'", '', $urls[0][$index]);
-		  			return $resources['key_'.$orikeyword]= array(
+		  			$resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',
 							'cache'	=> 43200,
 							'obj'		=> array(
@@ -187,13 +187,15 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 								'hgmusicurl'	=>	$musicurl,
 							),
 						);
-		  		}
-					return $resources['key_'.$orikeyword]= array(
-						'type'	=>	'text',
-						'obj'		=> array(
-							'text'	=> "ao出错啦，告诉小永吧回复反馈内容给永不止息即可，良友圣经学院节目641-645改版中，请回复【#100】功能！",
-						)
-					);
+		  		}else{
+            $resources['key_'.$orikeyword]= array(
+              'type'  =>  'text',
+              'obj'   => array(
+                'text'  => "ao出错啦，告诉小永吧回复反馈内容给永不止息即可，良友圣经学院节目641-645改版中，请回复【#100】功能！",
+              )
+            );
+          }
+          return $resources;
 		  	}
 
 				//USE UPYUN
