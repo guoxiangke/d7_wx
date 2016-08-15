@@ -416,6 +416,8 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
  */
 function mp_bbn_response($keyword,$account,$weObj) {
 	$change_keyword = $keyword;
+  $json = file_get_contents('http://bbn.yongbuzhixi.com/cron/bbn/json/'.date('Ym').'/'. date('Ymd') . '.json');
+  $json = json_decode($json);
 	require_once('bbn.inc');
  	if($keyword == '400'){
     $bbn_audio_menu = '▶圣经广播网节目单
@@ -432,8 +434,6 @@ function mp_bbn_response($keyword,$account,$weObj) {
 		);
     return $resources;
  	}
-  $json = file_get_contents('http://bbn.yongbuzhixi.com/cron/bbn/json/'.date('Ym').'/'. date('Ymd') . '.json');
-  $json = json_decode($json);
   if(isset($json->$keyword->upyun)){
 		// $bbn = mp_get_bbn($keyword);
 		$objectKey = $json->$keyword->upyun;
