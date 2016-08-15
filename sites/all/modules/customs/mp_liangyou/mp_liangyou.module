@@ -180,6 +180,12 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
 		  			$resources['key_'.$orikeyword]= array(
 							'type'	=>	'music',
 							'cache'	=> 43200,
+              'gadata'   =>  array(
+                 'category'        => 'lts',
+                 'action'          => $title,
+                 'label'           => 'wxservice_'.$account->uid,
+                 'value'           => $keyword,
+              ),
 							'obj'		=> array(
 								'title'	=> str_replace("',title:'", '', $titles[0][$index]).'♫'.$title,
 								'desc'	=>	$desc,
@@ -409,38 +415,41 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
  * $change_keyword = return key!
  */
 function mp_bbn_response($keyword,$account,$weObj) {
- //  $text = "弟兄姊妹，平安，【400】开头的圣经广播网节目系统维护中，谢谢代祷！\n永不止息，需要有你[握手]\n请回复【600】收听其他节目，";
-	// $resources = array();$resources['key_'.$keyword]= array(
-	// 	'type'	=>	'text',
-	// 	'cache' =>  0,
-	// 	'gadata'   =>  array(
- //       'category'        => '400',
- //       'action'          => $keyword,
- //       'label'           => 'wxservice_'.$account->uid,
- //    ),
-	// 	'obj'		=> array(
-	// 		'text'	=> $text,
-	// 	),
-	// );
-	// return $resources;
 	$change_keyword = $keyword;
 	require_once('bbn.inc');
  	if($keyword == '400'){
+    $bbn_audio_menu = '▶圣经广播网节目单
+    ----------------------------------------------';
+    foreach ($json as $key => $value) {
+      $bbn_audio_menu = $bbn_audio_menu ."\n".'【'.$key.'】'.$value->title;
+    }
 		$resources['key_'.$change_keyword]= array(
 			'type'	=>	'text',
 			'cache' =>  0,
 			'obj'		=> array(
-				'text'	=> bbn_audio_menu(),
+				'text'	=> $bbn_audio_menu,//bbn_audio_menu(),//
 			)
 		);
- 	}else{
-		$bbn = mp_get_bbn($keyword);
-		$musicurl = $bbn[$keyword]['musicurl'];
-		$title = $bbn[$keyword]['title'];
+    return $resources;
+ 	}
+  $json = file_get_contents('http://bbn.yongbuzhixi.com/cron/bbn/json/'.date('Ym').'/'. date('Ymd') . '.json');
+  $json = json_decode($json);
+  if(isset($json->$keyword->upyun)){
+		// $bbn = mp_get_bbn($keyword);
+		$objectKey = $json->$keyword->upyun;
+    $cdn = 'http://bbn2016.b0.upaiyun.com';
+    $musicurl = $cdn . $objectKey . upyun_get_token($objectKey);
+		// $title = $bbn[$keyword]['title'];
+    $title = $json->$keyword->title;
 		$desc = '点击►收听 公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新';
 		$resources['key_'.$change_keyword]= array(
 			'type'	=>	'music',
 			'cache' =>  43200,
+      'gadata'   =>  array(
+         'category'        => 'bbn',
+         'action'          => $title,
+         'label'           => 'wxservice_'.$account->uid,
+      ),
 			'obj'		=> array(
 				'title'	=> $title,
 				'desc'	=>	$desc,
@@ -448,10 +457,27 @@ function mp_bbn_response($keyword,$account,$weObj) {
 				'hgmusicurl'	=>	$musicurl,
 			),
 		);
-		if(date('G')<11) {
-			$resources['key_'.$change_keyword]['custommessage'] = "弟兄姊妹，平安，圣经广播网4开头节目于每早11点更新，请11点后点击播放即可，谢谢代祷推荐给亲朋好友\n永不止息，需要有你[握手]";
-	  }
-	}
+		// if(date('G')<11) {
+		// 	$resources['key_'.$change_keyword]['custommessage'] = "弟兄姊妹，平安，圣经广播网4开头节目于每早11点更新，请11点后点击播放即可，谢谢代祷推荐给亲朋好友\n永不止息，需要有你[握手]";
+	 //  }
+	}else{
+    $text = "【$keyword 】今日无节目或节目还没有加速，小永努力中，请稍后再试！\n永不止息，需要有你[握手]\n请回复【400】收听其他节目，";
+    $weObj->text($text)->reply();
+    return;
+    // $resources = array();
+    // $resources['key_'.$keyword]= array(
+    //  'type'  =>  'text',
+    //  'cache' =>  0,
+    //  'gadata'   =>  array(
+    //      'category'        => '400',
+    //      'action'          => $keyword,
+    //      'label'           => 'wxservice_'.$account->uid,
+    //   ),
+    //  'obj'   => array(
+    //    'text'  => $text,
+    //  ),
+    // );
+  }
 	return $resources;
 }
 
