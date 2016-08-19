@@ -1,5 +1,5 @@
 <?php
-function bbn_audio_list(){	
+function bbn_audio_list(){
 	$bbn = array();
 	$bbn['401'] = array(
 		'code'				=>	'C0SER',
@@ -54,49 +54,49 @@ function bbn_audio_list(){
 		'day'					=>	67,//1-7
 		'title'				=>	'圣经时光',
 		'description'	=>	'每周六播出近60分钟的讲座，并在星期天重播',
-	);	
+	);
 	$bbn['410'] = array(
 		'code'				=>	'C0CP',
 		'day'					=>	16,
 		'title'				=>	'圣经讲坛',
 		'description'	=>	'华人教会名牧的讲道专题系列，帮助听众灵命进深，信仰成长',
-	);	
+	);
 	$bbn['411'] = array(
 		'code'				=>	'C0BGM',
 		'day'					=>	67,//6 7
 		'title'				=>	'天人之间',
 		'description'	=>	'由的节目，深入浅出地运用圣经真理来帮助基督徒灵命成长，也适合慕道友收听',
-	);	
+	);
 	$bbn['412'] = array(
 		'code'				=>	'C0HF',
 		'day'					=>	5,//1-5
 		'title'				=>	'天粮时光',
 		'description'	=>	'康来昌 牧师',
-	);	
+	);
 	$bbn['413'] = array(
 		'code'				=>	'C0RLW',
 		'day'					=>	5,//1-5
 		'title'				=>	'安歇水边',
 		'description'	=>	'希望国际之声; 卢彩秀 师母',
-	);	
+	);
 	$bbn['414'] = array(
 		'code'				=>	'C0FLS',
 		'day'					=>	5,//1-5
 		'title'				=>	'家庭生活讲座',
 		'description'	=>	'圣经广播网编辑',
-	);	
+	);
 	$bbn['415'] = array(
 		'code'				=>	'C0FA',
 		'day'					=>	67,
 		'title'				=>	'家庭祭坛',
 		'description'	=>	'圣经广播网编辑',
-	);	
+	);
 	$bbn['416'] = array(
 		'code'				=>	'C0BF',
 		'day'					=>	5,//1-5
 		'title'				=>	'幸福满家园',
 		'description'	=>	'远东广播公司',
-	);	
+	);
 	$bbn['417'] = array(
 		'code'				=>	'C0WPC',
 		'day'					=>	5,//1-5
@@ -117,7 +117,7 @@ function bbn_audio_list(){
 	);
 	$bbn['420'] = array(
 		'code'				=>	'C0WS',
-		'day'					=>	7,
+		'day'					=>	1,
 		'title'				=>	'每周一歌',
 		'description'	=>	'圣经广播网 摩西',
 	);
@@ -223,11 +223,11 @@ function mp_get_bbn($keyword){
 		case '1':// only sunday!!
 			$code =str_replace('0', '6', $bbn['code']);
 			break;
-		
+
 		case '7':// every day!!
 			$code =str_replace('0', $weekday, $bbn['code']);
 			break;
-		
+
 		case '5':// work day
 			if (date('N')>=6){
 				$weekday = date('N')/2?0:1;
@@ -302,4 +302,4 @@ function bbn_audio_menu(){
 	周日:1，周末:67，周间:5
 	永不止息，需要有你[抱拳][调皮]';
 	// ---------Jesus Love You------------
-}	
+}
