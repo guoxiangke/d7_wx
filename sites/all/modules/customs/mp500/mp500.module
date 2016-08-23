@@ -57,7 +57,7 @@ function _mp500_wxresources($resources, $account, $keyword, $weObj){
            'label'           => 'wxservice_'.$account->uid,
         ),
         'obj'   => array(
-          'text' => "【501】炼爱40天
+          'text' => "【501】炼爱-真爱挑战40天
           【502】圣经英语-马可福音
           【503】王明道文庫－窄門
           【504】真爱好男女
@@ -72,7 +72,7 @@ function _mp500_wxresources($resources, $account, $keyword, $weObj){
     if($check_word > 500 || $check_word <= 599 ) {
       $res500 = array(
         501=>array(
-          'title'=>'炼爱',
+          'title'=>'炼爱-真爱挑战40天',
           'count'=>'40',
         ),
         502=>array(
@@ -162,8 +162,60 @@ function _mp500_wxresources($resources, $account, $keyword, $weObj){
           ),
         ),
         506=>array(
+          'title'=>'智慧有情人CD',
+          'count'=>'11',
+        ),
+        507=>array(
+          'title'=>'每日亲近神-路加福音',
+          'count'=>'40',
+        ),
+        508=>array(
+          'title'=>'拯救CD',
+          'count'=>'10',
+        ),
+        509=>array(
           'title'=>'为儿女祷告40天',
           'count'=>'40',
+        ),
+        510=>array(
+          'title'=>'为儿女祷告40天',
+          'count'=>'40',
+        ),
+        511=>array(
+          'title'=>'为儿女属灵品格祷告',
+          'count'=>'56',
+        ),
+        512=>array(
+          'title'=>'有声书:天路历程',
+          'count'=>'26',
+        ),
+        513=>array(
+          'title'=>'有声书:游子吟',
+          'count'=>'55',
+        ),
+        514=>array(
+          'title'=>'有声书:密室',
+          'count'=>'45',
+        ),
+        515=>array(
+          'title'=>'有声书:自由在哪里',
+          'count'=>'29',
+        ),
+        516=>array(
+          'title'=>'有声书:里外更新',
+          'count'=>'14',
+        ),
+        517=>array(
+          'title'=>'每日亲近神-马太福音',
+          'count'=>'98',
+        ),
+        518=>array(
+          'title'=>'每日亲近神-马可福音',
+          'count'=>'35',
+        ),
+        519=>array(
+          'title'=>'每日亲近神-约翰福音',
+          'count'=>'4',
         ),
       );
       if(in_array($check_word,array_keys($res500))){
