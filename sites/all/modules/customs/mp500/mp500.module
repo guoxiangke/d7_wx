@@ -45,7 +45,7 @@ function mp500_wxresources($resources, $account, $keyword, $weObj){
  */
 function _mp500_wxresources($resources, $account, $keyword, $weObj){
     //http://audio.yongbuzhixi.com/resources/365/2014/20140109.mp3
-    $cdnlink = 'http://audio.yongbuzhixi.com';
+    $cdnlink = 'http://wxresources.b0.upaiyun.com';
     $check_word = substr($keyword, 0,3);
     if($check_word==500){
       $resources['key_'.$keyword]= array(
@@ -223,7 +223,7 @@ function _mp500_wxresources($resources, $account, $keyword, $weObj){
           $index = date('z')%$res500[$check_word]['count'];
         $title = $res500[$check_word]['title'];
         $str_pad = strlen($res500[$check_word]['count']);
-        $path = '/resources/500/'.$check_word.'/'.str_pad($index,$str_pad,"0",STR_PAD_LEFT).'.mp3';
+        $path = '/500/'.$check_word.'/'.str_pad($index,$str_pad,"0",STR_PAD_LEFT).'.mp3';
         $url = $cdnlink.$path;//.upyun_get_token($path);
         $desc = "点击►收听 公众号:".variable_get('mp_config_appname_'.$account->uid, "永不止息")." 每日更新";
         $resources['key_'.$keyword]= array(
