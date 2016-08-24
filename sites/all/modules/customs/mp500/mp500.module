@@ -44,7 +44,7 @@ function mp500_wxresources($resources, $account, $keyword, $weObj){
  * TODO:  cache_clear_all('mp_liangyou', 'cache', TRUE); once a day!
  */
 function _mp500_wxresources($resources, $account, $keyword, $weObj){
-    require_once('ysqm.inc');
+    require_once('mp500.inc');
     //http://audio.yongbuzhixi.com/resources/365/2014/20140109.mp3
     $cdnlink = 'http://wxresources.b0.upaiyun.com';
     $check_word = substr($keyword, 0,3);
@@ -57,7 +57,9 @@ function _mp500_wxresources($resources, $account, $keyword, $weObj){
            'action'          => 'menu get',
            'label'           => 'wxservice_'.$account->uid,
         ),
-        'obj'   => _get_mp_500_menu(),
+        'obj'   => array(
+            'text'  => _get_mp_500_menu(),
+        ),
       );
       return $resources;
     }
