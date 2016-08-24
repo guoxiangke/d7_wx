@@ -246,6 +246,17 @@ function _mp500_wxresources($resources, $account, $keyword, $weObj){
         if(isset($res500[$check_word]['desc'])){
           $custommessage = $res500[$check_word]['desc'][$index];
         }
+        if(isset($res500[$check_word]['json'])){
+          // json array('href=mp3link' 'title' 'desc' 'booklink')
+          $json = drupal_json_decode(file_get_contents(drupal_get_path('module', 'mp500').'/'.$check_word.'.json'));
+          $custommessage = '';
+          if(isset($json[$index]['title']))
+            $custommessage .=$json[$index]['title']."\n";
+          if(isset($json[$index]['desc']))
+            $custommessage .=$json[$index]['desc']."\n";
+          if(isset($json[$index]['booklink']))
+            $custommessage .='<a href="'.$json[$index]['booklink'].'">讲义讲章</a>'."\n";
+        }
         if($custommessage){
           $resources['key_'.$keyword]['custommessage'] = '【'.$keyword.'】'.$title."\n".$custommessage;
         }
