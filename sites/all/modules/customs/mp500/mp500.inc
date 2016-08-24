@@ -153,7 +153,7 @@ function _get_mp_500_res(){
         ),
         519=>array(
           'title'=>'每日亲近神-约翰福音',
-          'count'=>'4',
+          'count'=>'49',
         ),
         520=>array(
           'title'=>'儿童圣经故事',
