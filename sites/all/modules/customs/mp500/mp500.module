@@ -81,7 +81,7 @@ function _mp500_wxresources($resources, $account, $keyword, $weObj){
           'path'  =>  $path,
           'gadata'   =>  array(
              'category'        => '500',
-             'action'          => $title,
+             'action'          => $check_word.'_'.$index,
              'label'           => 'wxservice_'.$account->uid,
           ),
           'obj'   => array(
@@ -103,8 +103,11 @@ function _mp500_wxresources($resources, $account, $keyword, $weObj){
             $custommessage .=$json[$index]['title']."\n";
           if(isset($json[$index]['desc']))
             $custommessage .=$json[$index]['desc']."\n";
-          if(isset($json[$index]['booklink']))
+          if(isset($json[$index]['bookpath'])){
+            $custommessage .='<a href="'.$cdnlink.$json[$index]['bookpath'].upyun_get_token($json[$index]['bookpath']).'">讲义讲章</a>'."\n";
+          }elseif(isset($json[$index]['booklink'])){
             $custommessage .='<a href="'.$json[$index]['booklink'].'">讲义讲章</a>'."\n";
+          }
         }
         if($custommessage){
           $resources['key_'.$keyword]['custommessage'] = '【'.$keyword.'】'.$title."\n".$custommessage;
