@@ -154,7 +154,7 @@ function create_mp_cron_nodes(){
     drupal_set_message('没有可用更新图文', 'warning', FALSE);
     drupal_goto('mp-cron');
   }
-  $exist_media_objs = db_query('SELECT field_media_id_value as id FROM {field_data_field_media_id} LIMIT 0,200')->fetchAll();
+  $exist_media_objs = db_query('SELECT field_media_id_value as id FROM {field_data_field_media_id} order by revision_id desc LIMIT 0,200')->fetchAll();
   // dpm($exist_media_ids);
   $exist_media_ids = array();
   foreach ($exist_media_objs as $obj) {
