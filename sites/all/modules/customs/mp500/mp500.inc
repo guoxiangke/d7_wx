@@ -103,9 +103,21 @@ function _get_mp_500_res(){
           'title'=>'智慧有情人CD',
           'count'=>'11',
         ),
+        517=>array(
+          'title'=>'每日亲近神-马太福音',
+          'count'=>'98',
+        ),
+        518=>array(
+          'title'=>'每日亲近神-马可福音',
+          'count'=>'35',
+        ),
         507=>array(
           'title'=>'每日亲近神-路加福音',
           'count'=>'40',
+        ),
+        519=>array(
+          'title'=>'每日亲近神-约翰福音',
+          'count'=>'49',
         ),
         508=>array(
           'title'=>'拯救CD',
@@ -116,44 +128,8 @@ function _get_mp_500_res(){
           'count'=>'40',
         ),
         510=>array(
-          'title'=>'为儿女祷告40天',
-          'count'=>'40',
-        ),
-        511=>array(
           'title'=>'为儿女属灵品格祷告',
           'count'=>'56',
-        ),
-        512=>array(
-          'title'=>'有声书:天路历程',
-          'count'=>'26',
-        ),
-        513=>array(
-          'title'=>'有声书:游子吟',
-          'count'=>'55',
-        ),
-        514=>array(
-          'title'=>'有声书:密室',
-          'count'=>'45',
-        ),
-        515=>array(
-          'title'=>'有声书:自由在哪里',
-          'count'=>'29',
-        ),
-        516=>array(
-          'title'=>'有声书:里外更新',
-          'count'=>'14',
-        ),
-        517=>array(
-          'title'=>'每日亲近神-马太福音',
-          'count'=>'98',
-        ),
-        518=>array(
-          'title'=>'每日亲近神-马可福音',
-          'count'=>'35',
-        ),
-        519=>array(
-          'title'=>'每日亲近神-约翰福音',
-          'count'=>'49',
         ),
         520=>array(
           'title'=>'儿童圣经故事',
@@ -339,6 +315,30 @@ function _get_mp_500_res(){
             '不成熟的亚哈王',
             '悔而不改的亚哈'
           ),
+        ),
+        511=>array(
+          'title'=>'有声书:天路历程',
+          'count'=>'26',
+        ),
+        512=>array(
+          'title'=>'有声书:标杆人生',
+          'count'=>'40',
+        ),
+        513=>array(
+          'title'=>'有声书:游子吟',
+          'count'=>'55',
+        ),
+        514=>array(
+          'title'=>'有声书:密室',
+          'count'=>'45',
+        ),
+        515=>array(
+          'title'=>'有声书:自由在哪里',
+          'count'=>'29',
+        ),
+        516=>array(
+          'title'=>'有声书:里外更新',
+          'count'=>'14',
         ),
       );
 }
