@@ -109,7 +109,7 @@ function _mp500_wxresources($resources, $account, $keyword, $weObj){
             $custommessage .='<a href="'.$json[$index]['booklink'].'">讲义讲章</a>'."\n";
           }
         }
-        if($custommessage){
+        if(isset($custommessage)){
           $resources['key_'.$keyword]['custommessage'] = '【'.$keyword.'】'.$title."\n".$custommessage;
         }
       }
