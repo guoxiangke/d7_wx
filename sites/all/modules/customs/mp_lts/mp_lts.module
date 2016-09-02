@@ -566,12 +566,12 @@ function  get_mp_ltsma(){
       'author'=>'吕路加',
     ),
     '704'=>array(
-      'title'=>'圣经论(制作中)',//没有！
-      'prefex'=>'v??0',
+      'title'=>'圣经论',//没有！
+      'prefex'=>'vdb0',
       'count'=>24,
       'level'=>'进深课程',
       'category'=>'神学',
-      'author'=>'',
+      'author'=>'林诚',
     ),
     '705'=>array(
       'title'=>'神论',
