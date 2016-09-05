@@ -1060,9 +1060,9 @@ function _mp_getwxresources($resources, $account, $keyword){
       return $resources;
     }
     $update = '';
-    if($count===FALSE) {
+    if($keyword=='#'.$index) {
       $count = date('z')%$total;//按顺序循环播出，每天一集！
-      ++$count;
+      // ++$count;
       $update = ' 每日更新';
     }
     if($count==0) $count++;
