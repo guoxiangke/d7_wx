@@ -46,7 +46,7 @@ function mp500_wxresources($resources, $account, $keyword, $weObj){
 function _mp500_wxresources($resources, $account, $keyword, $weObj){
     require_once('mp500.inc');
     //http://audio.yongbuzhixi.com/resources/365/2014/20140109.mp3
-    $cdnlink = 'http://wxresources.b0.upaiyun.com';
+    $cdnlink = 'http://wxresources.yongbuzhixi.com';
     $check_word = substr($keyword, 0,3);
     if($check_word==500){
       $resources['key_'.$keyword]= array(

@@ -437,7 +437,7 @@ function mp_bbn_response($keyword,$account,$weObj) {
   if(isset($json->$keyword->upyun)){
 		// $bbn = mp_get_bbn($keyword);
 		$objectKey = $json->$keyword->upyun;
-    $cdn = 'http://bbn2016.b0.upaiyun.com';
+    $cdn = 'http://bbn2016.yongbuzhixi.com';
     $musicurl = $cdn . $objectKey . upyun_get_token($objectKey);
 		// $title = $bbn[$keyword]['title'];
     $title = $json->$keyword->title;
