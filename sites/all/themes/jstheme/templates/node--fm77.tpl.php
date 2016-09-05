@@ -93,49 +93,13 @@
   <?php endif; ?>
   <div class="content"<?php print $content_attributes; ?>>
     <?php
-    if(isset($node->field_mp3_file[LANGUAGE_NONE][0]))
-        $url = file_create_url($node->field_mp3_file[LANGUAGE_NONE][0]['uri']);
-    if(isset($node->field_mp3url[LANGUAGE_NONE][0]))
-        $url = $node->field_mp3url[LANGUAGE_NONE][0]['value'];
+    if(isset($node->field_mp3_file[LANGUAGE_NONE][0])){
+      hide($content['field_mp3url']);
+    }else{
+      hide($content['field_mp3_file']);
+    }
     if(isset($url) && $view_mode=='full'){
     ?>
-   <div class="audio-wrapper">
-        <div id="demo" class="audio state-stop" role="application" aria-label="media player">
-            <div class="play-control control">
-                <button class="play button" role="button" aria-label="play" tabindex="0"></button>
-            </div>
-            <div class="bar">
-                <div class="seek-bar seek-bar-display loaded" style="width: 0%;"></div>
-                <div class="seek-bar" style="width: 100%;">
-                    <div class="play-bar" style="width: 0%; overflow: hidden;">
-                    </div>
-                    <div class="details">
-                        <span class="title" aria-label="title">永不止息 - 需要有你</span>
-                    </div>
-                    <div class="timing">
-                        <span class="duration" role="timer" aria-label="duration">0:00</span>
-                    </div>
-                </div>
-            </div>
-            <div class="no-solution" style="display: none;">出错啦<br>请使用谷歌浏览器</div>
-            <div id="player" class="playercount" style="display: none;">
-            </div>
-        </div>
-        <div id="playlist" style="display: none;"></div>
-    </div>
-    <script type="text/javascript">
-        var playlist = [
-                {
-                    title: 'FM77 <?php echo $node->title;?>',
-                    artist: '',
-                    album: '',
-                    cover:'',
-                    mp3: '<?php echo $url;?>',
-                    ogg: ''
-                }
-            ];
-        var autoplay = false;
-    </script>
     <?php
       }
       // We hide the comments and links now so that we can render them later.

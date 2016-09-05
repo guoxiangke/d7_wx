@@ -101,10 +101,10 @@ function jstheme_process_book_navigation(&$variables) {
 
 function jstheme_preprocess_node(&$variables) {
   $node = $variables['node'];
-  if($variables['view_mode']=='full' && (isset($node->field_mp3url[LANGUAGE_NONE][0])||isset($node->field_mp3_file[LANGUAGE_NONE][0]['fid'])) ){
-    drupal_add_css(drupal_get_path('theme', 'jstheme').'/css/fmplayer.css');
-    drupal_add_js(drupal_get_path('theme', 'jstheme').'/js/fmplayer.min.js');
-  }
+  // if($variables['view_mode']=='full' && (isset($node->field_mp3url[LANGUAGE_NONE][0])||isset($node->field_mp3_file[LANGUAGE_NONE][0]['fid'])) ){
+  //   drupal_add_css(drupal_get_path('theme', 'jstheme').'/css/fmplayer.css');
+  //   drupal_add_js(drupal_get_path('theme', 'jstheme').'/js/fmplayer.min.js');
+  // }
   if($variables['view_mode']=='full'){
     drupal_add_js(drupal_get_path('theme', 'jstheme').'/js/page-node-full.js');
   }
@@ -228,4 +228,49 @@ function jstheme_preprocess_rate_template_number_up_down(&$variables) {
     }
   }
   $variables['info'] = implode(' ', $info);
+}
+
+function jstheme_field__field_mp3_file($vars){
+
+  if(isset($vars['items'][0]['field_mp3_file']['und'][0]['#value'])){
+    $mp3 = $vars['items'][0]['field_mp3_file']['und'][0]['#value'];
+    $output = theme('field_mp3_file', array('mp3' => $mp3));
+
+    drupal_add_css(drupal_get_path('theme', 'jstheme').'/fmplayer/fmplayer.css');
+    drupal_add_js(drupal_get_path('theme', 'jstheme').'/fmplayer/jquery-ui-v1.9.2.min.js');
+    drupal_add_js(drupal_get_path('theme', 'jstheme').'/fmplayer/wavesurfer.min.js');
+    drupal_add_js(drupal_get_path('theme', 'jstheme').'/fmplayer/fmplayer.wave.min.js', array('type' => 'file', 'scope' => 'footer'));
+    return $output;
+  }
+}
+
+function jstheme_field__field_mp3url($vars){
+  if(isset($vars['items'][0]['field_mp3url']['und'][0]['value']['#value'])){
+    $mp3['url'] = $vars['items'][0]['field_mp3url']['und'][0]['value']['#value'];
+    //TODO: if(isCDN)
+    drupal_add_css(drupal_get_path('theme', 'jstheme').'/fmplayer/fmplayer.css');
+    drupal_add_js(drupal_get_path('theme', 'jstheme').'/fmplayer/jquery-ui-v1.9.2.min.js');
+    // drupal_add_js(drupal_get_path('theme', 'jstheme').'/fmplayer/wavesurfer.min.js');
+    drupal_add_js(drupal_get_path('theme', 'jstheme').'/fmplayer/fmplayer.nowave.min.js', array('type' => 'file', 'scope' => 'footer'));
+    $output = theme('field_mp3url', array('mp3' => $mp3));
+    return $output;
+  }
+}
+/**
+ * Implements hook_theme().
+ */
+function jstheme_theme() {
+  $theme_path = drupal_get_path('theme', 'jstheme');
+  return array(
+    'field_mp3_file' => array(
+      'variables' => array('mp3' => NULL),
+      'template' => 'field-mp3-file',
+      'path' => $theme_path . '/templates/fields',
+    ),
+    'field_mp3url' => array(
+      'variables' => array('mp3' => NULL),
+      'template' => 'field-mp3url',
+      'path' => $theme_path . '/templates/fields',
+    ),
+  );
 }
