@@ -93,10 +93,10 @@
   <?php endif; ?>
   <div class="content"<?php print $content_attributes; ?>>
     <?php
-    if(isset($node->field_mp3_file[LANGUAGE_NONE][0])){
-      hide($content['field_mp3url']);
-    }else{
+    if(isset($node->field_mp3url[LANGUAGE_NONE][0])){
       hide($content['field_mp3_file']);
+    }else{
+      hide($content['field_mp3url']);
     }
     if(isset($url) && $view_mode=='full'){
     ?>

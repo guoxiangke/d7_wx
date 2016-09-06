@@ -231,9 +231,8 @@ function jstheme_preprocess_rate_template_number_up_down(&$variables) {
 }
 
 function jstheme_field__field_mp3_file($vars){
-
-  if(isset($vars['items'][0]['field_mp3_file']['und'][0]['#value'])){
-    $mp3 = $vars['items'][0]['field_mp3_file']['und'][0]['#value'];
+  if(isset($vars['element'][0]['#file']->fid)){
+    $mp3['uri'] = $vars['element'][0]['#file']->uri;
     $output = theme('field_mp3_file', array('mp3' => $mp3));
 
     drupal_add_css(drupal_get_path('theme', 'jstheme').'/fmplayer/fmplayer.css');
@@ -245,8 +244,8 @@ function jstheme_field__field_mp3_file($vars){
 }
 
 function jstheme_field__field_mp3url($vars){
-  if(isset($vars['items'][0]['field_mp3url']['und'][0]['value']['#value'])){
-    $mp3['url'] = $vars['items'][0]['field_mp3url']['und'][0]['value']['#value'];
+   if(isset($vars['element'][0]['#markup'])){
+    $mp3['url'] = $vars['element'][0]['#markup'];
     //TODO: if(isCDN)
     drupal_add_css(drupal_get_path('theme', 'jstheme').'/fmplayer/fmplayer.css');
     drupal_add_js(drupal_get_path('theme', 'jstheme').'/fmplayer/jquery-ui-v1.9.2.min.js');
