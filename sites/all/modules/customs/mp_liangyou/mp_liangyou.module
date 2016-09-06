@@ -416,7 +416,16 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
  */
 function mp_bbn_response($keyword,$account,$weObj) {
 	$change_keyword = $keyword;
-  $json = file_get_contents('http://bbn.yongbuzhixi.com/cron/bbn/json/'.date('Ym').'/'. date('Ymd') . '.json');
+  $mydir = 'public://cron/bbn/json/'.date('Ym');
+  file_prepare_directory($mydir, FILE_CREATE_DIRECTORY);
+  $local_file = $mydir.'/'. date('Ymd') . '.json';
+  $local_file_path =drupal_realpath($local_file);
+  if(file_exists($local_file_path)){
+    $json = file_get_contents($local_file_path);
+  }else{
+    $json = file_get_contents('http://bbn.yongbuzhixi.com/cron/bbn/json/'.date('Ym').'/'. date('Ymd') . '.json');
+    file_put_contents($local_file_path , $json);
+  }
   $json = json_decode($json);
 	require_once('bbn.inc');
  	if($keyword == '400'){
