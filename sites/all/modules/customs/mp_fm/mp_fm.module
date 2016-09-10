@@ -180,6 +180,10 @@ function mp_fm_wxresources($resources, $account, $keyword){
             'hgmusicurl'  =>  $json->play_path_64,
           ),
         );
+        if(isset($json->title))
+          $resources['key_'.$keyword]['custommessage'] = '【'.$keyword.'】'.$title.'-'.$date."\n".$json->title;
+        if(isset($json->intro))
+          $resources['key_'.$keyword]['custommessage'] .= "\n".$json->intro;
       }
 
       //70034
