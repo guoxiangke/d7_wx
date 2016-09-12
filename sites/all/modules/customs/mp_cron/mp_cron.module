@@ -88,6 +88,10 @@ function mp_cron_cron() {
   //auto creat mpuser!
   $nodes = get_need_create_mpaccountnode();
   _mpusers_create($nodes);
+  if(in_array(date('G'), array(0,10,21)) && date('i')<10){
+    cache_clear_all('*', 'cache', TRUE);
+    // watchdog('mp_cron', 'cache_clear_all for liangyou wx audio', array(), WATCHDOG_NOTICE, 'link');
+  }
 }
 /**
  * Implements hook_menu().
@@ -182,8 +186,8 @@ function create_mp_cron_nodes(){
     node_save($node);
     $count++;
     $node_link = l(t('view'), 'node/' . $node->nid);
-    $watchdog_args = array('@type' => $node->type, '%title' => $node->title);
-    watchdog('mpcron', '@type: added %title.', $watchdog_args, WATCHDOG_NOTICE, $node_link);
+    // $watchdog_args = array('@type' => $node->type, '%title' => $node->title);
+    // watchdog('mp_cron', '图文更新 @type: added %title.', $watchdog_args, WATCHDOG_NOTICE, $node_link);
 
   }
   if($count){
@@ -224,7 +228,7 @@ function  _get_need_publish_nodes(){ //>now time
     $times[] = $time;
     $node_link = l(t('view'), 'node/' . $node->nid);
     $watchdog_args = array('%time' => date('m/d H:i',$node->plan_time), '@nid' => $node->nid, '@uid' => $node->uid);
-    watchdog('autosendmpnews', '%time set var user: @uid of nid: @nid', $watchdog_args, WATCHDOG_NOTICE, $node_link);
+    // watchdog('autosendmpnews', '%time set var user: @uid of nid: @nid', $watchdog_args, WATCHDOG_NOTICE, $node_link);
   }
   if($uids) variable_set('mp_cron_publish_uids', $uids);
   if($times) variable_set('mp_cron_publish_plan', $times);
