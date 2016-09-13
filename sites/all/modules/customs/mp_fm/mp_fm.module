@@ -143,7 +143,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
           $sound_ids = array_reverse($sound_ids);
         // watchdog('field_order', '<pre>'.print_r($sound_ids,1), array(), WATCHDOG_NOTICE, 'link');
 
-        $index = (date('z')) % count($sound_ids)-1;
+        $index = date('z') % count($sound_ids);
 
         $offset = 0;
         $offsets = explode('+', $keyword);
@@ -152,9 +152,9 @@ function mp_fm_wxresources($resources, $account, $keyword){
             $offset = $offsets['1'];
         }
         $index = $index + $offset % count($sound_ids);
-        watchdog('index', $index, array(), WATCHDOG_NOTICE, 'link');
+        // watchdog('index', $index, array(), WATCHDOG_NOTICE, 'link');
         $sound_id = trim($sound_ids[$index]);
-        watchdog('sound_id', $sound_id, array(), WATCHDOG_NOTICE, 'link');
+        // watchdog('sound_id', $sound_id, array(), WATCHDOG_NOTICE, 'link');
         if(!$sound_id) {
           $resources['key_'.$keyword]= array(
             'type'  =>  'text',
@@ -167,7 +167,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
         // $json = file_get_contents(getcwd().'/sites/all/modules/customs/mp_fm/test.json');
         $json = json_decode($json);
         $desc = '公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 下一集请回复'.$offsets['0'].'+'.($offset+1);
-        if ($field_updated == '1'){
+        if ($field_order == '0'){//默认正序，即从第一集开始到最后一集，如果是倒序，请勾选！
           $desc = '第'.$index.'集 公众号:'.variable_get('mp_config_appname_'.$account->uid, "永不止息").' 每日更新';
           // $index = 0;//已经更新完成的节目！每次都是获得第一个！
         }
@@ -181,7 +181,7 @@ function mp_fm_wxresources($resources, $account, $keyword){
           ),
         );
         if(isset($json->title))
-          $resources['key_'.$keyword]['custommessage'] = '【'.$keyword.'】'.$title.'-'.$date."\n".$json->title;
+          $resources['key_'.$keyword]['custommessage'] = '【'.$keyword.'】'.$title."\n".$json->title;
         if(isset($json->intro))
           $resources['key_'.$keyword]['custommessage'] .= "\n".$json->intro;
       }
