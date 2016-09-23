@@ -4,7 +4,7 @@
  */
 function wx_layout_node_view($node, $view_mode, $langcode) {
   if($node->type=='mpwechat' && $view_mode=='teaser'){
-    $count = dale_get_mp_nodes_count('article', 0, NULL, array($node->uid));
+    $count = dale_get_mp_nodes_counts('article', 0, NULL, array($node->uid));
     $link = '<a class="btn btn-default btn-xs" href="###">本站收录 0</a>';
     if($count) $link = '<a class="btn btn-default btn-xs" href="wxuser/'.$node->uid.'">本站收录 '.$count.'</a>';
     if(isset($node->field_redirect_link[LANGUAGE_NONE][0]['value'])){
