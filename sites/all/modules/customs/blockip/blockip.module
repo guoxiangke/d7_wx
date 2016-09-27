@@ -1,0 +1,52 @@
+<?php
+/**
+ * Implements hook_init().
+ */
+function blockip_init() {
+  $blacklist = array(
+    'ThinkPHP',
+    'phpcms',
+    'KS_Inc',
+    'joomla.xml',
+    'admin_aspcms',
+    'taoCMS',
+    'dedeajax2.js',
+    'phpMyAdmin',
+    'doc',
+    'wp-includes',
+    'wp-admin',
+    'phpMemcachedAdmin',
+    'Public',
+    'zb_system',
+    'KS_Inc',
+    'questions',
+    'dede',
+    'templets',
+    'member',
+    'Templates',
+    'data',
+  );
+  $paths = arg();
+  foreach ($paths as $key => $path) {
+    if(in_array($path,$blacklist)){
+      block_ip();break;
+    }
+    if(strpos($path, 'asp')!==FALSE){
+        block_ip();break;
+    }
+    if(strpos($path, 'zip')!==FALSE){
+        block_ip();break;
+    }
+    if(strpos($path, 'rar')!==FALSE){
+        block_ip();break;
+    }
+  }
+}
+
+function block_ip(){
+  $ip = ip_address();
+  db_insert('blocked_ips')
+    ->fields(array('ip' => $ip))
+    ->execute();
+  watchdog('blockip', 'BlockIP:'.$ip, array(), WATCHDOG_NOTICE, 'link');
+}
