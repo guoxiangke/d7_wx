@@ -349,6 +349,13 @@ function _mp_service_process_event($weObj,$account){
        'label'           => 'wxservice_'.$account->uid,
       ));
       break;
+    case 'TEMPLATESENDJOBFINISH'://模板通知发送成功
+      gapushagent('event',array(
+       'category'        => 'event',
+       'action'          => '通知发送成功',
+       'label'           => 'wxservice_'.$account->uid,
+      ));
+      break;
     default:
       watchdog('no track event!', '<pre>'.print_r($event, 1), array(), WATCHDOG_NOTICE, 'link');
       break;
