@@ -271,13 +271,19 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         }
         $weObj->music($title, $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
         if(variable_get('mp_config_certified_'.$account->uid, false) && isset($wxresources[$keyword]['custommessage'])){
-          $added = "";//\n------------------------------\n节目为啥变灰色了呢，是小永的病毒[TearingUp],小永可不会这高科技[Cry]，是微信最新版本功能的哦！[Twirl]
-          $data = array(
-            "touser"=>$weObj->getRev()->getRevFrom(),
-            "msgtype"=>'text',
-            'text'=>array('content'=>$wxresources[$keyword]['custommessage'].$added),
-          );
-          $weObj->sendCustomMessage($data);
+          $did_you_know = variable_get('wechat_add_message_'.$account->uid, "");
+          $did_you_know = explode("\n",$did_you_know);
+          if($account->uid==12){//节目为啥变灰色了呢，是小永的病毒[TearingUp],小永可不会这高科技[Cry]，是微信最新版本功能的哦！[Twirl]
+            $added = '';
+            $add_more = $did_you_know[array_rand($did_you_know)];
+            $added .= "\n------------------------------\n您知道吗[疑问]".$add_more."[嘘]";
+            $data = array(
+              "touser"=>$weObj->getRev()->getRevFrom(),
+              "msgtype"=>'text',
+              'text'=>array('content'=>$wxresources[$keyword]['custommessage'].$added),
+            );
+            $weObj->sendCustomMessage($data);
+          }
         }
         //TOdelete after 729 begin.
         if(variable_get('mp_config_certified_'.$account->uid, false) && isset($wxresources[$keyword]['custommessages'])){
@@ -338,39 +344,39 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     //婚姻的意义留言内容==27
 
 
-    /////字数太少，我们为你转人工服务吧！感谢主 阿门 谢谢 我是
-    // 您好 你好 请   今天 + 几点 + 播?  播出 哪里 哪个  有+吗  我想 我也 想听 怎么
-    if ($account->uid != 12)
-    if (strpos($ori_keyword,'您好') !== false||
-        strpos($ori_keyword,'你好') !== false||
-        strpos($ori_keyword,'请') !== false||
-        strpos($ori_keyword,'播') !== false||
-        strpos($ori_keyword,'哪里') !== false||
-        strpos($ori_keyword,'哪个') !== false||
-        strpos($ori_keyword,'我') !== false||
-        strpos($ori_keyword,'想') !== false||
-        strpos($ori_keyword,'么') !== false||
-        strpos($ori_keyword,'吗') !== false||
-        strpos($ori_keyword,'几') !== false
-      ){
-      $weObj->transfer_customer_service()->reply();
-      if($account->uid>1)
-      gapushagent('event',array(
-       'category'        => 'wxservice',
-       'action'          => '转接客服',
-       'label'           => 'wxservice_'.$account->uid,
-       'value'           => $ori_keyword,
-      ));
-      return ;
-    }
-    // if($len > 15 && $len <= 30){
-    //   if($account->uid>1) gapushagent('event',array(
-    //    'category'        => 'wxservice',
-    //    'action'          => 'customerservice',
-    //    'label'           => $ori_keyword,
-    //   ));
+    // /////字数太少，我们为你转人工服务吧！感谢主 阿门 谢谢 我是
+    // // 您好 你好 请   今天 + 几点 + 播?  播出 哪里 哪个  有+吗  我想 我也 想听 怎么
+    // if ($account->uid != 12)
+    // if (strpos($ori_keyword,'您好') !== false||
+    //     strpos($ori_keyword,'你好') !== false||
+    //     strpos($ori_keyword,'请') !== false||
+    //     strpos($ori_keyword,'播') !== false||
+    //     strpos($ori_keyword,'哪里') !== false||
+    //     strpos($ori_keyword,'哪个') !== false||
+    //     strpos($ori_keyword,'我') !== false||
+    //     strpos($ori_keyword,'想') !== false||
+    //     strpos($ori_keyword,'么') !== false||
+    //     strpos($ori_keyword,'吗') !== false||
+    //     strpos($ori_keyword,'几') !== false
+    //   ){
     //   $weObj->transfer_customer_service()->reply();
-    // }else
+    //   if($account->uid>1)
+    //   gapushagent('event',array(
+    //    'category'        => 'wxservice',
+    //    'action'          => '转接客服',
+    //    'label'           => 'wxservice_'.$account->uid,
+    //    'value'           => $ori_keyword,
+    //   ));
+    //   return ;
+    // }
+    // // if($len > 15 && $len <= 30){
+    // //   if($account->uid>1) gapushagent('event',array(
+    // //    'category'        => 'wxservice',
+    // //    'action'          => 'customerservice',
+    // //    'label'           => $ori_keyword,
+    // //   ));
+    // //   $weObj->transfer_customer_service()->reply();
+    // // }else
     if($len > 30 && $account->uid !=1417)
     {
       $nid = 113;

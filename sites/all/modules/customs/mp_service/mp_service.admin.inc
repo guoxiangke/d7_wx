@@ -128,6 +128,15 @@ function mp_service_settings_form(){
     '#required' => false,
     '#attributes' => array('placeholder'=>"回复【】内容给我试试吧[调皮]"),
   );
+  if ($update_menu)//你知道吗？
+    $form['default_message']['add_message'] = array(
+      '#type' => 'textarea',
+      '#title' => '附加custom消息',
+      // '#description' => '',
+      '#default_value' => variable_get('wechat_add_message_'.$user->uid, ""),
+      '#required' => false,
+      '#attributes' => array('placeholder'=>"你知道吗？"),
+    );
   $form['default_message']['config_default_re'] = array(
     '#type' => 'textfield',
     '#title' => '自动回复资源',
@@ -275,6 +284,7 @@ function wechat_admin_default_message_submit($form, &$form_state){
   variable_set('wechat_follow_message_'.$user->uid, $form_state['values']['follow_message']);
   variable_set('wechat_copy_message_'.$user->uid, $form_state['values']['copy_message']);
   variable_set('wechat_foot_message_'.$user->uid, $form_state['values']['foot_message']);
+  variable_set('wechat_add_message_'.$user->uid, $form_state['values']['add_message']);
   variable_set('wechat_multi_message_'.$user->uid, $form_state['values']['multi_message']);
   variable_set('wechat_multi_message_count_'.$user->uid, $form_state['values']['multi_message_count']);
   variable_set('mp_config_default_re_'.$user->uid, $form_state['values']['config_default_re']);
