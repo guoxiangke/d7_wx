@@ -489,7 +489,7 @@ function liangyou_audio_list2(){
     'bk'=>array(
       'title' =>'听书‧想飞',
       'day'=>'7',
-      'index'=>656,
+      'index'=>635,
       'desc'=>'2016-10-30',
       'lywx'=>109,
       'category'=>'生活智慧',
