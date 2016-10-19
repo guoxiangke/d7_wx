@@ -45,7 +45,7 @@ function liangyou_audio_list2(){
       ),
     'im'=>array(
       'title' =>'i关怀心磁场',
-      'day'=>'74',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'74',
       'index'=>602,//74 周五周六无,
       'lywx'=>203,
       'category'=>'关怀辅导',
@@ -53,7 +53,7 @@ function liangyou_audio_list2(){
       ),
     'cc'=>array(
       'title' =>'空中辅导',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>603,
       'desc'=>'聆听听众各类苦闷心声，以圣经和祷告回应。在对话过程中，表达体会和盼望，指引成长的方向',
       'lywx'=>201,
@@ -61,7 +61,7 @@ function liangyou_audio_list2(){
       ),
     'se'=>array(
       'title' =>'恋爱季节',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'15',
       'index'=>604,
       'lywx'=>301,
       'category'=>'婚恋家庭',
@@ -69,7 +69,7 @@ function liangyou_audio_list2(){
       ),
     'bf'=>array(
       'title' =>'幸福满家园',
-      'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'67',
       'index'=>605,
       'lywx'=>302,
       'category'=>'婚恋家庭',
@@ -77,7 +77,7 @@ function liangyou_audio_list2(){
       ),
     'up'=>array(
       'title' =>'亲情不断电',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'15',
       'index'=>606,
       'lywx'=>303,
       'category'=>'婚恋家庭',
@@ -85,7 +85,7 @@ function liangyou_audio_list2(){
       ),
     'hg'=>array(
       'title' =>'欢乐卡恰碰',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>607,
       'lywx'=>304,
       'category'=>'婚恋家庭',
@@ -94,7 +94,7 @@ function liangyou_audio_list2(){
       ),
     'yu'=>array(
       'title' =>'绝妙当家',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>608,
       'desc'=>'没有理由，不需要理由，你就是主角。绝对唯一，绝对独特，你是无可取代',
       'feearadio'=>'1',//http://media.feearadio.net/program/YU/yu-151214.mp3
@@ -103,7 +103,7 @@ function liangyou_audio_list2(){
       ),
     'fc'=>array(
       'title' =>'微播出炉',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'15',
       'index'=>609,
       'lywx'=>101,
       'category'=>'生活智慧',
@@ -111,7 +111,7 @@ function liangyou_audio_list2(){
       ),
     'gv'=>array(
       'title' =>'生活无国界',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>610,
       'desc'=>'幽默风趣、欢声笑语，一个快乐你生活的节目，听了做梦都会笑 天南地北、古今中外，一扇开阔你视野的窗口，精彩世界看得见 紧密互动、开放参与，一个实现你梦想的平台，下一位DJ就是我 贴心关怀、专业辅导，一位陪伴你成长的夥伴，与你同行在爱中',
       'lywx'=>105,
@@ -119,7 +119,7 @@ function liangyou_audio_list2(){
       ),
     'zz'=>array(
       'title' =>'零点零距离',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'15',
       'index'=>611,
       'desc'=>'透过心灵隽语、诗歌、见证、心身灵健康讨论、时事评论、周末剧场等，让你修复人际关系，提升灵命，在工作场上，无往不利',
       'lywx'=>106,
@@ -127,7 +127,7 @@ function liangyou_audio_list2(){
       ),
     'bc'=>array(
       'title' =>'书香园地',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'15',
       'index'=>612,
       'desc'=>'打开心灵的窗户，让书香的味道飘洒进来；走进缤纷的园地，让生命的色彩丰富起来。邀请爱书人进入《书香园地》，细细品味书中的芬芳，与刘文和作者一起寻找心灵的交汇点',
       'feearadio'=>'1',
@@ -136,7 +136,7 @@ function liangyou_audio_list2(){
       ),
     'ir'=>array(
       'title' =>'iradio爱广播',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>613,
       'desc'=>'为你带出电台最新消息，最动听节目推介，也替电台寻找听电台、爱电台的知音人，分享生命的故事。台长也会定期出现，分享电台最新的政策，也与听众分享他的个人心声，勉励事奉',
       'lywx'=>107,
@@ -144,7 +144,7 @@ function liangyou_audio_list2(){
       ),
     'rt'=>array(
       'title' =>'今夜心未眠',
-      'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'67',
       'index'=>614,
       'desc'=>'冲一壶好茶，选一本好书，细细品读，慢慢分享，一场心与心的对话',
       'lywx'=>103,
@@ -152,7 +152,7 @@ function liangyou_audio_list2(){
       ),
     'tr'=>array(
       'title' =>'彩虹桥',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'15',
       'index'=>615,
       'lywx'=>402,
       'category'=>'诗歌音乐',
@@ -160,7 +160,7 @@ function liangyou_audio_list2(){
       ),
     'ws'=>array(
       'title' =>'长夜的牵引',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>616,
       'lywx'=>403,
       'category'=>'诗歌音乐',
@@ -168,15 +168,15 @@ function liangyou_audio_list2(){
       ),
     'gn'=>array(
       'title' =>'现代人的希望',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'15',
       'index'=>617,
       'lywx'=>502,
       'category'=>'慕道探索',
       'desc'=>'疲累、焦虑、寂寞、压力，构筑出现代人的共同困境。唯有来自永恒的声音，才能抚慰虚空的心灵。圣经是迷途者的指南，耶稣是现代人的希望。一个给你带来永恒盼望的节目',
       ),
-    'ns'=>array(
-      'title' =>'生命的四季',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+    'dy'=>array(
+      'title' =>'献上今天',//ns 生命的四季
+      'day'=>'15',
       'index'=>618,
       'lywx'=>602,
       'category'=>'生命成长',
@@ -184,7 +184,7 @@ function liangyou_audio_list2(){
       ),
     'ee'=>array(
       'title' =>'拥抱每一天',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>619,
       'lywx'=>603,
       'category'=>'生命成长',
@@ -192,7 +192,7 @@ function liangyou_audio_list2(){
       ),
     'mw'=>array(
       'title' =>'旷野吗哪',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>620,
       'lywx'=>601,
       'category'=>'生命成长',
@@ -200,7 +200,7 @@ function liangyou_audio_list2(){
       ),
     'be'=>array(
       'title' =>'真道分解',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>621,
       'lywx'=>701,
       'category'=>'学习真道',
@@ -208,7 +208,7 @@ function liangyou_audio_list2(){
       ),
     'bs'=>array(
       'title' =>'圣言盛宴',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'67',
       'index'=>622,
       'lywx'=>702,
       'category'=>'学习真道',
@@ -216,7 +216,7 @@ function liangyou_audio_list2(){
       ),
     'cw'=>array(
       'title' =>'齐来颂扬',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'15',
       'index'=>623,
       'desc'=>'诗歌音乐:精选古今中外赞美圣诗，带领信徒齐来敬拜，同心颂扬万王之王，万主之主！',
       'lywx'=>401,
@@ -224,7 +224,7 @@ function liangyou_audio_list2(){
       ),
     'tg'=>array(
       'title' =>'施恩座前',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>624,
       'lywx'=>604,
       'category'=>'生命成长',
@@ -232,7 +232,7 @@ function liangyou_audio_list2(){
       ),
     'th'=>array(
       'title' =>'真理之光',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>625,
       'lywx'=>609,
       'category'=>'生命成长',
@@ -240,7 +240,7 @@ function liangyou_audio_list2(){
       ),
     'pb'=>array(
       'title' =>'接棒人',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'15',
       'index'=>626,
       'lywx'=>1001,
       'category'=>'栽培训练',
@@ -248,7 +248,7 @@ function liangyou_audio_list2(){
       ),
     'hw'=>array(
       'title' =>'聆听主道',
-      'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'67',
       'index'=>627,
       'lywx'=>703,
       'category'=>'学习真道',
@@ -256,7 +256,7 @@ function liangyou_audio_list2(){
       ),
     'aw'=>array(
       'title' =>'空中崇拜',
-      'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'7',
       'index'=>628,
       'lywx'=>606,
       'category'=>'生命成长',
@@ -264,7 +264,7 @@ function liangyou_audio_list2(){
       ),
     'yp'=>array(
       'title' =>'善牧良言',
-      'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'7',
       'index'=>629,
       'lywx'=>706,
       'category'=>'学习真道',
@@ -272,7 +272,7 @@ function liangyou_audio_list2(){
       ),
     'gsa'=>array(
       'title' =>'好牧人',
-      'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'7',
       'index'=>630,
       'lywx'=>705,
       'category'=>'学习真道',
@@ -280,7 +280,7 @@ function liangyou_audio_list2(){
       ),
     'ba'=>array(
       'title' =>'经动人心',
-      'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'7',
       'index'=>631,
       'lywx'=>704,
       'category'=>'学习真道',
@@ -288,7 +288,7 @@ function liangyou_audio_list2(){
       ),
     'bm'=>array(
       'title' =>'佳美脚踪',
-      'day'=>'6',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'6',
       'index'=>632,
       'lywx'=>608,
       'category'=>'生命成长',
@@ -296,7 +296,7 @@ function liangyou_audio_list2(){
       ),
     'hd'=>array(
       'title' =>'蓝天绿洲',
-      'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'67',
       'index'=>633,
       'lywx'=>801,
       'category'=>'中英双语',
@@ -304,23 +304,23 @@ function liangyou_audio_list2(){
       ),
     'sr'=>array(
       'title' =>'给力人生',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'15',
       'index'=>634,
       'lywx'=>611,
       'category'=>'生命成长',
       'desc'=>'本节目为初信栽培而设，透过不同的课题，包括生命读经，家庭规划，自我探索，让信仰落实到生活的每个层面，为我们的人生给力',
       ),
-    'dp'=>array(
-      'title' =>'空中门训',
-      'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
-      'index'=>635,
-      'lywx'=>613,
-      'category'=>'生命成长',
-      'desc'=>'空中门训',
-      ),
+    // 'dp'=>array(
+    //   'title' =>'空中门训',
+    //   'day'=>'15',
+    //   'index'=>635,
+    //   'lywx'=>613,
+    //   'category'=>'生命成长',
+    //   'desc'=>'空中门训',
+    //   ),
     'bb'=>array(
       'title' =>'生根建造',
-      'day'=>'135',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'135',
       'index'=>636,
       'lywx'=>610,
       'category'=>'生命成长',
@@ -328,7 +328,7 @@ function liangyou_audio_list2(){
       ),
     'tu'=>array(
       'title' =>'信仰百宝箱',
-      'day'=>'135',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'135',
       'index'=>637,
       'lywx'=>612,
       'category'=>'生命成长',
@@ -336,7 +336,7 @@ function liangyou_audio_list2(){
       ),
     'iv'=>array(
       'title' =>'生活之光',
-      'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'67',
       'index'=>638,
       'lywx'=>708,
       'category'=>'学习真道',
@@ -344,7 +344,7 @@ function liangyou_audio_list2(){
       ),
     'gl'=>array(
       'title' =>'生命的福音',
-      'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'7',
       'index'=>639,
       'desc'=>'生命的福音',
       'lywx'=>501,
@@ -352,7 +352,7 @@ function liangyou_audio_list2(){
       ),
     'mp'=>array(
       'title' =>'这一刻清心',
-      'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'67',
       'index'=>640,
       'desc'=>'这一刻，清心',
       'lywx'=>605,
@@ -360,15 +360,15 @@ function liangyou_audio_list2(){
       ),
     'ds'=>array(
       'title' =>'晨曦讲座',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>646,
       'lywx'=>1002,
       'category'=>'栽培训练',
       'desc'=>'拓展视野，关心教会发展，按照真理共建神家，放眼世界禾场，努力实践晨曦异象',
       ),
-    'vx'=>array(
-      'title' =>'良院精选',
-      'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+    'vc'=>array(
+      'title' =>'良院专区',//vx良院精选
+      'day'=>'7',
       'index'=>647,
       'lywx'=>1003,
       'category'=>'栽培训练',
@@ -376,7 +376,7 @@ function liangyou_audio_list2(){
       ),
     'wa'=>array(
       'title' =>'天路导向',
-      'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'7',
       'index'=>648,
       'lywx'=>802,
       'category'=>'中英双语',
@@ -384,7 +384,7 @@ function liangyou_audio_list2(){
       ),
     'cwa'=>array(
       'title' =>'天路导向粤',
-      'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'7',
       'index'=>649,
       'lywx'=>803,
       'category'=>'中英双语',
@@ -392,7 +392,7 @@ function liangyou_audio_list2(){
       ),
     'gt'=>array(
       'title' =>'恩典与真理',
-      'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'7',
       'index'=>650,
       'lywx'=>901,
       'category'=>'少数民族',
@@ -400,7 +400,7 @@ function liangyou_audio_list2(){
       ),
     'ynf'=>array(
       'title' =>'爱在人间',
-      'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'17',
       'index'=>651,
       'lywx'=>902,
       'category'=>'少数民族',
@@ -408,22 +408,14 @@ function liangyou_audio_list2(){
       ),
     'ls'=>array(
       'title' =>'燃亮的一生',
-      'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
+      'day'=>'67',
       'index'=>652,
       'lywx'=>607,
       'category'=>'生命成长',
       'desc'=>'与你分享宣教士的生平和服侍，让我们一同体会信仰的生命力，盼望你与我们一起多关心宣教，一同活出燃亮的生命！',
       ),
-    // 'tp'=>array(
-    //   'title' =>'真理与柱石',
-    //   'day'=>'5',//????
-    //   'index'=>654,
-    //   'lywx'=>707,
-    //   'category'=>'学习真道',
-    //   'desc'=>'透过经卷研读，陪伴你建立真理基础，栽培你灵命成长，帮助你活出信仰',
-    //   ),
     'it'=>array(
-      'title' =>'与神同行',
+      'title' =>'与神同行',//tp 真理与柱石
       'day'=>'5',
       'index'=>654,
       'lywx'=>707,
@@ -486,11 +478,28 @@ function liangyou_audio_list2(){
       'category'=>'栽培训练',
       'desc'=>'进深文凭课程2',
       ),
+    'tm'=>array(
+      'title' =>'我们仨，还有你',
+      'day'=>'67',
+      'index'=>653,
+      'desc'=>'2016-10-30',
+      'lywx'=>108,
+      'category'=>'生活智慧',
+      ),
+    'bk'=>array(
+      'title' =>'听书‧想飞',
+      'day'=>'7',
+      'index'=>656,
+      'desc'=>'2016-10-30',
+      'lywx'=>109,
+      'category'=>'生活智慧',
+      ),
   );
 
 }
 
 // $ly = liangyou_audio_list2();
+// dpm($ly);
 // $json = drupal_json_encode($ly);
 // dpm($json);
 
@@ -506,6 +515,8 @@ function ly_stream_menu(){
   【610】生活无国界
   【611】零点零距离
   【613】 爱广播
+  【653】我们仨，还有你
+  【656】听书‧想飞
   关怀辅导
   【603】空中辅导
   【601】无限飞行号
@@ -525,7 +536,7 @@ function ly_stream_menu(){
   【656】津津乐道
   生命成长
   【620】旷野吗哪
-  【618】生命的四季
+  【618】生命四季->献上今天
   【619】拥抱每一天
   【624】施恩座前
   【640】这一刻清心
@@ -536,7 +547,7 @@ function ly_stream_menu(){
   【636】生根建造
   【634】给力人生
   【637】信仰百宝箱
-  【635】空中门训
+  【635】空中门训->0
   学习真道
   【621】真道分解
   【622】圣言盛宴
@@ -550,14 +561,88 @@ function ly_stream_menu(){
   【633】蓝天绿洲
   【648】天路导向
   【649】天路导向粤
+  【655】蔚蓝心情
   少数民族
   【650】恩典与真理
   【651】爱在人间
   栽培训练
   【626】接棒人
   【646】晨曦讲座
-  【647】良院精选
+  【647】良院精选->专区
    回复【】内容[调皮]不带中括号
    点击►收听[抱拳]';
 }
+//TODO delete!!!
+function lywx_menu(){
+  return
+  '输入以下数字代号，可以收听良友电台相关的节目：
 
+  生活智慧
+  101：微播出炉
+  102：书香园地
+  103：今夜心未眠
+  104：绝妙当家
+  105：生活无国界
+  106：零点零距离
+  107：iradio爱广播
+
+  关怀辅导
+  201：空中辅导
+  202：无限飞行号
+  203：i关怀心磁场
+
+  婚恋家庭
+  301：恋爱季节
+  302：幸福满家园
+  303：亲情不断电
+  304：欢乐卡恰碰
+
+  诗歌音乐
+  401：齐来颂扬
+  402：彩虹桥
+  403：长夜的牵引
+
+  慕道探索
+  501：生命的福音
+  502：现代人的希望
+  503：津津乐道
+
+  生命成长
+  601：旷野吗哪
+  602：生命的四季
+  603：拥抱每一天
+  604：施恩座前
+  605：这一刻清心
+  606：空中崇拜
+  607：燃亮的一生
+  608：佳美脚踪
+  609：真理之光
+  610：生根建造
+  611：给力人生
+  612：信仰百宝箱
+  613：空中门训
+
+  学习真道
+  701：真道分解
+  702：圣言盛宴
+  703：聆听主道
+  704：经动人心
+  705：好牧人
+  706：善牧良言
+  707：与神同行
+  708：生活之光
+
+  中英双语
+  801：蓝天绿洲
+  802：天路导向
+  803：天路导向粤
+
+  少数民族
+  901：恩典与真理
+  902：爱在人间
+
+  栽培训练
+  1001：接棒人
+  1002：晨曦讲座
+  1003：良院精选';
+  }

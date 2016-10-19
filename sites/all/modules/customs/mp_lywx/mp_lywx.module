@@ -1,77 +1,4 @@
 <?php
-function lywx_menu(){
-return
-'输入以下数字代号，可以收听良友电台相关的节目：
-
-生活智慧
-101：微播出炉
-102：书香园地
-103：今夜心未眠
-104：绝妙当家
-105：生活无国界
-106：零点零距离
-107：iradio爱广播
-
-关怀辅导
-201：空中辅导
-202：无限飞行号
-203：i关怀心磁场
-
-婚恋家庭
-301：恋爱季节
-302：幸福满家园
-303：亲情不断电
-304：欢乐卡恰碰
-
-诗歌音乐
-401：齐来颂扬
-402：彩虹桥
-403：长夜的牵引
-
-慕道探索
-501：生命的福音
-502：现代人的希望
-503：津津乐道
-
-生命成长
-601：旷野吗哪
-602：生命的四季
-603：拥抱每一天
-604：施恩座前
-605：这一刻清心
-606：空中崇拜
-607：燃亮的一生
-608：佳美脚踪
-609：真理之光
-610：生根建造
-611：给力人生
-612：信仰百宝箱
-613：空中门训
-
-学习真道
-701：真道分解
-702：圣言盛宴
-703：聆听主道
-704：经动人心
-705：好牧人
-706：善牧良言
-707：与神同行
-708：生活之光
-
-中英双语
-801：蓝天绿洲
-802：天路导向
-803：天路导向粤
-
-少数民族
-901：恩典与真理
-902：爱在人间
-
-栽培训练
-1001：接棒人
-1002：晨曦讲座
-1003：良院精选';
-}
 /**
  * hook_rescources_info
  */
@@ -147,8 +74,8 @@ function  mp_lywx_wxresources($resources, $account, $keyword, $weObj){
   // $my_data = _mp_lywx_wxresources($resources, $account, $keyword,$weObj);
   // return $my_data;
   $my_data = &drupal_static(__FUNCTION__);
-  if (!isset($my_data)) {
-    if ($cache = cache_get('mp_lywx_wxresources_'.$account->uid.$keyword)) {
+  if (1||!isset($my_data)) {
+    if (0&&$cache = cache_get('mp_lywx_wxresources_'.$account->uid.$keyword)) {
       $my_data = $cache->data;
       //DEBUG TO DELETE!
       if($keyword=='202'||$keyword=='603'){
