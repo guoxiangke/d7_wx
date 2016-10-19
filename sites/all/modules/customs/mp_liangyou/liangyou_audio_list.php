@@ -34,12 +34,9 @@ function liangyou_audio_list_bylywxindex(){
 //   dpm('【'.$value['index'].'】'.$value['title'].($value['bce']?'♪':'' ));
 // }
 function liangyou_audio_list2(){
-  $prefix['32'] = 'http://liangyou2.nissigz.com/';
-  $prefix['33'] = 'http://liangyou3.nissigz.com/';
     return  array(
     'ib'=>array(
       'title' =>'无限飞行号',
-      'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>601,
       'lywx'=>202,
@@ -48,7 +45,6 @@ function liangyou_audio_list2(){
       ),
     'im'=>array(
       'title' =>'i关怀心磁场',
-      'prefix'=>$prefix['32'],
       'day'=>'74',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>602,//74 周五周六无,
       'lywx'=>203,
@@ -57,7 +53,6 @@ function liangyou_audio_list2(){
       ),
     'cc'=>array(
       'title' =>'空中辅导',
-      'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>603,
       'desc'=>'聆听听众各类苦闷心声，以圣经和祷告回应。在对话过程中，表达体会和盼望，指引成长的方向',
@@ -66,18 +61,14 @@ function liangyou_audio_list2(){
       ),
     'se'=>array(
       'title' =>'恋爱季节',
-      'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>604,
       'lywx'=>301,
       'category'=>'婚恋家庭',
-      'desc'=>'有人说：“最完美的爱情在小说里，最完美的婚姻在梦境里！”难道希望拥有完美的恋爱、婚姻，只是一个梦想吗？
-  请立刻收听《恋爱季节》，梦想就要成真！
-  欢迎孤男寡女、一男一女、已婚男女、不分男女，一起沉浸在《恋爱季节》',
+      'desc'=>'有人说：“最完美的爱情在小说里，最完美的婚姻在梦境里！”难道希望拥有完美的恋爱、婚姻，只是一个梦想吗？请立刻收听《恋爱季节》，梦想就要成真！欢迎孤男寡女、一男一女、已婚男女、不分男女，一起沉浸在《恋爱季节》',
       ),
     'bf'=>array(
       'title' =>'幸福满家园',
-      'prefix'=>$prefix['33'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>605,
       'lywx'=>302,
@@ -86,7 +77,6 @@ function liangyou_audio_list2(){
       ),
     'up'=>array(
       'title' =>'亲情不断电',
-      'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>606,
       'lywx'=>303,
@@ -95,7 +85,6 @@ function liangyou_audio_list2(){
       ),
     'hg'=>array(
       'title' =>'欢乐卡恰碰',
-      'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>607,
       'lywx'=>304,
@@ -105,7 +94,6 @@ function liangyou_audio_list2(){
       ),
     'yu'=>array(
       'title' =>'绝妙当家',
-      'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>608,
       'desc'=>'没有理由，不需要理由，你就是主角。绝对唯一，绝对独特，你是无可取代',
@@ -115,7 +103,6 @@ function liangyou_audio_list2(){
       ),
     'fc'=>array(
       'title' =>'微播出炉',
-      'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>609,
       'lywx'=>101,
@@ -124,7 +111,6 @@ function liangyou_audio_list2(){
       ),
     'gv'=>array(
       'title' =>'生活无国界',
-      'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>610,
       'desc'=>'幽默风趣、欢声笑语，一个快乐你生活的节目，听了做梦都会笑 天南地北、古今中外，一扇开阔你视野的窗口，精彩世界看得见 紧密互动、开放参与，一个实现你梦想的平台，下一位DJ就是我 贴心关怀、专业辅导，一位陪伴你成长的夥伴，与你同行在爱中',
@@ -133,7 +119,6 @@ function liangyou_audio_list2(){
       ),
     'zz'=>array(
       'title' =>'零点零距离',
-      'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>611,
       'desc'=>'透过心灵隽语、诗歌、见证、心身灵健康讨论、时事评论、周末剧场等，让你修复人际关系，提升灵命，在工作场上，无往不利',
@@ -142,7 +127,6 @@ function liangyou_audio_list2(){
       ),
     'bc'=>array(
       'title' =>'书香园地',
-      'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>612,
       'desc'=>'打开心灵的窗户，让书香的味道飘洒进来；走进缤纷的园地，让生命的色彩丰富起来。邀请爱书人进入《书香园地》，细细品味书中的芬芳，与刘文和作者一起寻找心灵的交汇点',
@@ -152,7 +136,6 @@ function liangyou_audio_list2(){
       ),
     'ir'=>array(
       'title' =>'iradio爱广播',
-      'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>613,
       'desc'=>'为你带出电台最新消息，最动听节目推介，也替电台寻找听电台、爱电台的知音人，分享生命的故事。台长也会定期出现，分享电台最新的政策，也与听众分享他的个人心声，勉励事奉',
@@ -161,7 +144,6 @@ function liangyou_audio_list2(){
       ),
     'rt'=>array(
       'title' =>'今夜心未眠',
-      'prefix'=>$prefix['32'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>614,
       'desc'=>'冲一壶好茶，选一本好书，细细品读，慢慢分享，一场心与心的对话',
@@ -170,7 +152,6 @@ function liangyou_audio_list2(){
       ),
     'tr'=>array(
       'title' =>'彩虹桥',
-      'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>615,
       'lywx'=>402,
@@ -179,7 +160,6 @@ function liangyou_audio_list2(){
       ),
     'ws'=>array(
       'title' =>'长夜的牵引',
-      'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>616,
       'lywx'=>403,
@@ -188,17 +168,14 @@ function liangyou_audio_list2(){
       ),
     'gn'=>array(
       'title' =>'现代人的希望',
-      'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>617,
       'lywx'=>502,
       'category'=>'慕道探索',
       'desc'=>'疲累、焦虑、寂寞、压力，构筑出现代人的共同困境。唯有来自永恒的声音，才能抚慰虚空的心灵。圣经是迷途者的指南，耶稣是现代人的希望。一个给你带来永恒盼望的节目',
-      'feearadio'=>1
       ),
     'ns'=>array(
       'title' =>'生命的四季',
-      'prefix'=>$prefix['33'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>618,
       'lywx'=>602,
@@ -207,7 +184,6 @@ function liangyou_audio_list2(){
       ),
     'ee'=>array(
       'title' =>'拥抱每一天',
-      'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>619,
       'lywx'=>603,
@@ -216,17 +192,14 @@ function liangyou_audio_list2(){
       ),
     'mw'=>array(
       'title' =>'旷野吗哪',
-      'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>620,
       'lywx'=>601,
       'category'=>'生命成长',
       'desc'=>'与你分享灵修材料，以亲切并深入关怀生活层面的讲解，为你传达明确清晰的圣经信息，帮助你应用于信仰生活上，好叫信徒珍爱灵修，灵命长进！',
-      'feearadio'=>1
       ),
     'be'=>array(
       'title' =>'真道分解',
-      'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>621,
       'lywx'=>701,
@@ -235,27 +208,22 @@ function liangyou_audio_list2(){
       ),
     'bs'=>array(
       'title' =>'圣言盛宴',
-      'prefix'=>$prefix['33'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>622,
       'lywx'=>702,
       'category'=>'学习真道',
       'desc'=>'透过小组查经的方式与呈现，带领听众明白神的圣言，领受属灵的丰盛筵席',
-      'feearadio'=>1,
       ),
     'cw'=>array(
       'title' =>'齐来颂扬',
-      'prefix'=>$prefix['33'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>623,
       'desc'=>'诗歌音乐:精选古今中外赞美圣诗，带领信徒齐来敬拜，同心颂扬万王之王，万主之主！',
-      'feearadio'=>1,
       'lywx'=>401,
       'category'=>'诗歌音乐',
       ),
     'tg'=>array(
       'title' =>'施恩座前',
-      'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>624,
       'lywx'=>604,
@@ -264,7 +232,6 @@ function liangyou_audio_list2(){
       ),
     'th'=>array(
       'title' =>'真理之光',
-      'prefix'=>$prefix['33'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>625,
       'lywx'=>609,
@@ -273,7 +240,6 @@ function liangyou_audio_list2(){
       ),
     'pb'=>array(
       'title' =>'接棒人',
-      'prefix'=>$prefix['32'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>626,
       'lywx'=>1001,
@@ -282,7 +248,6 @@ function liangyou_audio_list2(){
       ),
     'hw'=>array(
       'title' =>'聆听主道',
-      'prefix'=>$prefix['33'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>627,
       'lywx'=>703,
@@ -291,17 +256,14 @@ function liangyou_audio_list2(){
       ),
     'aw'=>array(
       'title' =>'空中崇拜',
-      'prefix'=>$prefix['33'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>628,
       'lywx'=>606,
       'category'=>'生命成长',
       'desc'=>'空中崇拜',
-      'feearadio'=>1,
       ),
     'yp'=>array(
       'title' =>'善牧良言',
-      'prefix'=>$prefix['33'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>629,
       'lywx'=>706,
@@ -310,7 +272,6 @@ function liangyou_audio_list2(){
       ),
     'gsa'=>array(
       'title' =>'好牧人',
-      'prefix'=>$prefix['33'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>630,
       'lywx'=>705,
@@ -319,7 +280,6 @@ function liangyou_audio_list2(){
       ),
     'ba'=>array(
       'title' =>'经动人心',
-      'prefix'=>$prefix['33'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>631,
       'lywx'=>704,
@@ -328,7 +288,6 @@ function liangyou_audio_list2(){
       ),
     'bm'=>array(
       'title' =>'佳美脚踪',
-      'prefix'=>$prefix['33'],
       'day'=>'6',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>632,
       'lywx'=>608,
@@ -337,7 +296,6 @@ function liangyou_audio_list2(){
       ),
     'hd'=>array(
       'title' =>'蓝天绿洲',
-      'prefix'=>$prefix['33'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>633,
       'lywx'=>801,
@@ -346,7 +304,6 @@ function liangyou_audio_list2(){
       ),
     'sr'=>array(
       'title' =>'给力人生',
-      'prefix'=>$prefix['33'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>634,
       'lywx'=>611,
@@ -355,7 +312,6 @@ function liangyou_audio_list2(){
       ),
     'dp'=>array(
       'title' =>'空中门训',
-      'prefix'=>$prefix['33'],
       'day'=>'15',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>635,
       'lywx'=>613,
@@ -364,7 +320,6 @@ function liangyou_audio_list2(){
       ),
     'bb'=>array(
       'title' =>'生根建造',
-      'prefix'=>$prefix['33'],
       'day'=>'135',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>636,
       'lywx'=>610,
@@ -373,7 +328,6 @@ function liangyou_audio_list2(){
       ),
     'tu'=>array(
       'title' =>'信仰百宝箱',
-      'prefix'=>$prefix['33'],
       'day'=>'135',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>637,
       'lywx'=>612,
@@ -382,7 +336,6 @@ function liangyou_audio_list2(){
       ),
     'iv'=>array(
       'title' =>'生活之光',
-      'prefix'=>$prefix['33'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>638,
       'lywx'=>708,
@@ -391,7 +344,6 @@ function liangyou_audio_list2(){
       ),
     'gl'=>array(
       'title' =>'生命的福音',
-      'prefix'=>$prefix['33'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>639,
       'desc'=>'生命的福音',
@@ -400,7 +352,6 @@ function liangyou_audio_list2(){
       ),
     'mp'=>array(
       'title' =>'这一刻清心',
-      'prefix'=>$prefix['32'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>640,
       'desc'=>'这一刻，清心',
@@ -409,7 +360,6 @@ function liangyou_audio_list2(){
       ),
     'ds'=>array(
       'title' =>'晨曦讲座',
-      'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>646,
       'lywx'=>1002,
@@ -418,7 +368,6 @@ function liangyou_audio_list2(){
       ),
     'vx'=>array(
       'title' =>'良院精选',
-      'prefix'=>$prefix['32'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>647,
       'lywx'=>1003,
@@ -427,7 +376,6 @@ function liangyou_audio_list2(){
       ),
     'wa'=>array(
       'title' =>'天路导向',
-      'prefix'=>$prefix['32'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>648,
       'lywx'=>802,
@@ -436,7 +384,6 @@ function liangyou_audio_list2(){
       ),
     'cwa'=>array(
       'title' =>'天路导向粤',
-      'prefix'=>$prefix['32'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>649,
       'lywx'=>803,
@@ -445,7 +392,6 @@ function liangyou_audio_list2(){
       ),
     'gt'=>array(
       'title' =>'恩典与真理',
-      'prefix'=>$prefix['32'],
       'day'=>'7',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>650,
       'lywx'=>901,
@@ -454,7 +400,6 @@ function liangyou_audio_list2(){
       ),
     'ynf'=>array(
       'title' =>'爱在人间',
-      'prefix'=>$prefix['32'],
       'day'=>'17',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>651,
       'lywx'=>902,
@@ -463,7 +408,6 @@ function liangyou_audio_list2(){
       ),
     'ls'=>array(
       'title' =>'燃亮的一生',
-      'prefix'=>$prefix['32'],
       'day'=>'67',//17=>1-7 15=>1-5 67=>weekend 7=>7 6=>6 135=>135
       'index'=>652,
       'lywx'=>607,
@@ -472,7 +416,6 @@ function liangyou_audio_list2(){
       ),
     // 'tp'=>array(
     //   'title' =>'真理与柱石',
-    //   'prefix'=>$prefix['33'],
     //   'day'=>'5',//????
     //   'index'=>654,
     //   'lywx'=>707,
@@ -481,7 +424,6 @@ function liangyou_audio_list2(){
     //   ),
     'it'=>array(
       'title' =>'与神同行',
-      'prefix'=>$prefix['33'],
       'day'=>'5',
       'index'=>654,
       'lywx'=>707,
@@ -490,7 +432,6 @@ function liangyou_audio_list2(){
       ),
     'hdb'=>array(
       'title' =>'蔚蓝心情',
-      'prefix'=>$prefix['33'],
       'day'=>'5',//????
       'index'=>655,
       'lywx'=>804,
@@ -499,7 +440,6 @@ function liangyou_audio_list2(){
       ),
     'sg'=>array(
       'title' =>'津津乐道',
-      'prefix'=>$prefix['33'],
       'day'=>'5',//????
       'index'=>656,
       'lywx'=>503,
@@ -508,7 +448,6 @@ function liangyou_audio_list2(){
       ),
     'ltsfp'=>array(
       'title' =>'基础课程',
-      'prefix'=>$prefix['32'],
       'day'=>'7',
       'index'=>641,
       'lywx'=>1641,
@@ -517,7 +456,6 @@ function liangyou_audio_list2(){
       ),
     'ltsdp1'=>array(
       'title' =>'本科1',
-      'prefix'=>$prefix['32'],
       'day'=>'7',
       'index'=>642,
       'lywx'=>1642,
@@ -526,7 +464,6 @@ function liangyou_audio_list2(){
       ),
     'ltsdp2'=>array(
       'title' =>'本科2',
-      'prefix'=>$prefix['32'],
       'day'=>'7',
       'index'=>643,
       'lywx'=>1643,
@@ -535,7 +472,6 @@ function liangyou_audio_list2(){
       ),
     'ltshdp1'=>array(
       'title' =>'进深1',
-      'prefix'=>$prefix['32'],
       'day'=>'7',
       'index'=>644,
       'lywx'=>1644,
@@ -544,7 +480,6 @@ function liangyou_audio_list2(){
       ),
     'ltshdp2'=>array(
       'title' =>'进深2',
-      'prefix'=>$prefix['32'],
       'day'=>'7',
       'index'=>645,
       'lywx'=>1645,
@@ -554,6 +489,10 @@ function liangyou_audio_list2(){
   );
 
 }
+
+// $ly = liangyou_audio_list2();
+// $json = drupal_json_encode($ly);
+// dpm($json);
 
 
 function ly_stream_menu(){
