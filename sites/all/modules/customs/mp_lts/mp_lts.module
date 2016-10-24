@@ -207,7 +207,7 @@ function  get_mp_ltsma(){
     ),
     '217'=>array(
       'title'=>'毕业周特辑2016',
-      'prefex'=>'grc16',
+      'prefex'=>'grc160',
       'count'=>6,
       'level'=>'专辑课程',
       'category'=>'专题特辑',
@@ -1086,7 +1086,7 @@ function _mp_getwxresources($resources, $account, $keyword){
     // $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
 
     $cdn = 'http://lywxlts.yongbuzhixi.com/';
-    $link = $cdn . urlencode($link);//.'?_upt='.$sign;
+    $link = $cdn . ($link);//.'?_upt='.$sign;
     // $temp = @get_headers($link);
     // if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
     //   $resources['key_'.$keyword]= array(
