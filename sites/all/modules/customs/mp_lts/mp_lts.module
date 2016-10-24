@@ -1023,13 +1023,15 @@ function _mp_getwxresources($resources, $account, $keyword){
     }
     if($count==='0'){//获取目录概括+//获取pdf
       $link = 'new/'.$level.'/'.$mav['title'].'/'.$mav['title'].'.pdf';
-      $cdn = 'http://audio.yongbuzhixi.com/';
+      $cdn = 'http://lywxlts.yongbuzhixi.com';
       $etime = time()+864000; // 授权十天后过期
       $key = 'ly729';   // token 防盗链密钥
       $path = '/'.$link; // 图片相对路径
       $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
-      $link = $cdn . urlencode($path).'?_upt='.$sign;
+      $link = $cdn . $path .'?_upt='.$sign;
+      // watchdog('mp_lts', $link, array(), WATCHDOG_NOTICE, 'link');
       $temp = @get_headers($link);
+      // watchdog('mp_lts', '<pre>'.print_r($temp, 1), array(), WATCHDOG_NOTICE, 'link');
       if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
         $resources['key_'.$keyword]= array(
           'type'  =>  'text',
@@ -1054,7 +1056,7 @@ function _mp_getwxresources($resources, $account, $keyword){
              'label'           => 'wxservice_'.$account->uid,
           ),
           'obj'   => array(
-            'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】\n",
+            'text'  => '【#'.$index.'】'.$mav['title']."\n课程有".$mav['count']."课时\n属于".$mav['level']."\n授课老师：".$mav['author']."\n<a href='http://ly.yongbuzhixi.com/pdfviewer/web/?pdf=".$link."'>》点此查看讲义</a>\n每日获取同步【#".$index."】\n<a href='".$link."'>》备用讲义链接</a>",
           )
         );
       return $resources;
@@ -1074,7 +1076,7 @@ function _mp_getwxresources($resources, $account, $keyword){
     $path = '/'.$link; // 图片相对路径
     // $sign = substr(md5($key.'&'.$etime.'&'.$path), 12,8).$etime;
 
-    $cdn = 'http://audio.yongbuzhixi.com/';
+    $cdn = 'http://lywxlts.yongbuzhixi.com/';
     $link = $cdn . urlencode($link);//.'?_upt='.$sign;
     // $temp = @get_headers($link);
     // if($temp[0] != 'HTTP/1.1 200 OK'){//远程暂无!!!
