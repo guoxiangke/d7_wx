@@ -410,7 +410,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $comment_body =  str_replace($m[0], '', $comment_body);
       }
 
-      if (strpos($ori_keyword,'周师母') !== false|| strpos($ori_keyword,'周素琴') !== false || strpos($ori_keyword,'空中辅导') !== false) {
+      if (strpos($ori_keyword,'师母') !== false|| strpos($ori_keyword,'周素琴') !== false || strpos($ori_keyword,'空中辅导') !== false) {
         $nid = 163;
         $comment_body = $ori_keyword;
       }
