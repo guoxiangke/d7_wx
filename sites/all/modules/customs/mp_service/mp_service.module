@@ -343,6 +343,16 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     //长夜的牵引 ＝ 15
     //婚姻的意义留言内容==27
 
+    //
+    if ($account->uid == 8){
+      $weObj->transfer_customer_service()->reply();
+      gapushagent('event',array(
+       'category'        => 'wxservice',
+       'action'          => '转接客服',
+       'label'           => 'wxservice_'.$account->uid,
+       'value'           => $ori_keyword,
+      ));
+    }
 
     // /////字数太少，我们为你转人工服务吧！感谢主 阿门 谢谢 我是
     // // 您好 你好 请   今天 + 几点 + 播?  播出 哪里 哪个  有+吗  我想 我也 想听 怎么
