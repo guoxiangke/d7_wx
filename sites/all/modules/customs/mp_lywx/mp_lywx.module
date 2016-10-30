@@ -360,7 +360,7 @@ function mp_lywx_wxservice_event_alter($weObj,$event,$account){
       'Title'=>"收听节目代号",
       'Description'=>"欢迎收听我们的节目！知音‧牵手‧同行 ※ 为你送上精彩节目和活动！",
       'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrY4zkXwy5SPZbur1Jd7HMRneGCr0xhsqEJFXyQ0XkTqZmG8xCPIadhCt4GJk0kibtevrUIJ2Wpw7ag/0?wx_fmt=jpeg',
-      'Url'=>'http://mp.weixin.qq.com/s?__biz=MzI1MDE0NzM5Ng==&mid=401924143&idx=1&sn=9e7a4f6f8390b6a807060b99e9975c4a#rd',
+      'Url'=>'http://mp.weixin.qq.com/s?__biz=MzI1MDE0NzM5Ng==&mid=2650214608&idx=5&sn=ab99137cf51d49c2975940bf1918fbf9&chksm=f18517fbc6f29eede4dbcccd13aff5082759602ca219113fc2cfa9cb072d0025530a5bd401df&scene=0#wechat_redirect',
     );
     $news[] = $img;
     // $weObj->text("亲爱的朋友，你好！感谢你关注良友电台官方订阅号“良友知音”！\n".lywx_menu());
