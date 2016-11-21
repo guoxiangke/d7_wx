@@ -96,11 +96,13 @@ function mp_content_wxresources($resources, $account, $keyword){
             if($offset<0) {
               if(isset($enabled_resources['mp_77_share']) && $enabled_resources['mp_77_share']){
                 $nodes = dale_get_mp_nodes('fm77', 20, $tid = NULL, $uids = array(),NODE_NOT_PROMOTED,NODE_PUBLISHED,"DESC");
+                $nids = dale_get_mp_nodes_counts('fm77', 0, NULL, array(), NODE_NOT_PROMOTED, NODE_PUBLISHED,"ESC",1);
               }else{
                 $nodes = dale_get_mp_nodes('fm77', 20, $tid = NULL, array($account->uid),NODE_NOT_PROMOTED,NODE_PUBLISHED,"DESC");
+                $nids = dale_get_mp_nodes_counts('fm77', 0, NULL, array($account->uid), NODE_NOT_PROMOTED, NODE_PUBLISHED,"ESC",1);
               }
               $i = 0;
-              $total = count($nodes);
+              $total = count($nids);
               $text = '';
               foreach ($nodes as $node) {
                 $j =  $total-$i;

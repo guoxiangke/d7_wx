@@ -63,7 +63,7 @@ function _mp_service_process_text(&$weObj,$account,$ori_keyword){
   if($account->uid == 8){
     // $openid = $weObj->getRev()->getRevFrom();
     // watchdog('openid_'.$ori_keyword, $openid, array(), WATCHDOG_NOTICE, 'link');
-    if(strpos($ori_keyword,'mp.weixin.qq.com/s?')!==FALSE){
+    if(strpos($ori_keyword,'mp.weixin.qq.com/')!==FALSE){
       $openid = $weObj->getRev()->getRevFrom();
       $allows = array(
         '卫丹' =>'oTjEws3riprhKhgV8T463_HsoTJk',
