@@ -227,7 +227,10 @@ function _mp_service_init_wechat($account){
  */
 
 function mp_service_keyword_response(&$weObj,$keyword,$account) {
-  if(strpos($keyword,'收到不支持的消息类型') !== false){
+  if(strpos($keyword,'收到不支持的消息类型') !== false ||
+    strpos($keyword,'不带中括号') !== false ||
+    strpos($keyword,'良友广播节目单') !== false
+    ){
     $weObj->text("不支持的消息类型,请输入文字或节目代号！")->reply();
     return;
   }
@@ -357,7 +360,13 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     //婚姻的意义留言内容==27
 
     //
-    if ($account->uid == 8){
+    if($account->uid ==1417) return; //知音不再这里处理
+    $do_comment = FALSE;
+    if (strpos($ori_keyword,'师母') !== false || strpos($ori_keyword,'周素琴') !== false || strpos($ori_keyword,'空中辅导') !== false || strpos($ori_keyword,'@') !== false ) {
+      $do_comment = TRUE;
+    }
+    //不是评论时才转移到 客服上
+    if ($account->uid == 8 && !$do_comment){
       $weObj->transfer_customer_service()->reply();
       gapushagent('event',array(
        'category'        => 'wxservice',
@@ -400,7 +409,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     // //   ));
     // //   $weObj->transfer_customer_service()->reply();
     // // }else
-    if($len > 30 && $account->uid !=1417)
+    if($len > 30 && $do_comment)
     {
       $nid = 113;
       $node_type = 'wxcomments';
