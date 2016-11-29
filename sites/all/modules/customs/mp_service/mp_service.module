@@ -278,16 +278,16 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $CustomMessage = ">>http://ly.yongbuzhixi.com/fm/wx.php?url=".$wxresources[$keyword]['obj']['hgmusicurl']."在浏览器或Safari中打开后台收听<<[强]";
 
 
-        if($account->uid==1417){
-          $did_you_know = variable_get('wechat_add_message_'.$account->uid, "");
-          $did_you_know = explode("\n",$did_you_know);
-          $add_more = $did_you_know[array_rand($did_you_know)];
-          $data = array(
-            "touser"=>$weObj->getRev()->getRevFrom(),
-            "msgtype"=>'text',
-            'text'=>array('content'=>$add_more),
-          );
-          $weObj->sendCustomMessage($data);
+        if($account->uid==1417){//小永，良友知音那邊的自動回覆鏈結無效的文字可以取消了
+          // $did_you_know = variable_get('wechat_add_message_'.$account->uid, "");
+          // $did_you_know = explode("\n",$did_you_know);
+          // $add_more = $did_you_know[array_rand($did_you_know)];
+          // $data = array(
+          //   "touser"=>$weObj->getRev()->getRevFrom(),
+          //   "msgtype"=>'text',
+          //   'text'=>array('content'=>$add_more),
+          // );
+          // $weObj->sendCustomMessage($data);
         }else{
           if(variable_get('mp_config_certified_'.$account->uid, false)){//一认证的
             if(isset($wxresources[$keyword]['custommessage'])){
