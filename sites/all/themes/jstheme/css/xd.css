@@ -192,3 +192,6 @@ p.list-top{
 .text-format-wrapper fieldset{
   display: none;
 }
+.node-type-article .field-name-body img{
+  width: 100%;
+}
