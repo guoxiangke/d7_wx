@@ -116,7 +116,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
       'Title'=>"收听节目代号",
       'Description'=>"欢迎收听我们的节目！知音‧牵手‧同行 ※ 为你送上精彩节目和活动！",
       'PicUrl'=>'https://mmbiz.qlogo.cn/mmbiz/JkVibryc6qrY4zkXwy5SPZbur1Jd7HMRneGCr0xhsqEJFXyQ0XkTqZmG8xCPIadhCt4GJk0kibtevrUIJ2Wpw7ag/0?wx_fmt=jpeg',
-      'Url'=>'http://mp.weixin.qq.com/s?__biz=MzI1MDE0NzM5Ng==&mid=401924143&idx=1&sn=9e7a4f6f8390b6a807060b99e9975c4a#rd',
+      'Url'=>'http://mp.weixin.qq.com/s?__biz=MzI1MDE0NzM5Ng==&mid=502730954&idx=1&sn=f34dfca8e4eae2f8c434e44e97e93795&chksm=718517e146f29ef75c6738e67c5e78a93a5baf269d25ef77aa5ae2ec197a3b99070f6ee809c3&mpshare=1&scene=1&srcid=1129kvQDVnRdjrcFNiQpxS9i#rd',
     );
     $news[] = $img;
     $resources['key_'.$keyword]= array(
