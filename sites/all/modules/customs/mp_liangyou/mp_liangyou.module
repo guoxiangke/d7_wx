@@ -216,11 +216,12 @@ function _mp_liangyou_wxresources($resources, $account, $keyword, $weObj){
             }
             if($index) $offset=$index;
 						// while ($offset <= 7) {
-							$date = date('ymd',time()-$offset*86400);
+              $time = time()-$offset*86400;
+							$date = date('ymd',$time);
               if(isset($dateindex)){
                 $date = $dateindex;
               }
-							$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
+							$path = '/'.date('Y',$time).'/'.$code.'/'.$code.$date.'.mp3';
 							$musicurl = $cdnlink.$path;
 							$upyunurl = $cdnlink.$path.upyun_get_token($path);
 							$temp = @get_headers($upyunurl);
