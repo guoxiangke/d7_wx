@@ -123,7 +123,7 @@
     $vid = $node->field_video_url[LANGUAGE_NONE][0]['value'];
     if(!(isset($node->field_video_position[LANGUAGE_NONE][0]['value']) && $node->field_video_position[LANGUAGE_NONE][0]['value']==1)){
   ?>
-  <iframe id='video_top' frameborder="0" width="100%" height="250px" src="http://v.qq.com/iframe/player.html?vid=<?php echo $vid;?>&tiny=0&auto=0" allowfullscreen></iframe>
+  <iframe id='video_top' frameborder="0" width="100%" height="250px" src="https://v.qq.com/iframe/player.html?vid=<?php echo $vid;?>&tiny=0&auto=0" allowfullscreen></iframe>
   <script>
     (function($){
       $(document).ready(function(){
@@ -147,7 +147,7 @@
         $vid = $node->field_video_url[LANGUAGE_NONE][0]['value'];
         if((isset($node->field_video_position[LANGUAGE_NONE][0]['value']) && $node->field_video_position[LANGUAGE_NONE][0]['value']==1)){
       ?>
-      <iframe frameborder="0" width="100%" height="250px" src="http://v.qq.com/iframe/player.html?vid=<?php echo $vid;?>&tiny=0&auto=0" allowfullscreen></iframe>
+      <iframe frameborder="0" width="100%" height="250px" src="https://v.qq.com/iframe/player.html?vid=<?php echo $vid;?>&tiny=0&auto=0" allowfullscreen></iframe>
       <?php
         }
       }
