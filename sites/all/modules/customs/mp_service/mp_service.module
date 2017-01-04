@@ -275,7 +275,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
         $weObj->music($title, $wxresources[$keyword]['obj']['desc'], $wxresources[$keyword]['obj']['musicurl'], $wxresources[$keyword]['obj']['hgmusicurl']);
 
         //在浏览器中打开！
-        $CustomMessage = ">>http://ly.yongbuzhixi.com/fm/wx.php?url=".$wxresources[$keyword]['obj']['hgmusicurl']."在浏览器或Safari中打开后台收听<<[强]";
+        $CustomMessage = '';//">>http://ly.yongbuzhixi.com/fm/wx.php?url=".$wxresources[$keyword]['obj']['hgmusicurl']."在浏览器或Safari中打开后台收听<<[强]";
 
 
         if($account->uid==1417){//小永，良友知音那邊的自動回覆鏈結無效的文字可以取消了
@@ -495,7 +495,12 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
           $pid = $str2[1];
       }
       $url = url(NULL, array('absolute' => TRUE)) . (variable_get('clean_url', 0) ? '' : '?q=').'node/'.$nid;
-      $weObj->text("评论留言成功！\n审核后会<a href='".$url."'>出现在这里哦</a>！")->reply();
+      if($account->uid == 12){
+        $weObj->text("<a href='http://dwz.cn/ybzx_fwh'>请关注服务号重新发送留言，这样周师母就知道你是谁啦！</a>\n\n\n审核后会<a href='".$url."'>出现在这里哦</a>！")->reply();
+      }else{
+        $weObj->text("评论留言成功！\n审核后会<a href='".$url."'>出现在这里哦</a>！")->reply();
+      }
+
       $before = variable_get('mp_config_wxcomments_wxid', '0');
       // watchdog('before', $before, array(), WATCHDOG_NOTICE, 'link');
       // watchdog('id', $id, array(), WATCHDOG_NOTICE, 'link');
