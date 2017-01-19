@@ -50,6 +50,10 @@ p{
     font-weight: normal;
     line-height: 1.7;
 }
+p span,
+article .content span{
+  line-height: 1.7;
+}
 .node .field-name-body p.data-ul{
   margin-bottom: 0;
 }
