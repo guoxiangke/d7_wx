@@ -135,6 +135,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
   $ori_keyword = $keyword;
   module_load_include('php', 'mp_liangyou', 'liangyou_audio_list');
   $liangyou_audio_list = liangyou_audio_list_bylywxindex();
+  $keyword = substr($ori_keyword, 0, 3);
   // 101-901
 	if(in_array($keyword, array_keys($liangyou_audio_list))){
     $lywx = (int)$keyword;
@@ -148,7 +149,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 		$upyun_bucket_name = 'lywxaudio';
 		$cdnlink = $upyun_bucket_name.'.yongbuzhixi.com';
 
-		$offset=0;
+    $offset = substr($ori_keyword, 3) ?: 0;
 		while ($offset <= 7) {
 			$date = date('ymd',time()-$offset*86400);
 			$path = '/'.date('Y').'/'.$code.'/'.$code.$date.'.mp3';
