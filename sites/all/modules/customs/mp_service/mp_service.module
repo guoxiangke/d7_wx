@@ -238,6 +238,7 @@ function mp_service_keyword_response(&$weObj,$keyword,$account) {
     $weObj->text("不支持的复制消息发送,请重新输入！")->reply();
     return;
   }
+  $keyword = zh2cn($keyword);
   $wxresources = module_invoke_all('wxresources', array(), $account, $keyword, $weObj);
 	$ori_keyword = $keyword;
 
