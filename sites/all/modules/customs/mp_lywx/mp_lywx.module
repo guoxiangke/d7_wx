@@ -230,29 +230,7 @@ function _mp_lywx_wxresources($resources, $account, $keyword, $weObj){
 	}
 
   if(date('md')!='0729')//台庆当天不使用微信客服功能
-  if (strpos($ori_keyword,'您好') !== false||
-      strpos($ori_keyword,'你好') !== false||
-      strpos($ori_keyword,'请') !== false||
-      strpos($ori_keyword,'播') !== false||
-      strpos($ori_keyword,'哪') !== false||
-      strpos($ori_keyword,'我') !== false||
-      strpos($ori_keyword,'想') !== false||
-      strpos($ori_keyword,'么') !== false||
-      strpos($ori_keyword,'吗') !== false||
-      strpos($ori_keyword,'几') !== false||
-      strpos($ori_keyword,'怎') !== false||
-      strpos($ori_keyword,'在') !== false||
-      strpos($ori_keyword,'听') !== false||
-      strpos($ori_keyword,'祷') !== false||
-      strpos($ori_keyword,'帮') !== false||
-      strpos($ori_keyword,'好') !== false||
-      strpos($ori_keyword,'呢') !== false||
-      strpos($ori_keyword,'错') !== false||
-      strpos($ori_keyword,'电话') !== false||
-      strpos($ori_keyword,'手机') !== false||
-      strpos($ori_keyword,'号码') !== false||
-      strpos($ori_keyword,'没') !== false
-    ){
+  if (preg_match('/\D+/', $ori_keyword)){
     $weObj->transfer_customer_service()->reply();
     gapushagent('event',array(
      'category'        => 'getservice',
