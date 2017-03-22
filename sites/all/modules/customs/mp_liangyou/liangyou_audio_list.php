@@ -496,7 +496,7 @@ function liangyou_audio_list2(){
       ),
     'ka'=>array(
       'title' =>'天使夜未眠',
-      'day'=>'7',
+      'day'=>'17',
       'index'=>654,
       'desc'=>'2017-03-26',
       'lywx'=>110,
@@ -512,7 +512,7 @@ function liangyou_audio_list2(){
       ),
     'pc'=>array(
       'title' =>'爆米花',
-      'day'=>'7',
+      'day'=>'16',
       'index'=>656,
       'desc'=>'2017-03-26',
       'lywx'=>305,
@@ -520,7 +520,7 @@ function liangyou_audio_list2(){
       ),
     'ut'=>array(
       'title' =>'我们的时间',
-      'day'=>'7',
+      'day'=>'15',
       'index'=>657,
       'desc'=>'2017-03-26',
       'lywx'=>306,
