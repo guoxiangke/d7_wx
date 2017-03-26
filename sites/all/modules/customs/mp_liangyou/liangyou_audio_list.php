@@ -499,7 +499,7 @@ function liangyou_audio_list2(){
       'day'=>'17',
       'index'=>654,
       'desc'=>'2017-03-26',
-      'lywx'=>110,
+      'lywx'=>204,
       'category'=>'生活智慧',
       ),
     'mm'=>array(
