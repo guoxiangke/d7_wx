@@ -499,7 +499,7 @@ function liangyou_audio_list2(){
       'day'=>'17',
       'index'=>654,
       'desc'=>'2017-03-26',
-      'lywx'=>204,
+      'lywx'=>110,
       'category'=>'生活智慧',
       ),
     'mm'=>array(
@@ -507,7 +507,7 @@ function liangyou_audio_list2(){
       'day'=>'7',
       'index'=>655,
       'desc'=>'2017-03-26',
-      'lywx'=>109,
+      'lywx'=>204,
       'category'=>'关怀辅导',
       ),
     'pc'=>array(
