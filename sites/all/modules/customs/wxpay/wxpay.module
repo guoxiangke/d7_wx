@@ -1,0 +1,346 @@
+<?php
+/**
+ * Implements hook_menu().
+ */
+function wxpay_menu() {
+  $items = array();
+  $items['wxdonate'] = array(
+    'title' => '欢迎使用微信支付',
+    'page callback' => 'wxdonate',
+    'access callback' => 'user_is_logged_in', 
+    'type' => MENU_CALLBACK,
+  );
+  $items['wxpay/node/%node'] = array(
+    'title' => '微信支付',
+    'page callback' => 'wxpay_node',
+    'page arguments' => array(2),
+    'access callback' => 'user_is_logged_in', 
+    'type' => MENU_CALLBACK,
+  );
+  $items['wxpay/notify'] = array(
+    'title' => '欢迎使用微信支付',
+    'page callback' => 'wxpay_notify',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+function wxpay_node($node){
+    if(user_is_anonymous()){
+      watchdog('wxpay','无效支付发起1', array(), WATCHDOG_NOTICE, 'link');
+      drupal_access_denied();
+    }
+    require_once drupal_get_path('module', 'wxpay').'/WxPay.JsApiPay.php';
+    //①、获取用户openid
+    $tools = new JsApiPay();
+    global $user;
+    if(isset($user->data['openid'])){
+      $openId = $user->data['openid'];
+    }else{
+      // $openId = $tools->GetOpenid();
+      watchdog('wxpay','无效支付发起2', array(), WATCHDOG_NOTICE, 'link');
+      //有问题，为什么从getOpenid 点解支付没有反应？
+      drupal_access_denied();
+    }
+    //
+    // $openId = 'oTjEws-8eAAUqgR4q_ns7pbd0zN8';//delete!
+    //②、统一下单
+    $input = new WxPayUnifiedOrder();
+    $body = $node->title;
+    $attach = $user->uid.'&&'.$node->nid.'&&'.$node->title;
+    if($node->nid ==1289){
+      $body = '谢谢赞助支持永不止息';
+      $attach = $user->uid.'&&'.$node->nid.'&&赞助支持';
+    }
+    if($node->nid ==2){
+      $body = '会员积分充值';
+      $attach = $user->uid.'&&'.$node->nid.'&&会员积分充值';
+    }
+    $input->SetBody($body);
+    $input->SetAttach($attach);
+    $input->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
+    $total_fee = 1990;
+    if(isset($_GET['fee'])){
+      $total_fee = $_GET['fee'];
+      if($total_fee<=1) $total_fee *=100;
+    }
+    if(isset($_POST['fee'])){
+      $total_fee = $_POST['fee'] *=100;
+    }
+    // $total_fee = 1;
+    if(isset($node->field_price['und'][0]['value'])){
+      $total_fee = $node->field_price['und'][0]['value'];
+      if($node->nid == 2580){//青橄榄活动！
+        module_load_include('inc','webform','includes/webform.submissions');
+        $sid = $_GET['sid']; $nid = $node->nid;
+        $web_submission = webform_get_submission($nid, $sid);
+        $count = count($web_submission->data[5]['value']);
+        switch ($count) {
+          case '1':
+            $total_fee = 7000;
+            break;
+          case '2':
+            $total_fee = 12000;
+            break;
+          case '3':
+            $total_fee = 14000;
+            break;
+          case '4':
+            $total_fee = 16000;
+            break;
+          case '5':
+            $total_fee = 16000;
+            break;
+          default:
+            $total_fee = 16000;
+            break;
+        }
+        watchdog('$count', $count, array(), WATCHDOG_NOTICE, 'link');
+      }
+    }
+    if(isset($node->field_price_desc['und'][0]['value'])){
+      $desc = $node->field_price_desc['und'][0]['value'];
+      $attach = $node->uid.'&&'.$node->nid.'&&'.$desc;
+    }
+    if($total_fee<=100) $total_fee *=100;
+    $input->SetTotal_fee($total_fee);
+    $input->SetTime_start(date("YmdHis"));
+    $input->SetTime_expire(date("YmdHis", time() + 600));
+    $input->SetGoods_tag("seeking");
+    $input->SetNotify_url("http://www.yongbuzhixi.com/wxpay/notify");
+    $input->SetTrade_type("JSAPI");
+    $input->SetOpenid($openId);
+    $order = WxPayApi::unifiedOrder($input);
+    // echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
+    // dpm($order);
+    $jsApiParameters = $tools->GetJsApiParameters($order);
+    // dpm($jsApiParameters);
+    drupal_add_js(array('wxpay' => array('jsApiParameters'=>$jsApiParameters)), 'setting');
+    //TODO if need address!
+      //获取共享收货地址js函数参数
+      // $editAddress = $tools->GetEditAddressParameters();
+      // drupal_add_js(array('wxpay' => array('editAddress'=>$editAddress)), 'setting');
+    drupal_add_js(drupal_get_path('module', 'wxpay').'/wxjspay.js');
+    // $node->content['paybutton'] = array('#markup'=>'<a id="payit">WXPAY</a>');
+
+    //③、在支持成功回调通知中处理成功之后的事宜，见 notify.php
+    /**
+     * 注意：
+     * 1、当你的回调地址不可访问的时候，回调通知会失败，可以通过查询订单来确认支付是否成功
+     * 2、jsapi支付时需要填入用户openid，WxPay.JsApiPay.php中有获取openid流程 （文档可以参考微信公众平台“网页授权接口”，
+     * 参考http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html）
+     */
+   return 'test';
+}
+function wxdonate(){
+  return '';
+}
+function wxpay_theme(){
+  return array(
+    'wxpay_page' =>  array(
+      'template' => 'theme/wxpay-page',
+      'render element' => 'page'
+    ),
+    'wxpay_donate' =>  array(
+      'template' => 'theme/wxpay-donate',
+      'render element' => 'page'
+    ),
+  );
+}
+function wxpay_preprocess_page(&$variables, $hook) {
+  if ( arg(0)=='wxpay' ) {
+    $variables['theme_hook_suggestions'][] = 'wxpay_page';
+  }
+  if ( arg(0)=='wxdonate' ) {
+    $variables['theme_hook_suggestions'][] = 'wxpay_donate';
+  }
+}
+//TODO: save order info to drupal!!!
+function wxpay_notify() {
+  require_once drupal_get_path('module', 'wxpay').'/lib/WxPay.Api.php';
+  require_once drupal_get_path('module', 'wxpay').'/lib/WxPay.Notify.php';
+
+
+  class PayNotifyCallBack extends WxPayNotify
+  {
+    //查询订单
+    public function Queryorder($transaction_id)
+    {
+      $input = new WxPayOrderQuery();
+      $input->SetTransaction_id($transaction_id);
+      $result = WxPayApi::orderQuery($input);
+      if(array_key_exists("return_code", $result)
+        && array_key_exists("result_code", $result)
+        && $result["return_code"] == "SUCCESS"
+        && $result["result_code"] == "SUCCESS")
+      {
+        return true;
+      }
+      return false;
+    }
+
+    //重写回调处理函数
+    public function NotifyProcess($data, &$msg)
+    {
+      $notfiyOutput = array();
+
+      if(!array_key_exists("transaction_id", $data)){
+        $msg = "输入参数不正确";
+        return false;
+      }
+      //查询订单，判断订单真实性
+      if(!$this->Queryorder($data["transaction_id"])){
+        $msg = "订单查询失败";
+        return false;
+      }
+      //wxorder entity begin
+      $spilts = explode('&&',$data['attach']);//uid&&nid&&title&&donate||points
+      $uid = $spilts[0];$nid = $spilts[1];
+      $entity = entity_create('order', array('type' =>'wxpayorder','uid' => $uid));
+
+      foreach ($data as $key => $value) {
+        if($key =='is_subscribe') $value=($value=='Y')?1:0;
+        if($key=='attach'){
+          $entity->title = $spilts[2];
+          $entity->field_wxpay_nid = array(LANGUAGE_NONE => array(0 => array('value' =>  $spilts[1])));
+        }
+        $key = 'field_wxpay_'.$key;
+
+        $entity->$key = array(LANGUAGE_NONE => array(0 => array('value' => $value)));
+      }
+      //check if already get notify!
+      // get all recently paid items.
+
+      $exist_ids = db_query('SELECT field_wxpay_transaction_id_value as id FROM {field_data_field_wxpay_transaction_id} order by revision_id desc LIMIT 0,50')->fetchAll();
+      foreach ($exist_ids as $key => $idobj) {
+        if($idobj->id == $entity->field_wxpay_transaction_id['und'][0]['value']){
+          watchdog('wxpay', $entity->field_wxpay_attach['und'][0]['value'].' already exsits.end!', array(), WATCHDOG_NOTICE, 'link');
+            return TRUE;
+        }
+      }
+      //
+      $entity->save();
+      //wxorder entity end
+          $params = array(
+            'points' =>$entity->field_wxpay_total_fee['und'][0]['value'],
+            'moderate' => FALSE,
+            'uid' => $uid,
+            'time_stamp' => time(),
+            'operation' => 'wxpay',
+            'tid' => 0,
+            'expirydate' => NULL,
+            'description' => 'Default description',
+            'display' => true,
+            'entity_id' => $entity->id,
+            'entity_type' => 'order',
+          );
+      //FOR USER POINTS!begin
+      if(module_exists('userpoints')) {
+        $node =node_load($nid);
+
+        if(isset($node->field_price_desc['und'][0]['value']))
+          $desc = l($node->field_price_desc['und'][0]['value'],'node/'.$nid);
+
+        if($nid == 1289){
+          $desc = '微信支持';
+        }elseif($nid == 2){
+          $desc = '积分充值';
+        }else{
+          $desc = '会员审核';
+          if($node->type=='seeking'){
+            $node->status =1;
+            node_save($node);
+            $params['expirydate'] = time() + 31536000;//一年之后过期！
+          }
+        }
+        $params['description'] = $desc;
+        if($node->type!='webform'){
+          userpoints_userpointsapi($params);
+          mp_service_send_template_message($desc,$params);
+        }
+      }
+      //end
+      return TRUE;
+    }
+  }
+
+  $notify = new PayNotifyCallBack();
+  $notify->Handle(false);
+  exit();
+}
+
+/**
+ * Implements hook_entity_view().
+ */
+function wxpay_entity_view($entity, $type, $view_mode, $langcode) {
+  // dpm($entity);
+}
+
+/**
+ * Implements hook_node_view().
+ */
+function  wxpay_node_view($node, $view_mode, $langcode) {
+  if($node->nid == 2501 && user_is_anonymous() && !isset($_GET['need_login'])){
+    $url = 'http://'.$_SERVER['HTTP_HOST'].'?'.$_SERVER['QUERY_STRING'];
+    drupal_set_message('登陆成功，请再次<a href="'.$url.'">点击此处</a><br/><a href="'.$url.'">进入登陆之前页面</a>', 'warning', FALSE);
+    unset($_GET['destination']);
+    drupal_goto('wechat_login/1');
+  }
+  if($node->type=='webform' && user_is_anonymous() && isset($node->field_price['und'][0]['value'])){
+    $url = 'http://'.$_SERVER['HTTP_HOST'].'?'.$_SERVER['QUERY_STRING'];
+    drupal_set_message('登陆成功，请再次<a href="'.$url.'">点击此处</a><br/><a href="'.$url.'">进入登陆之前页面</a>', 'warning', FALSE);
+    unset($_GET['destination']);
+    drupal_goto('wechat_login/1');
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function wxpay_form_alter(&$form, &$form_state, $form_id) {
+  // dpm($form_id); photo_node_form
+  if($form_id =='comment_node_seeking_form'){
+    // dpm($form);
+    global $user;
+    $seeking = _ybzx_get_node('seeking',$user);
+    if(isset($seeking['nid'])){
+      $user_points = userpoints_get_current_points($user->uid, 'all');
+      if(0&&$user_points<=0){
+        $form['actions']['submit']['#access'] = FALSE;
+        $form['comment_body']['und'][0]['value']['#disabled'] = TRUE;
+        $form['comment_body']['und'][0]['value']['#default_value'] = '您的积分'.$user_points.'，不足10，不可评论，请点击下面按钮兑换积分。';
+        $form['buypoints1'] = array(
+          '#markup' => '<a class="btn btn-success btn-default" href="/wxpay/node/2?fee=5000">微信购买5千积分</a>',
+        );
+        $form['buypoints2'] = array(
+          '#markup' => '&nbsp;&nbsp;<a class="btn btn-success btn-default" href="/wxpay/node/2?fee=10000">微信购买1万积分</a>',
+        );
+        $form['buypoints3'] = array(
+          '#markup' => '&nbsp;&nbsp;<a class="" href="/user/'.$user->uid.'/points">查看积分详情</a>',
+        );
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function wxpay_node_insert($node) {
+  if($node->type=='support'){
+    $params = array(
+      'points' =>$node->field_support_amout['und'][0]['value']*100,
+      'moderate' => FALSE,
+      'uid' => $node->field_uid['und'][0]['target_id'],
+      'time_stamp' => time(),
+      'operation' => 'wxpay',
+      'tid' => 0,
+      'expirydate' => NULL,
+      'description' => '奉献支持，积分奖励',
+      'display' => true,
+      'entity_id' => $node->nid,
+      'entity_type' => 'node',
+    );
+    userpoints_userpointsapi($params);
+  }
+}

@@ -1,0 +1,4 @@
+name = wxpay
+description = wxpay&jspay
+core = 7.x
+package = A-DEV
