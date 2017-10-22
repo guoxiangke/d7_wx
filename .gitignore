@@ -8,6 +8,7 @@ sites/*/private
 */*.pem
 .idea/
 auto.sh
+sftp-config.json
 favicon.ico
 sites/all/modules/customs/WxpayAPI_php_v3/
 sites/all/modules/customs/ztools/
