@@ -4,14 +4,7 @@ sites/*/settings*.php
 # Ignore paths that contain user-generated content.
 sites/*/files
 sites/*/private
-*.pem
-*/*.pem
-.idea/
-auto.sh
+
 sftp-config.json
-favicon.ico
-sites/all/modules/customs/WxpayAPI_php_v3/
-sites/all/modules/customs/ztools/
-sites/all/modules/inline_entity_form/
-sites/all/modules/morecomments/
-sites/all/modules/unique_field/
+auto.sh
+sites/default/0settings.php

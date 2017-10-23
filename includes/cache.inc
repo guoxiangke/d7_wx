@@ -122,7 +122,12 @@ function cache_get_multiple(array &$cids, $bin = 'cache') {
  *     the administrator panel.
  *   - cache_path: Stores the system paths that have an alias.
  * @param $expire
- *   (optional) One of the following values:
+ *   (optional) Controls the maximum lifetime of this cache entry. Note that
+ *   caches might be subject to clearing at any time, so this setting does not
+ *   guarantee a minimum lifetime. With this in mind, the cache should not be
+ *   used for data that must be kept during a cache clear, like sessions.
+ *
+ *   Use one of the following values:
  *   - CACHE_PERMANENT: Indicates that the item should never be removed unless
  *     explicitly told to using cache_clear_all() with a cache ID.
  *   - CACHE_TEMPORARY: Indicates that the item should be removed at the next
@@ -262,7 +267,12 @@ interface DrupalCacheInterface {
    *   1MB in size to be stored by default. When caching large arrays or
    *   similar, take care to ensure $data does not exceed this size.
    * @param $expire
-   *   (optional) One of the following values:
+   *   (optional) Controls the maximum lifetime of this cache entry. Note that
+   *   caches might be subject to clearing at any time, so this setting does not
+   *   guarantee a minimum lifetime. With this in mind, the cache should not be
+   *   used for data that must be kept during a cache clear, like sessions.
+   *
+   *   Use one of the following values:
    *   - CACHE_PERMANENT: Indicates that the item should never be removed unless
    *     explicitly told to using cache_clear_all() with a cache ID.
    *   - CACHE_TEMPORARY: Indicates that the item should be removed at the next
@@ -331,41 +341,6 @@ class DrupalDatabaseCache implements DrupalCacheInterface {
     return reset($cache);
   }
 
-  /**
-   * Add blow to your cache.inc file! daledale
-   * Implements DrupalCacheInterface::getMultiple().
-   */
-  function getlike(&$prefix) {
-    try {
-      // Garbage collection necessary when enforcing a minimum cache lifetime.
-      $this->garbageCollection($this->bin);
-
-      // When serving cached pages, the overhead of using db_select() was found
-      // to add around 30% overhead to the request. Since $this->bin is a
-      // variable, this means the call to db_query() here uses a concatenated
-      // string. This is highly discouraged under any other circumstances, and
-      // is used here only due to the performance overhead we would incur
-      // otherwise. When serving an uncached page, the overhead of using
-      // db_select() is a much smaller proportion of the request.
-      $result = db_query('SELECT cid, data, created, expire, serialized FROM {' . db_escape_table($this->bin) . '} WHERE cid like :pattern',
-        array(':pattern' => db_like($prefix) . '%')
-      );
-      $cache = array();
-      foreach ($result as $item) {
-        $item = $this->prepareItem($item);
-        if ($item) {
-          $cache[$item->cid] = $item;
-        }
-      }
-      $prefix = array_diff(array($prefix), array_keys($cache));
-      return $cache;
-    }
-    catch (Exception $e) {
-      // If the database is never going to be available, cache requests should
-      // return FALSE in order to allow exception handling to occur.
-      return array();
-    }
-  }
   /**
    * Implements DrupalCacheInterface::getMultiple().
    */
