@@ -45,10 +45,8 @@ class JSSDK {
 
   private function getJsApiTicket() {
     // jsapi_ticket 应该全局存储与更新，以下代码以写入到文件中做示例
-    $uri = 'public://jsapi/jsapi_ticket.php';
-    $path= drupal_realpath($uri);
-    $data = json_decode($this->get_php_file($path));
-    if ($data->expire_time < time()) {
+    $jsapi_ticket = $this->wxjs_cache_get('jsapi_ticket');
+    if (!$jsapi_ticket) {
       $accessToken = $this->getAccessToken();
       // 如果是企业号用以下 URL 获取 ticket
       // $url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
@@ -56,37 +54,27 @@ class JSSDK {
       $res = json_decode($this->httpGet($url));
       $ticket = $res->ticket;
       if ($ticket) {
-        $data->expire_time = time() + 7000;
-        $data->jsapi_ticket = $ticket;
-        $this->set_php_file($path, json_encode($data));
+        $this->wxjs_cache_set('jsapi_ticket', $ticket);
       }
-    } else {
-      $ticket = $data->jsapi_ticket;
     }
 
-    return $ticket;
+    return $jsapi_ticket;
   }
 
   private function getAccessToken() {
     // access_token 应该全局存储与更新，以下代码以写入到文件中做示例
-    $uri = 'public://jsapi/access_token.php';
-    $path= drupal_realpath($uri);
-    $data = json_decode($this->get_php_file($path));
-    if ($data->expire_time < time()) {
+    $jsapi_token = $this->wxjs_cache_get('jsapi_token');
+    if (!$jsapi_token) {
       // 如果是企业号用以下URL获取access_token
       // $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=$this->appId&corpsecret=$this->appSecret";
       $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appSecret";
       $res = json_decode($this->httpGet($url));
       $access_token = $res->access_token;
       if ($access_token) {
-        $data->expire_time = time() + 7000;
-        $data->access_token = $access_token;
-        $this->set_php_file($path, json_encode($data));
+        $this->wxjs_cache_set('jsapi_token', $access_token);
       }
-    } else {
-      $access_token = $data->access_token;
     }
-    return $access_token;
+    return $jsapi_token;
   }
 
   private function httpGet($url) {
@@ -105,13 +93,16 @@ class JSSDK {
     return $res;
   }
 
-  private function get_php_file($filename) {
-    return trim(substr(file_get_contents($filename), 15));
+  private function wxjs_cache_set($key,$value){
+      cache_set($key, $value, 'cache',  REQUEST_TIME  + 7000);
   }
-  private function set_php_file($filename, $content) {
-    $fp = fopen($filename, "w");
-    fwrite($fp, "<?php exit();?>" . $content);
-    fclose($fp);
+  private function wxjs_cache_get($key){
+    $data = false;
+    $cache = cache_get($key);
+    if ($cache && REQUEST_TIME < $cache->expire) {
+      $data = $cache->data;
+    }
+    return $data;
   }
 }
 
